@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:fragment="searchFragment">
+		<form th:action="@{/view/user/userList}" method="get">
+			<select name="searchKey">
+				<option value="userId">회원아이디</option>
+				<option value="userName">회원이름</option>
+				<option value="userEmail">회원이메일</option>
+			</select>
+			<input type="text" name="searchValue" placeholder="검색어를 입력해주세요." />
+			<button type="submit">검색</button>
+		</form>
+	</div>
+
+
+
+
+
+</html>

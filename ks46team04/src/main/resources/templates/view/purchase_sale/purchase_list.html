@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+	rel="stylesheet">
+</head>
+
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">매입 기록 조회</h1>
+		<p class="mb-4">
+			매입 기록을 조회합니다.<br> 마감되지 않은 기록과 예정 기록도 포함입니다.
+		</p>
+		<!--   
+                        1.입고 매입액 조회				
+                        2. 기간 별 매입 누계 조회(달, 분기)
+                        3. 총 매입 누계 조회
+                    -->
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">매입 기록 조회</h6>
+			</div>
+			<div class="card-body">
+				<!-- 검색 테이블 -->
+				<div class="table-responsive">
+					<table class="table table-bordered search-table"
+						id="searchdataTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<th class="bg-gray-100">통합 검색</th>
+								<td><input type="text"
+									class="form-control form-control-user-search"
+									id="purchase-search"> <!-- <a href="#" class="btn btn-primary">
+                                                    <span class="icon text-white-50">
+                                                    </span>
+                                                    <span class="text">검색</span>
+                                                </a> -->
+									<button class="btn btn-primary">
+										<span class="text text-gray-100">검색</span>
+									</button></td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">기간 상세</th>
+								<td>
+									<form>
+										<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<label for="start-date" class="sr-only">시작일</label> <input
+													type="date" id="start-date" class="form-control"
+													placeholder="시작일">
+											</div>
+											~
+											<div class="col-auto">
+												<label for="end-date" class="sr-only">종료일</label> <input
+													type="date" id="end-date" class="form-control"
+													placeholder="종료일">
+											</div>
+										</div>
+									</form>
+									<button class="btn btn-primary search-schedule">
+										<span class="text text-gray-100">검색</span>
+									</button>
+
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">기간 검색</th>
+								<td>
+									<button class="btn btn-primary">
+										<span class="text text-gray-100">당일</span>
+									</button>
+									<button class="btn btn-primary">
+										<span class="text text-gray-100">당월</span>
+									</button>
+									<button class="btn btn-primary">
+										<span class="text text-gray-100">해당 분기</span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">현황 검색</th>
+								<td><select
+									class="dropdown btn btn-primary dropdown-toggle"
+									id="dropdownMenuButton" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+										<option value="option1">:: 매입 현황 ::</option>
+										<option value="option2">매입 예정</option>
+										<option value="option2">매입 입금 완료</option>
+								</select></td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">마감 여부</th>
+								<td><select
+									class="dropdown btn btn-primary dropdown-toggle"
+									id="dropdownMenuButton" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+										<option value="option1">:: 마감 여부 ::</option>
+										<option value="option2">마감 전</option>
+										<option value="option2">마감 완료</option>
+								</select></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="mx-auto" style="width: 60px;">
+					<button class="btn btn-primary">
+						<span class="text text-gray-100">검색</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<br>
+				<button class="btn btn-primary">
+					<span class="text text-gray-100">선택 항목 일괄 삭제</span>
+				</button>
+				<br>
+				<br>
+				<!-- 조회된 테이블 -->
+				<div class="table-responsive">
+					<table class="table table-bordered" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr class="text-center">
+								<td><input type="checkbox" class="update-delete"
+									name="updateDeleteCheck" value="false"></td>
+								<!-- 매입 현황	상품명	매입 단가	매입 수량	총 매입가	매입 날짜	매입 등록자	매입 등록일	매입 수정자	매입 수정일 -->
+								<th>매입 현황</th>
+								<th>상품명</th>
+								<th>매입 단가</th>
+								<th>매입 수량</th>
+								<th>총 매입가</th>
+								<th>매입 날짜</th>
+								<th>매입 등록자</th>
+								<th>매입 등록일</th>
+								<th>매입 수정자</th>
+								<th>매입 수정일</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tfoot class="bg-gray-100">
+							<tr class="text-center">
+								<td><input type="checkbox" class="update-delete"
+									name="updateDeleteCheck" value="false"></td>
+								<th>매입 현황</th>
+								<th>상품명</th>
+								<th>매입 단가</th>
+								<th>매입 수량</th>
+								<th>총 매입가</th>
+								<th>매입 날짜</th>
+								<th>매입 등록자</th>
+								<th>매입 등록일</th>
+								<th>매입 수정자</th>
+								<th>매입 수정일</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</tfoot>
+						<tbody>
+							<tr>
+								<td><input type="checkbox" class="update-delete"
+									name="updateDeleteCheck" value="false"></td>
+								<td>매입 입금 완료</td>
+								<td>비타민C 1000 1080mg x 300정</td>
+								<td>10,000 &#8361;</td>
+								<td>40</td>
+								<td>400,000 &#8361;</td>
+								<td>2023-2-1 10:00</td>
+								<td>useridm1</td>
+								<td>2023-2-1 10:00</td>
+								<td>null</td>
+								<td>null</td>
+								<td>
+									<button class="btn btn-secondary btn-sm">
+										<span class="text text-gray-100">검색</span>
+									</button>
+								</td>
+								<td>
+									<button class="btn btn-secondary btn-sm">
+										<span class="text text-gray-100">검색</span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" class="update-delete"
+									name="updateDeleteCheck" value="false"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br>
+				<button class="btn btn-primary">
+					<span class="text text-gray-100">선택 항목 일괄 삭제</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<!-- /container-fluid -->
+</th:block>
+
+<!-- 사용자정의 Js 페이지 -->
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{../../vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script
+		th:src="@{../../vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

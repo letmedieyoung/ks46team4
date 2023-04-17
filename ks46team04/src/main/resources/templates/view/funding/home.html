@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/default}">
+	  
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+		<div class="funding_content_filter">		
+		</div>
+		
+		<ul class="fundinghome_list">
+        	<!-- 펀딩1 Basic Card Example -->
+        	<li class="fundinglist">
+	        	<div class="card mb-4 funding-card funding1">
+	        		<a href="#">
+		            	<div class="card-header py-3 fundingcard_img_wrap">	              	  
+		              	  <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2hpbGRyZW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
+		            	</div>
+	            	</a>
+	            	<div class="card-body fundingCard_content">
+	                	<h6 class="m-0 font-weight-bold text-primary">면역력이 떨어진 아이들에게 힘을 보태주세요.</h6>
+	               		<div class="foundation_name">초록우산 어린이재단</div>
+	               		<div class="progress mb4">
+	               			<div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+	               		</div>
+	           		</div>
+	            </div>	
+            </li>
+		</ul>
+	</div>
+	
+	<!-- /.container-fluid -->
+</th:block>
+</html>

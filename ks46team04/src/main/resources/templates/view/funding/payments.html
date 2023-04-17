@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="customContents">
+	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<h5 class="m-0 font-weight-bold text-gray-800">펀딩 결제 내역</h5>
+			<p class="mb-4"></p>
+
+		<!-- DataTales Example -->
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">펀딩 결제 내역 조회</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered" width="100%" cellspacing="0">	
+						<tbody>
+							<tr>
+								<th>기간</th>
+								<td>
+									<select>
+										<option value="funding_name">결제일</option>																						
+									</select>		
+									<a class="btn btn-light"><span class="text freg-btn">오늘</span></a>							
+									<a class="btn btn-light"><span class="text freg-btn">1개월</span></a>
+									<a class="btn btn-light"><span class="text freg-btn">3개월</span></a>
+									<a class="btn btn-light"><span class="text freg-btn">전체</span></a>
+									<input type="date" />
+										<span>~</span>
+									<input type="date" />
+									<a class="btn btn-light"><span class="text freg-btn">기간설정</span></a>
+								</td>
+							</tr>	
+							<tr>
+								<th>검색어</th>
+								<td>
+									<select>
+										<option value="funding_name">결제코드</option>
+										<option value="funding_name">주문자명</option>
+										<option value="funding_name">주문자아이디</option>
+									</select>										
+									<input type="text" class="search-block"/>
+								</td>
+							</tr>							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="f-search btn">
+			<a class="btn btn-primary btn-icon-split " onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>
+			<a class="btn btn-primary btn-icon-split "><span class="text sbtn">초기화</span></a>
+		</div>
+		
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>No</th>
+                                <th>결제코드</th>
+                                <th>주문자아이디</th>
+                                <th>펀딩코드</th>
+                                <th>주문일(결제일)</th>
+                                <th>펀딩금액</th>
+                                <th>결제수단</th>                                
+                            </tr>
+                        </thead>    
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

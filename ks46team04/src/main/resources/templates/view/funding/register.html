@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/default}">
+	  
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+	    <!-- Page Heading -->
+	    
+	    
+	    <!-- DataTales Example -->
+     	<div class="card mb-4">
+         <div class="card-header py-3">
+             <h5 class="m-0 font-weight-bold text-gray-800">펀딩 등록</h5>
+         </div>
+         <div class="card-body">         
+            <div class="table-responsive">
+            	<table class="table table-bordered freg" id="dataTable" width="100%" cellspacing="0">
+                	<tbody>
+                    	<tr>
+                        	<th>펀딩명</th>
+                           	<td>
+                            	<div>
+                            		<input type="text" name="funding_name" style="width:350px;"/>
+                            	</div>
+                            </td>
+                         </tr>
+                         <tr>
+                         	<th>상세내용</th>
+                         	<td>
+                         		<div>
+                         			<textarea></textarea>
+                         		</div>
+                         	</td>
+                         </tr>
+                     </tbody>
+                 </table>
+                 
+                 <table class="table table-bordered freg" id="dataTable" width="100%" cellspacing="0">
+                	<tbody>
+                    	<tr>
+                        	<th>진행상태</th>
+                        	 <td>
+	                        	<label><input type="radio" name="is_done" value="T">진행중</label>
+	                        	<label><input type="radio" name="is_done" value="F">완료</label>                 	
+	                   		 </td>
+                        </tr>	                   
+                        <tr>
+                        	<th>연결재단</th>
+	                       	<td>
+	                       		<select>
+	                       			<option>사단법인 따뜻한하루</option>
+	                       			<option>사단법인 여성인권 동감</option>
+	                       			<option>초록우산 어린이재단</option>
+	                       		</select>
+	                       	</td> 
+                        </tr>                      	                      
+                        <tr>
+                        	<th>상품코드</th>
+                        	<td>
+                        		<input type="text" />
+                        	</td>
+                        </tr>
+                        <tr>  
+                       		<th>목표금액</th>
+                       		<td>
+                       			<input type="text">
+                       			<span>원</span>
+                       		</td>
+                        </tr>
+						<tr>                       
+                        	<th>기간 설정</th>
+                       		<td>
+                       			<input type="date">
+                       			<span>~</span>
+                       			<input type="date">
+                       		</td>
+                      	</tr>
+                     </tbody>
+                 </table>
+                 <div class="f-register">
+					<a class="btn btn-primary"><span class="sbtn">등록</span></a>
+					<a class="btn btn-primary"><span class="cbtn">취소</span></a>
+				 </div>
+             </div>	    
+		</div>
+    </div>
+	
+	<!-- /.container-fluid -->
+	
+</th:block>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			<h1 class="h3 mb-2 text-gray-800">상품 등록</h1>
+			<p class="mb-4">
+				상품 등록입니다. <a target="_blank" href="https://datatables.net">링크</a>
+			</p>
+			<!-- Fade In Utility -->
+			<div class="col-lg-6">
+				<div class="card position-relative">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">상품정보</h6>
+					</div>
+
+					<div class="table-responsive">
+						<form id="addGoodsForm" th:action="@{/goods/addGoods}" method="post"></form>
+							<table class="table table-bordered text-center" id="dataTable" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="labeltd bg-gray-100">
+											<label for="goodsCode">상품코드</label>
+										</th>
+										<td class="col-sm-6">
+											<input type="text" class="form-control form-control-user"
+												id="goodsCode" name="goodsCode" readonly="readonly" />
+										</td>
+									</tr>
+									<tr>
+										<th class="labeltd bg-gray-100">
+											<label for="memberLevel">판매자목록</label>
+										</th>
+										<td>
+											<select class="form-control form-control-user" id="sellerInfo"
+												name="goodsSellerId">
+												<option value="">판매자아이디를 선택해주세요</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th class="labeltd bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<input type="text" class="form-control form-control-user"
+												id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요." />
+										</td>
+									</tr>
+									<tr>
+										<th class="labeltd bg-gray-100">
+											<label for="goodsPrice">상품가격</label>
+										</th>
+										<td>
+											<input type="number" class="form-control form-control-user"
+												id="goodsPrice" min="0" name="goodsPrice" placeholder="숫자로 입력해주세요." />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+												<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+												<span class="text">등록하기</span>
+											</button>
+											<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+												<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+												<span class="text">입력취소</span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+
+</html>

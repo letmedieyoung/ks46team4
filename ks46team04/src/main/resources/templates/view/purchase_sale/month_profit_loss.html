@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+	rel="stylesheet">
+</head>
+
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">달 마감된 매입·매출/손익 조회</h1>
+		<p class="mb-4">
+			달 마감된 매입·매출 기록을 조회하고 이를 토대로한 손익 기록을 조회합니다.<br> 년도, 월, 단위로만 조회
+			가능하며, 매입·매출 따로 조회는 불가능합니다.
+		</p>
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">달 마감된 매입·매출 조회</h6>
+			</div>
+			<div class="card-body">
+				<select class="dropdown btn btn-primary dropdown-toggle"
+					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">
+					<option value="option1">:: 기준 년도 ::</option>
+					<!-- 기준 년도는 2022년(사이트 개설년도)부터 현 년도까지를 보여준다 -->
+					<option value="option2">2022년</option>
+				</select> <select class="dropdown btn btn-primary dropdown-toggle"
+					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">
+					<option value="option1">:: 기준 월 ::</option>
+					<option value="option2">1월</option>
+					<option value="option2">2월</option>
+					<option value="option2">3월</option>
+					<option value="option2">4월</option>
+					<option value="option2">5월</option>
+					<option value="option2">6월</option>
+					<option value="option2">7월</option>
+					<option value="option2">8월</option>
+					<option value="option2">9월</option>
+					<option value="option2">10월</option>
+					<option value="option2">11월</option>
+					<option value="option2">12월</option>
+				</select> <br>
+				<br>
+				<!-- 달 마감된 매입·매출 조회 -->
+				<div class="table-responsive">
+					<table class="table table-bordered" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr class="text-center">
+								<!-- 매입·매출 구분 | 기준 년도 | 기준 월 | 매입/매출 분류 | 결제 금액 | 매출 중 수수료 | 매입예산(결제-수수료) -->
+								<th>매입·매출 구분 상세</th>
+								<th>기준 년도</th>
+								<th>기준 월</th>
+								<th>결제 금액</th>
+								<th>매출 중 수수료</th>
+								<th>매입예산<br>(결제-수수료)
+								</th>
+							</tr>
+						</thead>
+						<!-- <tfoot class="bg-gray-100">
+                                        <tr class="text-center">
+                                            <th>매입·매출 구분 상세</th>
+                                            <th>기준 년도</th>
+                                            <th>기준 월</th>
+                                            <th>결제 금액</th>
+                                            <th>매출 중 수수료</th>
+                                            <th>매입예산<br>(결제-수수료)</th>
+                                        </tr>
+                                    </tfoot> -->
+						<tbody>
+							<tr>
+								<td>기부매출</td>
+								<td>2023년</td>
+								<td>1월</td>
+								<td>₩ 450,000</td>
+								<td>₩ 45,000</td>
+								<td>₩ 405,000</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">기간 별 손익 조회</h6>
+			</div>
+			<div class="card-body">
+				<br>
+				<!-- 달 마감된 매입·매출 조회 -->
+				<div class="table-responsive">
+					<table class="table table-bordered" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr class="text-center">
+								<!-- 기준 년도|기준 월|월 총 매출액|월 수수료 합|월 매입예산 합|월 매입 합|월 손익(수수료제외)|월 최종 손익(수수료 포함)|결산 확인 여부|결산 확인 일자|결재 담당자 ID -->
+								<th>기준 년도</th>
+								<th>기준 월</th>
+								<th>월 총 매출액</th>
+								<th>월 수수료 합</th>
+								<th>월 매입예산 합</th>
+								<th>월 매입 합</th>
+								<th>월 손익<br>(수수료제외)
+								</th>
+								<th>월 최종 손익<br>(수수료 포함)
+								</th>
+								<th>결산 확인 여부</th>
+								<th>결산 확인 일자</th>
+								<th>결재 담당자</th>
+							</tr>
+						</thead>
+						<!-- <tfoot class="bg-gray-100">
+                                        <tr class="text-center">
+                                            <th>기준 년도</th>
+                                            <th>기준 월</th>
+                                            <th>월 총 매출액</th>
+                                            <th>월 수수료 합</th>
+                                            <th>월 매입예산 합</th>
+                                            <th>월 매입 합</th>
+                                            <th>월 손익<br>(수수료제외)</th>
+                                            <th>월 최종 손익<br>(수수료 포함)</th>
+                                            <th>결산 확인 여부</th>
+                                            <th>결산 확인 일자</th>
+                                            <th>결재 담당자</th>
+                                        </tr>
+                                    </tfoot> -->
+						<tbody>
+							<tr>
+								<td>2023년</td>
+								<td>1월</td>
+								<td>₩ 450,000</td>
+								<td>₩ 45,000</td>
+								<td>₩ 405,000</td>
+								<td>400,000</td>
+								<td>5,000</td>
+								<td>50,000</td>
+								<td>TRUE</td>
+								<td>2023-2-5 10:00</td>
+								<td>useridm1</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /container-fluid -->
+</th:block>
+
+<!-- 사용자정의 Js 페이지 -->
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{../../vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script
+		th:src="@{../../vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

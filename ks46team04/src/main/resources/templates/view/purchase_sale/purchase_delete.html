@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<!-- Custom styles for this page -->
+
+</head>
+
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">매입 삭제</h1>
+		<p class="mb-4">
+			매입 기록을 삭제합니다.<br> 관리자의 아이디와 비밀번호로 인증합니다.
+		</p>
+
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">매입 수정</h6>
+			</div>
+			<div class="card-body">
+				<br>
+				<!-- 필요한 정보 - 매입 현황  상품명	매입 단가 매입 수량	총 매입가(자동 계산)	매입 날짜  -->
+				<!-- 폼으로 구성 -->
+
+				<!-- 삭제 정보 테이블 -->
+				<form>
+					<div class="table-responsive">
+						<table class="table table-bordered search-table"
+							id="searchdataTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th colspan="2" class="bg-gray-200">삭제할 상품 정보</th>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 현황</th>
+									<td><select
+										class="dropdown btn btn-primary dropdown-toggle"
+										id="dropdownMenuButton" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false" readonly="readonly">
+											<option value="option1">:: 매입 현황 ::</option>
+									</select></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">상품명</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-insert" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 단가</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-search" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 수량</th>
+									<td><input type="number"
+										class="form-control form-control-user-search"
+										id="purchase-search" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">총 매입가<br>(자동 계산)
+									</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-search" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 날짜</th>
+									<td>
+										<form readonly="readonly">
+											<div class="form-row align-items-center search-schedule">
+												<div class="col-auto">
+													<label for="purchase-date" class="sr-only">시작일</label> <input
+														type="date" id="purchase-date" class="form-control"
+														placeholder="시작일">
+												</div>
+											</div>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
+
+				<br>
+				<br>
+				<!-- 삭제자 권한 인증 테이블 -->
+				<form>
+					<div class="table-responsive">
+						<table class="table table-bordered search-table"
+							id="searchdataTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th colspan="2" class="bg-gray-200">관리자 권한 인증</th>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">관리자 아이디</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-insert" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">관리자 비밀번호</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-insert" placeholder="관리자 비밀번호를 입력하세요."></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
+				<br>
+				<div class="mx-auto" style="width: 230px;">
+					<button type="submit" class="btn btn-primary">
+						<span class="text text-gray-100">상품 삭제</span>
+					</button>
+					<button type="button" class="btn btn-primary"
+						style="margin-left: 10px;">
+						<span class="text text-gray-100">삭제 취소</span>
+					</button>
+				</div>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+
+<!-- 사용자정의 Js 페이지 -->
+<th:block layout:fragment="customJs">
+	
+</th:block>
+</html>

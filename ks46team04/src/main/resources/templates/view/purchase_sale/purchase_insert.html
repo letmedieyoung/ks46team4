@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<!-- Custom styles for this page -->
+
+</head>
+
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">매입 등록</h1>
+		<p class="mb-4">
+			매입 기록을 등록합니다.<br> 상품명은 상품 테이블에서 조회합니다.<br> 매입가 합계는 js로
+			계산합니다.<br>
+		</p>
+
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">매입 등록</h6>
+			</div>
+			<div class="card-body">
+				<br>
+				<!-- 필요한 정보 - 매입 현황  상품명	매입 단가 매입 수량	총 매입가(자동 계산)	매입 날짜  -->
+				<!-- 폼으로 구성 -->
+
+				<!-- 등록 테이블 -->
+				<form>
+					<div class="table-responsive">
+						<table class="table table-bordered search-table"
+							id="searchdataTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100">매입 현황</th>
+									<td><select
+										class="dropdown btn btn-primary dropdown-toggle"
+										id="dropdownMenuButton" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false">
+											<option value="option1">:: 매입 현황 ::</option>
+											<option value="option2">매입 예정</option>
+											<option value="option2">매입 입금 완료</option>
+									</select></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">상품명</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-insert" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 단가</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-search"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 수량</th>
+									<td><input type="number"
+										class="form-control form-control-user-search"
+										id="purchase-search"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">총 매입가<br>(자동 계산)
+									</th>
+									<td><input type="text"
+										class="form-control form-control-user-search"
+										id="purchase-search" readonly="readonly"></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">매입 날짜</th>
+									<td>
+										<form>
+											<div class="form-row align-items-center search-schedule">
+												<div class="col-auto">
+													<label for="purchase-date" class="sr-only">시작일</label> <input
+														type="date" id="purchase-date" class="form-control"
+														placeholder="시작일">
+												</div>
+											</div>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
+				<div class="mx-auto" style="width: 230px;">
+					<button type="submit" class="btn btn-primary">
+						<span class="text text-gray-100">매입 등록</span>
+					</button>
+					<button type="reset" class="btn btn-primary"
+						style="margin-left: 10px;">
+						<span class="text text-gray-100">입력 리셋</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /container-fluid -->
+</th:block>
+
+<!-- 사용자정의 Js 페이지 -->
+<th:block layout:fragment="customJs">
+
+</th:block>
+</html>

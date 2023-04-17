@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="ks46team04.admin.mapper.GoodsMapper">
+	<resultMap type="Goods" id="goodsResultMap">
+		<id		column="goods_code"				property="goodsCode"/>
+		<result column="goods_name"				property="goodsName"/>
+		<result column="goods_company"			property="goodsCompany"/>
+		<result column="goods_category"			property="goodsCate"/>
+		<result column="goods_price"			property="goodsPrice"/>
+		<result column="goods_reg_id"			property="goodsRegId"/>
+		<result column="goods_reg_date"			property="goodsRegDate"/>
+		<result column="goods_update_id"		property="goodsUpdateId"/>
+		<result column="goods_update_date"		property="goodsUpdateDate"/>
+	</resultMap>
+	
+	<select id="getGoodsList" resultMap="goodsResultMap">
+		/* 상품 목록 조회 */
+		SELECT 
+			goods_code
+			, goods_name
+			, goods_company
+			, goods_category
+			, goods_price
+			, goods_reg_id
+			, goods_reg_date
+			, goods_update_id
+			, goods_update_date
+		FROM
+			goods_reg_info;
+	</select>
+	
+</mapper>
