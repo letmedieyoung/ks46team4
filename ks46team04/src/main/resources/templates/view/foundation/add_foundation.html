@@ -1,50 +1,163 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}">재단리스트</title>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">add_foundation</h1>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
 
-	</div>
-	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+			<!-- Page Heading -->
+			<h1 class="h3 mb-2 text-gray-800">재단 등록</h1>
+			<p class="mb-4">
+				재단 등록입니다. <a target="_blank" href="https://datatables.net">링크</a>
+			</p>
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">재단 등록</h6>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="foundationCode">재단코드</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationCode" name="foundationCode" readonly="readonly"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="goodsName">재단명</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationName" name="foundationName" placeholder="재단명을 입력해주세요."/>
+											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+												<span class="text">재단명 중복확인</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="foundationManager">담당자</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationManager" name="foundationManager" placeholder="재단 담당자를 입력해주세요."/>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle"
+												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false">
+												<option value="option1">:: 상품분류 선택 ::</option>
+												<option value="option1">비타민</option>
+												<option value="option2">종합비타민</option>
+												<option value="option2">칼슘제</option>
+												<option value="option2">철분제</option>
+												<option value="option2">기타</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="foundationPhone">연락처</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationPhone" name="foundationPhone" placeholder="담당자 연락처를 입력해주세요."/>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+												<span class="text">제조사검색</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="foundationAddr">주소</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationAddr" name="foundationAddr" placeholder="재단 주소를 입력해주세요."/>
+											<input type="text" class="form-control form-control-user-search search-input" id="foundationAddr" name="foundationAddr" placeholder="상세주소를 입력해주세요."/>
+											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+												<span class="text">주소 검색</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="goodsPrice">상품단가</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="number" class="form-control form-control-user-search search-input" id="purchase-search" min="0" name="goodsPrice" placeholder="상품가격을 입력해주세요." />원
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div align="center">
+							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">입력취소</span>
+							</button>
+							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">등록하기</span>
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
 </th:block>
+
 <th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
+
 </html>
