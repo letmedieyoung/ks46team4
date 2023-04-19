@@ -7,7 +7,7 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
@@ -76,40 +76,43 @@
 					<div class="refund-btn btn">
 						<a class="btn btn-light btn-icon-split approval-btn"><span>환불 완료</span></a>
 					</div>
-					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered f-refund" id="dataTable" width="100%" cellspacing="0">
 						 <thead>
                             <tr>
                                 <th><input type="checkbox"></th>
+								<th>No</th>
+								<th>환불코드</th>
                                 <th>환불요청일</th>
                                 <th>결제코드</th>
                                 <th>주문자아이디</th>
-                                <th>펀딩코드</th>
-                                <th>주문일(결제일)</th>
-                                <th>펀딩금액</th>
+                                <th>결제일</th>
                                 <th>결제수단</th>
                                 <th>환불요청금액</th>
-                                <th>환불계좌은행</th>
+                                <th>은행</th>
                                 <th>계좌번호</th>
                                 <th>환불사유</th>
                                 <th>처리상태</th>                                                                   
                             </tr>
                         </thead>    
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>							
+							<tr th:unless="${refundList == null}" th:each="l : ${refundList}">
+								<td><input type="checkbox"></td>								
+								<td th:text="${null}"></td>
+								<td th:text="${l.fundingRefundCode}"></td>
+								<td th:text="${l.refundRequestDate}"></td>
+								<td th:text="${l.fundingPaymentCode}"></td>								
+								<td th:text="${l.userId}"></td>
+								<td th:text="${l.fundingPaymentDate}"></td>
+								<td th:text="${l.pmName}"></td>
+								<td th:text="${l.requestAmount}"></td>
+								<td th:text="${l.refundBank}"></td>								
+								<td th:text="${l.refundAccount}"></td>	
+								<td th:text="${l.requestReason}"></td>
+								<td th:text="${l.requestStatus}"></td>
+							</tr>
+							<tr th:if="${refundList == null}">
+								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
+							</tr>						
 						</tbody>
 					</table>					
 				</div>				

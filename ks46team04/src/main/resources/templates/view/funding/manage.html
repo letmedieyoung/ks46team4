@@ -7,13 +7,12 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
-<th:block layout:fragment="customContents">
-	
+<th:block layout:fragment="customContents">	
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<!-- Page Heading -->
@@ -31,11 +30,12 @@
 							<tr>
 								<th>검색분류</th>
 								<td>
+									<form name="fd-search-form" autocomplete="off"></form>
 									<select>
 										<option value="funding_name">펀딩명</option>
 										<option value="funding_name">펀딩코드</option>
 									</select>										
-									<input type="text" class="search-block"/>
+									<input type="text" class="search-block" name="keyword" value=""></input>
 								</td>
 							</tr>						
 							<tr>
@@ -78,7 +78,7 @@
 			</div>
 		</div>		
 		<div class="f-search btn">
-			<a class="btn btn-primary btn-icon-split " onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>
+			<a class="btn btn-primary btn-icon-split" onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>		
 			<a class="btn btn-primary btn-icon-split "><span class="text sbtn">초기화</span></a>
 		</div>
 		
@@ -88,11 +88,13 @@
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>
 			<div class="card-body">
-				<div class="table-responsive">
+				<div class="table-responsive">					
+					<span class="manageBtn btn btn-light">수정</span>
+					<span class="manageBtn btn btn-light">삭제</span>
 					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 						<thead>
 							<tr>
-								<th><input type="checkbox" /></th>
+								<th><input type="checkbox" id="all_select" /></th>
                                 <th>No</th>
                                 <th>펀딩코드</th>
                                 <th>펀딩명</th>
@@ -116,7 +118,8 @@
 								<td th:text="${l.fundingStartDate}"></td>
 								<td th:text="${l.fundingEndDate}"></td>
 								<td th:text="${l.fundingProgress}"></td>
-							</tr>
+								
+							</tr>							
 							<tr th:if="${fundingList == null}">
 								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
 							</tr>
@@ -129,8 +132,8 @@
 	<!-- /.container-fluid -->
 	
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top"> 
+		<i class="fas fa-angle-up"></i>
 	</a>
 </th:block>
 
@@ -144,10 +147,12 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
 
-<script>
+<script th:inline="javascript">
    	function doSearchFunding(){
    		alert('펀딩 목록을 조회합니다.');
-   	}   
+   	}
+   	
+ 
 </script>
 
 

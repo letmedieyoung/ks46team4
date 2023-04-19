@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="customContents">	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">		
+		<form id="modifyFundingForm" th:action="@{/funding/modifyFunding}" method="post">
+			<table th:object="${fundingInfo}">
+				<tbody>
+					<tr>
+						<td class="labeltd">
+							<label for="fundingCode">펀딩코드</label>
+						</td>
+						<td>
+							<input type="text" id="fundingCode" th:value="*{fundingCode}" 
+								   name="fundingCode" placeholder="펀딩코드." readonly="readonly"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="labeltd">
+							<label for="fundingName">펀딩명</label>
+						</td>
+						<td>
+							<input type="text" id="fundingName" th:value="*{fundingName}" name="fundingName" placeholder="펀딩명을 입력해주세요."/>
+						</td>
+					</tr>								
+					<tr>
+						<td class="labeltd">
+							<label for="fundingFoundation">펀딩 재단</label>
+						</td>
+						<td>
+							<input type="text" id="fundingFoundation" th:value="*{fundingFoundation}" name="fundingFoundation" placeholder="회원비밀번호를 입력해주세요."/>
+						</td>
+					</tr>
+					<tr>
+						<td class="labeltd">
+							<label for="goodsCode">상품코드</label>
+						</td>
+						<td>
+							<input type="text" id="goodsCode" th:value="*{goodsCode}" name="goodsCode" placeholder="#{goodsCode}" readonly="readonly" />
+						</td>
+					</tr>								
+					<tr>
+						<td class="labeltd">
+							<label for="fundingGoalAmount">펀딩 목표 금액</label>
+						</td>
+						<td>
+							<input type="text" id="fundingGoalAmount" th:value="*{fundingGoalAmount}"
+								   name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
+						</td>
+					</tr>								
+					<tr>
+						<td class="labeltd">
+							<label for="fundingStartDate">펀딩 시작일</label>
+						</td>
+						<td>
+							<input type="text" id="fundingStartDate" th:value="*{fundingStartDate}"
+								   name="fundingStartDate" placeholder="펀딩 시작일을 입력해주세요." />
+						</td>
+					</tr>								
+					<tr>
+						<td class="labeltd">
+							<label for="fundingEndDate">펀딩 종료일</label>
+						</td>
+						<td>
+							<input type="text" id="fundingEndDate" th:value="*{fundingEndDate}"
+								   name="fundingEndDate" placeholder="펀딩 종료일을 입력해주세요." />
+						</td>
+					</tr>
+					<tr>
+						<td class="labeltd">
+							<label for="fundingEndDate">펀딩 종료일</label>
+						</td>
+						<td>
+							<input type="text" id="fundingEndDate" th:value="*{fundingEndDate}"
+								   name="fundingEndDate" placeholder="펀딩 종료일을 입력해주세요." />
+						</td>
+					</tr>
+					<tr>
+						<td class="labeltd">
+							<label for="fundingEndDate">진행 현황</label>
+						</td>
+						<td>
+							<input type="text" id="fundingProgress" th:value="*{fundingProgress}"
+								   name="fundingProgress" placeholder="진행현황을 입력해주세요." />
+						</td>
+					</tr>						
+					<tr>
+						<td colspan="2">
+							<button type="submit" id="modifyBtn">수정</button>
+							<button type="button" id="cancelBtn">입력취소</button>
+						</td>
+					</tr>								
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<!-- /.container-fluid -->
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+
+
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+
+<script th:inline="javascript">
+	/* 취소 버튼 */ 
+	$('#cancelBtn').click(function(){
+		location.href = '/funding/fundingList';
+		//history.go(-1);
+	});
+	
+	/* 수정버튼 */
+	$("#modifyBtn").on("click", function(e){
+		e.preventDefault();
+		$("#modifyFundingForm").submit();
+	});
+
+  	
+</script>
+	
+
+</html>
