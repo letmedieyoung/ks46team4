@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/funding")
-public class FundingMainController {
+public class UserFundingController {
 
-	@GetMapping("funding_index")
+	@GetMapping("/funding_index")
 	public String fungdingMain() {
 		
 		return "funding/funding_index";	
 	}
 	
+	@GetMapping("/funding_detail")
+	public String fundingDetail() {
+		
+		return "funding/funding_detail";
+	}
 	
 }
