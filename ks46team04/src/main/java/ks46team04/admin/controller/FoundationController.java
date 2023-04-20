@@ -13,7 +13,7 @@ import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.service.FoundationService;
 
 @Controller
-@RequestMapping("/foundation")
+@RequestMapping("/admin/foundation")
 public class FoundationController {
 
 	private static final Logger log = LoggerFactory.getLogger(FoundationController.class);
@@ -37,7 +37,7 @@ public class FoundationController {
 		model.addAttribute("title", "재단 목록");
 		model.addAttribute("foundationList", foundationList);
 		
-		return "view/foundation/foundation_list";
+		return "admin/foundation/foundation_list";
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class FoundationController {
 		
 		model.addAttribute("title", "재단 등록");
 		
-		return "view/foundation/add_foundation";
+		return "admin/foundation/add_foundation";
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class FoundationController {
 		model.addAttribute("title", "재단 수정");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/modify_foundation";
+		return "admin/foundation/modify_foundation";
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class FoundationController {
 		model.addAttribute("title", "remove_foundation");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/remove_foundation";
+		return "admin/foundation/remove_foundation";
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class FoundationController {
 		model.addAttribute("title", "foundation_request_list");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/foundation_request_list";
+		return "admin/foundation/foundation_request_list";
 	}
 	
 	/**
@@ -106,7 +106,7 @@ public class FoundationController {
 		model.addAttribute("title", "add_foundation_request");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/add_foundation_request";
+		return "admin/foundation/add_foundation_request";
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class FoundationController {
 		model.addAttribute("title", "modify_foundation_request");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/modify_foundation_request";
+		return "admin/foundation/modify_foundation_request";
 	}
 	
 	/**
@@ -134,6 +134,6 @@ public class FoundationController {
 		model.addAttribute("title", "remove_foundation_request");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/foundation/remove_foundation_request";
+		return "admin/foundation/remove_foundation_request";
 	}
 }
