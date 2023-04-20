@@ -24,16 +24,13 @@
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">전체 회원 정보 조회</h1>
-		<p class="mb-4"> 전체 회원 목록입니다. <br> 
-		회원정보 상세조회와 수정·삭제가 가능합니다. 
-		<a target="_blank" href="http://localhost/admin/user/addUser">회원 등록 바로가기</a> </p>
-		<div th:include="~{admin/search/search :: searchFragment}"></div><br>
+		<h1 class="h3 mb-4 text-gray-800">탈퇴 회원 정보 조회</h1>
+	<p class="mb-4"> 탈퇴 회원 목록입니다. <a target="_blank" href="http://localhost/admin/user/userList">전체 회원 목록 바로가기</a> </p>
 
 <!-- DataTales Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">전체 회원 정보 조회</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">탈퇴 회원 정보 조회</h6>
                 </div>
                 <div class="card-body overflow">
                     <div class="table-responsive">
@@ -42,18 +39,7 @@
                             
 				<tr>
 					<th>아이디</th>
-					<th>등급</th>
-					<th>비밀번호</th>
-					<th>이름</th>
-					<th>생년월일</th>
-					<th>연락처</th>
-					<th>이메일동의여부</th>
-					<th>이메일</th>
-					<th>주소</th>
-					<th>가입일</th>
-					<th>로그인기록코드</th>
-					<th>미접속일수</th>
-					<th>회원정보수정일자</th>
+					<th>탈퇴일</th>
 					<th>활동상태</th>
 					<th>수정</th>
 					<th>삭제</th>
@@ -62,27 +48,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:unless="${userList == null}" th:each=" l : ${userList}">
+				<tr th:unless="${userDropList == null}" th:each=" l : ${userDropList}">
 					<td th:text="${l.userId}"></td>
-					<td th:text="${l.userLevel}"></td>
-					<td th:text="${l.userPw}"></td>
-					<td th:text="${l.userName}"></td>
-					<td th:text="${l.userBirth}"></td>
-					<td th:text="${l.userPhone}"></td>
-					<td th:text="${l.userEmailAgree}"></td>
-					<td th:text="${l.userEmail}"></td>
-					<td th:text="${l.userAddr}"></td>
-					<td th:text="${l.userJoinDate}"></td>
-					<td th:text="${l.loginLogCode}"></td>
-					<td th:text="${l.logDateCalcul}"></td>
-					<td th:text="${l.userUpdateDate}"></td>
+					<td th:text="${l.userDropDate}"></td>
 					<td th:text="${l.activityStatusStandardCode}"></td>
 					<td><a th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
 					<td><a th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
 					<td><a th:href="@{/admin/user/(userId=${l.userId})}">조회</a></td>
 				</tr>
-				<tr th:if="${userList == null}">
-					<td colspan="14">등록된 회원의 정보가 없습니다.</td>
+				<tr th:if="${userDropList == null}">
+					<td colspan="3">등록된 회원의 정보가 없습니다.</td>
 				</tr>
 			</tbody>
 		</table>

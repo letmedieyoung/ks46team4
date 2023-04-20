@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+	rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+	rel="stylesheet">
+
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">회원 로그인 정보 조회</h1>
+
+		<!-- <div th:include="~{admin/search/search :: searchFragment2}"></div> -->
+		<br>
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">회원 로그인 정보 조회</h6>
+			</div>
+			<div class="card-body overflow">
+				<div class="table-responsive">
+					<table class="table table-bordered text-center table-layout"
+						id="dataTable">
+						<thead class="bg-gray-100">
+							<tr>
+								<th>로그인기록코드</th>
+								<th>아이디</th>
+								<th>로그인시각</th>
+								<th>로그아웃시각</th>
+								<th>로그인아이피</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- <tr th:unless="${loginLogList == null}" th:each=" l : ${loginLogList}">
+									<td th:text="${l.loingLogCode}"></td>
+									<td th:text="${l.userId}"></td>
+									<td th:text="${l.loginTime}"></td>
+									<td th:text="${l.logoutTime}"></td>
+									<td th:text="${l.loginIp}"></td>
+								</tr>
+								<tr th:if="${loginLogList == null}">
+								</tr> -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>
