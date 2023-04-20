@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/* manage */
+.manageBtn {
+	margin-bottom: 15px;
+	border: 1px solid #999;
+}
+
+
+/* refund */
+.f-refund th{
+	font-size: 15px;
+	padding: 6px;
+	text-align: center;
+}
+.f-refund td{
+	font-size: 15px;
+	padding: 6px;
+}

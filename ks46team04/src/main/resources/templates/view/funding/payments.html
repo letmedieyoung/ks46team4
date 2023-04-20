@@ -7,7 +7,7 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
@@ -86,15 +86,18 @@
                             </tr>
                         </thead>    
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
+								<td><input type="checkbox"></td>
+								<td th:text="${null}"></td>
+								<td th:text="${l.fundingPaymentCode}"></td>
+								<td th:text="${l.userId}"></td>
+								<td th:text="${l.fundingCode}"></td>
+								<td th:text="${l.fundingPaymentDate}"></td>
+								<td th:text="${l.fundingPaymentAmount}"></td>
+								<td th:text="${l.pmName}"></td>
+							</tr>
+							<tr th:if="${fundingPayList == null}">
+								<td colspan="7">데이터가 존재하지 않습니다.</td>				
 							</tr>							
 						</tbody>
 					</table>
