@@ -83,7 +83,7 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	@GetMapping("/activityStatus")
 	public String getActivityStatusList(Model model) {
 		
-		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
+		//List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
 		
 		//model.addAttribute("title", "회원활동상태기준");
 		//model.addAttribute("activityStatusList", activityStatusList);
