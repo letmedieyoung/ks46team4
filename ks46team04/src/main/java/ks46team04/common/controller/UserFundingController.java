@@ -1,4 +1,4 @@
-package ks46team04.funding.controller;
+package ks46team04.common.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
