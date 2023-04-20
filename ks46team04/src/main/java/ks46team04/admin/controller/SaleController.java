@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/view/purchase_sale")
+@RequestMapping("/admin/purchase_sale")
 public class SaleController {
 
 	@GetMapping("/sales_list")
 	public String getTotalSaleList(Model model) {
 		
-		return "/view/purchase_sale/sales_list";
+		return "/admin/purchase_sale/sales_list";
 	}
 }
