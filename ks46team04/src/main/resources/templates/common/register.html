@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title th:text="${title}"></title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+  
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">필링굿에 오신 것을 환영합니다</h1>
+                            </div>
+                            <!-- 회원가입 필수 사항 - 회원 아이디,  회원 비밀번호, 회원 이름, 회원 생년월일, 회원 연락처 -->
+                            <form class="user">
+                                <div class="form-group">
+                                    아이디
+                                    <input type="text" class="form-control form-control-user" id="memberId"
+                                        placeholder="영문+숫자 6~12자 이내">
+                                        <button type="button" class="btn btn-success" style="border-radius: 20px; margin-top: 8px;">중복 확인</button>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <div>비밀번호</div>
+                                        <input type="password" class="form-control form-control-user"
+                                            id="memberPassword" placeholder="영문+숫자 8~20자 이내">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div>비밀번호 확인</div>
+                                        <input type="password" class="form-control form-control-user"
+                                            id="MemberPassword2" placeholder="영문+숫자 8~20자 이내">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    이름
+                                    <input type="text" class="form-control form-control-user" id="memberName"
+                                        placeholder="예) 홍길동">
+                                </div>
+
+                                <div class="form-group">
+                                    생년월일
+                                    <input type="date" class="form-control form-control-user" id="memberDate"
+                                        placeholder="예) 홍길동">
+                                </div>
+
+                                <div class="form-group">
+                                    <div>연락처</div>
+                                    <div class="row">
+                                        <div class="col-sm-3 mb-3 mb-sm-0">
+                                            <select name="telArr" id="telSelect" class="form-control-plus form-control-user-plus">
+                                                <!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
+                                                <option value="010" selected>010</option>
+                                                <!-- 
+                                                <option value="02">02</option>
+                                                <option value="031">031</option>
+                                                <option value="032">032</option>
+                                                <option value="033">033</option>
+                                                <option value="041">041</option>
+                                                <option value="042">042</option>
+                                                <option value="043">043</option>
+                                                <option value="044">044</option>
+                                                <option value="051">051</option>
+                                                <option value="052">052</option>
+                                                <option value="053">053</option>
+                                                <option value="054">054</option>
+                                                <option value="055">055</option>
+                                                <option value="061">061</option>
+                                                <option value="062">062</option>
+                                                <option value="063">063</option>
+                                                <option value="064">064</option>
+                                                <option value="070">070</option> -->
+                                            </select>
+                                        </div>
+                                        <div style="padding-top: 12px;">-</div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control form-control-user" id="memberSecondTel"
+                                                placeholder="0000">
+                                        </div>
+                                        <div style="padding-top: 12px;">-</div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control form-control-user" id="memberThirdTel"
+                                                placeholder="0000">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <a href="#" class="btn btn-success btn-user btn-block">
+                                    가입하기
+                                </a>
+                            
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" th:href="@{/common/forgot-password}">비밀번호 찾기</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" th:href="@{/common/login}">로그인</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+</html>
