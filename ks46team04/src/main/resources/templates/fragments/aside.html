@@ -6,7 +6,7 @@
 	id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->
-	<a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+	<a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/common/funding_index}">
 		<div class="sidebar-brand-icon rotate-n-15">
 			<i class="fas fa-capsules"></i>
 		</div>
@@ -18,7 +18,7 @@
 
 	<!-- Nav Item - Dashboard -->
 	<li class="nav-item">
-		<a class="nav-link" th:href="@{/}"> 
+		<a class="nav-link" th:href="@{/admin/main_index}"> 
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>대시보드</span>
 		</a>
@@ -42,17 +42,17 @@
 		<div id="collapsePages1" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#">회원 등급 기준 등록#</a> <a
-					class="collapse-item" href="#">회원 활동 상태 기준 등록#</a> <a
-					class="collapse-item" th:href="@{/view/user/addUser}">회원 등록!</a> <a
-					class="collapse-item" th:href="@{/view/user/modify_user}">회원 수정
-					처리#</a> <a class="collapse-item" th:href="@{/view/user/remove_user}">회원
-					탈퇴#</a> <a class="collapse-item" href="#">특정 회원 정보 조회#</a> <a
-					class="collapse-item" th:href="@{/view/user/userList}">전체 회원 정보
-					조회!</a> <a class="collapse-item" href="#">휴면 회원 정보 조회#</a> <a
-					class="collapse-item" href="#">탈퇴 회원 정보 조회#</a> <a
-					class="collapse-item" href="@{/view/user/login_log}">회원 로그인 정보
-					조회#</a> <a class="collapse-item" href="#">회원 월별 기부 누적 기록(기부왕)(#이바른)</a>
+				<a class="collapse-item" th:href="@{/admin/user/userLevel}">회원 등급 기준 등록!</a> <a
+				class="collapse-item" th:href="@{/admin/user/activityStatus}">회원 활동 상태 기준 등록#</a> <a
+				class="collapse-item" th:href="@{/admin/user/addUser}">회원 등록!</a> 
+					<a
+				class="collapse-item" th:href="@{/admin/user/userList}">전체 회원 정보
+				조회!</a> <a class="collapse-item" th:href="@{/admin/user/userSleepList}">휴면 회원 정보 조회#</a> <a
+				class="collapse-item" th:href="@{/admin/user/userDropList}">탈퇴 회원 정보 조회#</a> <a
+				class="collapse-item" th:href="@{/admin/user/loginLog}">회원 로그인
+				정보 조회#</a> <a class="collapse-item" th:href="@{/admin/user/myPage}">회원
+				마이페이지#</a> <a class="collapse-item" href="#">회원 월별 기부 누적
+				기록(기부왕)(#이바른)</a>
 			</div>
 		</div></li>
 
