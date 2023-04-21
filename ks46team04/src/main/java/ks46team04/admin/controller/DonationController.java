@@ -16,7 +16,7 @@ import ks46team04.admin.service.DonationService;
 import lombok.AllArgsConstructor;
 
 @Controller
-@RequestMapping("/donation")
+@RequestMapping("/admin/donation")
 @AllArgsConstructor
 public class DonationController {
 	
@@ -37,7 +37,7 @@ public class DonationController {
 		model.addAttribute("title", "정기기부 단가 목록");
 		model.addAttribute("getDonation", getDonation);
 		
-		return "/admin/donation/donation_list";
+		return "admin/donation/donation_list";
 	}
 
 	/*
@@ -93,4 +93,28 @@ public class DonationController {
 		donationService.removeDonation(donation);
 		return "redirect:/donation/donation_list";
 	}
+	
+	
+	/*LBR*/
+	@GetMapping("/donationRefund_list")
+	public String getDonationrefundList() {
+		
+		return "admin/donation/donationRefund_list";
+	}
+	
+	@GetMapping("/donationRefund_add")
+	public String addDonationrefund() {
+		return "admin/donation/donationRefund_add";
+	}
+	
+	@GetMapping("/donationRefund_modify")
+	public String modifyDonationrefund() {
+		return "admin/donation/donationRefund_modify";
+	}
+	
+	@GetMapping("/donationSub_list")
+	public String getDonationSubList() {
+		return "admin/donation/donationSub_list";
+	}
+	
 }
