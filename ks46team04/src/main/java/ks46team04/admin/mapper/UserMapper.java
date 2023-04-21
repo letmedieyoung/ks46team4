@@ -28,6 +28,8 @@ public interface UserMapper {
 	public boolean idCheck(String userId);
 	// 회원의 목록 조회
 	public List<User> getUserList(String searchKey, String searchValue);
+	// 회원의 목록 상세 조회
+	public List<User> getUserDetailList(String userId);
 	// 회원 등급 조회
 	public List<UserLevel> getUserLevelList();
 	// 회원 활동상태 조회

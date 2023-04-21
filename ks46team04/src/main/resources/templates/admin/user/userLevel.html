@@ -34,22 +34,29 @@
 				<tr>
 					<th>회원등급</th>
 					<th>회원등급명</th>
+					<th>수정</th>
+					<th>삭제</th>
+					
+					
 					
 				</tr>
 			</thead>
-			<!-- <tbody>
+			 <tbody>
 				<tr th:unless="${userLevelList == null}" th:each=" l : ${userLevelList}">
 					<td th:text="${l.userLevel}"></td>
 					<td th:text="${l.userLevelName}"></td>
 					<td><a th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
 					<td><a th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
-					<td><a th:href="@{/admin/user/(userId=${l.userId})}">조회</a></td>
+					
 				</tr>
 			<tr th:if="${userLevelList == null}">
 					
 				</tr>
-			</tbody> -->
+			</tbody> 
 		</table>
+				<button class="btn btn-primary">
+					<span class="text text-gray-100">등록</span>
+				</button>
 
 	</div>
 	<!-- /.container-fluid -->

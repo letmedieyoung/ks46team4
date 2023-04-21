@@ -28,7 +28,12 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 	
-	
+	public List<User> getUserDetailList(String userId){
+		
+		List<User> userDetailList = userMapper.getUserDetailList(userId);
+		
+		return userDetailList;
+	}
 	
 	public Map<String, Object> loginCheck(String userId, String userPw) {
 		Map<String, Object> loginResultMap = new HashMap<String, Object>();
@@ -60,10 +65,10 @@ public class UserService {
 		}
 		
 	}
-		
-		public void modifyUser(User user) {
-			userMapper.modifyUser(user);
-		}
+	
+	public void modifyUser(User user) {
+		userMapper.modifyUser(user);
+	}
 	
 	
 	public User getUserInfoById(String userId) {
