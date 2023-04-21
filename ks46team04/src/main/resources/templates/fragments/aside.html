@@ -109,12 +109,12 @@
 		<div id="collapsePages4" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#">정기 기부 단가</a> <a
-					class="collapse-item" href="#">등록된 회원 결제 수단</a> <a
-					class="collapse-item" href="#">구독 신청 내역</a> <a
-					class="collapse-item" href="#">구독 결제 내역</a> <a
-					class="collapse-item" href="#">구독 결제 환불</a> <a
-					class="collapse-item" href="#">월별 결제 합계</a>
+				<a class="collapse-item" th:href="@{/donation/donation_list}">정기기부 단가</a> 
+				<a class="collapse-item" th:href="@{/donation/donationSub_list}">정기기부 구독 신청</a>
+				<a class="collapse-item" th:href="@{/donation/donationPayMethod_list}">등록된 회원 결제 수단</a>
+				<a class="collapse-item" th:href="@{/donation/donationPayDetail}">정기기부 구독 결제 상세</a>
+				<a class="collapse-item" th:href="@{/donation/donationRefund_list}">정기기부 결제 환불</a>
+				<a class="collapse-item" th:href="@{/donation/donationPayMonthly}">정기기부 월별 결제 합계</a>
 			</div>
 		</div></li>
 

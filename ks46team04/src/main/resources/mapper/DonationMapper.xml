@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="ks46team04.admin.mapper.DonationMapper">
+	<resultMap type="Donation" id="donationResultMap">
+		<id		column="regular_donation_code"				property="donationCode"/>
+		<result column="regular_donation_name"				property="donationName"/>
+		<result column="regular_donation_price"				property="donationPrice"/>
+		<result column="regular_donation_description"		property="donationDescription"/>
+		<result column="regular_donation_reg_id"			property="donationRegId"/>
+		<result column="regular_donationr_reg_date"			property="donationRegDate"/>
+		<result column="regular_donation_update_id"			property="donationUpdateId"/>
+		<result column="regular_donation_update_date"		property="donationUpdateDate"/>
+	</resultMap>
+		
+	<select id="getDonation" resultMap="donationResultMap">
+		/*정기기부 단가 조회*/
+		SELECT 
+			regular_donation_code
+			, regular_donation_name
+			, regular_donation_price
+			, regular_donation_description
+			, regular_donation_reg_id
+			, regular_donationr_reg_date
+			, regular_donation_update_id
+			, regular_donation_update_date
+		FROM
+			regular_donation_unit_price;
+	</select>
+	
+	<insert id="addDonation" parameterType="Donation">
+		/* 정기기부 단가 등록 */
+		INSERT INTO regular_donation_unit_price
+		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description,
+		regular_donation_reg_id, regular_donationr_reg_date, regular_donation_update_id, regular_donation_update_date)
+		VALUES
+		(#{donationCode}, #{donationName}, #{donationPrice}, #{donationDescription},
+		 #{donationRegId}, #{donationRegDate}, #{donationUpdateId}, #{donationUpdateDate});		
+	</insert>
+	
+	<select id="getDonationInfoByCode" parameterType="String" resultMap="donationResultMap">
+		/* 특정 정기기부 단가 조회*/
+		SELECT
+			 regular_donation_code
+			,regular_donation_name
+			,regular_donation_price
+		FROM
+			regular_donation_unit_price
+		WHERE
+			regular_donation_code = #{donationCode}
+	</select>
+	
+	<update id="modifyDonation" parameterType="Donation">
+		/* 정기기부 단가 수정 */
+		UPDATE regular_donation_unit_price
+		<set>
+			<if test="donationName != null and donationName !=''">
+				regular_donation_name = #{donationName}
+			</if>
+			<if test="donationPrice != null and donationPrice !=''">
+				,regular_donation_price = #{donationPrice}
+			</if>
+			<if test="donationDescription != null and donationDescription !=''">
+				,regular_donation_description = #{donationDescription}
+			</if>
+		</set>
+		WHERE
+			regular_donation_code = #{donationCode};
+	</update>
+	
+	<delete id="removeDonation" parameterType="Donation">
+		/* 정기기부 단가 삭제 */
+		DELETE
+		FROM
+		 	regular_donation_unit_price 
+		WHERE 
+			regular_donation_code = #{donationCode};
+	</delete>
+	
+</mapper>
