@@ -71,10 +71,10 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	@GetMapping("/loginLog")
 	public String getLoginLogList(Model model) {
 		
-		//List<LoginLog> loginLogList = userService.getLoginLogList();
+		List<LoginLog> loginLogList = userService.getLoginLogList();
 		
-		//model.addAttribute("title", "로그인기록");
-		//model.addAttribute("loginLogList", loginLogList);
+		model.addAttribute("title", "로그인기록");
+		model.addAttribute("loginLogList", loginLogList);
 		
 		return "admin/user/loginLog";
 	}
@@ -83,10 +83,10 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	@GetMapping("/activityStatus")
 	public String getActivityStatusList(Model model) {
 		
-		//List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
+		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
 		
-		//model.addAttribute("title", "회원활동상태기준");
-		//model.addAttribute("activityStatusList", activityStatusList);
+		model.addAttribute("title", "회원활동상태기준");
+		model.addAttribute("activityStatusList", activityStatusList);
 		
 		return "admin/user/activityStatus";
 	}
