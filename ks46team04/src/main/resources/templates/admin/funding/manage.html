@@ -41,34 +41,34 @@
 							<tr>
 								<th>펀딩등록일</th>
 								<td>
-									<select>
+									<select class="f-date-select">
 										<option value="">펀딩등록일</option>
 										<option value="">펀딩시작일</option>									
 									</select>
-									<a class="btn btn-light">
-										<span class="text freg-btn">오늘</span>							
+									<a class="btn btn-light freg-btn">
+										<span class="text">오늘</span>							
 									</a>
-									<a class="btn btn-light">
-										<span class="text freg-btn">1개월</span>							
+									<a class="btn btn-light freg-btn">
+										<span class="text">1개월</span>							
 									</a>
-									<a class="btn btn-light">
-										<span class="text freg-btn">3개월</span>							
+									<a class="btn btn-light freg-btn">
+										<span class="text">3개월</span>							
 									</a>
-									<a class="btn btn-light">
-										<span class="text freg-btn">전체</span>							
+									<a class="btn btn-light freg-btn">
+										<span class="text">전체</span>							
 									</a>							
-									<input type="date" />
+									<input class="dateSelect" type="date" data-placeholder="날짜 선택"></input>
 									<span>~</span>
-									<input type="date" />
+									<input class="dateSelect" type="date" data-placeholder="날짜 선택"/></input>
 								</td>
 							</tr>
 							<tr>
 								<th>진행상태</th>
 								<td>
 									<label>
-										<input type="radio" name="fradio"/>전체
-										<input type="radio" name="fradio"/>진행중
-										<input type="radio" name="fradio"/>종료
+										<input type="radio" name="fradio"/><span class="fradio">전체</span>
+										<input type="radio" name="fradio"/><span class="fradio">진행중</span>
+										<input type="radio" name="fradio"/><span class="fradio">종료</span>
 									</label>
 								</td>
 							</tr>
@@ -88,13 +88,13 @@
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>
 			<div class="card-body">
-				<div class="table-responsive">					
-					<span class="manageBtn btn btn-light">수정</span>
+				<div class="table-responsive">
 					<span class="manageBtn btn btn-light">삭제</span>
-					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<span class="manageBtn btn btn-light">진행완료</span>
+					<table class="targets fmtable table table-bordered" id="dataTable" width="100%" cellspacing="0">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="all_select" /></th>
+								<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"/></th>
                                 <th>No</th>
                                 <th>펀딩코드</th>
                                 <th>펀딩명</th>
@@ -108,7 +108,7 @@
 						</thead>
 						<tbody>
 							<tr th:unless="${fundingList == null}" th:each="l : ${fundingList}">
-								<td><input type="checkbox"></td>
+								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
 								<td th:text="${null}"></td>									
 								<td th:text="${l.fundingCode}"></td>
 								<td th:text="${l.fundingName}"></td>
@@ -118,7 +118,12 @@
 								<td th:text="${l.fundingStartDate}"></td>
 								<td th:text="${l.fundingEndDate}"></td>
 								<td th:text="${l.fundingProgress}"></td>
-								
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"   th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"><span class="text">수정</span></a>
+								</td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm deleteBtn" href='javascript:fundingDelete();' th:href="@{/funding/deleteFunding(fundingCode=${l.fundingCode})}"><span class="text">삭제</span></a>
+								</td>								
 							</tr>							
 							<tr th:if="${fundingList == null}">
 								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
@@ -145,15 +150,8 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/khj.js}"></script>
 </th:block>
-
-<script th:inline="javascript">
-   	function doSearchFunding(){
-   		alert('펀딩 목록을 조회합니다.');
-   	}
-   	
- 
-</script>
 
 
 

@@ -79,7 +79,7 @@
 					<table class="table table-bordered f-refund" id="dataTable" width="100%" cellspacing="0">
 						 <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
 								<th>No</th>
 								<th>환불코드</th>
                                 <th>환불요청일</th>
@@ -96,7 +96,7 @@
                         </thead>    
 						<tbody>
 							<tr th:unless="${refundList == null}" th:each="l : ${refundList}">
-								<td><input type="checkbox"></td>								
+								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>								
 								<td th:text="${null}"></td>
 								<td th:text="${l.fundingRefundCode}"></td>
 								<td th:text="${l.refundRequestDate}"></td>
@@ -135,5 +135,6 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/khj.js}"></script>
 </th:block>
 </html>
