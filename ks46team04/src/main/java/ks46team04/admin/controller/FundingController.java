@@ -35,16 +35,7 @@ public class FundingController {
 		this.fundingMapper = fundingMapper;
 	}
 	
-	@GetMapping("/home")
-	public String fundinghome(Model model) {
-		
-		model.addAttribute("title", "home");
-		model.addAttribute("content", "펀딩진열페이지");
-		
-		return "view/funding/home";
-	}
-	
-	
+
 	/**
 	 * 펀딩 정보 수정
 	 * @param funding
@@ -55,7 +46,7 @@ public class FundingController {
 		log.info("funding: {}", funding);
 		fundingMapper.modifyFunding(funding);
 		
-		return "redirect:view/funding/fundingList";
+		return "redirect:/funding/manage";
 	}	
 	
 	/**
@@ -73,7 +64,7 @@ public class FundingController {
 		model.addAttribute("title", "펀딩수정");	
 		model.addAttribute("fundingInfo", fundingInfo);
 		
-		return "view/funding/modifyFunding";
+		return "admin/funding/modifyFunding";
 	}
 	
 	/**
@@ -91,22 +82,43 @@ public class FundingController {
 		model.addAttribute("title", "펀딩목록조회");
 		model.addAttribute("fundingList", fundingList);
 		
-		return "view/funding/manage";
+		return "admin/funding/manage";
 	}	
 	
+	
+	
+	/**
+	 * 펀딩 삭제
+	 * @param fundingCode
+	 * @return
+	 */	
+	@GetMapping("/deleteFunding")	
+	public String deleteFunding(Funding funding) {
+		
+		fundingService.deleteFunding(funding);
+		
+		return "redirect:admin/funding/manage";
+	}	
+	
+	
+	@PostMapping("/register") 
+	public String registFunding(Funding funding) { 
+		fundingService.registFunding(funding);
+		return "redirect:admin/funding/manage"; 
+	}		
 	/**
 	 * 신규 펀딩 등록
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/register")
-	public String exam1(Model model){
+	public String registFunding(Model model){
 	
-		model.addAttribute("title", "register");
-		model.addAttribute("content", "펀딩 등록");
+		model.addAttribute("title", "registFunding");
 		
-		return "view/funding/register";
+		return "admin/funding/register";
 	}
+
 	
 	/**
 	 * 펀딩 컨텐츠 별 진행현황
@@ -119,7 +131,7 @@ public class FundingController {
 		model.addAttribute("title", "current_amount");
 		model.addAttribute("content", "컨텐츠 별 진행 현황");
 		
-		return "view/funding/current_amount";
+		return "admin/funding/current_amount";
 	}
 	
 	/**
@@ -134,7 +146,7 @@ public class FundingController {
 		model.addAttribute("title", "funding_payments");
 		model.addAttribute("fundingPayList", fundingPayList);
 		
-		return "view/funding/payments";
+		return "admin/funding/payments";
 	}
 	
 	/**
@@ -149,7 +161,7 @@ public class FundingController {
 		model.addAttribute("title", "refund");
 		model.addAttribute("refundList", refundList);
 		
-		return "view/funding/refund";
+		return "admin/funding/refund";
 	}
 	
 	

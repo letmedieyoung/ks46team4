@@ -10,7 +10,7 @@ public class Funding {
 	private String fundingDescription;
 	private String fundingFoundation;
 	private String goodsCode;
-	private String fundingGoalAmount;
+	private int fundingGoalAmount;
 	private String fundingStartDate;
 	private String fundingEndDate;
 	private String fundingProgress;

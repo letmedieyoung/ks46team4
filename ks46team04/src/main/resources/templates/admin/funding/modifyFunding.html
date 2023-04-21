@@ -65,7 +65,7 @@
 							<label for="fundingStartDate">펀딩 시작일</label>
 						</td>
 						<td>
-							<input type="text" id="fundingStartDate" th:value="*{fundingStartDate}"
+							<input type="date" id="fundingStartDate" th:value="*{fundingStartDate}"
 								   name="fundingStartDate" placeholder="펀딩 시작일을 입력해주세요." />
 						</td>
 					</tr>								
@@ -74,19 +74,10 @@
 							<label for="fundingEndDate">펀딩 종료일</label>
 						</td>
 						<td>
-							<input type="text" id="fundingEndDate" th:value="*{fundingEndDate}"
+							<input type="date" id="fundingEndDate" th:value="*{fundingEndDate}"
 								   name="fundingEndDate" placeholder="펀딩 종료일을 입력해주세요." />
 						</td>
-					</tr>
-					<tr>
-						<td class="labeltd">
-							<label for="fundingEndDate">펀딩 종료일</label>
-						</td>
-						<td>
-							<input type="text" id="fundingEndDate" th:value="*{fundingEndDate}"
-								   name="fundingEndDate" placeholder="펀딩 종료일을 입력해주세요." />
-						</td>
-					</tr>
+					</tr>					
 					<tr>
 						<td class="labeltd">
 							<label for="fundingEndDate">진행 현황</label>
@@ -125,20 +116,11 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/khj.js}"></script>
 </th:block>
 
 <script th:inline="javascript">
-	/* 취소 버튼 */ 
-	$('#cancelBtn').click(function(){
-		location.href = '/funding/fundingList';
-		//history.go(-1);
-	});
 	
-	/* 수정버튼 */
-	$("#modifyBtn").on("click", function(e){
-		e.preventDefault();
-		$("#modifyFundingForm").submit();
-	});
 
   	
 </script>

@@ -48,6 +48,17 @@ public class FundingService {
 		List<Funding> fundingList = fundingMapper.getFundingList();
 		return fundingList;
 	}
+	
+	//펀딩 정보 삭제
+	public void deleteFunding(Funding funding) {
+		fundingMapper.deleteFunding(funding);
+	}
+
+	//펀딩 신규 등록
+	public int registFunding(Funding funding) {
+		int result = fundingMapper.registFunding(funding);
+		return result;
+	}
 
 	
 	//펀딩 결제 내역 조회

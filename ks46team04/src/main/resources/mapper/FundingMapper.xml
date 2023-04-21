@@ -14,6 +14,27 @@
 		<result column="funding_progress"	property="fundingProgress"/>
 
 	</resultMap>
+	
+	<insert id="registFunding" parameterType="Funding">
+		/* 펀딩 등록 */
+		INSERT INTO each_funding_info
+		(funding_code, funding_name, funding_description, funding_foundation, goods_code, funding_goal_amount,
+		 funding_start_date, funding_end_date, funding_progress, funding_reg_id, funding_reg_date, funding_update_id, funding_update_date)
+		VALUES 
+		(#{fundingCode}, #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
+		 #{fundingStartDate}, #{fundingEndDate}, #{fundingProgress}, #{fundingRegId}, NOW(), #{fundingUpdateId}, #{fundingUpdateDate});
+	</insert>
+	
+	
+	<delete id="deleteFunding" parameterType="String">
+		/* 펀딩 삭제 */
+		DELETE
+		FROM
+		 	each_funding_info 
+		WHERE 
+			funding_code = #{fundingCode};
+	</delete>
+	
  	<select id="getFundingInfoByCode" parameterType="String" resultMap="fundingResultMap">
 		/* 특정 펀딩 조회*/
 		SELECT

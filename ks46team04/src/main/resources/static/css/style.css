@@ -480,7 +480,7 @@ h3 {
   color: #3CC78F !important;
   display: inline-block;
   padding: 15px 30px;
-  font-family: "Open Sans", sans-serif;
+  font-family: "nanumsquare", "맑은 고딕";
   font-size: 16px;
   font-weight: 400;
   border: 1px solid #3CC78F;
@@ -1274,12 +1274,13 @@ h3 {
 /* line 130, ../../Arafath/CL/january 2020/242. charity/HTML/scss/_header.scss */
 .header-area .main-header-area .main-menu ul li a {
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: 700;
   display: inline-block;
-  padding: 0px 0px 0px 0px;
-  font-family: "nanumsquare", "맑은 고딕";
+  padding: 0px 0px 0px 0px; 
+  font-family: NanumSquareWebFont,dotum,Sans-serif;
+  line-height: 24px;
   position: relative;
   text-transform: capitalize;
 }
@@ -3114,7 +3115,7 @@ h3 {
   height: 12px;
   overflow: visible;
   font-size: 12px;
-  background-color: #FF4F42;
+  background-color: #dedede;
   border-radius: 0;
 }
 
@@ -3265,8 +3266,8 @@ h3 {
 .popular_causes_area .single_cause .causes_content .custom_progress_bar .progress .progress-bar .progres_count {
   position: absolute;
   right: 0;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
