@@ -54,11 +54,11 @@
 <select id="getLoginLogList" resultType="LoginLog">
 		/* 회원 로그인 정보 조회 */
 		SELECT
-			 login_log_code	AS LoginLogCode
-			,user_id	AS UserId
-			,login_time AS LoginTime
-			,logout_time AS LogoutTime
-			,login_ip AS LoginIp
+			 login_log_code	AS loginLogCode
+			,user_id	AS userId
+			,login_time AS loginTime
+			,logout_time AS logoutTime
+			,login_ip AS loginIp
 		FROM
 			login_log;
 	</select>
@@ -133,8 +133,8 @@
 			,u.user_email			AS userEmail
 			,u.user_addr			AS userAddr
 			,u.user_join_date		AS userJoinDate
-			,u.login_log_code		AS LoginLogCode
-			,u.log_date_calcul		AS LogDateCalcul
+			,u.login_log_code		AS loginLogCode
+			,u.log_date_calcul		AS logDateCalcul
 			,u.user_update_date		AS userUpdateDate
 			,u.activity_status_standard_code		AS activityStatusStandardCode
 		FROM
