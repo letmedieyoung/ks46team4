@@ -15,6 +15,23 @@ public class CommonController {
 			return "common/funding_index";
 		}
 		
+		@GetMapping("/funding_detail")
+		public String nowFunding1(Model model) {
+			
+			return "common/funding_detail";
+		}
+		
+		@GetMapping("/funding_detail2")
+		public String nowFunding2(Model model) {
+			
+			return "common/funding_detail2";
+		}
+		
+		@GetMapping("/funding_detail3")
+		public String nowFunding3(Model model) {
+			
+			return "common/funding_detail3";
+		}
 		
 		@GetMapping("/register")
 		public String register(Model model) {

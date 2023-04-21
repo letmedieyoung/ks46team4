@@ -71,9 +71,17 @@ function chkAllUnChecked(){
 
 
 /* 펀딩 삭제 */
-$('.deleteBtn').click(function(){	
-	alert('선택한 목록을 삭제하시겠습니까?');
-})
+$('.deleteBtn').click(function(){
+	if(confirm("삭제하시겠습니까?")){
+		$("input[name=chk]:checked").each(function(){
+            var tr_value =$(this).val();
+            var tr=$("tr[data-tr_value='"+tr_value+"']");
+            tr.remove();
+        });
+    }else{
+        return false;
+    }
+});
 
 
 $('#fregistBtn').click(function(){ //#submitBtn 클릭 시 함수 실행
