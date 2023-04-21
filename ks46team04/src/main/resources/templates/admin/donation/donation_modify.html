@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+
+		<!-- DataTales Example -->
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 단가 수정</h5>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<form id="modifyDonationForm" th:action="@{/donation/donation_modify}" method="post">
+						<table th:object="${donationInfo}" class="table table-bordered freg" id="modifyDonation" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>정기기부 단가 코드</th>
+									<td><input type="text" id="donationCode"
+										th:value="*{donationCode}" name="donationCode"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠명</th>
+									<td><input type="text" id="donationName"
+										th:value="*{donationName}" name="donationName"
+										style="width: 400px;" placeholder="콘텐츠명을 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 금액</th>
+									<td><input type="number" id="donationPrice"
+										th:value="*{donationPrice}" name="donationPrice"
+										style="width: 400px;" placeholder="숫자를 입력해주세요." /><span>원</span></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 상세설명</th>
+									<td><input type="text" id="donationDescription"
+										th:value="*{donationDescription}" name="donationDescription"
+										style="width: 400px; height: 200px;"
+										placeholder="콘텐츠 상세설명을 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 등록자 아이디</th>
+									<td><input type="text" id="donationRegId"
+										th:value="*{donationRegId}" name="donationRegId"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 등록 일자</th>
+									<td><input type="text" id="donationRegDate"
+										th:value="*{donationRegDate}" name="donationRegDate"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 수정자 아이디</th>
+									<td><input type="text" id="donationUpdateId"
+										th:value="*{donationUpdateId}" name="donationUpdateId"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 수정 일자</th>
+									<td><input type="text" id="donationUpdateDate"
+										th:value="*{donationUpdateDate}" name="donationUpdateDate"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button>
+										<button type="button" class="btn btn-primary" id="resetBtn"
+											onclick="location.href='/donation/donation_list'">입력취소</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>
