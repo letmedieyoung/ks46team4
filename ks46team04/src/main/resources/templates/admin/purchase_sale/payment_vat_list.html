@@ -17,7 +17,10 @@
 		</div>
 
 		<p>
-			정기 기부와 펀딩 결제에 공통적으로 적용되는 수수료입니다.<br> 조회·수정만 가능하며, 삭제·등록은 불가능합니다.
+			정기 기부와 펀딩 결제에 공통적으로 적용되는 수수료입니다.<br>
+			조회·수정만 가능하며, 삭제·등록은 불가능합니다.<br>
+			파라미터 필요없음. 오로지 하나의 행만 단순 조회.<br>
+			수수료비율 소수점을 백분율%로 서비스에서 가공
 		</p>
 
 		<!-- 기본 -->
@@ -36,11 +39,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><b>10%</b></td>
-								<td>2022-12-15 16:30</td>
-								<td>2023-03-24 14:03</td>
-								<td>useridm1</td>
+							<tr th:unless="${getVatRow == null}">
+								<td><b th:text="${getVatRow.vatRatio}"></b></td>
+								<td th:text="${getVatRow.vatRegDate}"></td>
+								<td th:text="${getVatRow.vatUpdateDate}"></td>
+								<td th:text="${getVatRow.vatUpdateId}"></td>
 							</tr>
 						</tbody>
 					</table>

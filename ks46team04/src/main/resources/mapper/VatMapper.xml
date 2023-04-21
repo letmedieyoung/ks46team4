@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="ks46team04.admin.mapper.VatMapper">
+ 	<resultMap type="Vat" id="vatResultMap">
+		<id 	column="payment_vat_code" 			property="vatCode"/>
+		<result column="payment_vat" 				property="vatRatio"/>
+		<result column="payment_vat_reg_id" 		property="vatRegId"/>
+		<result column="payment_vat_reg_date" 		property="vatRegDate"/>
+		<result column="payment_vat_update_id" 		property="vatUpdateId"/>
+		<result column="payment_vat_update_date"	property="vatUpdateDate"/>
+ 	</resultMap>
+ 	
+ 	<select id="getVatRow" resultMap="vatResultMap">
+ 		/*수수료 1행 가져오기*/
+ 		SELECT
+			payment_vat_code,		
+			payment_vat,		
+			payment_vat_reg_id,		
+			payment_vat_reg_date,		
+			payment_vat_update_id,		
+			payment_vat_update_date
+		FROM
+			payment_vat	
+		LIMIT 1;		
+ 	</select>
+ 	
+ 	
+ </mapper>
