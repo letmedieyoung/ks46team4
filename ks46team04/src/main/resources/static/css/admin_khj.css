@@ -6,8 +6,17 @@
 	border: 1px solid #999;
 }
 
+#fundingName{
+	text-align: left;
+}
+
 .fmtable th{
+	text-align: center;
+}
+
+.fmtable td{
 	padding: 6px;
+	text-align: center;
 }
 
 .freg-btn {

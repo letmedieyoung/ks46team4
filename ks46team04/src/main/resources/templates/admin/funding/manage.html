@@ -6,10 +6,10 @@
 	<meta charset="UTF-8">
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">	
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
 </head>
 
 <th:block layout:fragment="customContents">	
@@ -88,9 +88,9 @@
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>
 			<div class="card-body">
-				<div class="table-responsive">
-					<span class="manageBtn btn btn-light">삭제</span>
-					<span class="manageBtn btn btn-light">진행완료</span>
+				<div class="table-responsive">					
+					<a class="manageBtn btn btn-light deleteBtn" th:href="@{/funding/deleteFunding}"><span class="text">삭제</span></a>					
+					<a class="manageBtn btn btn-light"><span>진행완료</span></a>
 					<table class="targets fmtable table table-bordered" id="dataTable" width="100%" cellspacing="0">
 						<thead>
 							<tr>
@@ -110,19 +110,16 @@
 							<tr th:unless="${fundingList == null}" th:each="l : ${fundingList}">
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
 								<td th:text="${null}"></td>									
-								<td th:text="${l.fundingCode}"></td>
-								<td th:text="${l.fundingName}"></td>
+								<td><a th:text="${l.fundingCode}" th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
+								<td th:text="${l.fundingName}" id="fundingName"></td>
 								<td th:text="${l.fundingFoundation}"></td>
 								<td th:text="${l.goodsCode}"></td>
 								<td th:text="${l.fundingGoalAmount}"></td>				
 								<td th:text="${l.fundingStartDate}"></td>
 								<td th:text="${l.fundingEndDate}"></td>
-								<td th:text="${l.fundingProgress}"></td>
+								<td th:text="${l.fundingProgress}"></td>								
 								<td>
-									<a class="btn btn-secondary btn-icon-split btn-sm"   th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"><span class="text">수정</span></a>
-								</td>
-								<td>
-									<a class="btn btn-secondary btn-icon-split btn-sm deleteBtn" href='javascript:fundingDelete();' th:href="@{/funding/deleteFunding(fundingCode=${l.fundingCode})}"><span class="text">삭제</span></a>
+									<a class="btn btn-secondary btn-icon-split btn-sm" th:href="@{/funding/deleteFunding(fundingCode=${l.fundingCode})}"><span class="text">삭제</span></a>
 								</td>								
 							</tr>							
 							<tr th:if="${fundingList == null}">
