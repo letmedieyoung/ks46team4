@@ -119,6 +119,29 @@
 		WHERE 
 			user_id = #{userId};
 	</update>
+	
+	<select id="getUserDetailList" parameterType="String" resultMap="userResultMap">
+		/* 회원상세 조회 */
+		SELECT
+		 	u.user_id				AS userId
+			,u.user_level			AS userLevel
+			,u.user_pw				AS userPw
+			,u.user_name			AS userName
+			,u.user_birth			AS userBirth
+			,u.user_phone			AS userPhone
+			,u.user_email_agree		AS userEmailAgree
+			,u.user_email			AS userEmail
+			,u.user_addr			AS userAddr
+			,u.user_join_date		AS userJoinDate
+			,u.login_log_code		AS loginLogCode
+			,u.log_date_calcul		AS logDateCalcul
+			,u.user_update_date		AS userUpdateDate
+			,u.activity_status_standard_code		AS activityStatusStandardCode
+		FROM
+			user_info AS u
+		WHERE 
+			u.user_id = #{userId};
+	</select>
 
 	<select id="getUserInfoById" parameterType="String" resultMap="userResultMap">
 		/* 특정회원 조회 */

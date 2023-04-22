@@ -39,6 +39,8 @@
 					<th>활동상태등록일자</th>
 					<th>활동상태수정자아이디</th>
 					<th>활동상태수정일자</th>
+					<th>수정</th>
+					<th>삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -52,14 +54,15 @@
 					<td th:text="${l.activityStatusUpdateDate}"></td>
 					<td><a th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
 					<td><a th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
-					<td><a th:href="@{/admin/user/(userId=${l.userId})}">조회</a></td>
 				</tr>
 			<tr th:if="${activityStatusList == null}">
 					
 				</tr> 
 			</tbody>
 		</table>
-
+			<button class="btn btn-primary">
+					<span class="text text-gray-100">등록</span>
+				</button>
 	</div>
 	<!-- /.container-fluid -->
 

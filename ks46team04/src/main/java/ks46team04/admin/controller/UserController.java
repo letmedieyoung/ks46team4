@@ -45,6 +45,18 @@ public class UserController {
 		this.userMapper = userMapper;
 	}
 	
+	@GetMapping("/userDetailList")
+	public String getUserDetailList (Model model
+									,@RequestParam(name="userId", required=false) String userId){
+		
+		List<User> userDetailList = userService.getUserDetailList(userId);
+		
+		model.addAttribute("title", "회원상세조회");
+		model.addAttribute("userDetailList", userDetailList);
+		
+		return "admin/user/userDetailList";
+	}
+	
 	@GetMapping("/userDropList")
 	public String getUserDropList(Model model) {
 		
@@ -95,10 +107,10 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	@GetMapping("/userLevel")
 	public String getUserLevelList(Model model) {
 		
-		//List<UserLevel> userLevelList = userService.getUserLevelList();
+		List<UserLevel> userLevelList = userService.getUserLevelList();
 		
-		//model.addAttribute("title", "회원등급기준");
-		//model.addAttribute("userLevelList", userLevelList);
+		model.addAttribute("title", "회원등급기준");
+		model.addAttribute("userLevelList", userLevelList);
 		
 		return "admin/user/userLevel";
 	}
