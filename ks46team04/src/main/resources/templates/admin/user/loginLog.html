@@ -42,6 +42,7 @@
 								<th>로그인시각</th>
 								<th>로그아웃시각</th>
 								<th>로그인아이피</th>
+								<th>삭제</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,6 +52,7 @@
 									<td th:text="${l.loginTime}"></td>
 									<td th:text="${l.logoutTime}"></td>
 									<td th:text="${l.loginIp}"></td>
+									<td><a href="#">삭제</a></td> 
 								</tr>
 								<tr th:if="${loginLogList == null}">
 								</tr> 
