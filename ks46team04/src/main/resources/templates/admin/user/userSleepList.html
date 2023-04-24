@@ -37,21 +37,24 @@
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">휴면 회원 정보 조회</h6>
 			</div>
-			<div class="card-body overflow">
+			<div class="card-body overflow-x">
 				<div class="table-responsive">
-					<table class="table table-bordered text-center table-layout:auto"
+					<table class="table table-bordered text-center table-layout-auto table-space"
 						id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 
 							<tr>
 								<th>아이디</th>
 								<th>등급</th>
+								<th>비밀번호</th>
 								<th>이름</th>
 								<th>생년월일</th>
 								<th>연락처</th>
 								<th>이메일동의여부</th>
 								<th>이메일</th>
+								<th>주소</th>
 								<th>가입일</th>
+								<th>로그인코드</th>
 								<th>미접속일수</th>
 								<th>활동상태</th>
 								<th>수정</th>
@@ -68,7 +71,7 @@
 									<div th:if="${l.userLevel == '1'}">관리자</div>
 									<div th:unless="${l.userLevel == '1'}">회원</div>
 								</td>
-
+								<td th:text="${l.userPw}"></td>
 								<td th:text="${l.userName}"></td>
 								<td th:text="${l.userBirth}"></td>
 								<td th:text="${l.userPhone}"></td>
@@ -78,7 +81,9 @@
 								</td>
 
 								<td th:text="${l.userEmail}"></td>
+								<td th:text="${l.userAddr}"></td>
 								<td th:text="${l.userJoinDate}"></td>
+								<td th:text="${l.loginLogCode}"></td>
 								<td th:text="${l.logDateCalcul}"></td>
 								<td>
 									<div th:if="${l.activityStatusStandardCode == 'status_active'}">활동</div>
@@ -96,7 +101,7 @@
 									th:href="@{/admin/user/userDetailList(userId=${l.userId})}">조회</a></td>
 							</tr>
 							<tr th:if="${userSleepList == null}">
-								<td colspan="10">등록된 회원의 정보가 없습니다.</td>
+								<td colspan="13">등록된 회원의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

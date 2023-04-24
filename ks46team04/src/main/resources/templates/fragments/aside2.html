@@ -6,7 +6,8 @@
 	id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->
-	<a class="sidebar-brand d-flex align-items-center justify-content-center"
+	<a
+		class="sidebar-brand d-flex align-items-center justify-content-center"
 		th:href="@{/}">
 		<div class="sidebar-brand-icon rotate-n-15">
 			<i class="fas fa-capsules"></i>
@@ -18,9 +19,8 @@
 	<hr class="sidebar-divider my-0">
 
 	<!-- Nav Item - 마이페이지 -->
-	<li class="nav-item">
-	<a th:href="@{/user/mypage_index}">
-		<span class="my-page">마이페이지(가람)</span></li>
+	<li class="nav-item"><a th:href="@{/user/mypage_index}"> <span
+			class="my-page">마이페이지(가람)</span></li>
 	</a>
 
 	<!-- Edit Bareun ↓  -->
@@ -29,16 +29,25 @@
 			class="fas fa-fw fa-user"></i> <span>내 정보</span></a></li>
 
 	<!-- Nav Item - 나의 기부 -->
-	<li class="nav-item"><a class="nav-link" href="#"> <i
-			class="fas fa-fw fa-comment-dollar"></i> <span>나의 기부</span></a></li>
+	<li class="nav-item active"><a class="nav-link" href="#"
+		data-toggle="collapse" data-target="#collapsePages1"
+		aria-expanded="true" aria-controls="collapsePages"> <i
+			class="fas fa-fw fa-comment-dollar"></i> <span>나의 기부</span></a>
+		<div id="collapsePages1" class="collapse"
+			aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="#">정기후원 참여 내역 확인</a> <a
+					class="collapse-item" href="#">펀딩 참여 내역 확인</a>
+			</div>
+		</div></li>
 
 	<!-- Nav Item - 결제 -->
 	<li class="nav-item active"><a class="nav-link" href="#"
-		data-toggle="collapse" data-target="#collapsePages"
+		data-toggle="collapse" data-target="#collapsePages2"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-credit-card"></i> <span>결제 정보</span>
 	</a>
-		<div id="collapsePages" class="collapse"
+		<div id="collapsePages2" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="#">결제 내역 확인</a> <a
