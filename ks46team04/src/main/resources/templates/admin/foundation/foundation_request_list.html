@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
@@ -24,113 +24,233 @@
 	<div class="container-fluid">
 
 		<!-- Begin Page Content -->
-		<div class="container-fluid">
 
-			<!-- Page Heading -->
-			<h1 class="h3 mb-2 text-gray-800">재단 요청사항 목록</h1>
-			<p class="mb-4">
-				재단 요청사항 목록입니다.
-				<a target="_blank" href="https://datatables.net">재단 목록 보기</a>
-			</p>
-
-			<!-- DataTales Example -->
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">재단 요청사항 목록</h6>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%"
-							cellspacing="0">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>재단명</th>
-									<th>콘텐츠 분류</th>
-									<th>요청 상품명</th>
-									<th>초기 요청 상품수량</th>
-									<th>최종 요청 상품수량</th>
-									<th>배송 요청일자</th>
-									<th>등록일자</th>
-									<th>진행현황</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>초록우산 어린이재단</td>
-									<td>정기기부</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>100</td>
-									<td>35</td>
-									<td>2023-02-18</td>
-									<td>2022-12-10 11:00</td>
-									<td>완료</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>초록우산 어린이재단</td>
-									<td>펀딩</td>
-									<td>프라임 종합비타민미네랄 플러스 1400mg x 180정</td>
-									<td>200</td>
-									<td>54</td>
-									<td>2023-03-17</td>
-									<td>2023-1-15 11:00</td>
-									<td>완료</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>초록우산 어린이재단</td>
-									<td>펀딩</td>
-									<td>프라임 종합비타민미네랄 플러스 1400mg x 180정</td>
-									<td>200</td>
-									<td>54</td>
-									<td>2023-03-17</td>
-									<td>2023-1-15 11:00</td>
-									<td>완료</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>초록우산 어린이재단</td>
-									<td>펀딩</td>
-									<td>프라임 종합비타민미네랄 플러스 1400mg x 180정</td>
-									<td>200</td>
-									<td>54</td>
-									<td>2023-03-17</td>
-									<td>2023-1-15 11:00</td>
-									<td>진행중</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>초록우산 어린이재단</td>
-									<td>펀딩</td>
-									<td>프라임 종합비타민미네랄 플러스 1400mg x 180정</td>
-									<td>200</td>
-									<td>54</td>
-									<td>2023-03-17</td>
-									<td>2023-1-15 11:00</td>
-									<td>진행중</td>
-								</tr>
-							</tbody>
-						</table>
+		<!-- Page Heading -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">재단 요청사항 조회</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationName">재단명</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search search-input"
+											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+										<button type="button" id="goodsSearchBtn"
+											class="btn btn-primary btn-icon-split">
+											<span class="text">재단 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationManager">콘텐츠 분류</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<select class="dropdown btn btn-primary dropdown-toggle"
+											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											<option value="option1">:: 콘텐츠 분류 ::</option>
+											<option value="option1">펀딩</option>
+											<option value="option2">정기 후원</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationPhone">요청 상품명</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search search-input" id="foundationPhone" name="foundationPhone" placeholder="요청 상품을 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">상품 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationPhone">상품 요청 수량</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="number"
+												class="form-control form-control-user-search search-input"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="상품 수량을 입력해주세요." />
+										</div>
+										~
+										<div class="col-auto">
+											<input type="number"
+												class="form-control form-control-user-search search-input"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="상품 수량을 입력해주세요." />
+										</div>
+									</div>
+								</td>
+							</tr>
+								<th class="bg-gray-100">
+									<label for="foundationPhone">배송 요청일</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<input type="date" id="start-date" class="form-control">
+											</div>
+											~
+											<div class="col-auto">
+												<input type="date" id="end-date" class="form-control">
+											</div>
+										</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">요청사항 등록일</th>
+								<td>
+									<form>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">오늘</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">7일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1년</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-primary">
+												<span class="text text-gray-100">전체</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<input type="date" id="start-date" class="form-control">
+											</div>
+											~
+											<div class="col-auto">
+												<input type="date" id="end-date" class="form-control">
+											</div>
+										</div>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">검색</span>
+						</button>
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<!-- /.container-fluid -->
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<div class="table-responsive overflow-x">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr>
+								<th>재단요청코드</th>
+								<th>재단코드</th>
+								<th>재단명</th>
+								<th>콘텐츠 분류</th>
+								<th>요청 상품명</th>
+								<th>초기 요청 수량</th>
+								<th>최종 요청 수량</th>
+								<th>배송 요청일</th>
+								<th>등록자</th>
+								<th>등록일자</th>
+								<th>수정자</th>
+								<th>수정일자</th>
+								<th>진행현황</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${foundationRequestList == null}" th:each=" l : ${foundationRequestList}">
+								<td th:text="${l.foundationRequestCode}"></td>
+								<td th:text="${l.foundationCode}"></td>
+								<td th:text="${l.foundationName}"></td>
+								<td th:text="${l.contentCategory}"></td>
+								<td th:text="${l.requestGoodsName}"></td>
+								<td th:text="@{l.initialGoodsAmount}"></td>
+								<td th:text="${l.finalGoodsAmount}"></td>
+								<td th:text="${l.deliveryRequestDate}"></td>
+								<td th:text="${l.requestRegId}"></td>
+								<td th:text="${l.requestRegDate}"></td>
+								<td th:text="${l.requestUpdateId}"></td>
+								<td th:text="${l.requestUpdateDate}"></td>
+								<td th:text="${l.requestProgressStatus}"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/foundation/remove_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
+										<span class="text">삭제</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${foundationRequestList == null}">
+								<td colspan="15">등록된 재단 요청사항 정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- /.container-fluid -->
 
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 	</a>
 
 	<!-- /.container-fluid -->
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 	</a>
 
 
@@ -145,4 +265,5 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
+
 </html>

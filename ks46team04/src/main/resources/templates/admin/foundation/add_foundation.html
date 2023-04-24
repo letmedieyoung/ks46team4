@@ -27,22 +27,17 @@
 		<div class="container-fluid">
 
 			<!-- Page Heading -->
-			<h1 class="h3 mb-2 text-gray-800">재단 등록</h1>
-			<p class="mb-4">
-				재단 등록입니다. <a target="_blank" href="https://datatables.net">링크</a>
-			</p>
-			
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
 					<h6 class="m-0 font-weight-bold text-primary">재단 등록</h6>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+						<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="foundationCode">재단코드</label>
+										<label for="foundationCode">재단 코드</label>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
@@ -58,45 +53,28 @@
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" class="form-control form-control-user-search search-input" id="foundationName" name="foundationName" placeholder="재단명을 입력해주세요."/>
 											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">재단명 중복확인</span>
+												<span class="text">중복확인</span>
 											</button>
 										</div>
 									</td>
 								</tr>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="foundationManager">담당자</label>
+										<label for="foundationManager">재단 담당자</label>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="foundationManager" name="foundationManager" placeholder="재단 담당자를 입력해주세요."/>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle"
-												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
-												<option value="option1">:: 상품분류 선택 ::</option>
-												<option value="option1">비타민</option>
-												<option value="option2">종합비타민</option>
-												<option value="option2">칼슘제</option>
-												<option value="option2">철분제</option>
-												<option value="option2">기타</option>
-											</select>
+											<input type="text" class="form-control" id="foundationManager" name="foundationManager" placeholder="담당자를 입력해주세요."/>
 										</div>
 									</td>
 								</tr>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="foundationPhone">연락처</label>
+										<label for="foundationPhone">담당자 연락처</label>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="foundationPhone" name="foundationPhone" placeholder="담당자 연락처를 입력해주세요."/>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">제조사검색</span>
-											</button>
+											<input type="text" class="form-control" maxlength="13" placeholder="010-0000-0000">
 										</div>
 									</td>
 								</tr>
@@ -107,20 +85,14 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" class="form-control form-control-user-search search-input" id="foundationAddr" name="foundationAddr" placeholder="재단 주소를 입력해주세요."/>
+										</div>
+										<div class="form-row align-items-center search-schedule">
 											<input type="text" class="form-control form-control-user-search search-input" id="foundationAddr" name="foundationAddr" placeholder="상세주소를 입력해주세요."/>
+										</div>
+										<div class="form-row align-items-center search-schedule">
 											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
 												<span class="text">주소 검색</span>
 											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsPrice">상품단가</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="number" class="form-control form-control-user-search search-input" id="purchase-search" min="0" name="goodsPrice" placeholder="상품가격을 입력해주세요." />원
 										</div>
 									</td>
 								</tr>

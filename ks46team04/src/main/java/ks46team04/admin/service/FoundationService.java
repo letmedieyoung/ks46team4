@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Foundation;
+import ks46team04.admin.dto.FoundationRequest;
 import ks46team04.admin.mapper.FoundationMapper;
 
 @Service
@@ -60,4 +61,42 @@ public class FoundationService {
 	public void modifyFoundation(Foundation foundation) {
 		foundationMapper.modifyFoundation(foundation);
 	}
+	
+	/**
+	 * 재단 요청사항 조회
+	 * @return
+	 */
+	public List<FoundationRequest> getFoundationRequestlist(){
+		List<FoundationRequest> foundationRequestList = foundationMapper.getFoundationRequestList();
+		return foundationRequestList;
+	}
+	
+	/**]
+	 * 재단 요청사항 등록
+	 * @param foundationRequest
+	 * @return
+	 */
+	public int addFoundationRequest(FoundationRequest foundationRequest) {
+		int result = foundationMapper.addFoundationRequest(foundationRequest);
+		return result;
+	}
+	
+	/**
+	 * 특정 재단 요청사항 조회
+	 * @param foundationRequestCode
+	 * @return
+	 */
+	public FoundationRequest getFoundationRequestInfoByCode(String foundationRequestCode) {
+		FoundationRequest foundationRequestInfo = foundationMapper.getFoundationRequestInfoByCode(foundationRequestCode);
+		return foundationRequestInfo;
+	}
+	
+	/**
+	 * 재단 요청사항 수정
+	 * @param foundationRequest
+	 */
+	public void modifyFoundationRequest(FoundationRequest foundationRequest) {
+		foundationMapper.modifyFoundationRequest(foundationRequest);
+	}
+	
 }
