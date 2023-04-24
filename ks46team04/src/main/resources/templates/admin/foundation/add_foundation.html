@@ -17,6 +17,7 @@
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
 </head>
 <th:block layout:fragment="customContents">
 
@@ -35,16 +36,6 @@
 					<div class="table-responsive">
 						<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 							<tbody>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="foundationCode">재단 코드</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationCode" name="foundationCode" readonly="readonly"/>
-										</div>
-									</td>
-								</tr>
 								<tr>
 									<th class="bg-gray-100">
 										<label for="goodsName">재단명</label>
@@ -85,7 +76,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" placeholder="재단 주소를 입력해주세요."/>
+											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" placeholder="주소를 검색해주세요."/>
 										</div>
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" placeholder="상세주소를 입력해주세요."/>
@@ -100,13 +91,13 @@
 							</tbody>
 						</table>
 						<div align="center">
-							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">입력취소</span>
-							</button>
 							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">등록하기</span>
+							</button>
+							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">입력취소</span>
 							</button>
 						</div>
 					</div>

@@ -16,7 +16,8 @@
 
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
 </head>
 <th:block layout:fragment="customContents">
 
@@ -36,87 +37,75 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationName">재단명</label>
+									<label for="foundationName">검색 분류</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="option1">:: 검색 분류 ::</option>
+											<option value="option1">재단명</option>
+											<option value="option2">담당자</option>
+											<option value="option2">연락처</option>
+											<option value="option2">주소</option>
+											<option value="option2">등록/수정자</option>
+										</select>
 										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">재단 검색</span>
-										</button>
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="검색 분류 선택 후 입력해주세요." />
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">재단 등록일자</th>
-								<td>
-									<form>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">7일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-											&nbsp;
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<div class="col-auto">
-												<label for="start-date" class="sr-only">시작일</label>
-												<input type="date" id="start-date" class="form-control"
-													placeholder="시작일">
-											</div>
-											~
-											<div class="col-auto">
-												<label for="end-date" class="sr-only">종료일</label>
-												<input type="date" id="end-date" class="form-control" placeholder="종료일">
-											</div>
-										</div>
-									</form>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">재단 주소</label>
-								</th>
+								<th class="bg-gray-100">재단 등록/수정일자</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="주소를 검색하거나 입력해주세요."/>
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">오늘</span>
+										</button>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">주소 검색</span>
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">3일</span>
 										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">7일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">3개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1년</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-primary">
+											<span class="text text-gray-100">전체</span>
+										</button>
+										&nbsp;
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<label for="start-date" class="sr-only">시작일</label>
+											<input type="date" id="start-date" class="form-control"
+												placeholder="시작일">
+										</div>
+										~
+										<div class="col-auto">
+											<label for="end-date" class="sr-only">종료일</label>
+											<input type="date" id="end-date" class="form-control" placeholder="종료일">
+										</div>
 									</div>
 								</td>
 							</tr>
@@ -145,10 +134,8 @@
 								<th>담당자</th>
 								<th>연락처</th>
 								<th>주소</th>
-								<th>등록자</th>
-								<th>등록일자</th>
-								<th>수정자</th>
-								<th>수정일자</th>
+								<th>등록/수정자</th>
+								<th>등록/수정일자</th>
 								<th>수정</th>
 								<th>삭제</th>
 							</tr>
@@ -160,10 +147,10 @@
 								<td th:text="${l.foundationManager}"></td>
 								<td th:text="${l.foundationPhone}"></td>
 								<td th:text="${l.foundationAddr}"></td>
-								<td th:text="${l.foundationRegId}"></td>
-								<td th:text="${l.foundationRegDate}"></td>
-								<td th:text="${l.foundationUpdId}"></td>
-								<td th:text="${l.foundationUpdDate}"></td>
+								<td th:if="${l.foundationUpdateId == null}" th:text="${l.foundationRegId}"></td>
+								<td th:unless="${l.foundationUpdateId == null}" th:text="${l.foundationUpdateId}"></td>
+								<td th:if="${l.foundationUpdateDate == null}" th:text="${l.foundationRegDate}"></td>
+								<td th:unless="${l.foundationUpdateDate == null}" th:text="${l.foundationUpdateDate}"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/foundation/modify_foundation(foundationCode=${l.foundationCode})}">
@@ -178,7 +165,7 @@
 								</td>
 							</tr>
 							<tr th:if="${foundationList == null}">
-								<td colspan="11">등록된 재단의 정보가 없습니다.</td>
+								<td colspan="9">등록된 재단의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

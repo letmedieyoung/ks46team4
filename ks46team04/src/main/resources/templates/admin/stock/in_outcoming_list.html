@@ -30,7 +30,7 @@
 		<!-- Page Heading -->
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">상품 재고 조회</h6>
+				<h6 class="m-0 font-weight-bold text-primary">상품 입/출고 조회</h6>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -42,12 +42,12 @@
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										&nbsp;
+										&nbsp;&nbsp;
 										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
 											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<option value="option1">:: 검색 분류 ::</option>
-											<option value="option1">재단명</option>
-											<option value="option2">요청 상품명</option>
+											<option value="option1">상품명</option>
+											<option value="option2">제조번호</option>
 											<option value="option2">등록/수정자</option>
 										</select>
 										&nbsp;
@@ -57,49 +57,33 @@
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">제조번호</label>
-								</th>
+								<th class="bg-gray-100">입/출고 분류</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="제조번호를 입력해주세요." />
-									</div>
+										<label>
+									    	<input type="radio" id="allContent" name="content" value="allContent" checked>
+									    	<span class="text">전체</span>&nbsp;&nbsp;
+								      	</label>
+								    </div>
+									<div class="form-row align-items-center search-schedule">
+								     	<label>
+									    	<input type="radio" id="fundingContent" name="content" value="fundingContent">
+									   		<span class="text">입고</span>&nbsp;&nbsp;
+								     	</label>
+								    </div>
+									<div class="form-row align-items-center search-schedule">
+								    	<label>
+									      	<input type="radio" id="donationContent" name="content" value="donationContent">
+									      	<span class="text">출고</span>
+								    	</label>
+								    </div>
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">
-									<label for="foundationManager">재고조사 여부</label>
-								</th>
+								<th class="bg-gray-100">입/출고일자</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="allContent" name="content" value="allContent" checked>
-										      <span class="text">전체</span>&nbsp;&nbsp;
-									      </label>
-									    </div>
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
-										      <span class="text">완료</span>&nbsp;&nbsp;
-									      </label>
-									    </div>
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="donationContent" name="content" value="donationContent">
-										      <span class="text">미완료</span>
-									      </label>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">재고조사일자</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 											<button class="btn btn-secondary">
 												<span class="text text-gray-100">오늘</span>
@@ -151,61 +135,10 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationManager">비정상재고 유무</label>
+									<label for="goodsPrice">입/출고 수량</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="allContent" name="content" value="allContent" checked>
-										      <span class="text">전체</span>&nbsp;&nbsp;
-									      </label>
-									    </div>
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
-										      <span class="text">유</span>&nbsp;&nbsp;
-									      </label>
-									    </div>
-										<div class="form-row align-items-center search-schedule">
-									      <label>
-										      <input type="radio" id="donationContent" name="content" value="donationContent">
-										      <span class="text">무</span>
-									      </label>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">제조사</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">제조사 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsPrice">상품수량</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 상품수량 분류 ::</option>
-											<option value="option1">재고량</option>
-											<option value="option2">비정상재고량</option>
-											<option value="option2">출고가능수량</option>
-										</select>
 										<div class="col-auto">
 											<input type="number"
 												class="form-control"
@@ -238,39 +171,48 @@
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<div class="table-responsive overflow-x">
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
+						cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
-								<th>상품재고코드</th>
+								<th>상품입출고코드</th>
 								<th>상품코드</th>
-								<th>제조번호</th>
-								<th>재고량</th>
-								<th>재고조사 여부</th>
-								<th>재고조사일</th>
-								<th>상품 유통기한</th>
-								<th>비정상재고 유무</th>
-								<th>비정상재고량</th>
-								<th>출고가능수량</th>
+								<th>입고/출고수량</th>
+								<th>입/출고 분류</th>
+								<th>입고/출고일자</th>
+								<th>등록/수정자</th>
+								<th>등록/수정일자</th>
+								<th>수정</th>
+								<th>삭제</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:unless="${stockList == null}" th:each=" l : ${stockList}">
-								<td th:text="${l.goodsStockCode}"></td>
+							<tr th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
+								<td th:text="${l.inOutcomingCode}"></td>
 								<td th:text="${l.goodsCode}"></td>
-								<td th:text="${l.goodsLotNumber}"></td>
-								<td th:text="${l.currentStockAmount}"></td>
-								<td th:if="${l.stocktakingCheck == '1'}">완료</td>
-								<td th:unless="${l.stocktakingCheck == '1'}">미완료</td>
-								<td th:text="${l.stocktakingDate}"></td>
-								<td th:text="${l.goodsExprityDate}"></td>
-								<td th:if="${l.unusualStockCheck == '1'}">유</td>
-								<td th:if="${l.stocktakingCheck == '0'} and ${l.unusualStockCheck == '0'}">재고조사 미진행</td>
-								<td th:if="${l.stocktakingCheck == '1'} and ${l.unusualStockCheck == '0'}">무</td>
-								<td th:text="${l.unusualStockAmount}"></td>
-								<td th:text="${l.finalStockAmount}"></td>
+								<td th:text="${l.inOutcomingQuantity}"></td>
+								<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
+								<td th:unless="${l.inOutcomingType == 'incoming'}">출고</td>
+								<td th:text="${l.inOutcomingDate}"></td>
+								<td th:if="${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingRegId}"></td>
+								<td th:unless="${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingUpdateId}"></td>
+								<td th:if="${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingRegDate}"></td>
+								<td th:unless="${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingUpdateDate}"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/stock/remove_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+										<span class="text">삭제</span>
+									</a>
+								</td>
 							</tr>
-							<tr th:if="${stockList == null}">
-								<td colspan="10">등록된 상품 재고 정보가 없습니다.</td>
+							<tr th:if="${inOutcomingList == null}">
+								<td colspan="9">등록된 상품 재고 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

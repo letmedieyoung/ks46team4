@@ -16,7 +16,8 @@
 
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
 </head>
 <th:block layout:fragment="customContents">
 
@@ -36,18 +37,21 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationName">재단명</label>
+									<label for="foundationName">검색 분류</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="option1">:: 검색 분류 ::</option>
+											<option value="option1">재단명</option>
+											<option value="option2">요청 상품명</option>
+											<option value="option2">등록/수정자</option>
+										</select>
 										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">재단 검색</span>
-										</button>
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="검색 분류 선택 후 입력해주세요." />
 									</div>
 								</td>
 							</tr>
@@ -58,29 +62,57 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle"
-											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">
-											<option value="option1">:: 콘텐츠 분류 ::</option>
-											<option value="option1">펀딩</option>
-											<option value="option2">정기 후원</option>
-										</select>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <span class="text">전체</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <span class="text">펀딩</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">정기 후원</span>
+									      </label>
+									    </div>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationPhone">요청 상품명</label>
+									<label for="foundationManager">콘텐츠 진행 상황</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="foundationPhone" name="foundationPhone" placeholder="요청 상품을 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">상품 검색</span>
-										</button>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <span class="text">전체</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <span class="text">진행 전</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">진행 중</span>
+									      </label>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">종료</span>
+									      </label>
+									    </div>
 									</div>
 								</td>
 							</tr>
@@ -94,14 +126,14 @@
 											<input type="number"
 												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품 수량을 입력해주세요." />
+												placeholder="최소 수량을 입력해주세요." />
 										</div>
 										~
 										<div class="col-auto">
 											<input type="number"
 												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품 수량을 입력해주세요." />
+												placeholder="최대 수량을 입력해주세요." />
 										</div>개
 									</div>
 								</td>
@@ -124,54 +156,52 @@
 							<tr>
 								<th class="bg-gray-100">요청사항 등록일</th>
 								<td>
-									<form>
-										<div class="form-row align-items-center search-schedule">
-										&nbsp;
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
+									<div class="form-row align-items-center search-schedule">
+									&nbsp;
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">오늘</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">3일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">7일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">3개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1년</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-primary">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									&nbsp;
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="date" id="start-date" class="form-control">
 										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3일</span>
-											</button>
+										~
+										<div class="col-auto">
+											<input type="date" id="end-date" class="form-control">
 										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">7일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-										</div>
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<div class="col-auto">
-												<input type="date" id="start-date" class="form-control">
-											</div>
-											~
-											<div class="col-auto">
-												<input type="date" id="end-date" class="form-control">
-											</div>
-										</div>
-									</form>
+									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -202,10 +232,8 @@
 								<th>초기 요청 수량</th>
 								<th>최종 요청 수량</th>
 								<th>배송 요청일</th>
-								<th>등록자</th>
-								<th>등록일자</th>
-								<th>수정자</th>
-								<th>수정일자</th>
+								<th>등록/수정자</th>
+								<th>등록/수정일자</th>
 								<th>진행현황</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -221,10 +249,10 @@
 								<td th:text="${l.initialGoodsAmount}"></td>
 								<td th:text="${l.finalGoodsAmount}"></td>
 								<td th:text="${l.deliveryRequestDate}"></td>
-								<td th:text="${l.requestRegId}"></td>
-								<td th:text="${l.requestRegDate}"></td>
-								<td th:text="${l.requestUpdateId}"></td>
-								<td th:text="${l.requestUpdateDate}"></td>
+								<td th:if="${l.requestUpdateId == null}" th:text="${l.requestRegId}"></td>
+								<td th:unless="${l.requestUpdateId == null}" th:text="${l.requestUpdateId}"></td>
+								<td th:if="${l.requestUpdateDate == null}" th:text="${l.requestRegDate}"></td>
+								<td th:unless="${l.requestUpdateDate == null}" th:text="${l.requestUpdateDate}"></td>
 								<td th:text="${l.requestProgressStatus}"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
@@ -240,7 +268,7 @@
 								</td>
 							</tr>
 							<tr th:if="${foundationRequestList == null}">
-								<td colspan="15">등록된 재단 요청사항 정보가 없습니다.</td>
+								<td colspan="13">등록된 재단 요청사항 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

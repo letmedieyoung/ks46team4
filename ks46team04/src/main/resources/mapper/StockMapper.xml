@@ -17,6 +17,45 @@
 		<result column="unusual_stock_check"			property="unusualStockCheck"/>
 	</resultMap>
 	
+	<resultMap type="InOutcoming" id="inOutcomingResultMap">
+		<id		column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
+		<result column="goods_code"									property="goodsCode"/>
+		<result column="incoming_outcoming_quantity"				property="inOutcomingQuantity"/>
+		<result column="incoming_outcoming_type"					property="inOutcomingType"/>
+		<result column="incoming_outcoming_date"					property="inOutcomingDate"/>
+		<result column="incoming_outcoming_reg_id"					property="inOutcomingRegId"/>
+		<result column="incoming_outcoming_reg_date"				property="inOutcomingRegDate"/>
+		<result column="incoming_outcoming_update_id"				property="inOutcomingUpdateId"/>
+		<result column="incoming_outcoming_update_date"				property="inOutcomingUpdateDate"/>
+	</resultMap>
+	
+	<resultMap type="OutcomingDetail" id="outcomingDetailResultMap">
+		<id		column="outcoming_detail_code"						property="outcomingDetailCode"/>
+		<result column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
+		<result column="outcoming_goods"							property="outcomingGoods"/>
+		<result column="outcoming_quantity"							property="outcomingQuantity"/>
+		<result column="outcoming_date"								property="outcomingDate"/>
+		<result column="outcoming_id"								property="outcomingId"/>
+		<result column="foundation_code"							property="foundationCode"/>
+		<result column="outcoming_reg_id"							property="outcomingDetailRegId"/>
+		<result column="outcoming_reg_date"							property="outcomingDetailRegDate"/>
+		<result column="outcoming_update_id"						property="outcomingDetailUpdateId"/>
+		<result column="outcoming_update_date"						property="outcomingDetailUpdateDate"/>
+	</resultMap>
+		
+	<resultMap type="UnusualStock" id="unusualStockResultMap">
+		<id		column="unusual_stock_detail_code"					property="unusualStockCode"/>
+		<result column="goods_code"									property="goodsCode"/>
+		<result column="goods_stock_code"							property="goodsStockCode"/>
+		<result column="unusual_stock_quantity"						property="unusualStockQuantity"/>
+		<result column="unusual_stock_date"							property="unusualStockDate"/>
+		<result column="unusual_stock_reason"						property="unusualStockReason"/>
+		<result column="unusual_stock_reg_id"						property="unusualStockRegId"/>
+		<result column="unusual_stock_reg_date"						property="unusualStockRegDate"/>
+		<result column="unusual_stock_update_id"					property="unusualStockUpdateId"/>
+		<result column="unusual_stock_update_date"					property="unusualStockUpdateDate"/>
+	</resultMap>	
+	
 	<select id="getStockList" resultMap="stockResultMap">
 		/* 상품 재고 조회 */
 		SELECT
@@ -32,6 +71,57 @@
 			, unusual_stock_check
 		FROM
 			goods_stock;
+	</select>
+	
+	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
+		/* 상품 입출고 조회 */
+		SELECT 
+			incoming_outcoming_history_code
+			, goods_code
+			, incoming_outcoming_quantity
+			, incoming_outcoming_type
+			, incoming_outcoming_date
+			, incoming_outcoming_reg_id
+			, incoming_outcoming_reg_date
+			, incoming_outcoming_update_id
+			, incoming_outcoming_update_date
+		FROM
+			incoming_outcoming_history;
+	</select>
+	
+	<select id="getOutcomingDetailList" resultMap="outcomingDetailResultMap">
+		/* 상품 출고 상세정보 조회 */
+		SELECT
+			outcoming_detail_code
+			, incoming_outcoming_history_code
+			, outcoming_goods
+			, outcoming_quantity
+			, outcoming_date
+			, outcoming_id
+			, foundation_code
+			, outcoming_reg_id
+			, outcoming_reg_date
+			, outcoming_update_id
+			, outcoming_update_date
+		FROM 
+			outcoming_detail;
+	</select>
+	
+	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
+		/* 비정상 재고 조회 */
+		SELECT
+			unusual_stock_detail_code
+			, goods_code
+			, goods_stock_code
+			, unusual_stock_quantity
+			, unusual_stock_date
+			, unusual_stock_reason
+			, unusual_stock_reg_id
+			, unusual_stock_reg_date
+			, unusual_stock_update_id
+			, unusual_stock_update_date
+		FROM
+			unusual_stock_detail;
 	</select>
 	
 </mapper>
