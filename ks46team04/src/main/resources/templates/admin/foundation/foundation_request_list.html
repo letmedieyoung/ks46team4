@@ -40,8 +40,10 @@
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search search-input"
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input"
 											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+										&nbsp;
 										<button type="button" id="goodsSearchBtn"
 											class="btn btn-primary btn-icon-split">
 											<span class="text">재단 검색</span>
@@ -55,6 +57,7 @@
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
+										&nbsp;
 										<select class="dropdown btn btn-primary dropdown-toggle"
 											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false">
@@ -71,7 +74,8 @@
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search search-input" id="foundationPhone" name="foundationPhone" placeholder="요청 상품을 입력해주세요."/>
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input" id="foundationPhone" name="foundationPhone" placeholder="요청 상품을 입력해주세요."/>
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
@@ -88,17 +92,17 @@
 									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search search-input"
+												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
 												placeholder="상품 수량을 입력해주세요." />
 										</div>
 										~
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search search-input"
+												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
 												placeholder="상품 수량을 입력해주세요." />
-										</div>
+										</div>개
 									</div>
 								</td>
 							</tr>
@@ -122,6 +126,7 @@
 								<td>
 									<form>
 										<div class="form-row align-items-center search-schedule">
+										&nbsp;
 											<button class="btn btn-secondary">
 												<span class="text text-gray-100">오늘</span>
 											</button>
@@ -156,6 +161,7 @@
 												<span class="text text-gray-100">전체</span>
 											</button>
 										</div>
+										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 											<div class="col-auto">
 												<input type="date" id="start-date" class="form-control">
@@ -212,7 +218,7 @@
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.contentCategory}"></td>
 								<td th:text="${l.requestGoodsName}"></td>
-								<td th:text="@{l.initialGoodsAmount}"></td>
+								<td th:text="${l.initialGoodsAmount}"></td>
 								<td th:text="${l.finalGoodsAmount}"></td>
 								<td th:text="${l.deliveryRequestDate}"></td>
 								<td th:text="${l.requestRegId}"></td>

@@ -26,21 +26,20 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 입고 내역 조회
+	 * 상품 입고 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/incoming_stock_list")
 	public String getIncomingStockList(Model model) {
 		
-		model.addAttribute("title", "incoming_stock_list");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		model.addAttribute("title", "상품 입고 조회");
 		
 		return "admin/stock/incoming_stock_list";
 	}
 	
 	/**
-	 * 상품 입고 내역 등록
+	 * 상품 입고 등록
 	 * @param model
 	 * @return
 	 */
@@ -54,7 +53,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 입고 내역 수정
+	 * 상품 입고 수정
 	 * @param model
 	 * @return
 	 */
@@ -68,7 +67,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 입고 내역 삭제
+	 * 상품 입고 삭제
 	 * @param model
 	 * @return
 	 */
@@ -182,21 +181,21 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 출고 내역 조회
+	 * 상품 출고 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/outcoming_stock_list")
 	public String getOutcomingStockList(Model model) {
 		
-		model.addAttribute("title", "outcoming_stock_list");
+		model.addAttribute("title", "상품 출고 조회");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
 		return "admin/stock/outcoming_stock_list";
 	}
 	
 	/**
-	 * 상품 출고 내역 등록
+	 * 상품 출고 등록
 	 * @param model
 	 * @return
 	 */
@@ -210,7 +209,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 출고 내역 수정
+	 * 상품 출고 수정
 	 * @param model
 	 * @return
 	 */
@@ -224,7 +223,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 출고 내역 삭제
+	 * 상품 출고 삭제
 	 * @param model
 	 * @return
 	 */
