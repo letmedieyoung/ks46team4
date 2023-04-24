@@ -69,7 +69,7 @@
 			funding_code = #{fundingCode};
 	</update>
 	
-	<select id="getFundingList" resultType="funding">
+	<select id="getFundingList" parameterType="list" resultType="funding">
 		/* 펀딩 목록 조회 */
 		SELECT
 			f.funding_code		  	AS fundingCode,
@@ -82,8 +82,18 @@
 			f.funding_progress 	  	AS fundingProgress
 		FROM
 			each_funding_info AS f
+		<where>
+			<if test="searchList != null">			
+				<foreach collection="searchList" item="item">
+					<if test="item.value != null and item.value != ''">					
+						AND ${item.key} LIKE CONCAT('%', #{item.value}, '%')
+					</if>
+				</foreach>
+			</if>
+		</where>		
 		ORDER BY funding_code DESC;
 	</select>
+		
 	
 	
 	<select id="getFundingPayList" resultType="fundingPay">

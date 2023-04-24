@@ -53,12 +53,12 @@
 								<td>									
 									<div class="form-row align-items-center search-schedule">
 										<select class="dropdown btn btn-primary dropdown-toggle"
-											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false" name="fundingFoundation" disabled="disabled">
-											<th:block th:unless="${fundingList == null}" th:each="l : ${fundingList}">
-												<option th:value="${l.fundingFoundation}">[[${l.funding_foundation}]]</option>
+											id="FundingFoundation" name="FundingFoundation" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false"  disabled="disabled">
+											<th:block th:unless="${FoundationNameList == null}" th:each="l : ${FoundationNameList}">
+												<option th:value="${l.fundingFoundation}" th:selected="${l.fundingFoundation} == *{foundationName}">[[${l.fundingFoundation}]]</option>
 											</th:block>
-											<th:block th:if="${fundingList == null}">
+											<th:block th:if="${FoundationNameList == null}">
 												<option>등록된 재단 정보가 없습니다.</option>
 											</th:block>
 										</select>
@@ -69,10 +69,17 @@
 								<th class="bg-gray-100">
 									<label for="goodsCode">상품코드</label>
 								</th>
-								<td>
+								<td>									
 									<div class="form-row align-items-center search-schedule">
-										<span id="goodsCode" th:text="*{goodsCode}" name="goodsCode" readonly="readonly"></span>
-									</div>									
+										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="goodsCode" disabled="disabled">
+											<th:block th:unless="${fundingList == null}" th:each="l : ${fundingList}">
+												<option th:value="${l.fundingFoundation}">[[${l.goodsCode}]]</option>
+											</th:block>
+											<th:block th:if="${fundingList == null}">
+												<option>등록된 상품 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -80,8 +87,9 @@
 									<label for="fundingGoalAmount">목표 금액</label>
 								</th>
 								<td>
-									<input type="text" id="fundingGoalAmount" th:value="*{fundingGoalAmount}"
-								   name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
+									<div class="form-row align-items-center search-schedule">
+										<input type="number" class="form-control form-control-user-search search-input" id="fundingGoalAmount" th:value="*{fundingGoalAmount}" name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -105,27 +113,29 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="labeltd">
-									<label for="fundingEndDate">진행 현황</label>
+								<td class="bg-gray-100">
+									<label for="fundingProgress">진행 현황</label>
 								</td>
 								<td>
-									<select id="fundingProgress" th:value="*{fundingProgress}"
-										   name="fundingProgress">
-										 <option>진행중</option>
-										 <option>진행완료</option>  
-									</select>									
+									<div class="form-row align-items-center search-schedule">
+										<select class="form-control form-control-user-search search-input" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress">
+											 <option>대기중</option>
+											 <option>진행중</option>
+											 <option>진행완료</option>  
+										</select>
+									</div>									
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<div align="center">
-						<button type="submit" id="modifyBtn" class="btn btn-secondary btn-icon-split">
+						<button type="submit" id="modifyBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 							<span class="text">수정</span>
 						</button>
-						<button type="reset" id="cancelBtn" class="btn btn-primary btn-icon-split">
+						<button type="reset" id="cancelBtn" class="btn btn-secondary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-							<span class="text">입력취소</span>
+							<span class="text">취소</span>
 						</button>
 					</div>
 				</div>

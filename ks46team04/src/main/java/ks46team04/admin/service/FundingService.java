@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +18,16 @@ import ks46team04.admin.mapper.FundingMapper;
 public class FundingService {
 	
 	private static final Logger log = LoggerFactory.getLogger(FundingService.class);
-
+	
+	@Autowired
 	private final FundingMapper fundingMapper;
 	
 	public FundingService(FundingMapper fundingMapper) {
 		this.fundingMapper = fundingMapper;
+		
 	}	
 	
+		
 	/**
 	 * 펀딩 정보 수정
 	 * @param funding
@@ -44,10 +48,9 @@ public class FundingService {
 	}
 	
 	//펀딩 목록 조회	
-	public List<Funding> getFundingList(){
-		List<Funding> fundingList = fundingMapper.getFundingList();
-		return fundingList;
-	}
+	 public List<Funding> getFundingList(){        
+		 return fundingMapper.getFundingList(null);
+	 }	
 	
 	//펀딩 정보 삭제
 	public void deleteFunding(Funding funding) {
