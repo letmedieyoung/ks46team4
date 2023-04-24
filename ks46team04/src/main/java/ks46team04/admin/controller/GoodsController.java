@@ -13,7 +13,7 @@ import ks46team04.admin.dto.Goods;
 import ks46team04.admin.service.GoodsService;
 
 @Controller
-@RequestMapping("/goods")
+@RequestMapping("/admin/goods")
 public class GoodsController {
 	
 	
@@ -38,7 +38,7 @@ public class GoodsController {
 		model.addAttribute("title", "상품 목록");
 		model.addAttribute("goodsList", goodsList);
 		
-		return "view/goods/goods_list";
+		return "admin/goods/goods_list";
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class GoodsController {
 		
 		model.addAttribute("title", "상품 등록");
 		
-		return "view/goods/add_goods";
+		return "admin/goods/add_goods";
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class GoodsController {
 		model.addAttribute("title", "상품 수정");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/goods/modify_goods";
+		return "admin/goods/modify_goods";
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class GoodsController {
 		model.addAttribute("title", "상품 삭제");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/goods/remove_goods";
+		return "admin/goods/remove_goods";
 	}
 	
 }

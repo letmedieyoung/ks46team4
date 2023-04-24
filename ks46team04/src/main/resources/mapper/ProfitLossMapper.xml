@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="ks46team04.admin.mapper.ProfitLossMapper">
+	<select id="getTotalPurchaseSale" resultType="TotalPurchaseSale">
+		/*매입매출 종합 조회*/
+		SELECT
+			division,			
+			payment_year as paymentYear,		
+			payment_month as paymentMonth,			
+			payment_amount as paymentAmount,		
+			payment_vat as paymentVat,		
+			purchase_budget as purchaseBudget	
+		FROM
+			total_purchse_sale;
+	</select>
+	
+	<select id="getProfitLoss" resultType="ProfitLoss">
+		/*손익 조회*/
+		SELECT
+			profit_n_loss_code AS profitLossCode,		
+			payment_year AS paymentYear,		
+			payment_month AS paymentMonth,		
+			month_total_sales AS monthTotalSales,		
+			month_total_vat AS monthTotalVat,		
+			month_total_budget AS monthTotalBudget,		
+			month_total_purchase AS monthTotalPurchase,		
+			month_profit_loss AS monthProfitLoss,		
+			final_month_profit_loss AS finalMonthProfitLoss,		
+			settlement_check AS settlementCheck,		
+			settlement_date AS settlementDate,		
+			settlement_check_id AS settlementCheckId
+		FROM
+			profit_n_loss;
+	</select>
+ </mapper>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">	
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
+</head>
+
+<th:block layout:fragment="customContents">	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<h5 class="m-0 font-weight-bold text-gray-800">펀딩 관리</h5>
+		<p class="mb-4"></p>
+		<!-- 검색 테이블 -->
+		<form action="#" name="fdSearchForm" autocomplete="off">
+			<div class="card mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">펀딩 목록 조회</h6>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered" width="100%" cellspacing="0">	
+							<tbody>					
+								<tr>
+									<th>검색 분류</th>
+									<td>
+																	
+										<div class="align-items-center search-schedule">
+											<select class="form-control form-control-user-search search-input" name="keyword">
+												<option value="funding_code">펀딩코드</option>
+												<option value="funding_foundation">재단명</option>
+												<option value="goods_code">상품코드</option>
+											</select>
+										</div>
+										<div class="search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" name="searchValue" style="width: 300px;"/>
+										</div>										
+									</td>								
+								</tr>						
+								<tr>
+									<th>기간 조회</th>
+									<td>
+										<div class="align-items-center search-schedule">
+											<select class="f-date-select form-control form-control-user-search search-input" name="searchDateCate">
+												<option value="funding_start_date">펀딩시작일</option>									
+												<option value="funding_end_date">펀딩종료일</option>
+											</select>	
+										</div>
+										<div class="align-items-center search-schedule">																				
+											<button type="button" id="todayBtn" class="btn btn-light freg-btn"><span class="text">오늘</span></button>
+											<button type="button" id="monthBtn" class="btn btn-light freg-btn"><span class="text">1개월</span></button>
+											<button type="button" id="threeMonthBtn" class="btn btn-light freg-btn"><span class="text">3개월</span></button>										
+										</div>
+										<div class="align-items-center search-schedule">											
+											<input id="startDateInput" name="funding_start_date" class="dateSelect form-control form-control-user-search search-input" type="date" data-placeholder="날짜 선택"></input>
+										</div>
+										<div class="align-items-center search-schedule">								
+											<span>~</span>
+										</div>
+										<div class="align-items-center search-schedule">									
+											<input id="endDateInput" name="funding_end_date" class="dateSelect form-control form-control-user-search search-input" type="date" data-placeholder="날짜 선택"/></input>
+										</div>
+										
+									</td>
+								</tr>
+								<tr>
+									<th>진행 상태</th>
+									<td>
+										<label>
+											<input type="radio" name="funding_progress" value="" checked="checked"/><span class="fradio">전체</span>
+											<input type="radio" name="funding_progress" value="진행중"/><span class="fradio">진행중</span>
+											<input type="radio" name="funding_progress" value="종료"/><span class="fradio">종료</span>
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>		
+			<div class="f-search btn">
+				<button type="button" class="btn btn-primary btn-icon-split" onclick="doSearchFunding()"><span class="text sbtn">검색</span></button>	
+				<button type="reset" class="btn btn-primary btn-icon-split"><span class="text sbtn">초기화</span></button>
+			</div>
+		</form>		
+		<!-- 검색 결과 조회 테이블 -->
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">					
+					<a class="manageBtn btn btn-light deleteBtn" onclick="fDeleteBtn()"><span class="text">삭제</span></a>					
+					<a class="manageBtn btn btn-light"><span>진행완료</span></a>
+					<table class="targets fmtable table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="allCheckBox" onclick="allChecked()"/></th>                                
+                                <th>펀딩코드</th>
+                                <th>펀딩명</th>
+                                <th>연결재단</th>
+                                <th>펀딩상품코드</th>
+                                <th>목표금액</th>
+                                <th>펀딩시작일</th>
+                                <th>펀딩종료일</th>
+                                <th>진행현황</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${fundingList == null}" th:each="l : ${fundingList}">
+								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>															
+								<td><a th:text="${l.fundingCode}" th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
+								<td th:text="${l.fundingName}" id="fundingName"></td>
+								<td th:text="${l.fundingFoundation}"></td>
+								<td th:text="${l.goodsCode}"></td>
+								<td th:text="|₩ ${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}|"></td>				
+								<td th:text="${l.fundingStartDate}"></td> 
+								<td th:text="${l.fundingEndDate}"></td>
+								<td th:text="${l.fundingProgress}"></td>								
+							</tr>							
+							<tr th:if="${fundingList == null}">
+								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> 
+		<i class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/khj.js}"></script>
+</th:block>
+
+
+
+</html>

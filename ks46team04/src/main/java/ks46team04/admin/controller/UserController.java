@@ -20,15 +20,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import ks46team04.admin.dto.ActivityStatus;
+import ks46team04.admin.dto.LoginLog;
 import ks46team04.admin.dto.User;
+import ks46team04.admin.dto.UserDrop;
 import ks46team04.admin.dto.UserLevel;
+import ks46team04.admin.dto.UserSleep;
 import ks46team04.admin.mapper.UserMapper;
 import ks46team04.admin.service.UserService;
 
 
 
 @Controller
-@RequestMapping("/view/user")
+@RequestMapping("/admin/user")
 public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -41,10 +45,86 @@ public class UserController {
 		this.userMapper = userMapper;
 	}
 	
+	@GetMapping("/userDetailList")
+	public String getUserDetailList (Model model
+									,@RequestParam(name="userId", required=false) String userId){
+		
+		List<User> userDetailList = userService.getUserDetailList(userId);
+		
+		model.addAttribute("title", "회원상세조회");
+		model.addAttribute("userDetailList", userDetailList);
+		
+		return "admin/user/userDetailList";
+	}
+	
+	@GetMapping("/userDropList")
+	public String getUserDropList(Model model) {
+		
+List<UserDrop> userDropList = userService.getUserDropList();
+		
+		model.addAttribute("title", "탈퇴회원목록조회");
+		model.addAttribute("userDropList", userDropList);
+		
+		return "admin/user/userDropList";
+	}
+	
+	@GetMapping("/userSleepList")
+	public String getUserSleepList(Model model) {
+		
+List<UserSleep> userSleepList = userService.getUserSleepList();
+		
+		model.addAttribute("title", "휴면회원목록조회");
+		model.addAttribute("userSleepList", userSleepList);
+		
+		return "admin/user/userSleepList";
+	}
+	
+
+	@GetMapping("/loginLog")
+	public String getLoginLogList(Model model) {
+		
+		List<LoginLog> loginLogList = userService.getLoginLogList();
+		
+		model.addAttribute("title", "로그인기록");
+		model.addAttribute("loginLogList", loginLogList);
+		
+		return "admin/user/loginLog";
+	}
+	
+	
+	@GetMapping("/activityStatus")
+	public String getActivityStatusList(Model model) {
+		
+		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
+		
+		model.addAttribute("title", "회원활동상태기준");
+		model.addAttribute("activityStatusList", activityStatusList);
+		
+		return "admin/user/activityStatus";
+	}
+	
+	
+	@GetMapping("/userLevel")
+	public String getUserLevelList(Model model) {
+		
+		List<UserLevel> userLevelList = userService.getUserLevelList();
+		
+		model.addAttribute("title", "회원등급기준");
+		model.addAttribute("userLevelList", userLevelList);
+		
+		return "admin/user/userLevel";
+	}
+	
+	
+	@GetMapping("/myPage")
+	public String showMyPage() {
+		return "admin/user/myPage";
+	}
+	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/view/user/login";
+		return "redirect:/admin/user/login";
 	}
 	
 	
@@ -78,7 +158,7 @@ public class UserController {
 		model.addAttribute("title", "로그인");
 		if(result != null) model.addAttribute("result", result);
 		
-		return "view/login/login";
+		return "admin/user/login";
 	}
 	
 	
@@ -95,7 +175,7 @@ public class UserController {
 			if(checkPw.equals(userPw)) {
 				// 서비스 호출
 				userService.removeUser(userId);
-				redirectURI = "redirect:/view/user/userList";
+				redirectURI = "redirect:/admin/user/userList";
 			}
 		}
 		
@@ -104,17 +184,17 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/remove_user")
+	@GetMapping("/removeUser")
 	public String removeUser(@RequestParam(name="userId") String userId
 							  ,Model model) {
 		
 		model.addAttribute("title", "회원탈퇴");
 		model.addAttribute("userId", userId);
 		
-		return "view/user/remove_user";
+		return "admin/user/removeUser";
 	}
 	
-	@PostMapping("/modify_user")
+	@PostMapping("/modifyUser")
 	public String modifyUser(User user) {
 		
 		userMapper.modifyUser(user);
@@ -122,7 +202,7 @@ public class UserController {
 		return "redirect:/user/userList";
 	}
 	
-	@GetMapping("/modify_user")
+	@GetMapping("/modifyUser")
 	public String modifyUser(
 				@RequestParam(name="userId") String userId
 				,Model model) {
@@ -133,14 +213,14 @@ public class UserController {
 		model.addAttribute("memberLevelList", userLevelList);
 		model.addAttribute("memberInfo", userInfo);
 		
-		return "view/user/modify_user";
+		return "admin/user/modifyUser";
 	}
 	
 	@PostMapping("/addUser")
 	public String addUser(User user) {
 		log.info("화면에서 전달받은 데이터 : {}", user);
 		//userService.addUser(user);
-		return "redirect:/view/user/userList";
+		return "redirect:/admin/user/userList";
 	}
 	
 	@PostMapping("/idCheck")
@@ -162,7 +242,7 @@ public class UserController {
 		model.addAttribute("title", "회원가입");
 		model.addAttribute("userLevelList", userLevelList);
 		
-		return "view/user/addUser";
+		return "admin/user/addUser";
 	}
 	
 	@GetMapping("/userList")
@@ -176,7 +256,7 @@ public class UserController {
 		model.addAttribute("userList", userList);
 		 
 		
-		return "view/user/userList";
+		return "admin/user/userList";
 	}
 	
 	

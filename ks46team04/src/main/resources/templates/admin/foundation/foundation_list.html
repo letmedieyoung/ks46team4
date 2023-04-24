@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+
+		<!-- Page Heading -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">재단 조회</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationName">재단명</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+										&nbsp;
+										<button type="button" id="goodsSearchBtn"
+											class="btn btn-primary btn-icon-split">
+											<span class="text">재단 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">재단 등록일자</th>
+								<td>
+									<form>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">오늘</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">7일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1년</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-primary">
+												<span class="text text-gray-100">전체</span>
+											</button>
+											&nbsp;
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<label for="start-date" class="sr-only">시작일</label>
+												<input type="date" id="start-date" class="form-control"
+													placeholder="시작일">
+											</div>
+											~
+											<div class="col-auto">
+												<label for="end-date" class="sr-only">종료일</label>
+												<input type="date" id="end-date" class="form-control" placeholder="종료일">
+											</div>
+										</div>
+									</form>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsCompany">재단 주소</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="주소를 검색하거나 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">주소 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">검색</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<div class="table-responsive overflow-x">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr>
+								<th>재단코드</th>
+								<th>재단명</th>
+								<th>담당자</th>
+								<th>연락처</th>
+								<th>주소</th>
+								<th>등록자</th>
+								<th>등록일자</th>
+								<th>수정자</th>
+								<th>수정일자</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${foundationList == null}" th:each=" l : ${foundationList}">
+								<td th:text="${l.foundationCode}"></td>
+								<td th:text="${l.foundationName}"></td>
+								<td th:text="${l.foundationManager}"></td>
+								<td th:text="${l.foundationPhone}"></td>
+								<td th:text="${l.foundationAddr}"></td>
+								<td th:text="${l.foundationRegId}"></td>
+								<td th:text="${l.foundationRegDate}"></td>
+								<td th:text="${l.foundationUpdId}"></td>
+								<td th:text="${l.foundationUpdDate}"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/foundation/modify_foundation(foundationCode=${l.foundationCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/foundation/remove_foundation(foundationCode=${l.foundationCode})}">
+										<span class="text">삭제</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${foundationList == null}">
+								<td colspan="11">등록된 재단의 정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+
+
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+
+</html>

@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks46team04.admin.dto.ActivityStatus;
+import ks46team04.admin.dto.LoginLog;
 import ks46team04.admin.dto.User;
+import ks46team04.admin.dto.UserDrop;
 import ks46team04.admin.dto.UserLevel;
+import ks46team04.admin.dto.UserSleep;
 import ks46team04.admin.mapper.UserMapper;
 
 @Service
@@ -24,7 +28,12 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 	
-	
+	public List<User> getUserDetailList(String userId){
+		
+		List<User> userDetailList = userMapper.getUserDetailList(userId);
+		
+		return userDetailList;
+	}
 	
 	public Map<String, Object> loginCheck(String userId, String userPw) {
 		Map<String, Object> loginResultMap = new HashMap<String, Object>();
@@ -56,10 +65,10 @@ public class UserService {
 		}
 		
 	}
-		
-		public void modifyUser(User user) {
-			userMapper.modifyUser(user);
-		}
+	
+	public void modifyUser(User user) {
+		userMapper.modifyUser(user);
+	}
 	
 	
 	public User getUserInfoById(String userId) {
@@ -74,6 +83,35 @@ public class UserService {
 		return result;
 	}
 	
+public List<UserDrop> getUserDropList(){
+		
+		List<UserDrop> userDropList = userMapper.getUserDropList();
+		
+		return userDropList;
+	}
+	
+	
+public List<UserSleep> getUserSleepList(){
+		
+		List<UserSleep> userSleepList = userMapper.getUserSleepList();
+		
+		return userSleepList;
+	}
+	
+	
+public List<LoginLog> getLoginLogList(){
+		
+		List<LoginLog> loginLogList = userMapper.getLoginLogList();
+		
+		return loginLogList;
+	}	
+	
+public List<ActivityStatus> getActivityStatusList(){
+		
+		List<ActivityStatus> activityStatusList = userMapper.getActivityStatusList();
+		
+		return activityStatusList;
+	}
 	
 
 	public List<UserLevel> getUserLevelList(){

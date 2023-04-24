@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default}">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">회원 활동 상태 기준 설정</h1>
+<p class="mb-4"> 회원 활동 상태 기준입니다. <br>
+회원 활동 상태 기준 등록·수정·삭제는 불가합니다. </p>
+
+<!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">회원 활동 상태 기준</h6>
+                </div>
+                <div class="card-body overflow-x">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="bg-gray-100">
+                            
+				<tr>
+					<th>활동상태 기준코드</th>
+					<th>활동상태명</th>
+					<th>활동상태 기준날짜</th>
+					<th>등록자아이디</th>
+					<th>등록일자</th>
+					<th>수정자아이디</th>
+					<th>수정일자</th>
+					<th>수정</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				 <tr th:unless="${activityStatusList == null}" th:each=" l : ${activityStatusList}">
+					<td th:text="${l.activityStatusStandardCode}"></td>
+					<td th:text="${l.activityStatusName}"></td>
+					<td th:text="${l.activityStatusStandardDate}"></td>
+					<td th:text="${l.activityStatusRegId}"></td>
+					<td th:text="${l.activityStatusRegDate}"></td>
+					<td th:text="${l.activityStatusUpdateId}"></td>
+					<td th:text="${l.activityStatusUpdateDate}"></td>
+					<td><a href="#">수정</a></td>
+					<td><a href="#">삭제</a></td>
+				</tr>
+			<tr th:if="${activityStatusList == null}">
+					<td colspan="7">등록된 회원의 정보가 없습니다.</td>
+				
+				</tr> 
+			</tbody>
+		</table>
+			<br>
+				<button class="btn btn-primary">
+					<span class="text text-gray-100">등록</span>
+				</button>
+	</div>
+	<!-- /.container-fluid -->
+
+</th:block>
+<th:block layout:fragment="customJs">
+    <!-- Page level plugins -->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+    <!-- Page level custom scripts -->
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

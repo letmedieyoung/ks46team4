@@ -6,7 +6,7 @@
 	id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->
-	<a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+	<a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/common/funding_index}">
 		<div class="sidebar-brand-icon rotate-n-15">
 			<i class="fas fa-capsules"></i>
 		</div>
@@ -18,7 +18,7 @@
 
 	<!-- Nav Item - Dashboard -->
 	<li class="nav-item">
-		<a class="nav-link" th:href="@{/}"> 
+		<a class="nav-link" th:href="@{/admin/admin_index}"> 
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>대시보드</span>
 		</a>
@@ -42,17 +42,16 @@
 		<div id="collapsePages1" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#">회원 등급 기준 등록#</a> <a
-					class="collapse-item" href="#">회원 활동 상태 기준 등록#</a> <a
-					class="collapse-item" th:href="@{/view/user/addUser}">회원 등록!</a> <a
-					class="collapse-item" th:href="@{/view/user/modify_user}">회원 수정
-					처리#</a> <a class="collapse-item" th:href="@{/view/user/remove_user}">회원
-					탈퇴#</a> <a class="collapse-item" href="#">특정 회원 정보 조회#</a> <a
-					class="collapse-item" th:href="@{/view/user/userList}">전체 회원 정보
-					조회!</a> <a class="collapse-item" href="#">휴면 회원 정보 조회#</a> <a
-					class="collapse-item" href="#">탈퇴 회원 정보 조회#</a> <a
-					class="collapse-item" href="@{/view/user/login_log}">회원 로그인 정보
-					조회#</a> <a class="collapse-item" href="#">회원 월별 기부 누적 기록(기부왕)(#이바른)</a>
+				<a class="collapse-item" th:href="@{/admin/user/userLevel}">회원 등급 기준 설정!</a>
+				<a class="collapse-item" th:href="@{/admin/user/activityStatus}">회원 활동 상태 기준 설정!</a> <a
+				class="collapse-item" th:href="@{/admin/user/addUser}">회원 등록!</a> 
+					<a
+				class="collapse-item" th:href="@{/admin/user/userList}">회원 정보
+				조회!</a> <a class="collapse-item" th:href="@{/admin/user/userSleepList}">휴면 회원 정보 조회!</a> <a
+				class="collapse-item" th:href="@{/admin/user/userDropList}">탈퇴 회원 정보 조회!</a> <a
+				class="collapse-item" th:href="@{/admin/user/loginLog}">회원 로그인
+				정보 조회!</a>  <a class="collapse-item" href="#">회원 월별 기부 누적
+				기록(기부왕)(#이바른)</a>
 			</div>
 		</div></li>
 
@@ -65,12 +64,12 @@
 		<div id="collapsePages2" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" th:href="@{/foundation/foundation_list}">재단
-					조회!</a> <a class="collapse-item" th:href="@{/foundation/add_foundation}">재단
+				<a class="collapse-item" th:href="@{/admin/foundation/foundation_list}">재단
+					조회!</a> <a class="collapse-item" th:href="@{/admin/foundation/add_foundation}">재단
 					등록!</a> <a class="collapse-item"
-					th:href="@{/foundation/foundation_request_list}">재단 요청사항 조회!</a> <a
+					th:href="@{/admin/foundation/foundation_request_list}">재단 요청사항 조회!</a> <a
 					class="collapse-item"
-					th:href="@{/foundation/add_foundation_request}">재단 요청사항 등록!</a>
+					th:href="@{/admin/foundation/add_foundation_request}">재단 요청사항 등록!</a>
 			</div>
 		</div></li>
 
@@ -83,19 +82,17 @@
 		<div id="collapsePages3" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" th:href="@{/goods/goods_list}">상품 조회!</a> <a
-					class="collapse-item" th:href="@{/goods/add_goods}">상품 등록!</a> <a
-					class="collapse-item" th:href="@{/stock/stock_list}">상품 재고 조회!</a> <a
-					class="collapse-item" th:href="@{/stock/add_incoming_stock}">상품
-					입고 등록!</a> <a class="collapse-item"
-					th:href="@{/stock/add_outcoming_stock}">상품 출고 등록!</a> <a
-					class="collapse-item"
-					th:href="@{/stock/outcoming_stock_detail_list}">상품 출고상세 조회!</a> <a
-					class="collapse-item"
-					th:href="@{/stock/add_outcoming_stock_detail}">상품 출고상세 등록!</a> <a
-					class="collapse-item" th:href="@{/stock/unusual_stock_detail_list}">상품
-					비정상 재고 조회!</a> <a class="collapse-item"
-					th:href="@{/stock/add_unusual_stock_detail}">상품 비정상 재고 등록!</a>
+				<a class="collapse-item" th:href="@{/admin/goods/goods_list}">상품 조회!</a>
+				<a class="collapse-item" th:href="@{/admin/goods/add_goods}">상품 등록!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/stock_list}">상품 재고 조회!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/incoming_stock_list}">상품 입고 조회!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/outcoming_stock_list}">상품 출고 조회!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/add_incoming_stock}">상품 입고 등록!</a>
+				<a class="collapse-item" th:href="@{/admin/stock/add_outcoming_stock}">상품 출고 등록!</a>
+				<a class="collapse-item" th:href="@{/admin/stock/outcoming_stock_detail_list}">상품 출고상세 조회!</a>
+				<a class="collapse-item" th:href="@{/admin/stock/add_outcoming_stock_detail}">상품 출고상세 등록!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/unusual_stock_detail_list}">상품 비정상 재고 조회!</a> 
+				<a class="collapse-item" th:href="@{/admin/stock/add_unusual_stock_detail}">상품 비정상 재고 등록!</a>
 			</div>
 		</div></li>
 
@@ -109,12 +106,12 @@
 		<div id="collapsePages4" class="collapse"
 			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#">정기 기부 단가</a> <a
-					class="collapse-item" href="#">등록된 회원 결제 수단</a> <a
-					class="collapse-item" href="#">구독 신청 내역</a> <a
-					class="collapse-item" href="#">구독 결제 내역</a> <a
-					class="collapse-item" href="#">구독 결제 환불</a> <a
-					class="collapse-item" href="#">월별 결제 합계</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donation_list}">정기기부 단가</a> 
+				<a class="collapse-item" th:href="@{/admin/donation/donationSub_list}">정기기부 구독 신청</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donationPayMethod_list}">등록된 회원 결제 수단</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donationPayDetail}">정기기부 구독 결제 상세</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donationRefund_list}">정기기부 결제 환불</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donationPayMonthly}">정기기부 월별 결제 합계</a>
 			</div>
 		</div></li>
 
@@ -131,10 +128,10 @@
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<a class="collapse-item" th:href="@{/funding/manage}">펀딩 컨텐츠 관리!</a>
-					<a class="collapse-item" th:href="@{/funding/register}">펀딩 등록!</a> <a
-						class="collapse-item" th:href="@{/funding/current_amount}">컨텐츠
-						별 진행 현황!</a> <a class="collapse-item" th:href="@{/funding/payments}">결제
-						내역!</a> <a class="collapse-item" th:href="@{/funding/refund}">환불 관리!</a>
+					<a class="collapse-item" th:href="@{/funding/register}">펀딩 등록!</a>
+					<a class="collapse-item" th:href="@{/funding/current_amount}">컨텐츠 별 진행 현황!</a>
+					<a class="collapse-item" th:href="@{/funding/payments}">결제	내역!</a>
+					<a class="collapse-item" th:href="@{/funding/refund}">환불 관리!</a>
 				</div>
 			</div>
 		</div></li>
@@ -156,10 +153,10 @@
 				<div class="collapse-divider"></div>
 
 				<h6 class="collapse-header">매입·매출:(이바른)</h6>
-				<a class="collapse-item" th:href="@{/view/purchase_sale/payment_vat_list}">수수료 관리!</a>
-				<a class="collapse-item" th:href="@{/view/purchase_sale/purchase_list}">매입 관리!</a>
-				<a class="collapse-item" th:href="@{/view/purchase_sale/sales_list}">매출 관리!</a>
-				<a class="collapse-item" th:href="@{/view/purchase_sale/month_profit_loss}">손익!</a>
+				<a class="collapse-item" th:href="@{/admin/purchase_sale/payment_vat_list}">수수료 관리!</a>
+				<a class="collapse-item" th:href="@{/admin/purchase_sale/purchase_list}">매입 관리!</a>
+				<a class="collapse-item" th:href="@{/admin/purchase_sale/sales_list}">매출 관리!</a>
+				<a class="collapse-item" th:href="@{/admin/purchase_sale/month_profit_loss}">손익!</a>
 			</div>
 		</div></li>
 

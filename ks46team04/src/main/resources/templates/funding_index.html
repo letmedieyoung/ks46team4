@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default2}">
+<head>
+	<link rel="stylesheet" type="text/css" href="@{/resources/static/css/style.css}"></link>
+ 
+</head>
+
+<th:block layout:fragment="customContents2">
+	<!-- slider_area_start -->
+	<div class="slider_area">
+		<div
+			class="single_slider  d-flex align-items-center slider_bg_1 overlay2">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="slider_text ">
+							<span>오늘 시작하세요</span>
+							<h3>Help the children When They Need</h3>
+							<p>
+								With so much to consume and such little time, coming up <br>
+								with relevant title ideas is essential
+							</p>
+							<a href="#" class="boxed-btn3">자세히 보기</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- slider_area_end -->
+
+	<!-- open_funding_area_start  -->
+	<div class="popular_causes_area section_padding">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+					<div class="section_title text-center mb-55">
+						<h3>
+							<span>진행 중 펀딩</span>
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="causes_active owl-carousel">
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/1.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 59%;" aria-valuenow="59" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 59% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>달성 금액 : 590,000원</span> 
+								</div>
+								<h4>면역력이 떨어진 아이들에게 힘을 보태주세요</h4>
+								<p>
+									초록우산 어린이재단
+								</p>
+								<a class="read_more" th:href="@{/common/funding_detail}">더보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/2.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>달성 금액 : 685,000 원</span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>기후우울로 고통받는 사람들에게 힘을 보태주세요</h4>
+								<p>
+									사단법인 따뜻한하루
+								</p>
+								<a class="read_more" th:href="@{/common/funding_detail2}">더보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/3.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>달성 금액 : 265,000 원</span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>소화가 어려운 아이들에게 힘을 보태주세요</h4>
+								<p>
+									초록우산 어린이재단
+								</p>
+								<a class="read_more" th:href="@{/common/funding_detail3}">더보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/1.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>진행중 펀딩 제목4</h4>
+								<p>
+									진행중 펀딩 내용4 진행중 펀딩 내용4<br>진행중 펀딩 내용4 진행중 펀딩 내용4
+								</p>
+								<a class="read_more" href="#">Read More</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- open_funding_area_end  -->
+
+	<!-- counter_area_start  -->
+	<div class="counter_area">
+		<div class="container">
+			<div class="counter_bg overlay">
+				<div class="row">
+					<div class="col-lg-3 col-md-6">
+						<div
+							class="single_counter d-flex align-items-center justify-content-center">
+							<div class="icon">
+								<i class="flaticon-calendar"></i>
+							</div>
+							<div class="events">
+								<h3 class="counter">120</h3>
+								<p>개의 프로젝트</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div
+							class="single_counter d-flex align-items-center justify-content-center">
+							<div class="icon">
+								<i class="flaticon-heart-beat"></i>
+							</div>
+							<div class="events">
+								<h3 class="counter">120</h3>
+								<p>개의 마음</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div
+							class="single_counter d-flex align-items-center justify-content-center">
+							<div class="icon">
+								<i class="flaticon-in-love"></i>
+							</div>
+							<div class="events">
+								<h3 class="counter">120</h3>
+								<p>번의 행복</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div
+							class="single_counter d-flex align-items-center justify-content-center">
+							<div class="icon">
+								<i class="flaticon-hug"></i>
+							</div>
+							<div class="events">
+								<h3 class="counter">120</h3>
+								<p>원의 기부금</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- counter_area_end  -->
+
+	<br>
+	<br>
+	<br>
+
+	<!-- cloese_funding_area_start  -->
+	<div class="popular_causes_area section_padding">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+					<div class="section_title text-center mb-55">
+						<h3>
+							<span>종료된 펀딩</span>
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="causes_active owl-carousel">
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/1.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>종료된 펀딩 제목1</h4>
+								<p>종료된 펀딩 내용1 종료된 펀딩 내용1 종료된 펀딩 내용1 종료된 펀딩 내용1</p>
+								<a class="read_more" href="#">더 보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/2.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>종료된 펀딩 제목2</h4>
+								<p>종료된 펀딩 내용2 종료된 펀딩 내용2 종료된 펀딩 내용2 종료된 펀딩 내용2</p>
+								<a class="read_more" href="#">더 보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/3.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>종료된 펀딩 제목3</h4>
+								<p>종료된 펀딩 내용3 종료된 펀딩 내용3 종료된 펀딩 내용3 종료된 펀딩 내용3</p>
+								<a class="read_more" href="#">더 보기</a>
+							</div>
+						</div>
+						<div class="single_cause">
+							<div class="thumb">
+								<img th:src="@{/img/causes/1.png}" alt="">
+							</div>
+							<div class="causes_content">
+								<div class="custom_progress_bar">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar"
+											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											aria-valuemax="100">
+											<span class="progres_count"> 30% </span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="balance d-flex justify-content-between align-items-center">
+									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+								</div>
+								<h4>종료된 펀딩 제목4</h4>
+								<p>종료된 펀딩 내용4 종료된 펀딩 내용4 종료된 펀딩 내용4 종료된 펀딩 내용4</p>
+								<a class="read_more" href="#">더 보기</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- cloese_funding_area_end  -->
+</th:block>
+</html>

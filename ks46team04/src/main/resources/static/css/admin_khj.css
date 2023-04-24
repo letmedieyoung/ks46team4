@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/* manage */
+.manageBtn {
+	margin-bottom: 15px;
+	border: 1px solid #999;
+}
+
+#fundingName{
+	text-align: left;
+}
+
+.fmtable th{
+	text-align: center;
+}
+
+.fmtable td{
+	padding: 6px;
+	text-align: center;
+}
+
+
+
+.fradio {
+	margin-right: 5px;
+}
+
+.f-date-select {
+	margin-right: 5px;
+}
+
+.dateSelect input[type='date']::before {
+  content: attr(data-placeholder);
+  width: 100%;
+}
+
+.dateSelect input[type='date']:focus::before,
+.dateSelect input[type='date']:valid::before {
+  display: none;
+}
+
+
+/* refund */
+.f-refund th {
+	font-size: 15px;
+	padding: 6px;
+	text-align: center;
+}
+.f-refund td {
+	font-size: 15px;
+	padding: 6px;
+}
+
