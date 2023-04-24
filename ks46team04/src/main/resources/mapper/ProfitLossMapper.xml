@@ -28,7 +28,7 @@
 			month_total_budget AS monthTotalBudget,		
 			month_total_purchase AS monthTotalPurchase,		
 			month_profit_loss AS monthProfitLoss,		
-			finall_month_profit_loss AS finalMonthProfitLoss,		
+			final_month_profit_loss AS finalMonthProfitLoss,		
 			settlement_check AS settlementCheck,		
 			settlement_date AS settlementDate,		
 			settlement_check_id AS settlementCheckId
