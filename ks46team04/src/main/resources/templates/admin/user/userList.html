@@ -52,14 +52,17 @@
 							<tr>
 								<th>아이디</th>
 								<th>등급</th>
+								<th>비밀번호</th>
 								<th>이름</th>
 								<th>생년월일</th>
 								<th>연락처</th>
 								<th>이메일동의여부</th>
 								<th>이메일</th>
+								<th>주소</th>
 								<th>가입일</th>
+								<th>로그인코드</th>
 								<th>미접속일수</th>
-								<th>회원정보수정일자</th>
+								<th>정보수정일자</th>
 								<th>활동상태</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -74,6 +77,7 @@
 									<div th:if="${l.userLevel == '1'}">관리자</div>
 									<div th:unless="${l.userLevel == '1'}">회원</div>
 								</td>
+								<td th:text="${l.userPw}"></td>
 								<td th:text="${l.userName}"></td>
 								<td th:text="${l.userBirth}"></td>
 								<td th:text="${l.userPhone}"></td>
@@ -82,7 +86,9 @@
 									<div th:unless="${l.userEmailAgree == '1'}">수신거부</div>
 								</td>
 								<td th:text="${l.userEmail}"></td>
+								<td th:text="${l.userAddr}"></td>
 								<td th:text="${l.userJoinDate}"></td>
+								<td th:text="${l.loginLogCode}"></td>
 								<td th:text="${l.logDateCalcul}"></td>
 								<td th:text="${l.userUpdateDate}"></td>
 								<td>
@@ -100,7 +106,7 @@
 									th:href="@{/admin/user/userDetailList(userId=${l.userId})}">조회</a></td>
 							</tr>
 							<tr th:if="${userList == null}">
-								<td colspan="11">등록된 회원의 정보가 없습니다.</td>
+								<td colspan="14">등록된 회원의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
