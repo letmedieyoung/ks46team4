@@ -1,5 +1,7 @@
 package ks46team04.admin.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,9 +26,11 @@ public class PurchaseController {
 	
 	@GetMapping("/purchase_list")
 	public String getTotalPurchaseList(Model model) {
-		//Purchase totalPurchaseList = purchaseService.getTotalPurchaseList();
-		//model.addAttribute("title", "Pilling Good - 관리 - 매입 기록 조회");
+		List<Purchase> totalPurchaseList = purchaseService.getTotalPurchaseList();
+		log.info("totalPurchaseList: {}", totalPurchaseList);
 		
+		model.addAttribute("title", "Pilling Good - 관리 - 매입 기록 조회");
+		model.addAttribute("totalPurchaseList", totalPurchaseList);
 		return "admin/purchase_sale/purchase_list";
 	}
 	

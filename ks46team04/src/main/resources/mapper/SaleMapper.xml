@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="ks46team04.admin.mapper.SaleMapper">
+ 	<resultMap type="UnionDonaFund" id="unionDFResultMap">
+ 		<result column="user_id" property="userId"/>
+ 		<result column="subscription_code" property="subscriptionCode"/>
+ 		<result column="payment_amount" property="paymentAmount"/>
+ 		<result column="payment_date" property="paymentDate"/>
+ 		<result column="refund_requested" property="refundRequested"/>
+ 		<result column="deadline_check" property="deadlineCheck"/>
+ 	</resultMap>
+ 
+ 	<select id="getTotalSaleList" resultMap="unionDFResultMap">
+ 		/*매출 관리 조회*/
+ 		SELECT 
+		    user_id,
+		    user_regular_donation_subscription_code AS `subscription_code`,
+		    payment_amount AS `payment_amount`,
+		    user_regular_donation_payment_date AS `payment_date`,
+		    user_regular_donation_payment_refund_requested AS `refund_requested`,
+		    user_regular_donation_deadline_check AS `deadline_check`
+		FROM 
+		    user_regular_donation_payment
+		UNION
+		SELECT 
+		    user_id,
+		    funding_code AS `subscription_code`,
+		    funding_payment_amount AS `payment_amount`,
+		    funding_payment_date AS `payment_date`,
+		    funding_refund_request AS `refund_requested`,
+		    deadline_status AS `deadline_check`
+		FROM 
+		    funding_payments
+		ORDER BY `payment_date` DESC;
+ 	</select>
+ </mapper>

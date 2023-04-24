@@ -3,11 +3,11 @@ package ks46team04.admin.dto;
 public class Purchase {
 	private String purchaseCode;		
 	private String purchaseStatus;	
-	private String goodsCode;	//이건 외래키, 일대다 관계와 다대일 관계를 생각		
+	private String goodsCode;	
 	private String goodsName;		
-	private String purchasePrice;		
-	private String purchaseQuantity;		
-	private String totalPurchasePrice;		
+	private int purchasePrice;		
+	private int purchaseQuantity;		
+	private int totalPurchasePrice;		
 	private String purchaseDate;		
 	private String purchaseRegId;		
 	private String purchaseRegDate;		
@@ -41,22 +41,22 @@ public class Purchase {
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
 	}
-	public String getPurchasePrice() {
+	public int getPurchasePrice() {
 		return purchasePrice;
 	}
-	public void setPurchasePrice(String purchasePrice) {
+	public void setPurchasePrice(int purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
-	public String getPurchaseQuantity() {
+	public int getPurchaseQuantity() {
 		return purchaseQuantity;
 	}
-	public void setPurchaseQuantity(String purchaseQuantity) {
+	public void setPurchaseQuantity(int purchaseQuantity) {
 		this.purchaseQuantity = purchaseQuantity;
 	}
-	public String getTotalPurchasePrice() {
+	public int getTotalPurchasePrice() {
 		return totalPurchasePrice;
 	}
-	public void setTotalPurchasePrice(String totalPurchasePrice) {
+	public void setTotalPurchasePrice(int totalPurchasePrice) {
 		this.totalPurchasePrice = totalPurchasePrice;
 	}
 	public String getPurchaseDate() {
@@ -101,15 +101,39 @@ public class Purchase {
 	public void setUserPurchseDeadlindeCheck(String userPurchseDeadlindeCheck) {
 		this.userPurchseDeadlindeCheck = userPurchseDeadlindeCheck;
 	}
-	
-	
 	@Override
 	public String toString() {
-		return "Purchase [purchaseCode=" + purchaseCode + ", purchaseStatus=" + purchaseStatus + ", goodsCode="
-				+ goodsCode + ", goodsName=" + goodsName + ", purchasePrice=" + purchasePrice + ", purchaseQuantity="
-				+ purchaseQuantity + ", totalPurchasePrice=" + totalPurchasePrice + ", purchaseDate=" + purchaseDate
-				+ ", purchaseRegId=" + purchaseRegId + ", purchaseRegDate=" + purchaseRegDate + ", purchaseUpdateId="
-				+ purchaseUpdateId + ", purchaseUpdateDate=" + purchaseUpdateDate + ", purchaseGroupCode="
-				+ purchaseGroupCode + ", userPurchseDeadlindeCheck=" + userPurchseDeadlindeCheck + "]";
-	}	
+		StringBuilder builder = new StringBuilder();
+		builder.append("Purchase [purchaseCode=");
+		builder.append(purchaseCode);
+		builder.append(", purchaseStatus=");
+		builder.append(purchaseStatus);
+		builder.append(", goodsCode=");
+		builder.append(goodsCode);
+		builder.append(", goodsName=");
+		builder.append(goodsName);
+		builder.append(", purchasePrice=");
+		builder.append(purchasePrice);
+		builder.append(", purchaseQuantity=");
+		builder.append(purchaseQuantity);
+		builder.append(", totalPurchasePrice=");
+		builder.append(totalPurchasePrice);
+		builder.append(", purchaseDate=");
+		builder.append(purchaseDate);
+		builder.append(", purchaseRegId=");
+		builder.append(purchaseRegId);
+		builder.append(", purchaseRegDate=");
+		builder.append(purchaseRegDate);
+		builder.append(", purchaseUpdateId=");
+		builder.append(purchaseUpdateId);
+		builder.append(", purchaseUpdateDate=");
+		builder.append(purchaseUpdateDate);
+		builder.append(", purchaseGroupCode=");
+		builder.append(purchaseGroupCode);
+		builder.append(", userPurchseDeadlindeCheck=");
+		builder.append(userPurchseDeadlindeCheck);
+		builder.append("]");
+		return builder.toString();
+	}
+	
 }

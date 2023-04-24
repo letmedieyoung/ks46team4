@@ -15,7 +15,11 @@
 		<!-- Page Heading -->
 		<h1 class="h3 mb-2 text-gray-800">매출 조회</h1>
 		<p class="mb-4">
-			매출 조회입니다.<br> 환불 건을 제외하고 결제완료된 정기기부/펀딩의 금액과 결제일을 조회합니다.
+			매출 조회입니다.<br>
+			환불 건을 제외하고 결제완료된 정기기부/펀딩의 금액과 결제일을 조회합니다.<br>
+			기본적인 전체조회는 결제일 기준 최신순으로 나열.<br>
+			DB연결 완료. subscriptionCode에서 문자열 뽑아 구분 컬럼 로직 세울 것.<br>
+			마감 유무 부분 db 수정 및 형식 통일할 것
 		</p>
 
 		<div class="card shadow mb-4">
@@ -137,29 +141,13 @@
 							</tr>
 						</tfoot>
 						<tbody>
-							<tr>
-								<td>펀딩</td>
-								<td>funding_payment2</td>
-								<td>useridf9</td>
-								<td>₩ 50,000</td>
-								<td>2023-01-27 16:45</td>
-								<td>마감완료</td>
-							</tr>
-							<tr>
-								<td>정기기부</td>
-								<td>donation_payment1</td>
-								<td>useridd4</td>
-								<td>₩ 30,000</td>
-								<td>2023-01-17 16:45</td>
-								<td>마감완료</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr th:unless="${totalSaleList == null}" th:each="l : ${totalSaleList}">
+								<td th:text="구분"></td>
+								<td th:text="${l.subscriptionCode}"></td>
+								<td th:text="${l.userId}"></td>
+								<td th:text="${l.paymentAmount}"></td>
+								<td th:text="${l.paymentDate}"></td>
+								<td th:text="${l.deadlineCheck}"></td>
 							</tr>
 						</tbody>
 					</table>

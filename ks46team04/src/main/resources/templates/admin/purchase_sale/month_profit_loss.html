@@ -15,8 +15,9 @@
 		<!-- Page Heading -->
 		<h1 class="h3 mb-4 text-gray-800">달 마감된 매입·매출/손익 조회</h1>
 		<p class="mb-4">
-			달 마감된 매입·매출 기록을 조회하고 이를 토대로한 손익 기록을 조회합니다.<br> 년도, 월, 단위로만 조회
-			가능하며, 매입·매출 따로 조회는 불가능합니다.
+			달 마감된 매입·매출 기록을 조회하고 이를 토대로한 손익 기록을 조회합니다.<br> 
+			년도, 월, 단위로만 조회 가능하며, 매입·매출 따로 조회는 불가능합니다.<br>
+			조회 디비 연결 완료. 년, 월, ₩단위, 금액세자리쉼표 붙이기 
 		</p>
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
@@ -74,21 +75,13 @@
                                         </tr>
                                     </tfoot> -->
 						<tbody>
-							<tr>
-								<td>기부매출</td>
-								<td>2023년</td>
-								<td>1월</td>
-								<td>₩ 450,000</td>
-								<td>₩ 45,000</td>
-								<td>₩ 405,000</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr th:unless="${totalPurchaseSale == null}" th:each="l : ${totalPurchaseSale}">
+								<td th:text="${l.division}"></td>
+								<td th:text="${l.paymentYear}"></td>
+								<td th:text="${l.paymentMonth}"></td>
+								<td th:text="${l.paymentAmount}"></td>
+								<td th:text="${l.paymentVat}"></td>
+								<td th:text="${l.purchaseBudget}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -141,31 +134,18 @@
                                         </tr>
                                     </tfoot> -->
 						<tbody>
-							<tr>
-								<td>2023년</td>
-								<td>1월</td>
-								<td>₩ 450,000</td>
-								<td>₩ 45,000</td>
-								<td>₩ 405,000</td>
-								<td>400,000</td>
-								<td>5,000</td>
-								<td>50,000</td>
-								<td>TRUE</td>
-								<td>2023-2-5 10:00</td>
-								<td>useridm1</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr th:unless="${profitLoss == null}" th:each="l : ${profitLoss}">
+								<td th:text="${l.paymentYear}"></td>
+								<td th:text="${l.paymentMonth}"></td>
+								<td th:text="${l.monthTotalSales}"></td>
+								<td th:text="${l.monthTotalVat}"></td>
+								<td th:text="${l.monthTotalBudge}"></td>
+								<td th:text="${l.monthTotalPurchase}"></td>
+								<td th:text="${l.monthProfitLoss}"></td>
+								<td th:text="${l.finalMonthProfitLoss}"></td>
+								<td th:text="${l.settlementCheck}"></td>
+								<td th:text="${l.settlementDate}"></td>
+								<td th:text="${l.settlementCheckId}"></td>
 							</tr>
 						</tbody>
 					</table>

@@ -5,19 +5,40 @@
  
  <mapper namespace="ks46team04.admin.mapper.PurchaseMapper">
  	<resultMap type="Purchase" id="purchaseResultMap">
- 		<id column="purchase_history_code" property=""></id>
- 		<result column="purchase_status" property=""></result>
- 		<result column="goods_code" property=""></result>
- 		<result column="goods_name" property=""></result>
- 		<result column="purchase_price" property=""></result>
- 		<result column="purchase_quantity" property=""></result>
- 		<result column="total_purchase_price" property=""></result>
- 		<result column="purchase_date" property=""></result>
- 		<result column="purchase_reg_id" property=""></result>
- 		<result column="purchase_reg_date" property=""></result>
- 		<result column="purchase_update_id" property=""></result>
- 		<result column="purchase_update_date" property=""></result>
- 		<result column="purchase_group_code" property=""></result>
- 		<result column="user_purchse_deadlinde_check" property=""></result>
+ 		<id column="purchase_history_code" 			property="purchaseCode"></id>
+ 		<result column="purchase_status" 			property="purchaseStatus"></result>
+ 		<result column="goods_code" 				property="goodsCode"></result>
+ 		<result column="goods_name" 				property="goodsName"></result>
+ 		<result column="purchase_price" 			property="purchasePrice"></result>
+ 		<result column="purchase_quantity" 			property="purchaseQuantity"></result>
+ 		<result column="total_purchase_price"		property="totalPurchasePrice"></result>
+ 		<result column="purchase_date" 				property="purchaseDate"></result>
+ 		<result column="purchase_reg_id" 			property="purchaseRegId"></result>
+ 		<result column="purchase_reg_date"			property="purchaseRegDate"></result>
+ 		<result column="purchase_update_id" 		property="purchaseUpdateId"></result>
+ 		<result column="purchase_update_date" 		property="purchaseUpdateDate"></result>
+ 		<result column="purchase_group_code" 		property="purchaseGroupCode"></result>
+ 		<result column="user_purchse_deadlinde_check" property="userPurchseDeadlindeCheck"></result>
  	</resultMap>
+ 	
+ 	<select id="getTotalPurchaseList" resultMap="purchaseResultMap">
+ 		/*매입 조회*/
+ 		SELECT		
+			purchase_status,			
+			goods_name,		
+			purchase_price,		
+			purchase_quantity,		
+			total_purchase_price,		
+			purchase_date,		
+			purchase_reg_id,		
+			purchase_reg_date,		
+			purchase_update_id,		
+			purchase_update_date,		
+			purchase_group_code,		
+			user_purchse_deadlinde_check
+		FROM
+			purchase_history;
+ 	</select>
+ 	
+ 	
  </mapper>
