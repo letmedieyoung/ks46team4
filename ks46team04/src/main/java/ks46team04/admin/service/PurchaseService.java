@@ -1,5 +1,9 @@
 package ks46team04.admin.service;
 
+import java.util.List;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +25,9 @@ public class PurchaseService {
 	}
 	
 	
-	public Purchase getTotalPurchaseList() {
-		Purchase totalPurchaseList = purchaseMapper.getTotalPurchaseList();
-		
+	public List<Purchase> getTotalPurchaseList() {
+		List<Purchase> totalPurchaseList = purchaseMapper.getTotalPurchaseList();
+		log.info("totalPurchaseList: {}", totalPurchaseList);
 		return totalPurchaseList;
 	}
 }
