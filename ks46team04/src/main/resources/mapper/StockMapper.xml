@@ -31,7 +31,7 @@
 			, unusual_stock_amount
 			, unusual_stock_check
 		FROM
-			goods_stock
+			goods_stock;
 	</select>
 	
 </mapper>

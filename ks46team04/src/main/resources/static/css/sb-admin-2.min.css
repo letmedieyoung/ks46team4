@@ -10339,7 +10339,7 @@ form.user .form-control-user-plus {
   .table-layout-auto {
   table-layout: auto;
   }
- .search-input {
+.middle-input {
     width: 20rem;
     height: calc(1em + 0.5rem + 2px);
     display: inline-block;
@@ -10351,8 +10351,15 @@ form.user .form-control-user-plus {
     text-align: center;
 }
 .overflow-x{
-	overflow-x:scroll;
+	overflow-x:auto;
 }
 .table-space{
 	white-space: nowrap;
 }
+.short-input{
+    width: 3rem;
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem
+} 
