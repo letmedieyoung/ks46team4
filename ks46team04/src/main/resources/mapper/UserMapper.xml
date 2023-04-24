@@ -188,10 +188,10 @@
 	<select id="getUserLevelList" resultType="UserLevel">
 		/* 회원 등급 조회 */
 		SELECT
-			 ul.user_level	AS userLevelNum
-			,ul.user_level_name	AS userLevelName
+			 user_level	AS userLevel
+			,user_level_name	AS userLevelName
 		FROM
-			user_level_standard AS ul;
+			user_level_standard;
 	</select>
 
 	<select id="getUserList" parameterType="String" resultType="User">

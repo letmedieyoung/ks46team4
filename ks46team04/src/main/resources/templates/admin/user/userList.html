@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout/default}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
@@ -9,13 +9,15 @@
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 <!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
 
 <!-- Custom styles for this template -->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 <!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
 
 </head>
 <th:block layout:fragment="customContents">
@@ -24,74 +26,95 @@
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">전체 회원 정보 조회</h1>
-		<p class="mb-4"> 전체 회원 목록입니다. <br> 
-		회원정보 상세조회와 수정·삭제가 가능합니다. 
-		<a target="_blank" href="http://localhost/admin/user/addUser">회원 등록 바로가기</a> </p>
-		<div th:include="~{admin/search/search :: searchFragment}"></div><br>
+		<h1 class="h3 mb-4 text-gray-800">회원 정보 조회</h1>
+		<p class="mb-4">
+			현재 활동중인 전체 회원 목록입니다. <a target="_blank"
+				href="http://localhost/admin/user/userSleepList">휴면 회원 목록 바로가기</a>
+			&nbsp; <a target="_blank"
+				href="http://localhost/admin/user/userDropList">탈퇴 회원 목록 바로가기</a> <br>
+			회원정보 상세조회와 수정·삭제가 가능합니다. <a target="_blank"
+				href="http://localhost/admin/user/addUser">회원 등록 바로가기</a>
+		</p>
+		<div th:include="~{admin/search/search :: searchFragment}"></div>
+		<br>
 
-<!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">회원 정보 조회</h6>
-                </div>
-                <div class="card-body overflow">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center table-layout" id="dataTable" width="100%" cellspacing="0">
-                            <thead class="bg-gray-100">
-                            
-				<tr>
-					<th>아이디</th>
-					<th>등급</th>
-					<th>이름</th>
-					<th>생년월일</th>
-					<th>연락처</th>
-					<th>이메일동의여부</th>
-					<th>이메일</th>
-					<th>가입일</th>
-					<th>미접속일수</th>
-					<th>회원정보수정일자</th>
-					<th>활동상태</th>
-					<th>수정</th>
-					<th>삭제</th>
-					<th>조회</th>
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">회원 정보 조회</h6>
+			</div>
+			<div class="card-body overflow-x">
+				<div class="table-responsive">
+					<table class="table table-bordered text-center table-layout-auto table-space"
+						id="dataTable" width="100%" cellspacing="0">
+						<thead class="bg-gray-100" >
 
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:unless="${userList == null}" th:each=" l : ${userList}">
-					<td th:text="${l.userId}"></td>
-					<td th:text="${l.userPw}"></td>
-					<td th:text="${l.userName}"></td>
-					<td th:text="${l.userBirth}"></td>
-					<td th:text="${l.userPhone}"></td>
-					<td th:text="${l.userEmailAgree}"></td>
-					<td th:text="${l.userEmail}"></td>
-					<td th:text="${l.userJoinDate}"></td>
-					<td th:text="${l.logDateCalcul}"></td>
-					<td th:text="${l.userUpdateDate}"></td>
-					<td th:text="${l.activityStatusStandardCode}"></td>
-					<td><a th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
-					<td><a th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
-					<td><a th:href="@{/admin/user/(userId=${l.userId})}">조회</a></td>
-				</tr>
-				<tr th:if="${userList == null}">
-					<td colspan="11">등록된 회원의 정보가 없습니다.</td>
-				</tr>
-			</tbody>
-		</table>
+							<tr>
+								<th>아이디</th>
+								<th>등급</th>
+								<th>이름</th>
+								<th>생년월일</th>
+								<th>연락처</th>
+								<th>이메일동의여부</th>
+								<th>이메일</th>
+								<th>가입일</th>
+								<th>미접속일수</th>
+								<th>회원정보수정일자</th>
+								<th>활동상태</th>
+								<th>수정</th>
+								<th>삭제</th>
+								<th>조회</th>
 
-	</div>
-	<!-- /.container-fluid -->
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${userList == null}" th:each=" l : ${userList}">
+								<td th:text="${l.userId}"></td>
+								<td>
+									<div th:if="${l.userLevel == '1'}">관리자</div>
+									<div th:unless="${l.userLevel == '1'}">회원</div>
+								</td>
+								<td th:text="${l.userName}"></td>
+								<td th:text="${l.userBirth}"></td>
+								<td th:text="${l.userPhone}"></td>
+								<td>
+									<div th:if="${l.userEmailAgree == '1'}">수신동의</div>
+									<div th:unless="${l.userEmailAgree == '1'}">수신거부</div>
+								</td>
+								<td th:text="${l.userEmail}"></td>
+								<td th:text="${l.userJoinDate}"></td>
+								<td th:text="${l.logDateCalcul}"></td>
+								<td th:text="${l.userUpdateDate}"></td>
+								<td>
+									<div th:if="${l.activityStatusStandardCode == 'status_active'}">활동</div>
+									<div
+										th:if="${l.activityStatusStandardCode == 'status_dormant'}">휴면</div>
+									<div
+										th:if="${l.activityStatusStandardCode == 'status_withdraw'}">탈퇴</div>
+								</td>
+								<td><a
+									th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
+								<td><a
+									th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
+								<td><a
+									th:href="@{/admin/user/userDetailList(userId=${l.userId})}">조회</a></td>
+							</tr>
+							<tr th:if="${userList == null}">
+								<td colspan="11">등록된 회원의 정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
 
+				</div>
+				<!-- /.container-fluid -->
 </th:block>
 <th:block layout:fragment="customJs">
-    <!-- Page level plugins -->
-    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
 
-    <!-- Page level custom scripts -->
-    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
 </html>

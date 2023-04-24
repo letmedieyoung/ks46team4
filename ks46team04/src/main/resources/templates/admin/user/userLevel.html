@@ -19,12 +19,14 @@
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">회원 등급 기준 등록</h1>
-
+		<h1 class="h3 mb-4 text-gray-800">회원 등급 기준 설정</h1>
+		<p class="mb-4"> 회원 등급 기준입니다. <br> 
+		회원 등급 기준 등록·수정·삭제는 불가합니다. </p>
+		
 <!-- DataTales Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">회원 등급 기준 등록</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">회원 등급 기준</h6>
                 </div>
                 <div class="card-body overflow">
                     <div class="table-responsive">
@@ -45,8 +47,8 @@
 				<tr th:unless="${userLevelList == null}" th:each=" l : ${userLevelList}">
 					<td th:text="${l.userLevel}"></td>
 					<td th:text="${l.userLevelName}"></td>
-					<td><a th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
-					<td><a th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
+					<td><a href="#">수정</a></td>
+					<td><a href="#">삭제</a></td>
 					
 				</tr>
 			<tr th:if="${userLevelList == null}">
@@ -54,6 +56,7 @@
 				</tr>
 			</tbody> 
 		</table>
+		<br>
 				<button class="btn btn-primary">
 					<span class="text text-gray-100">등록</span>
 				</button>

@@ -63,7 +63,7 @@
 						width="100%" cellspacing="0">
 						<tbody>
 							<tr>
-								<th class="bg-gray-100"><label for="userId">회원아이디</label></th>
+								<th class="bg-gray-100"><label for="userId">아이디</label></th>
 								<td class="form-row align-items-center search-schedule"><input
 									type="text"
 									class="form-control form-control-user-search search-input"
@@ -71,15 +71,24 @@
 									 readonly="readonly" /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userPw">회원비밀번호</label>
+								<th class="bg-gray-100"><label for="userLevel">등급</label>
 								</th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input"
-									id="userPw" th:value="${userPw}" name="userPw"
-									placeholder="회원비밀번호를 입력해주세요." /></td>
+									id="userLevel" th:value="${userLevel}" name="userLevel"
+									placeholder="관리자:1 회원:2" /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userName">회원이름</label>
+							<tr>
+								<th class="bg-gray-100"><label for="userPw">비밀번호</label>
+								</th>
+								<td><input type="password"
+									class="form-control form-control-user-search search-input"
+									id="userPw" th:value="${userPw}" name="userPw"
+									placeholder="영문+숫자 8~20자 이내" /></td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100"><label for="userName">이름</label>
 								</th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input"
@@ -87,7 +96,7 @@
 									placeholder="이름을 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userBirth">회원생년월일</label>
+								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
 								</th>
 								<td><input type="date"
 									class="form-control form-control-user-search search-input"
@@ -95,33 +104,34 @@
 									placeholder="생년월일을 선택해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userPhone">회원연락처</label>
+								<th class="bg-gray-100"><label for="userPhone">연락처</label>
 								</th>
-								<td><input type="text"
+								<td><input type="tel"
 									class="form-control form-control-user-search search-input"
 									id="userPhone" th:value="${userPhone}" name="userPhone"
-									placeholder="연락처를 입력해주세요." /></td>
+									placeholder="하이픈(-)포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userEmailAgree">회원이메일
+								<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label></th>
 								<td><select id="userEmailAgree" name="userEmailAgree"
 									th:value="${userEmailAgree}">
 										<option value="Y" th:selected="${userEmailAgree == 'Y'}">수신동의</option>
+										
 										<option value="N" th:selected="${userEmailAgree == 'N'}">수신거부</option>
 								</select></td>
 
 							</tr>
 							<tr>
-									<th class="bg-gray-100"><label for="userEmail">회원이메일</label>
+									<th class="bg-gray-100"><label for="userEmail">이메일</label>
 								</th>
-								<td><input type="text"
+								<td><input type="email"
 									class="form-control form-control-user-search search-input"
 									id="userEmail" th:value="${userEmail}" name="userEmail"
-									placeholder="이메일을 입력해주세요." /></td>
+									placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userAddr">회원주소</label>
+								<th class="bg-gray-100"><label for="userAddr">주소</label>
 								</th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input"
