@@ -12,8 +12,8 @@
 		<result column="foundation_addr"				property="foundationAddr"/>
 		<result column="foundation_reg_id"				property="foundationRegId"/>
 		<result column="foundation_reg_date"			property="foundationRegDate"/>
-		<result column="foundation_update_id"			property="foundationUpdId"/>
-		<result column="foundation_update_date"			property="foundationUpdDate"/>
+		<result column="foundation_update_id"			property="foundationUpdateId"/>
+		<result column="foundation_update_date"			property="foundationUpdateDate"/>
 	</resultMap>
 	
 	<resultMap type="FoundationRequest" id="foundationRequestResultMap">
