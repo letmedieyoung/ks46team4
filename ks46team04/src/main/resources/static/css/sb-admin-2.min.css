@@ -10335,4 +10335,24 @@ form.user .form-control-user-plus {
 }
  .table-layout {
   table-layout: fixed;
-  } 
+  }
+  .table-layout-auto {
+  table-layout: auto;
+  }
+ .search-input {
+    width: 20rem;
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem
+} 
+.search-table-gr th {
+    width: 13rem;
+    text-align: center;
+}
+.overflow-x{
+	overflow-x:scroll;
+}
+.table-space{
+	white-space: nowrap;
+}

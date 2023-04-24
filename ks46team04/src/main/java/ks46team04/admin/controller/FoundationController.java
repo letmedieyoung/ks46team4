@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ks46team04.admin.dto.Foundation;
+import ks46team04.admin.dto.FoundationRequest;
 import ks46team04.admin.service.FoundationService;
 
 @Controller
@@ -75,7 +76,7 @@ public class FoundationController {
 	@GetMapping("/remove_foundation")
 	public String removeFoundation(Model model) {
 		
-		model.addAttribute("title", "remove_foundation");
+		model.addAttribute("title", "재단 삭제");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
 		return "admin/foundation/remove_foundation";
@@ -89,8 +90,10 @@ public class FoundationController {
 	@GetMapping("/foundation_request_list")
 	public String getFoundationRequestList(Model model) {
 		
-		model.addAttribute("title", "foundation_request_list");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		List<FoundationRequest> foundationRequestList = founationService.getFoundationRequestlist();
+		
+		model.addAttribute("title", "재단 요청사항 조회");
+		model.addAttribute("foundationRequestList", foundationRequestList);
 		
 		return "admin/foundation/foundation_request_list";
 	}
@@ -103,8 +106,7 @@ public class FoundationController {
 	@GetMapping("/add_foundation_request")
 	public String addFoundationRequest(Model model) {
 		
-		model.addAttribute("title", "add_foundation_request");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		model.addAttribute("title", "재단 요청사항 등록");
 		
 		return "admin/foundation/add_foundation_request";
 	}
@@ -117,8 +119,7 @@ public class FoundationController {
 	@GetMapping("/modify_foundation_request")
 	public String modifyFoundationRequest(Model model) {
 		
-		model.addAttribute("title", "modify_foundation_request");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		model.addAttribute("title", "재단 요청사항 수정");
 		
 		return "admin/foundation/modify_foundation_request";
 	}
@@ -131,8 +132,7 @@ public class FoundationController {
 	@GetMapping("/remove_foundation_request")
 	public String removeFoundationRequest(Model model) {
 		
-		model.addAttribute("title", "remove_foundation_request");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		model.addAttribute("title", "재단 요청사항 삭제");
 		
 		return "admin/foundation/remove_foundation_request";
 	}

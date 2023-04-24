@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
@@ -24,131 +24,202 @@
 	<div class="container-fluid">
 
 		<!-- Begin Page Content -->
-		<div class="container-fluid">
 
-			<!-- Page Heading -->
-			<h1 class="h3 mb-2 text-gray-800">상품 재고현황</h1>
-			<p class="mb-4">
-				상품 재고현황입니다.
-				<a target="_blank" href="https://datatables.net">상품목록가기</a>
-			</p>
-
-			<!-- DataTales Example -->
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">상품 재고현황</h6>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%"
-							cellspacing="0">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>상품명</th>
-									<th>제조번호</th>
-									<th>현재고 수량</th>
-									<th>재고조사 진행 유무</th>
-									<th>재고조사일자</th>
-									<th>유통기한</th>
-									<th>재고조사 후 수량</th>
-									<th>비정상 재고 수</th>
-									<th>비정상 재고 유무</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>비타민C 1000 1080mg x 300정</td>
-									<td>21010</td>
-									<td>35</td>
-									<td>유</td>
-									<td>2023-02-05</td>
-									<td>2025-12-25</td>
-									<td>35</td>
-									<td>0</td>
-									<td>무</td>
-								</tr>
-							</tbody>
-						</table>
+		<!-- Page Heading -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">상품 재고 조회</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsName">상품명</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search search-input"
+											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
+										<button type="button" id="goodsSearchBtn"
+											class="btn btn-primary btn-icon-split">
+											<span class="text">상품명 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsName">제조번호</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search search-input"
+											id="goodsName" name="goodsName" placeholder="제조번호를 입력해주세요." />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">입고/출고일자</th>
+								<td>
+									<form>
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<option value="option1">:: 입고/출고일자 ::</option>
+												<option value="option1">입고일자</option>
+												<option value="option2">출고일자</option>
+											</select>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">오늘</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">3일</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">7일</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">1개월</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">3개월</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-secondary">
+													<span class="text text-gray-100">1년</span>
+												</button>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button class="btn btn-primary">
+													<span class="text text-gray-100">전체</span>
+												</button>
+											</div>
+											<div class="col-auto">
+												<label for="start-date" class="sr-only">시작일</label>
+												<input type="date" id="start-date" class="form-control"
+													placeholder="시작일">
+											</div>
+											~
+											<div class="col-auto">
+												<label for="end-date" class="sr-only">종료일</label>
+												<input type="date" id="end-date" class="form-control" placeholder="종료일">
+											</div>
+										</div>
+									</form>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsCompany">제조사</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search search-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">제조사 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsPrice">재고 수량</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="number"
+												class="form-control"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="0개" />
+										</div>
+										~
+										<div class="col-auto">
+											<input type="number"
+												class="form-control"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="0개" />
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">검색</span>
+						</button>
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<!-- /.container-fluid -->
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered text-center table-layout" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100 overflow-auto">
+							<tr>
+								<th>상품재고코드</th>
+								<th>상품코드</th>
+								<th>제조번호</th>
+								<th>현재고량</th>
+								<th>재고조사 여부</th>
+								<th>재고조사일</th>
+								<th>상품 유통기한</th>
+								<th>출고가능 수량</th>
+								<th>비정상재고량</th>
+								<th>비정상재고 여부</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${stockList == null}" th:each=" l : ${stockList}">
+								<td th:text="${l.goodsStockCode}"></td>
+								<td th:text="${l.goodsCode}"></td>
+								<td th:text="${l.goodsLotNumber}"></td>
+								<td th:text="${#numbers.formatInteger(l.currentStockAmount, 3, 'COMMA')}"></td>
+								<td th:text="${l.stocktakingCheck}"></td>
+								<td th:text="${l.stocktakingDate}"></td>
+								<td th:text="${l.goodsExprityDate}"></td>
+								<td th:text="${l.finalStockAmount}"></td>
+								<td th:text="${l.unusualStockAmount}"></td>
+								<td th:text="${l.unusualStockCheck}"></td>
+							</tr>
+							<tr th:if="${stockList == null}">
+								<td colspan="10">등록된 상품 재고 정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- /.container-fluid -->
 
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 	</a>
 
 	<!-- /.container-fluid -->
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 	</a>
 
 
@@ -163,4 +234,5 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
+
 </html>

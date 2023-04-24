@@ -26,18 +26,13 @@
 		<!-- Begin Page Content -->
 
 		<!-- Page Heading -->
-		<h1 class="h3 mb-2 text-gray-800">상품 조회</h1>
-		<p class="mb-4">
-			상품 조회입니다. <a target="_blank" href="https://datatables.net">링크</a>
-		</p>
-
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">상품 조회</h6>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
@@ -47,7 +42,7 @@
 									<div class="form-row align-items-center search-schedule">
 										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
 											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 상품분류 선택 ::</option>
+											<option value="option1">:: 상품 분류 ::</option>
 											<option value="option1">비타민</option>
 											<option value="option2">종합비타민</option>
 											<option value="option2">칼슘제</option>
@@ -60,7 +55,7 @@
 											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
 										<button type="button" id="goodsSearchBtn"
 											class="btn btn-primary btn-icon-split">
-											<span class="text">상품명검색</span>
+											<span class="text">상품명 검색</span>
 										</button>
 									</div>
 								</td>
@@ -69,26 +64,41 @@
 								<th class="bg-gray-100">등록일자</th>
 								<td>
 									<form>
-										<!-- <div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
 												<span class="text text-gray-100">오늘</span>
 											</button>
 										</div>
 										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">7일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
 												<span class="text text-gray-100">1개월</span>
 											</button>
 										</div>
 										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
+											<button class="btn btn-secondary">
 												<span class="text text-gray-100">3개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1년</span>
 											</button>
 										</div>
 										<div class="form-row align-items-center search-schedule">
 											<button class="btn btn-primary">
 												<span class="text text-gray-100">전체</span>
 											</button>
-										</div> -->
+										</div>
 										<div class="form-row align-items-center search-schedule">
 											<div class="col-auto">
 												<label for="start-date" class="sr-only">시작일</label>
@@ -101,12 +111,6 @@
 												<input type="date" id="end-date" class="form-control" placeholder="종료일">
 											</div>
 										</div>
-										<div class="form-row align-items-center search-schedule">
-											<input type="radio" name="chk_info" value="Reset">오늘
-											<input type="radio" name="chk_info" value="Reset">1개월
-											<input type="radio" name="chk_info" value="Reset">3개월
-											<input type="radio" name="chk_info" value="Reset">전체
-										</div>
 									</form>
 								</td>
 							</tr>
@@ -116,37 +120,34 @@
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search search-input"
-											id="purchase-search" name="goodsCompany" placeholder="제조사를 검색하거나 입력해주세요." />
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">제조사검색</span>
+										<input type="text" class="form-control form-control-user-search search-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">제조사 검색</span>
 										</button>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsPrice">상품단가</label>
+									<label for="goodsPrice">상품 단가</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search search-input"
+												class="form-control"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품가격을 입력해주세요." />
+												placeholder="0원" />
 										</div>
 										~
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search search-input"
+												class="form-control"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품가격을 입력해주세요." />
+												placeholder="0원" />
 										</div>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<input type="radio" name="chk_info" value="totalGoodsPrice">전체
 									</div>
 								</td>
 							</tr>
@@ -155,7 +156,7 @@
 					<div align="center">
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">상품검색</span>
+							<span class="text">검색</span>
 						</button>
 					</div>
 				</div>
@@ -164,9 +165,6 @@
 
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
-			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">상품 목록</h6>
-			</div>
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-bordered text-center table-layout" id="dataTable" width="100%"

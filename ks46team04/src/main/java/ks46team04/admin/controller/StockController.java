@@ -1,14 +1,30 @@
 package ks46team04.admin.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ks46team04.admin.dto.Stock;
+import ks46team04.admin.service.StockService;
+
 @Controller
-@RequestMapping("/stock")
+@RequestMapping("/admin/stock")
 public class StockController {
 
+	
+	private static final Logger log = LoggerFactory.getLogger(StockController.class);
+
+	private final StockService stockService;
+	
+	public StockController(StockService stockService) {
+		this.stockService = stockService;
+	}
+	
 	/**
 	 * 상품 입고 내역 조회
 	 * @param model
@@ -20,7 +36,7 @@ public class StockController {
 		model.addAttribute("title", "incoming_stock_list");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/incoming_stock_list";
+		return "admin/stock/incoming_stock_list";
 	}
 	
 	/**
@@ -34,7 +50,7 @@ public class StockController {
 		model.addAttribute("title", "add_incoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/add_incoming_stock";
+		return "admin/stock/add_incoming_stock";
 	}
 	
 	/**
@@ -48,7 +64,7 @@ public class StockController {
 		model.addAttribute("title", "modify_incoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/modify_incoming_stock";
+		return "admin/stock/modify_incoming_stock";
 	}
 	
 	/**
@@ -62,25 +78,27 @@ public class StockController {
 		model.addAttribute("title", "remove_incoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/remove_incoming_stock";
+		return "admin/stock/remove_incoming_stock";
 	}
 	
 	/**
-	 * 상품 재고 현황 조회
+	 * 상품 재고 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/stock_list")
 	public String getStockList(Model model) {
 		
-		model.addAttribute("title", "stock_list");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		List<Stock> stockList = stockService.getStockList();
 		
-		return "view/stock/stock_list";
+		model.addAttribute("title", "상품 재고 조회");
+		model.addAttribute("stockList", stockList);
+		
+		return "admin/stock/stock_list";
 	}
 	
 	/**
-	 * 상품 재고 현황 수정
+	 * 상품 재고 수정
 	 * @param model
 	 * @return
 	 */
@@ -90,11 +108,11 @@ public class StockController {
 		model.addAttribute("title", "modify_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/modify_stock";
+		return "admin/stock/modify_stock";
 	}
 	
 	/**
-	 * 상품 재고 현황 삭제
+	 * 상품 재고 삭제
 	 * @param model
 	 * @return
 	 */
@@ -104,7 +122,7 @@ public class StockController {
 		model.addAttribute("title", "remove_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/remove_stock";
+		return "admin/stock/remove_stock";
 	}
 	
 	/**
@@ -118,7 +136,7 @@ public class StockController {
 		model.addAttribute("title", "unusual_stock_detail_list");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/unusual_stock_detail_list";
+		return "admin/stock/unusual_stock_detail_list";
 	}
 	
 	/**
@@ -132,7 +150,7 @@ public class StockController {
 		model.addAttribute("title", "add_unusual_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/add_unusual_stock_detail";
+		return "admin/stock/add_unusual_stock_detail";
 	}
 	
 	/**
@@ -146,7 +164,7 @@ public class StockController {
 		model.addAttribute("title", "modify_unusual_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/modify_unusual_stock_detail";
+		return "admin/stock/modify_unusual_stock_detail";
 	}
 	
 	/**
@@ -160,7 +178,7 @@ public class StockController {
 		model.addAttribute("title", "remove_unusual_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/remove_unusual_stock_detail";
+		return "admin/stock/remove_unusual_stock_detail";
 	}
 	
 	/**
@@ -174,7 +192,7 @@ public class StockController {
 		model.addAttribute("title", "outcoming_stock_list");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/outcoming_stock_list";
+		return "admin/stock/outcoming_stock_list";
 	}
 	
 	/**
@@ -188,7 +206,7 @@ public class StockController {
 		model.addAttribute("title", "add_outcoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/add_outcoming_stock";
+		return "admin/stock/add_outcoming_stock";
 	}
 	
 	/**
@@ -202,7 +220,7 @@ public class StockController {
 		model.addAttribute("title", "modify_outcoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/modify_outcoming_stock";
+		return "admin/stock/modify_outcoming_stock";
 	}
 	
 	/**
@@ -216,7 +234,7 @@ public class StockController {
 		model.addAttribute("title", "remove_outcoming_stock");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/remove_outcoming_stock";
+		return "admin/stock/remove_outcoming_stock";
 	}
 	
 	/**
@@ -230,7 +248,7 @@ public class StockController {
 		model.addAttribute("title", "outcoming_stock_detail_list");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/outcoming_stock_detail_list";
+		return "admin/stock/outcoming_stock_detail_list";
 	}
 	
 	/**
@@ -244,7 +262,7 @@ public class StockController {
 		model.addAttribute("title", "add_outcoming_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/add_outcoming_stock_detail";
+		return "admin/stock/add_outcoming_stock_detail";
 	}
 	
 	/**
@@ -258,7 +276,7 @@ public class StockController {
 		model.addAttribute("title", "modify_outcoming_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/modify_outcoming_stock_detail";
+		return "admin/stock/modify_outcoming_stock_detail";
 	}
 	
 	/**
@@ -272,6 +290,6 @@ public class StockController {
 		model.addAttribute("title", "remove_outcoming_stock_detail");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "view/stock/remove_outcoming_stock_detail";
+		return "admin/stock/remove_outcoming_stock_detail";
 	}
 }

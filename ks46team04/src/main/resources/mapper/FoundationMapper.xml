@@ -16,6 +16,22 @@
 		<result column="foundation_update_date"			property="foundationUpdDate"/>
 	</resultMap>
 	
+	<resultMap type="FoundationRequest" id="foundationRequestResultMap">
+		<id		column="foundation_request_code"			property="foundationRequestCode"/>
+		<result column="foundation_code"					property="foundationCode"/>
+		<result column="foundation_name"					property="foundationName"/>
+		<result column="content_category"					property="contentCategory"/>
+		<result column="request_goods_name"					property="requestGoodsName"/>
+		<result column="initial_goods_amount"				property="initialGoodsAmount"/>
+		<result column="final_goods_amount"					property="finalGoodsAmount"/>
+		<result column="delivery_request_date"				property="deliveryRequestDate"/>
+		<result column="request_reg_id"						property="requestRegId"/>
+		<result column="request_reg_date"					property="requestRegDate"/>
+		<result column="request_update_id"					property="requestUpdateId"/>
+		<result column="request_update_date"				property="requestUpdateDate"/>
+		<result column="request_progress_status"			property="requestProgressStatus"/>
+	</resultMap>
+	
 	<select id="getFoundationList" resultMap="foundationResultMap">
 		/* 재단 목록 조회 */
 		SELECT
@@ -30,6 +46,26 @@
 			, foundation_update_date
 		FROM 
 			foundation_list;
+	</select>
+	
+	<select id="getFoundationRequestList" resultMap="foundationRequestResultMap">
+		/* 재단 요청사항 조회 */
+		SELECT 
+			foundation_request_code
+			, foundation_code
+			, foundation_name
+			, content_category
+			, request_goods_name
+			, initial_goods_amount
+			, final_goods_amount
+			, delivery_request_date
+			, request_reg_id
+			, request_reg_date
+			, request_update_id
+			, request_update_date
+			, request_progress_status
+		FROM
+			foundation_request
 	</select>
 	
 </mapper>

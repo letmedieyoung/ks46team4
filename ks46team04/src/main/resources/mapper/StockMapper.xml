@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="ks46team04.admin.mapper.StockMapper">
+	<resultMap type="Stock" id="stockResultMap">
+		<id		column="goods_stock_code"				property="goodsStockCode"/>
+		<result column="goods_code"						property="goodsCode"/>
+		<result column="goods_lot_number"				property="goodsLotNumber"/>
+		<result column="current_stock_amount"			property="currentStockAmount"/>
+		<result column="stocktaking_check"				property="stocktakingCheck"/>
+		<result column="stocktaking_date"				property="stocktakingDate"/>
+		<result column="goods_expiry_date"				property="goodsExprityDate"/>
+		<result column="final_stock_amount"				property="finalStockAmount"/>
+		<result column="unusual_stock_amount"			property="unusualStockAmount"/>
+		<result column="unusual_stock_check"			property="unusualStockCheck"/>
+	</resultMap>
+	
+	<select id="getStockList" resultMap="stockResultMap">
+		/* 상품 재고 조회 */
+		SELECT
+			goods_stock_code
+			, goods_code
+			, goods_lot_number
+			, current_stock_amount
+			, stocktaking_check
+			, stocktaking_date
+			, goods_expiry_date
+			, final_stock_amount
+			, unusual_stock_amount
+			, unusual_stock_check
+		FROM
+			goods_stock
+	</select>
+	
+</mapper>
