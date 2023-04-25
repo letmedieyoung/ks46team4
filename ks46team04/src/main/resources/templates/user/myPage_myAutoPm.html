@@ -17,14 +17,14 @@
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">펀딩 결제 내역</h1>
+		<h1 class="h3 mb-4 text-gray-800">정기후원 결제수단</h1>
 			<p class="mb-4"> </p>
 
 		<!-- DataTales Example -->
 		
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">펀딩 결제 내역 조회</h6>
+				<h6 class="m-0 font-weight-bold text-primary">자주쓰는 결제수단</h6>
 			</div>
 			<div class="card-body overflow-x">
 				<div class="table-responsive">
@@ -33,36 +33,24 @@
                             <tr>
                                          
                                 <th>결제코드</th>
-                                <th>펀딩명</th>
-                                <th>재단명</th>
-                                <th>주문일(결제일)</th>
-                                <th>펀딩금액</th>
+                                <th>결제수단</th>
+                                <th>은행명</th>
+								<th>계좌번호</th>
                                                               
                             </tr>
                         </thead>    
 						<tbody>
-							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
-										
-								<td th:text="${l.fundingPayCode}"></td>
+							<tr th:unless="${getDonationPayMethod == null}" th:each=" l : ${getDonationPayMethod}">
+									<td th:text="${l.donationPayMethodCode}"></td>
 									<td>
-									<div th:if="${l.fundingCode == 'funding1'}">면역력이 떨어진 아이들에게 힘을 보태주세요.</div>
 									<div
-										th:if="${l.fundingCode == 'funding2'}">기후우울로 고통받는 사람들에게 힘을 보태주세요.</div>
-									<div
-										th:if="${l.fundingCode == 'funding3'}">소화가 어려운 아이들에게 힘을 보태주세요.</div>
-								</td>
-								<td>
-									<div th:if="${l.fundingCode == 'funding1'}">초록우산 어린이재단</div>
-									<div
-										th:if="${l.fundingCode == 'funding2'}">사단법인 따뜻한하루</div>
-									<div
-										th:if="${l.fundingCode == 'funding3'}">초록우산 어린이재단</div>
-								</td>
-								<td th:text="${l.fundingPaymentDate}"></td>
-								<td th:text="${l.fundingPaymentAmount}"></td>
-								
+										th:if="${l.donationPayCode == 'pm_account'}">자동이체</div>
+									</td>
+									<td th:text="${l.donationPayMethodBank}"></td>
+									<td th:text="${l.donationPayMethodAccount}"></td>
+									
 							</tr>
-							<tr th:if="${fundingPayList == null}">
+							<tr th:if="${getDonationPayMethod == null}">
 								<td colspan="6">데이터가 존재하지 않습니다.</td>				
 							</tr>							
 						</tbody>
