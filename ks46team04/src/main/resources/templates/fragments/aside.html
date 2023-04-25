@@ -56,7 +56,7 @@
 		</div></li>
 
 	<!-- Nav Item - 재단관리 Collapse Menu -->
-	<li class="nav-item"><a class="nav-link" href="#"
+	<li class="nav-item active"><a class="nav-link" href="#"
 		data-toggle="collapse" data-target="#collapsePages2"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-building"></i> <span>재단 관리(!김귀림)</span>
@@ -72,7 +72,7 @@
 		</div></li>
 
 	<!-- Nav Item - 상품 Collapse Menu -->
-	<li class="nav-item"><a class="nav-link" href="#"
+	<li class="nav-item active"><a class="nav-link" href="#"
 		data-toggle="collapse" data-target="#collapsePages3"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-building"></i> <span>상품 입/출고 관리(!김귀림)</span>
@@ -93,45 +93,47 @@
 
 
 	<!-- Nav Item - 정기 후원 Collapse Menu -->
-	<li class="nav-item">
-		<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages4"
-			aria-expanded="true" aria-controls="collapsePages"> 
-			<i class="fas fa-fw fa-comment-dollar"></i> <span>정기 후원(#백지은)</span>
-		</a>
-		<div id="collapsePages4" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+	<li class="nav-item active"><a class="nav-link" href="#"
+		data-toggle="collapse" data-target="#collapsePages4"
+		aria-expanded="true" aria-controls="collapsePages"> <i
+			class="fas fa-fw fa-comment-dollar"></i> <span>정기 후원(#백지은)</span>
+	</a>
+		<div id="collapsePages4" class="collapse"
+			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" th:href="@{/admin/donation/donation_list}">정기기부 단가</a> 
+				<a class="collapse-item" th:href="@{/admin/donation/donation_list}">정기기부 콘텐츠</a> 
 				<a class="collapse-item" th:href="@{/admin/donation/donationSub_list}">정기기부 구독 신청</a>
 				<a class="collapse-item" th:href="@{/admin/donation/donationPayMethod_list}">등록된 회원 결제 수단</a>
-				<a class="collapse-item" th:href="@{/admin/donation/donationPayDetail}">정기기부 구독 결제 상세</a>
+				<a class="collapse-item" th:href="@{/admin/donation/donationPayDetail_list}">정기기부 구독 결제 상세</a>
 				<a class="collapse-item" th:href="@{/admin/donation/donationRefund_list}">정기기부 결제 환불</a>
 				<a class="collapse-item" th:href="@{/admin/donation/donationPayMonthly}">정기기부 월별 결제 합계</a>
 			</div>
-		</div>
-	</li>
+		</div></li>
 
 
 	<!-- Nav Item - 펀딩 Collapse Menu -->
-	<li class="nav-item"><a class="nav-link" href="#"
+	<li class="nav-item active"><a class="nav-link" href="#"
 		data-toggle="collapse" data-target="#collapsePages5"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-comment-dollar"></i> <span>펀딩(!고현지)</span>
 	</a>
+		<div id="collapsePages5" class="collapse"
+			aria-labelledby="headingPages" data-parent="#accordionSidebar">
 			<div id="collapsePages5" class="collapse"
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" th:href="@{/admin/funding/manage}">펀딩 컨텐츠 관리!</a>
-					<a class="collapse-item" th:href="@{/admin/funding/register}">펀딩 등록!</a>
-					<a class="collapse-item" th:href="@{/admin/funding/current_amount}">펀딩 진행 현황!</a>
-					<a class="collapse-item" th:href="@{/admin/funding/payments}">결제	내역!</a>
-					<a class="collapse-item" th:href="@{/admin/funding/refund}">환불 관리!</a>
+					<a class="collapse-item" th:href="@{/funding/manage}">펀딩 컨텐츠 관리!</a>
+					<a class="collapse-item" th:href="@{/funding/register}">펀딩 등록!</a>
+					<a class="collapse-item" th:href="@{/funding/current_amount}">컨텐츠 별 진행 현황!</a>
+					<a class="collapse-item" th:href="@{/funding/payments}">결제	내역!</a>
+					<a class="collapse-item" th:href="@{/funding/refund}">환불 관리!</a>
 				</div>
 			</div>
-	</li>
+		</div></li>
 
 
 	<!-- Nav Item - 재무 Collapse Menu -->
-	<li class="nav-item"><a class="nav-link" href="#"
+	<li class="nav-item active"><a class="nav-link" href="#"
 		data-toggle="collapse" data-target="#collapsePages6"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-chart-line"></i> <span>재무(#백지은, 고현지/!이바른)</span>
@@ -154,7 +156,7 @@
 		</div></li>
 
 	<!-- Nav Item - 사이트 관리 Collapse Menu -->
-	<li class="nav-item"><a class="nav-link" href="#"
+	<li class="nav-item active"><a class="nav-link" href="#"
 		data-toggle="collapse" data-target="#collapsePages7"
 		aria-expanded="true" aria-controls="collapsePages"> <i
 			class="fas fa-fw fa-wrench"></i> <span>사이트 관리(#)</span>
