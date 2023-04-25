@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Goods;
+import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
 
 @Service
@@ -30,6 +31,15 @@ public class GoodsService {
 	public List<Goods> getGoodsList(){
 		List<Goods> goodsList = goodsMapper.getGoodsList();
 		return goodsList;
+	}
+	
+	/**
+	 * 상품 분류 조회
+	 * @return
+	 */
+	public List<GoodsCategory> getGoodsCategoryList(){
+		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
+		return goodsCategory;
 	}
 	
 	/**

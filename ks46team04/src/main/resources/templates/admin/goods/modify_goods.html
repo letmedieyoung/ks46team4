@@ -1,51 +1,158 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/default}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">modify_goods</h1>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
 
-	</div>
-	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">상품 수정</h6>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="modifyGoodsForm" th:action="@{/admin/goods/modify_goods}" method="post">
+							<table th:object="${goodsInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsRegId">등록자 아이디</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsRegId" name="goodsRegId" 
+														th:placeholder="${session.goodsRegId}" th:value="*{goodsRegId}" readonly="readonly"/>
+												<!-- <input type="text" class="form-control form-control-user-search middle-input" id="goodsRegId" name="goodsRegId" 
+														th:placeholder="${session.goodsRegId}" th:value="${session.goodsRegId}" readonly="readonly"/> -->
+												<!-- <input type="text" class="form-control form-control-user-search middle-input" id="goodsRegId" name="goodsRegId"/>관리자아이디.. -->
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" placeholder="상품명을 입력해주세요."/>
+												&nbsp;
+												<button type="submit" id="overlapCheck" class="btn btn-primary btn-icon-split">
+													<span class="text">중복확인</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsCategory">상품 분류</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select id="selectCategory" name="selectCategory" onchange="func(this.value)" class="dropdown btn btn-primary dropdown-toggle"
+												 		 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<option value="">:: 상품 분류 ::</option>
+													<th:block th:unless="${goodsCategoryList == null}" th:each="l : ${goodsCategoryList}">
+														<option th:value="${l.goodsCategory}" th:selected="${l.goodsCategory} == *{goodsCategory}">[[${l.goodsCategory}]]</option>
+													</th:block>
+													<th:block th:if="${goodsCategoryList == null}">
+														<option>등록된 상품분류가 없습니다.</option>
+													</th:block>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="goodsCategory" name="goodsCategory" th:value="*{goodsCategory}" placeholder="상품 분류를 선택해주세요." />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsCompany">제조사</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsCompany}" placeholder="제조사를 검색하거나 입력해주세요."/>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">제조사 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsPrice">상품 단가</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div align="center">
+							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">수정하기</span>
+							</button>
+							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">수정취소</span>
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
 </th:block>
+
 <th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
 </th:block>
+
 </html>

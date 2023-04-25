@@ -52,7 +52,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">재단 등록/수정일자</th>
+								<th class="bg-gray-100">등록/수정일자</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										<button class="btn btn-secondary">
@@ -173,9 +173,9 @@
 								<td th:text="${l.foundationPhone}"></td>
 								<td th:text="${l.foundationAddr}"></td>
 								<td th:if="${l.foundationUpdateId == null}" th:text="${l.foundationRegId}"></td>
-								<td th:unless="${l.foundationUpdateId == null}" th:text="${l.foundationUpdateId}"></td>
+								<td th:unless="|${l.foundationUpdateId == null}" th:text="${l.foundationUpdateId}(수정)|"></td>
 								<td th:if="${l.foundationUpdateDate == null}" th:text="${l.foundationRegDate}"></td>
-								<td th:unless="${l.foundationUpdateDate == null}" th:text="${l.foundationUpdateDate}"></td>
+								<td th:unless="|${l.foundationUpdateDate == null}" th:text="${l.foundationUpdateDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/foundation/modify_foundation(foundationCode=${l.foundationCode})}">

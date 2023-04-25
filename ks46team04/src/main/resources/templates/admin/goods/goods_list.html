@@ -33,29 +33,42 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+					<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 						<tbody>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsCategory">상품 분류</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										 <select id="selectCategory" name="selectCategory" onchange="func(this.value)" class="dropdown btn btn-primary dropdown-toggle"
+										 		 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="">:: 상품 분류 ::</option>
+											<th:block th:unless="${goodsCategoryList == null}" th:each="l : ${goodsCategoryList}">
+												<option th:value="${l.goodsCategory}" th:selected="${l.goodsCategory} == *{goodsCategory}">[[${l.goodsCategory}]]</option>
+											</th:block>
+											<th:block th:if="${goodsCategoryList == null}">
+												<option>등록된 상품분류가 없습니다.</option>
+											</th:block>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search short-input"
+											id="goodsCategory" name="goodsCategory" placeholder="상품 분류를 선택해주세요." />
+									</div>
+								</td>
+							</tr>
 							<tr>
 								<th class="bg-gray-100">
 									<label for="goodsName">상품명</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 상품 분류 ::</option>
-											<option value="option1">비타민</option>
-											<option value="option2">종합비타민</option>
-											<option value="option2">칼슘제</option>
-											<option value="option2">철분제</option>
-											<option value="option2">기타</option>
-										</select>
-									</div>
-									<div class="form-row align-items-center search-schedule">
 										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
-											&nbsp;
+												id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
+										&nbsp;
 										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
 											<span class="text">상품명 검색</span>
 										</button>
@@ -105,14 +118,14 @@
 										</div>
 										<div class="form-row align-items-center search-schedule">
 											<div class="col-auto">
-												<label for="start-date" class="sr-only">시작일</label>
-												<input type="date" id="start-date" class="form-control"
+												<label for="startDate" class="sr-only">시작일</label>
+												<input type="date" id="startDate" class="form-control"
 													placeholder="시작일">
 											</div>
 											~
 											<div class="col-auto">
-												<label for="end-date" class="sr-only">종료일</label>
-												<input type="date" id="end-date" class="form-control" placeholder="종료일">
+												<label for="endDate" class="sr-only">종료일</label>
+												<input type="date" id="endDate" class="form-control" placeholder="종료일">
 											</div>
 										</div>
 									</form>
@@ -125,10 +138,10 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
+										<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 검색하거나 입력해주세요."/>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+										<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
 											<span class="text">제조사 검색</span>
 										</button>
 									</div>
@@ -152,25 +165,28 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsName">등록/수정자</label>
+									<label for="regUpdId">등록/수정자</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="등록/수정자를 입력해주세요." />
+											id="regUpdId" name="regUpdId" placeholder="등록/수정자를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<div align="center">
-						<button type="button" id="totalSearchBtn" class="btn btn-secondary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+					<div class="search-schedule" align="left">
+						<button type="submit" id="addGoodsBtn" class="btn btn-secondary btn-icon-split">
+							<span class="text">상품등록</span>
+						</button>
+					</div>
+					<div align="right">
+						<button type="reset" id="totalSearchBtn" class="btn btn-secondary btn-icon-split">
 							<span class="text">전체검색</span>
 						</button>
-						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+						<button type="submit" id="detailSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="text">상세검색</span>
 						</button>
 					</div>
@@ -198,25 +214,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:unless="${goodsList == null}" th:each=" l : ${goodsList}">
+							<tr th:unless="${goodsList == null}" th:each="l : ${goodsList}">
 								<td th:text="${l.goodsCode}"></td>
 								<td th:text="${l.goodsName}"></td>
 								<td th:text="${l.goodsCompany}"></td>
-								<td th:text="${l.goodsCate}"></td>
+								<td th:text="${l.goodsCategory}"></td>
 								<td th:text="|${#numbers.formatInteger(l.goodsPrice, 3, 'COMMA')}원|"></td>
 								<td th:if="${l.goodsUpdateId == null}" th:text="${l.goodsRegId}"></td>
-								<td th:unless="${l.goodsUpdateId == null}" th:text="${l.goodsUpdateId}"></td>
+								<td th:unless="|${l.goodsUpdateId == null}" th:text="${l.goodsUpdateId}(수정)|"></td>
 								<td th:if="${l.goodsUpdateDate == null}" th:text="${l.goodsRegDate}"></td>
-								<td th:unless="${l.goodsUpdateDate == null}" th:text="${l.goodsUpdateDate}"></td>
+								<td th:unless="|${l.goodsUpdateDate == null}" th:text="${l.goodsUpdateDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/goods/modify_goods(goodsCode=${l.goodsCode})}">
+										th:href="@{/admin/goods/modify_goods(goodsCode=${l.goodsCode})}">
 										<span class="text">수정</span>
 									</a>
 								</td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/goods/remove_goods(goodsCode=${l.goodsCode})}">
+										th:href="@{/admin/goods/remove_goods(goodsCode=${l.goodsCode})}">
 										<span class="text">삭제</span>
 									</a>
 								</td>
@@ -252,6 +268,7 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
 </th:block>
 
 </html>
