@@ -172,7 +172,7 @@
 		(user_id, user_level, user_pw, user_name, user_birth, user_phone, user_email_agree, user_email, user_addr, user_join_date, login_log_code, log_date_calcul, user_update_date, activity_status_standard_code)
 		VALUES
 		(#{userId}, #{userLevel}, #{userPw}, #{userName}, #{userBirth}, #{userPhone}, #{userEmailAgree},
-		 #{userEmail}, #{userAddr}, #{userJoinDate}, #{LoginLogCode}, #{LogDateCalcul}, #{userUpdateDate}, #{activityStatusStandardCode});		
+		 #{userEmail}, #{userAddr}, #{userJoinDate}, #{loginLogCode}, #{logDateCalcul}, #{userUpdateDate}, #{activityStatusStandardCode});		
 	</insert>
 
 	<select id="idCheck" parameterType="String" resultType="boolean">

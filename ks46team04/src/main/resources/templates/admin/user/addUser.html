@@ -20,7 +20,8 @@
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
-
+<th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
 <script>
 	$(function(){
 			//alert('제이쿼리')
@@ -93,6 +94,7 @@
 		});
 	
 	</script>
+	</th:block>
 	<th:block layout:fragment="customContents">
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
@@ -121,7 +123,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="userId" name="userId" placeholder="영문+숫자 6~12자 이내"/>
+											<input type="text" class="form-control form-control-user-search search-input-gr" id="userId" name="userId" placeholder="영문+숫자 6~12자 이내"/>
 											&nbsp;
 												<button type="button" id="checkBtn" class="btn btn-primary btn-icon-split"> <span class="text">아이디 중복체크</span></button>
 										</div>
@@ -135,7 +137,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="userLevel" name="userLevel" placeholder="관리자:1 회원:2"/>
+											<input type="text" class="form-control form-control-user-search search-input-gr" id="userLevel" name="userLevel" placeholder="관리자:1 회원:2"/>
 										</div>
 									</td>
 									</tr>
@@ -145,7 +147,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="password" class="form-control form-control-user-search search-input" id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내"/>
+											<input type="password" class="form-control form-control-user-search search-input-gr" id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내"/>
 										</div>
 									</td>
 									</tr>
@@ -155,7 +157,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="userName" name="userName" placeholder="이름을 입력해주세요."/>
+											<input type="text" class="form-control form-control-user-search search-input-gr" id="userName" name="userName" placeholder="이름을 입력해주세요."/>
 				
 										</div>
 									</td>
@@ -166,7 +168,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="date" class="form-control form-control-user-search search-input" id="userBirth" name="userBirth" />
+											<input type="date" class="form-control form-control-user-search search-input-gr" id="userBirth" name="userBirth" />
 				
 										</div>
 									</td>
@@ -177,7 +179,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="tel" class="form-control form-control-user-search search-input" id="userPhone" name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요."/>
+											<input type="tel" class="form-control form-control-user-search search-input-gr" id="userPhone" name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요."/>
 										</div>
 						
 									</td>
@@ -201,7 +203,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="email" class="form-control form-control-user-search search-input" id="userEmail" name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요."/>
+											<input type="email" class="form-control form-control-user-search search-input-gr" id="userEmail" name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요."/>
 										</div>
 						
 									</td>
@@ -212,8 +214,8 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="userAddr" name="userAddr" placeholder="주소를 입력해주세요."/>
-											<input type="text" class="form-control form-control-user-search search-input" id="userAddr" name="userAddr" placeholder="상세주소를 입력해주세요."/>
+											<input type="text" class="form-control form-control-user-search search-input-gr" id="userAddr" name="userAddr" placeholder="주소를 입력해주세요."/>
+											<input type="text" class="form-control form-control-user-search search-input-gr" id="userAddr" name="userAddr" placeholder="상세주소를 입력해주세요."/>
 											<button type="button" id="checkBtn" class="btn btn-primary btn-icon-split">
 											&nbsp;
 												<span class="text">주소 검색</span>
