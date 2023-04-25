@@ -137,7 +137,7 @@ public class FundingController {
 	public String registFunding(Funding funding) { 
 		log.info("화면에서 전달받은 데이터 : {}", funding);
 		fundingService.registFunding(funding);
-		return "redirect:admin/funding/manage"; 
+		return "redirect:/funding/manage"; 
 	}		
 	
 	@GetMapping("/register")
