@@ -81,7 +81,7 @@
 												<th:block th:unless="${foundationNameList == null}" th:each="l : ${foundationNameList}">
 													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{fundingFoundation}">[[${l.foundationName}]]</option>
 												</th:block>
-												<th:block th:if="${fundingList == null}">
+												<th:block th:if="${foundationNameList == null}">
 													<option>등록된 재단 정보가 없습니다.</option>
 												</th:block>
 											</select>
@@ -121,7 +121,7 @@
 									</th>
 		                       		<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="date" class="form-control form-control-user-search search-input" id="fundingStartDate" name="fundingStartDate" th:value="${fundingStartDate}" />
+											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingStartDate" name="fundingStartDate" th:value="${fundingStartDate}" />
 										</div>
 									</td>
 		                      	</tr>
@@ -131,7 +131,7 @@
 									</th>
 		                       		<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="date" class="form-control form-control-user-search search-input" id="fundingEndDate" name="fundingEndDate" th:value="${fundingEndDate}" />
+											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingEndDate" name="fundingEndDate" th:value="${fundingEndDate}" />
 										</div>
 									</td>
 		                      	</tr>

@@ -6,21 +6,26 @@
 <th:block layout:fragment="customContents">
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-	    <h5 class="m-0 font-weight-bold text-gray-800">컨텐츠 별 진행현황</h5>
+	    <h5 class="m-0 font-weight-bold text-gray-800">펀딩 진행현황</h5>
 	    <div class="f-dash-search">
 		    <div>
-			    <select>
-			    	<option>펀딩코드</option>
-			    	<option>펀딩명</option>			    	
-			    </select>	
-			    <input type="text">
-			    <div class="f-progress-btn btn">
-					<a class="btn btn-primary btn-icon-split "><span class="text sbtn">검색</span></a>
-					<a class="btn btn-primary btn-icon-split "><span class="text sbtn">초기화</span></a>
+		    	<div class="form-row align-items-center">
+				    <select class="dropdown btn btn-primary dropdown-toggle">
+				    	<option value="">펀딩코드</option>
+				    	<option value="">펀딩명</option>			    	
+				    </select>
+				    <div class="align-items-center search-schedule">
+						<input type="text" class="form-control form-control-user-search search-input" />										
+					</div>
+				    <div class="f-progress-btn btn">				    	
+						<button type="button" class="btn btn-primary btn-icon-split" ><span class="text sbtn">검색</span></button>	
+						<button type="reset" id="searchReset" class="btn btn-secondary btn-icon-split"><span class="text sbtn">초기화</span></button>
+					</div>
 				</div>
 		    </div> 
 	    </div>
 	    <div class="row f-chart">
+	    	<!-- 목표 금액 -->
 	    	<div class="col-xl-3 col-md-6 mb-4">
 		        <div class="card border-left-primary h-100 py-2">
 		            <div class="card-body">
@@ -37,7 +42,7 @@
 		        </div>
 		    </div>
 		    	    
-		    <!-- Earnings (Annual) Card Example -->
+		    <!-- 현재 달성 금액 -->
 	        <div class="col-xl-3 col-md-6 mb-4">
 	            <div class="card border-left-success h-100 py-2">
 	                <div class="card-body">
@@ -54,7 +59,7 @@
 	            </div>
 	        </div>
 		        
-	        <!-- Tasks Card Example -->
+	        <!-- 목표 달성률 -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info h-100 py-2">
                     <div class="card-body">
@@ -80,9 +85,9 @@
                     </div>
                 </div>       
 	         </div>
-             <!-- Pending Requests Card Example -->
+             <!-- 총 참여인원 -->
              <div class="col-xl-3 col-md-6 mb-4">
-                 <div class="card border-left-warning shadow h-100 py-2">
+                 <div class="card border-left-warning h-100 py-2">
                      <div class="card-body">
                          <div class="row no-gutters align-items-center">
                              <div class="col mr-2">
