@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,9 @@ import ks46team04.admin.mapper.UserMapper;
 @Service
 @Transactional
 public class UserService {
+
+	
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	private UserMapper userMapper;
@@ -73,6 +78,7 @@ public class UserService {
 	
 	public User getUserInfoById(String userId) {
 		User userInfo = userMapper.getUserInfoById(userId);
+		log.info("userInfo: {}", userInfo);
 		return userInfo;
 	}
 	

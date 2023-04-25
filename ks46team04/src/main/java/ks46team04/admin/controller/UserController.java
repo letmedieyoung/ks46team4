@@ -115,12 +115,7 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		return "admin/user/userLevel";
 	}
 	
-	
-	@GetMapping("/myPage")
-	public String showMyPage() {
-		return "admin/user/myPage";
-	}
-	
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -210,8 +205,8 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		List<UserLevel> userLevelList =
 				userService.getUserLevelList();
 		model.addAttribute("title", "회원수정");
-		model.addAttribute("memberLevelList", userLevelList);
-		model.addAttribute("memberInfo", userInfo);
+		model.addAttribute("userLevelList", userLevelList);
+		model.addAttribute("userInfo", userInfo);
 		
 		return "admin/user/modifyUser";
 	}
@@ -219,7 +214,7 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	@PostMapping("/addUser")
 	public String addUser(User user) {
 		log.info("화면에서 전달받은 데이터 : {}", user);
-		//userService.addUser(user);
+		userService.addUser(user);
 		return "redirect:/admin/user/userList";
 	}
 	
