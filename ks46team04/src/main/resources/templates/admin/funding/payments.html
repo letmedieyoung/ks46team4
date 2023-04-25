@@ -62,8 +62,8 @@
 			</div>
 		</div>
 		<div class="f-search btn">
-			<a class="btn btn-primary btn-icon-split " onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>
-			<a class="btn btn-primary btn-icon-split "><span class="text sbtn">초기화</span></a>
+			<a class="btn btn-primary btn-icon-split" onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>
+			<a class="btn btn-primary btn-icon-split" id="searchReset"><span class="text sbtn">초기화</span></a>
 		</div>
 		
 		<div class="card mb-4">
@@ -75,8 +75,7 @@
 					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 						<thead>
                             <tr>
-                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
-                                <th>No</th>
+                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>                                
                                 <th>결제코드</th>
                                 <th>주문자아이디</th>
                                 <th>펀딩코드</th>
@@ -87,8 +86,7 @@
                         </thead>    
 						<tbody>
 							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
-								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
-								<td th:text="${null}"></td>
+								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>								
 								<td th:text="${l.fundingPaymentCode}"></td>
 								<td th:text="${l.userId}"></td>
 								<td th:text="${l.fundingCode}"></td>
