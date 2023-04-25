@@ -27,7 +27,7 @@ import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingService;
 
 @Controller
-@RequestMapping("/funding")
+@RequestMapping("admin/funding")
 public class FundingController {
 	
 	private static final Logger log = LoggerFactory.getLogger(FundingController.class);
@@ -35,15 +35,14 @@ public class FundingController {
 	private final FundingService fundingService;
 	private final FundingMapper fundingMapper;
 	
-	public FundingController(FundingService fundingService,
-							 FundingMapper fundingMapper) {
+	public FundingController(FundingService fundingService, FundingMapper fundingMapper) {
 		this.fundingService = fundingService;
 		this.fundingMapper = fundingMapper;	
 	}
 	
 	
 	/**
-	 * 펀딩 정보 수정
+	 * 펀딩 수정
 	 * @param funding
 	 * @return
 	 */
@@ -52,9 +51,8 @@ public class FundingController {
 		log.info("funding: {}", funding);
 		fundingMapper.modifyFunding(funding);
 		
-		return "redirect:/funding/manage";
-	}	
-	
+		return "redirect:admin/funding/manage";
+	}		
 	
 	/**
 	 * 펀딩수정화면
@@ -137,7 +135,7 @@ public class FundingController {
 	public String registFunding(Funding funding) { 
 		log.info("화면에서 전달받은 데이터 : {}", funding);
 		fundingService.registFunding(funding);
-		return "redirect:/funding/manage"; 
+		return "redirect:admin/funding/manage"; 
 	}		
 	
 	@GetMapping("/register")
@@ -167,8 +165,40 @@ public class FundingController {
 		return "admin/funding/current_amount";
 	}
 	
+	
+	
 	/**
-	 * 펀딩 결제 내역
+	 * 펀딩 결제내역 수정
+	 * @param fundingPay
+	 * @return
+	 */
+	@PostMapping("/modifyFundingPay")
+	public String modifyFundingPay(FundingPay fundingPay) {		
+		
+		fundingMapper.modifyFundingPay(fundingPay);
+		
+		return "redirect:admin/funding/payments";
+	}
+	/**
+	 * 펀딩 결제내역 수정화면
+	 * @param fundingPayCode
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modifyFundingPay")
+	public String modifyFundingPay(@RequestParam(name="fundingPayCode") String fundingPayCode, Model model) {
+		
+		FundingPay fundingPayInfo = fundingService.getFundingPayInfoByCode(fundingPayCode);
+		List<FundingPay> fundingPayList = fundingService.getFundingPayList();		
+		
+		model.addAttribute("title", "펀딩결제내역수정");	
+		model.addAttribute("fundingPayList", fundingPayList);
+		model.addAttribute("fundingPayInfo", fundingPayInfo);		
+		
+		return "admin/funding/modifyFundingPay";
+	}	
+	/**
+	 * 펀딩 결제 내역 조회
 	 * @param model
 	 * @return
 	 */

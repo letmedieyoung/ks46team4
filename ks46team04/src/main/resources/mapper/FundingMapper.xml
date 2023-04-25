@@ -12,6 +12,7 @@
 		<result column="funding_start_date"	property="fundingStartDate"/>
 		<result column="funding_end_date"	property="fundingEndDate"/>
 		<result column="funding_progress"	property="fundingProgress"/>
+		<result column="funding_reg_Date"	property="fundingRegDate"/>
 
 	</resultMap>
 	
@@ -45,7 +46,8 @@
 			funding_goal_amount, 		
 			funding_start_date,  				
 			funding_end_date,	  	
-			funding_progress
+			funding_progress,
+			funding_reg_date		
 		FROM
 			each_funding_info
 		WHERE
@@ -80,7 +82,7 @@
 			funding_goal_amount = #{fundingGoalAmount},
 			funding_start_date = #{fundingStartDate},			
 			funding_end_date = #{fundingEndDate},
-			funding_progress = #{fundingProgress}
+			funding_progress = #{fundingProgress}			
 		</set>
 		WHERE 
 			funding_code = #{fundingCode};
@@ -96,7 +98,7 @@
 			f.funding_goal_amount 	AS fundingGoalAmount,	
 			f.funding_start_date  	AS fundingStartDate,			
 			f.funding_end_date	  	AS fundingEndDate,
-			f.funding_progress 	  	AS fundingProgress
+			f.funding_progress 	  	AS fundingProgress		
 		FROM
 			each_funding_info AS f
 		<where>
@@ -111,12 +113,30 @@
 		ORDER BY funding_code DESC;
 	</select>
 		
-	
+		
+	<!-- 펀딩 결제 내역 -->	
+	<select id="getFundingPayInfoByCode" parameterType="String">
+		/* 특정 펀딩 결제 내역 */
+		fp.funding_payment_code  		AS fundingPayCode,
+			fp.user_id		  			AS userId,
+			fp.funding_code		  		AS fundingCode,
+			fp.funding_payment_date 	AS fundingPaymentDate,	
+			fp.funding_payment_amount 	AS fundingPaymentAmount,			
+			pm.pm_name				  	AS pmName
+		FROM
+			funding_payments AS fp
+			JOIN
+			payment_method AS pm
+			ON
+			fp.pm_code = pm.pm_code
+		WHERE
+			funding_payment_code = #{fundingPaymentCode}		
+	</select> 
 	
 	<select id="getFundingPayList" resultType="fundingPay">
 		/* 펀딩 결제 내역 목록 조회 */
 		SELECT
-			fp.funding_payment_code  	AS fundingPaymentCode,
+			fp.funding_payment_code  	AS fundingPayCode,
 			fp.user_id		  			AS userId,
 			fp.funding_code		  		AS fundingCode,
 			fp.funding_payment_date 	AS fundingPaymentDate,	
@@ -131,12 +151,13 @@
 		ORDER BY funding_payment_code DESC;	
 	</select>
 
+	<!-- 펀딩 환불 -->
 	<select id="getRefundList" resultType="fundingRefund">
 		/* 펀딩 환불 신청 내역 조회 */
 		SELECT
 			fr.funding_payment_refund_code  	AS fundingRefundCode,
 			fr.user_id 					  		AS userId,
-			fr.funding_payment_code 		  	AS fundingPaymentCode,
+			fr.funding_payment_code 		  	AS fundingPayCode,
 			fr.funding_refund_request_date   	AS refundRequestDate,
 			fr.funding_refund_request_amount 	AS requestAmount,
 			fr.funding_refund_bank_name 	  	AS refundBank,
@@ -153,7 +174,7 @@
 			payment_method AS pm
 			JOIN
 			funding_payments AS fp
-		ORDER BY funding_payment_refund_code DESC;	
+		ORDER BY funding_payment_refund_code DESC;
 	</select>
 	
 	
