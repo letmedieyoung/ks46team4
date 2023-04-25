@@ -38,22 +38,34 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsName">검색 분류</label>
+									<label for="goodsName">상품명</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										&nbsp;&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 검색 분류 ::</option>
-											<option value="option1">상품명</option>
-											<option value="option2">출고 담당자</option>
-											<option value="option1">재단명</option>
-											<option value="option2">등록/수정자</option>
-										</select>
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="검색 분류 선택 후 입력해주세요." />
+											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
+										&nbsp;
+										<button type="button" id="goodsSearchBtn"
+											class="btn btn-primary btn-icon-split">
+											<span class="text">상품명 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsCompany">재단명</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">재단명 검색</span>
+										</button>
 									</div>
 								</td>
 							</tr>
@@ -132,12 +144,40 @@
 									</div>
 								</td>
 							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsName">출고 담당자</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="출고 담당자를 입력해주세요." />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsName">등록/수정자</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="등록/수정자를 입력해주세요." />
+									</div>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-secondary btn-icon-split">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">전체검색</span>
+						</button>
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">검색</span>
+							<span class="text">상세검색</span>
 						</button>
 					</div>
 				</div>

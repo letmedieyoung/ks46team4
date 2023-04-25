@@ -1,1 +1,8 @@
 @charset "UTF-8";
+.short-input {
+    width: 15rem; 
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem
+} 
