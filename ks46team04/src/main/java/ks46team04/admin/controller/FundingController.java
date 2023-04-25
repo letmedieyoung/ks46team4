@@ -18,36 +18,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ks46team04.admin.dto.FoundationName;
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
+import ks46team04.admin.dto.GoodsCode;
 import ks46team04.admin.mapper.FundingMapper;
-import ks46team04.admin.service.FoundationService;
 import ks46team04.admin.service.FundingService;
 
 @Controller
 @RequestMapping("/funding")
 public class FundingController {
 	
-	
 	private static final Logger log = LoggerFactory.getLogger(FundingController.class);
-
 
 	private final FundingService fundingService;
 	private final FundingMapper fundingMapper;
-	private final FoundationService foundationService;
 	
-
 	public FundingController(FundingService fundingService,
-							 FundingMapper fundingMapper,
-							 FoundationService foundationService) {
+							 FundingMapper fundingMapper) {
 		this.fundingService = fundingService;
-		this.fundingMapper = fundingMapper;
-		this.foundationService = foundationService;		
+		this.fundingMapper = fundingMapper;	
 	}
 	
-
+	
 	/**
 	 * 펀딩 정보 수정
 	 * @param funding
@@ -61,6 +55,7 @@ public class FundingController {
 		return "redirect:/funding/manage";
 	}	
 	
+	
 	/**
 	 * 펀딩수정화면
 	 * @param fundingCode
@@ -69,11 +64,17 @@ public class FundingController {
 	 */
 	@GetMapping("/modifyFunding")
 	public String modifyFunding(@RequestParam(name="fundingCode") String fundingCode, Model model) {
-		Funding fundingInfo = fundingService.getFundingInfoByCode(fundingCode);
 		
+		Funding fundingInfo = fundingService.getFundingInfoByCode(fundingCode);
+		 
 		log.info("fundingModify: {}", fundingInfo);
 		
+		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
+		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
+		
 		model.addAttribute("title", "펀딩수정");	
+		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsCodeList", goodsCodeList);
 		model.addAttribute("fundingInfo", fundingInfo);
 		
 		return "admin/funding/modifyFunding";
@@ -98,7 +99,7 @@ public class FundingController {
 	@PostMapping("/getSearchFundingList")
 	@ResponseBody //http요청 body를 자바 객체로 전달받을 수 있다.
 	public List<Funding> getSearchFundingList(@RequestBody Map<String, Object> searchMap){ //HTTP 요청 body를 Map객체로 전달받는다. 배열 Map에 검색 조건과 값들을 담는다. (key:String, value: 최상위 클래스 Object)
-		Set<String> searchKey = searchMap.keySet(); // 
+		Set<String> searchKey = searchMap.keySet(); 
 		List<Map<String, Object>> searchList = new ArrayList<>();
 		for(String key : searchKey) {
 			Map<String, Object> search = new HashMap<>();
@@ -141,8 +142,12 @@ public class FundingController {
 	
 	@GetMapping("/register")
 	public String registFunding(Model model){
+		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
+		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
 	
 		model.addAttribute("title", "registFunding");
+		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsCodeList", goodsCodeList);
 		
 		return "admin/funding/register";
 	}

@@ -1,51 +1,243 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/default}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
+		<!-- Begin Page Content -->
+
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">unusual_stock_detail_list</h1>
-
-	</div>
-	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">상품 비정상 재고 조회</h6>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsName">검색 분류</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;&nbsp;
+										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="option1">:: 검색 분류 ::</option>
+											<option value="option1">상품명</option>
+											<option value="option2">비정상 재고 사유</option>
+											<option value="option2">등록/수정자</option>
+										</select>
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search middle-input"
+											id="goodsName" name="goodsName" placeholder="검색 분류 선택 후 입력해주세요." />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">비정상 재고<br>발생/등록(수정)일자</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<label>
+									    	<input type="radio" id="allContent" name="content" value="allContent" checked>
+									    	<span class="text">전체</span>&nbsp;&nbsp;
+								      	</label>
+								    </div>
+									<div class="form-row align-items-center search-schedule">
+								     	<label>
+									    	<input type="radio" id="fundingContent" name="content" value="fundingContent">
+									   		<span class="text">비정상 재고 발생일자</span>&nbsp;&nbsp;
+								     	</label>
+								    </div>
+									<div class="form-row align-items-center search-schedule">
+								    	<label>
+									      	<input type="radio" id="donationContent" name="content" value="donationContent">
+									      	<span class="text">비정상 재고 등록/수정일자</span>
+								    	</label>
+								    </div>
+									<div class="form-row align-items-center search-schedule">
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">오늘</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">7일</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">3개월</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1년</span>
+											</button>
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-primary">
+												<span class="text text-gray-100">전체</span>
+											</button>
+											&nbsp;
+										</div>
+										<div class="col-auto">
+											<label for="start-date" class="sr-only">시작일</label>
+											<input type="date" id="start-date" class="form-control"
+												placeholder="시작일">
+										</div>
+										~
+										<div class="col-auto">
+											<label for="end-date" class="sr-only">종료일</label>
+											<input type="date" id="end-date" class="form-control" placeholder="종료일">
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="goodsPrice">비정상 재고 수량</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="number"
+												class="form-control"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="상품 수량" />
+										</div>
+										~
+										<div class="col-auto">
+											<input type="number"
+												class="form-control"
+												id="purchase-search" min="0" name="goodsPrice"
+												placeholder="상품 수량" />
+										</div>개
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">검색</span>
+						</button>
+					</div>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+			</div>
+		</div>
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<div class="table-responsive overflow-x">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
+						cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr>
+								<th>상품비정상재고코드</th>
+								<th>상품코드</th>
+								<th>상품재고코드</th>
+								<th>비정상재고 수량</th>
+								<th>비정상재고 발생일</th>
+								<th>비정상재고 사유</th>
+								<th>등록/수정자</th>
+								<th>등록/수정일자</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:unless="${unusualStockList == null}" th:each=" l : ${unusualStockList}">
+								<td th:text="${l.unusualStockCode}"></td>
+								<td th:text="${l.goodsCode}"></td>
+								<td th:text="${l.goodsStockCode}"></td>
+								<td th:text="${l.unusualStockQuantity}"></td>
+								<td th:text="${l.unusualStockDate}"></td>
+								<td th:text="${l.unusualStockReason}"></td>
+								<td th:if="${l.unusualStockUpdateId == null}" th:text="${l.unusualStockRegId}"></td>
+								<td th:unless="${l.unusualStockUpdateId == null}" th:text="${l.unusualStockUpdateId}"></td>
+								<td th:if="${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockRegDate}"></td>
+								<td th:unless="${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockUpdateDate}"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/stock/modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{/stock/remove_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
+										<span class="text">삭제</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${unusualStockList == null}">
+								<td colspan="10">등록된 비정상재고 정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+
+
 </th:block>
+
 <th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </th:block>
+
 </html>

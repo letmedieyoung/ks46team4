@@ -16,6 +16,8 @@
 
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
 
 </head>
 <th:block layout:fragment="customContents">
@@ -38,16 +40,6 @@
 							<tbody>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="foundationCode">재단요청코드</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationCode" name="foundationCode" readonly="readonly"/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
 										<label for="goodsName">재단명</label>
 									</th>
 									<td>
@@ -67,14 +59,25 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle"
-												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
-												<option value="option1">:: 콘텐츠 분류 ::</option>
-												<option value="option1">펀딩</option>
-												<option value="option2">정기 후원</option>
-											</select>
-										</div>
+											&nbsp;
+											<label>
+										    	<input type="radio" id="allContent" name="content" value="allContent" checked>
+										    	<span class="text">미정</span>&nbsp;&nbsp;
+									      	</label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+											&nbsp;
+											<label>
+										    	<input type="radio" id="allContent" name="content" value="allContent">
+										    	<span class="text">펀딩</span>&nbsp;&nbsp;
+									      	</label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									     	<label>
+										    	<input type="radio" id="fundingContent" name="content" value="fundingContent">
+										   		<span class="text">정기 후원</span>
+									     	</label>
+									    </div>
 									</td>
 								</tr>
 								<tr>
@@ -117,13 +120,13 @@
 							</tbody>
 						</table>
 						<div align="center">
-							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">입력취소</span>
-							</button>
 							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">등록하기</span>
+							</button>
+							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">입력취소</span>
 							</button>
 						</div>
 					</div>

@@ -52,6 +52,23 @@
 			funding_code = #{fundingCode}		
 	</select> 
 	
+	<select id="getGoodsCodeList" resultType="GoodsCode">
+		/* 상품코드 조회 */
+		SELECT
+			goods_code AS goodsCode
+		FROM
+			goods_reg_info;
+	</select>	
+	
+	<select id="getFoundationNameList" resultType="FundingFoundation">
+		/* 재단 목록 이름 조회 */
+		SELECT			
+			fl.foundation_name AS foundationName	
+		FROM 
+			foundation_list AS fl
+		ORDER BY foundation_code;
+	</select>	
+	
 	<update id="modifyFunding" parameterType="Funding">
 		/* 펀딩 정보 수정 */
 		UPDATE each_funding_info
@@ -138,6 +155,8 @@
 			funding_payments AS fp
 		ORDER BY funding_payment_refund_code DESC;	
 	</select>
+	
+	
 	
 	
 </mapper>

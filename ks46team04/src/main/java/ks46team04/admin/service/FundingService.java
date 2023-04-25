@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
+import ks46team04.admin.dto.GoodsCode;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -20,14 +22,13 @@ public class FundingService {
 	private static final Logger log = LoggerFactory.getLogger(FundingService.class);
 	
 	@Autowired
-	private final FundingMapper fundingMapper;
+	private final FundingMapper fundingMapper;	
 	
 	public FundingService(FundingMapper fundingMapper) {
-		this.fundingMapper = fundingMapper;
-		
+		this.fundingMapper = fundingMapper;		
 	}	
 	
-		
+	
 	/**
 	 * 펀딩 정보 수정
 	 * @param funding
@@ -45,6 +46,25 @@ public class FundingService {
 		Funding fundingInfo = fundingMapper.getFundingInfoByCode(fundingCode);
 		log.info("fundingInfo: {}", fundingCode);
 		return fundingInfo;
+	}
+	
+	
+	/**
+	 * 펀딩 수정화면 - 상품코드 불러오기
+	 * @return List<FudingFoundation>
+	 */
+	public List<GoodsCode> getGoodsCodeList(){
+		List<GoodsCode> goodsCodeList = fundingMapper.getGoodsCodeList();
+		return goodsCodeList;
+	}	
+	
+	/**
+	 * 펀딩 수정화면 - 재단명 불러오기
+	 * @return List<FudingFoundation>
+	 */
+	public List<FundingFoundation> getFoundationNameList(){
+		List<FundingFoundation> foundationNameList = fundingMapper.getFoundationNameList();
+		return foundationNameList;
 	}
 	
 	//펀딩 목록 조회	

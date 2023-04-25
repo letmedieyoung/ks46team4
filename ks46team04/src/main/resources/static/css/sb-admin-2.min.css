@@ -10333,12 +10333,19 @@ form.user .form-control-user-plus {
    	border-radius: 0.35rem;
    	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
- .table-layout {
-  table-layout: fixed;
-  }
-  .table-layout-auto {
-  table-layout: auto;
-  }
+.table-layout {
+ table-layout: fixed;
+ }
+ .table-layout-auto {
+ table-layout: auto;
+ }
+/* .search-input {
+    width: 20rem;
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem
+}  */
 .middle-input {
     width: 20rem;
     height: calc(1em + 0.5rem + 2px);
