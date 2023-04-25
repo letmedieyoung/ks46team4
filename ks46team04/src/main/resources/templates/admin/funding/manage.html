@@ -137,7 +137,7 @@
 						<tbody>
 							<tr th:unless="${fundingList == null}" th:each="l : ${fundingList}">
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>															
-								<td><a th:text="${l.fundingCode}" th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
+								<td><a th:text="${l.fundingCode}" th:href="@{modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
 								<td th:text="${l.fundingName}" id="fundingName"></td>
 								<td th:text="${l.fundingFoundation}"></td>
 								<td th:text="${l.goodsCode}"></td>

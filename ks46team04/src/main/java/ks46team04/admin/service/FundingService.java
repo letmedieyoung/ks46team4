@@ -47,8 +47,7 @@ public class FundingService {
 		log.info("fundingInfo: {}", fundingCode);
 		return fundingInfo;
 	}
-	
-	
+		
 	/**
 	 * 펀딩 수정화면 - 상품코드 불러오기
 	 * @return List<FudingFoundation>
@@ -67,6 +66,7 @@ public class FundingService {
 		return foundationNameList;
 	}
 	
+	
 	//펀딩 목록 조회	
 	 public List<Funding> getFundingList(){        
 		 return fundingMapper.getFundingList(null);
@@ -82,14 +82,31 @@ public class FundingService {
 		int result = fundingMapper.registFunding(funding);
 		return result;
 	}
-
 	
+
+	/**
+	 * 펀딩 결제내역 수정
+	 * @param fundingPay
+	 */
+	public void modifyFundingPay(FundingPay fundingpay) {
+		fundingMapper.modifyFundingPay(fundingpay);
+	}
+	/**
+	 * 특정 펀딩 결제내역 조회
+	 * @param fundingPayCode
+	 * @return
+	 */
+	public FundingPay getFundingPayInfoByCode(String fundingPayCode) {
+		FundingPay fundingPayInfo = fundingMapper.getFundingPayInfoByCode(fundingPayCode);
+		return fundingPayInfo;
+	}	
 	//펀딩 결제 내역 조회
 	public List<FundingPay> getFundingPayList(){
 		List<FundingPay> fundingPayList = fundingMapper.getFundingPayList();
 		log.info("fundingPayList_Service: {}", fundingPayList);
 		return fundingPayList;
 	}
+	
 	
 	//펀딩 환불 신청 내역 조회
 	public List<FundingRefund> getFundingRefundList(){

@@ -11,36 +11,7 @@
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
-	<!--
-	 <script th:inline="javascript"> 	
-		$(function() {
-			// Ajax 요청 보내기
-			let request = $.ajax({
-				url: '/funding/foundationName', // 서버 API 주소
-				method: 'GET', // HTTP 요청 방식
-				dataType: 'json' // 반환되는 데이터 형식
-			});
-			
-			request.done(function( data ) {
-			// Ajax 요청이 성공한 경우, 데이터를 목록에 출력
-				const foundationNameList = data;
-			   	if(foundationNameList != NULL){
-					$(foundationNameList).each(function(idx, item){
-						let foundationName = item.foundationName;
-						const newEle = $(`<option value="${foundationName}"> ${foundationName}}</option>`);
-						$('#foundationName').append(newEle);
-					}) 
-				}
-			});
-			
-			request.fail(function( jqXHR, textStatus) {
-			   // Ajax 요청이 실패한 경우, 에러 메시지 출력
-			   alert(`Request failed: ${textStatus}`);
-			 });
-		});
 	
-	</script>
-	 --> 
 
 <th:block layout:fragment="customContents">
 
@@ -52,9 +23,22 @@
 			    	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 수정</h5>
 			    </div>
 				<div class="card-body">
-					<div class="table-responsive">						
+					<div class="table-responsive">
+						<div th:object="${fundingInfo}" id="fRegInfo">
+							<ul>
+								<li>
+									펀딩등록일 :
+									<input type="text" id="fundingRegDate" th:value="*{fundingRegDate}" name="fundingRegDate" style="border:none;" disabled="disabled"></input>			
+								</li>
+								<li>
+									최종수정일 :
+									<span ></span>			
+								</li>										
+							</ul>										
+						</div>						
 						<table th:object="${fundingInfo}" class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
-							<tbody>
+							<tbody>														
+																
 								<tr>
 									<th class="bg-gray-100">
 										<label for="fundingCode">펀딩코드</label>
