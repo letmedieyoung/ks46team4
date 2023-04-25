@@ -8,12 +8,17 @@
 		<id		column="goods_code"				property="goodsCode"/>
 		<result column="goods_name"				property="goodsName"/>
 		<result column="goods_company"			property="goodsCompany"/>
-		<result column="goods_category"			property="goodsCate"/>
+		<result column="goods_category"			property="goodsCategory"/>
 		<result column="goods_price"			property="goodsPrice"/>
 		<result column="goods_reg_id"			property="goodsRegId"/>
 		<result column="goods_reg_date"			property="goodsRegDate"/>
 		<result column="goods_update_id"		property="goodsUpdateId"/>
 		<result column="goods_update_date"		property="goodsUpdateDate"/>
+	</resultMap>
+	
+	<resultMap type="GoodsCategory" id="goodsCategoryResultMap">
+		<result column="goods_category_code"		property="goodsCategoryCode"/>
+		<result column="goods_category"				property="goodsCategory"/>
 	</resultMap>
 	
 	<select id="getGoodsList" resultMap="goodsResultMap">
@@ -31,5 +36,62 @@
 		FROM
 			goods_reg_info;
 	</select>
+	
+	<select id="getGoodsCategoryList" resultMap="goodsCategoryResultMap">
+		/* 상품 분류 조회 */
+		SELECT 
+			goods_category_code
+			, goods_category
+		FROM
+			goods_category_info;
+	</select>
+	
+	<insert id="addGoods" parameterType="Goods" >
+		/* 상품 등록 */
+		INSERT INTO goods_reg_info
+			(goods_code, goods_name, goods_company, goods_category, goods_price, goods_reg_id, goods_reg_date)
+		VALUES
+			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
+	</insert>
+	
+	<select id="getGoodsInfoByCode" resultMap="goodsResultMap">
+		/* 특정 상품 조회 */
+		SELECT 
+			goods_code
+			, goods_name
+			, goods_company
+			, goods_category
+			, goods_price
+			, goods_reg_id
+			, goods_reg_date
+			, goods_update_id
+			, goods_update_date
+		FROM
+			goods_reg_info
+		WHERE
+			goods_code = #{goodsCode};
+	</select>
+	
+	<update id="modifyGoods" parameterType="Goods">
+		/* 상품 수정 */
+		UPDATE goods_reg_info
+		<set>
+			<if test="goodsName != null and goodsName !=''">
+				g_name = #{goodsName}
+			</if>
+			<if test="goodsCate != null and goodsCate !=''">
+				,goods_category = #{goodsCategory}
+			</if>
+			<if test="goodsCompany != null and goodsCompany !=''">
+				,goods_company = #{goodsCompany}
+			</if>
+			<if test="goodsPrice != null and goodsPrice !=''">
+				,goods_price = #{goodsPrice}
+			</if>
+		</set>
+		WHERE
+			goods_code = #{goodsCode};
+	</update>
+	
 	
 </mapper>

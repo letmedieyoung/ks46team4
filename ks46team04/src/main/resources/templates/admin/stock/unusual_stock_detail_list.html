@@ -221,9 +221,9 @@
 								<td th:text="${l.unusualStockDate}"></td>
 								<td th:text="${l.unusualStockReason}"></td>
 								<td th:if="${l.unusualStockUpdateId == null}" th:text="${l.unusualStockRegId}"></td>
-								<td th:unless="${l.unusualStockUpdateId == null}" th:text="${l.unusualStockUpdateId}"></td>
+								<td th:unless="|${l.unusualStockUpdateId == null}" th:text="${l.unusualStockUpdateId}(수정)|"></td>
 								<td th:if="${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockRegDate}"></td>
-								<td th:unless="${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockUpdateDate}"></td>
+								<td th:unless="|${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockUpdateDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/stock/modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">

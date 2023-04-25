@@ -236,9 +236,9 @@
 								<td th:unless="${l.inOutcomingType == 'incoming'}">출고</td>
 								<td th:text="${l.inOutcomingDate}"></td>
 								<td th:if="${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingRegId}"></td>
-								<td th:unless="${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingUpdateId}"></td>
+								<td th:unless="|${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingUpdateId}(수정)|"></td>
 								<td th:if="${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingRegDate}"></td>
-								<td th:unless="${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingUpdateDate}"></td>
+								<td th:unless="|${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingUpdateDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks46team04.admin.dto.Goods;
+import ks46team04.admin.dto.GoodsCategory;
 
 
 @Mapper
@@ -13,6 +14,9 @@ public interface GoodsMapper {
 	
 	//상품 조회
 	public List<Goods> getGoodsList();
+	
+	//상품 분류 조회
+	public List<GoodsCategory> getGoodsCategoryList();
 	
 	//상품등록 
 	public int addGoods(Goods goods);
