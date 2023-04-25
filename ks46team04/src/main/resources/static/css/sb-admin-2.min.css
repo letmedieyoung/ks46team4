@@ -10363,10 +10363,3 @@ form.user .form-control-user-plus {
 .table-space{
 	white-space: nowrap;
 }
-.short-input{
-    width: 3rem;
-    height: calc(1em + 0.5rem + 2px);
-    display: inline-block;
-    margin-right: 0.2rem;
-    padding: 1.13rem 1rem
-} 
