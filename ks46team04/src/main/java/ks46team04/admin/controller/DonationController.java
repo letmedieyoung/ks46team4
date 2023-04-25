@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ks46team04.admin.dto.Donation;
+import ks46team04.admin.dto.DonationPayDetail;
+import ks46team04.admin.dto.DonationPayMethod;
+import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.service.DonationService;
 import lombok.AllArgsConstructor;
 
@@ -50,7 +53,7 @@ public class DonationController {
 	
 	donationService.addDonation(donation);
 	
-	return "redirect:/donation/donation_list";
+	return "redirect:/admin/donation/donation_list";
 	
 		}
 	
@@ -70,7 +73,7 @@ public class DonationController {
 		
 		donationService.modifyDonation(donation);
 		
-		return "redirect:/donation/donation_list";
+		return "redirect:/admin/donation/donation_list";
 	}
 	
 	@GetMapping("/donation_modify")
@@ -91,9 +94,154 @@ public class DonationController {
 	@GetMapping("/donation_remove")
 	public String removeDonation(Donation donation) {
 		donationService.removeDonation(donation);
-		return "redirect:/donation/donation_list";
+		return "redirect:/admin/donation/donation_list";
 	}
 	
+	/*
+	 * 등록된 회원 결제수단 조회
+	 */
+	@GetMapping("/donationPayMethod_list")
+	public String getDonationPayMethod(Model model) {
+		
+		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod();
+		log.info("getDonationPayMethod: {}", getDonationPayMethod);
+		model.addAttribute("title", "등록된 회원 결제수단 목록");
+		model.addAttribute("getDonationPayMethod", getDonationPayMethod);
+		
+		return "admin/donation/donationPayMethod_list";
+	}
+	
+	/*
+	 * 등록된 회원 결제수단 등록
+	 */
+	@PostMapping("/donationPayMethod_add")
+	public String addDonationPayMethod(DonationPayMethod donationPayMethod) {
+		
+	log.info("화면에서 전달받은 데이터 : {}", donationPayMethod);
+	
+	donationService.addDonationPayMethod(donationPayMethod);
+	
+	return "redirect:/admin/donation/donationPayMethod_list";
+	
+		}
+	
+	@GetMapping("/donationPayMethod_add")
+	public String addDonationPayMethod(Model model) {
+		
+		model.addAttribute("title", "등록된 회원 결제수단 등록");
+		
+		return "/admin/donation/donationPayMethod_add";
+	}
+	
+	/*
+	 * 등록된 회원 결제수단 수정
+	 */
+	@PostMapping("/donationPayMethod_modify")
+	public String modifyDonationPayMethod(DonationPayMethod donationPayMethod) {
+		
+		donationService.modifyDonationPayMethod(donationPayMethod);
+		
+		return "redirect:/admin/donation/donationPayMethod_list";
+	}
+	@GetMapping("/donationPayMethod_modify")
+	public String modifyDonationPayMethod(Model model, @RequestParam(name="donationPayMethodCode") String donationPayMethodCode){
+		
+		DonationPayMethod donationPayMethodInfo = donationService.getDonationPayMethodInfoByCode(donationPayMethodCode);
+		log.info("donationPayMethodInfo: {}", donationPayMethodInfo);
+		model.addAttribute("title", "등록된 회원 결제수단 수정");
+		model.addAttribute("donationPayMethodInfo", donationPayMethodInfo);
+		
+		return "admin/donation/donationPayMethod_modify";
+	}
+	
+	/*
+	 * 등록된 회원 결제수단 삭제
+	 * */
+	@GetMapping("/donationPayMethod_remove")
+	public String removeDonationPayMethod(DonationPayMethod donationPayMethod) {
+		donationService.removeDonationPayMethod(donationPayMethod);
+		return "redirect:/admin/donation/donationPayMethod_list";
+	}
+	
+	/* 정기기부 구독 신청 조회
+	 * 
+	 */
+	@GetMapping("/donationSub_list")
+	public String getDonationSub(Model model) {
+		
+		List<DonationSub> getDonationSub = donationService.getDonationSub();
+		
+		model.addAttribute("title", "정기기부 구독 신청 목록");
+		model.addAttribute("getDonationSub", getDonationSub);
+		
+		return "admin/donation/donationSub_list";
+	}
+	
+	/*
+	 * 정기기부 구독 신청 등록
+	 */
+	@PostMapping("/donationSub_add")
+	public String addDonationSub(DonationSub donationSub) {
+		
+	log.info("화면에서 전달받은 데이터 : {}", donationSub);
+	
+	donationService.addDonationSub(donationSub);
+	
+	return "redirect:/admin/donation/donationSub_list";
+	
+		}
+	
+	@GetMapping("/donationSub_add")
+	public String addDonationSub(Model model) {
+		
+		model.addAttribute("title", "정기기부 구독 신청 등록");
+		
+		return "/admin/donation/donationSub_add";
+	}
+	
+	/*
+	 * 정기기부 구독 신청 수정
+	 */
+	@PostMapping("/donationSub_modify")
+	public String modifyDonationSub(DonationSub donationSub) {
+		
+		donationService.modifyDonationSub(donationSub);
+		
+		return "redirect:/admin/donation/donationSub_list";
+	}
+	@GetMapping("/donationSub_modify")
+	public String modifyDonationSub(Model model, @RequestParam(name="donationSubCode") String donationSubCode){
+		
+		DonationSub donationSubInfo = donationService.getDonationSubInfoByCode(donationSubCode);
+		log.info("donationPayMethodInfo: {}", donationSubInfo);
+		model.addAttribute("title", "정기기부 구독 신청 수정");
+		model.addAttribute("donationSubInfo", donationSubInfo);
+		
+		return "admin/donation/donationSub_modify";
+	}
+	
+	/*
+	 * 정기기부 구독 신청 삭제
+	 * */
+	@GetMapping("/donationSub_remove")
+	public String removeDonationSub(DonationSub donationSub) {
+		donationService.removeDonationSub(donationSub);
+		return "redirect:/admin/donation/donationSub_list";
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 조회
+	 */
+	@GetMapping("/donationPayDetail_list")
+	public String getDonationPayDetail(Model model) {
+		
+		List<DonationPayDetail> getDonationPayDetail = donationService.getDonationPayDetail();
+		
+		model.addAttribute("title", "정기기부 구독 결제 상세 목록");
+		model.addAttribute("getDonationPayDetail", getDonationPayDetail);
+		
+		return "admin/donation/donationPayDetail_list";
+	}
 	
 	/*LBR*/
 	@GetMapping("/donationRefund_list")
@@ -110,11 +258,5 @@ public class DonationController {
 	@GetMapping("/donationRefund_modify")
 	public String modifyDonationrefund() {
 		return "admin/donation/donationRefund_modify";
-	}
-	
-	@GetMapping("/donationSub_list")
-	public String getDonationSubList() {
-		return "admin/donation/donationSub_list";
-	}
-	
+	}	
 }

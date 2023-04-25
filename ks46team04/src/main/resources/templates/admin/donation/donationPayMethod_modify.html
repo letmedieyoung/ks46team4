@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+
+		<!-- DataTales Example -->
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h5 class="m-0 font-weight-bold text-gray-800">등록된 회원 결제수단 수정</h5>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<form id="modifyDonationPayMethodForm" th:action="@{/admin/donation/donationPayMethod_modify}" method="POST">
+						<table th:object="${donationPayMethodInfo}" class="table table-bordered freg" id="modifyDonationPayMethod" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>코드</th>
+									<td><input type="text" id="donationPayMethodCode"
+										th:value="*{donationPayMethodCode}" name="donationPayMethodCode"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>회원 아이디</th>
+									<td><input type="text" id="donationPayMethodUserId"
+										th:value="*{donationPayMethodUserId}" name="donationPayMethodUserId"
+										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>결제수단 코드</th>
+									<td><input type="text" id="donationPayCode"
+										th:value="*{donationPayCode}" name="donationPayCode"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>은행명</th>
+									<td><input type="text" id="donationPayMethodBank"
+										th:value="*{donationPayMethodBank}" name="donationPayMethodBank"
+										style="width: 400px;"
+										placeholder="결제 은행명을 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>계좌번호</th>
+									<td><input type="text" id="donationPayMethodAccount"
+										th:value="*{donationPayMethodAccount}" name="donationPayMethodAccount"
+										style="width: 400px;" placeholder="결제 계좌번호 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>등록일자</th>
+									<td><input type="text" id="donationPayMethodRegDate"
+										th:value="*{donationPayMethodRegDate}" name="donationPayMethodRegDate"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>수정일자</th>
+									<td><input type="date" id="donationPayMethodUpdateDate"
+										th:value="*{donationPayMethodUpdateDate}" name="donationPayMethodUpdateDate"/></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button>
+										<button type="button" class="btn btn-primary" id="resetBtn"
+											onclick="location.href='/admin/donation/donationPayMethod_list'">입력취소</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

@@ -1,80 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
 <head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
 <!-- Custom styles for this page -->
-<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
-	rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
+
 <th:block layout:fragment="customContents">
+
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<!-- Page Heading -->
-		<h1 class="h3 mb-2 text-gray-800">정기기부 구독 조회</h1>
-		<p class="mb-4">
-			정기 기부 환불 조회 - 초안 23-04-21 AM 12:33(LBR)<br> 어떻게 승인 및 반려 처리 할것인지
-			화면 요소와 로직 필요<br> 상세조회 하고 싶으면 날짜, 콘텐츠 등을 상세 분류 할 수 있는 폼 필요
-		</p>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
 
-		<!-- DataTales Example -->
-		<div class="card shadow mb-4">
-			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">정기기부 구독 조회</h6>
-			</div>
-			<div class="card-body">
-				<div class="table-responsive">
-					<!-- 회원 아이디|정기기부 콘텐츠명|자동 결제 정보(누르면 링크)|구독 시작일|구독 종료일 -->
-					<table class="table table-bordered" id="dataTable" width="100%"
-						cellspacing="0">
-						<thead>
-							<tr>
-								<th>회원 아이디</th>
-								<th>정기기부 콘텐츠명</th>
-								<th>자동 결제 정보(누르면 링크)</th>
-								<th>구독 시작일</th>
-								<th>구독 종료일</th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<th>회원 아이디</th>
-								<th>정기기부 콘텐츠명</th>
-								<th>자동 결제 정보(누르면 링크)</th>
-								<th>구독 시작일</th>
-								<th>구독 종료일</th>
-							</tr>
-						</tfoot>
-						<tbody>
-							<tr>
-								<td>useridd4</td>
-								<td>3만원</td>
-								<td><a href="#">auto_payment1</a></td>
-								<td>2023-01-17 16:45</td>
-								<td>구독 중</td>
-							</tr>
-							<tr>
-								<td>useridd5</td>
-								<td>5만원</td>
-								<td><a href="#">auto_payment2</a></td>
-								<td>2023-01-18 16:45</td>
-								<td>2023-03-17 16:45</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td><a href="#"></a></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
+			<!-- Page Heading -->
+
+			<!-- DataTales Example -->
+			<div class="card mb-4">
+				<div class="card-header py-3">
+					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 신청 조회</h5>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+							<thead>
+								<tr>
+									<th>코드</th>
+									<th>회원 아이디</th>
+									<th>정기기부 콘텐츠</th>
+									<th>회원 결제 수단</th>
+									<th>구독 시작일</th>
+									<th>구독 종료일</th>
+									<th>수정</th>
+									<th>삭제</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:unless="${getDonationSub == null}" th:each=" l : ${getDonationSub}">
+									<td th:text="${l.donationSubCode}"></td>
+									<td th:text="${l.donationSubUserId}"></td>
+									<td th:text="${l.donationCode}"></td>
+									<td th:text="${l.donationPayMethodCode}"></td>
+									<td th:text="${l.donationSubStartDate}"></td>
+									<td th:text="${l.donationSubEndDate}"></td>
+									<td>
+										<a th:href="@{/admin/donation/donationSub_modify(donationSubCode=${l.donationSubCode})}">수정</a>
+									</td>
+									<td>
+										<a th:href="@{/admin/donation/donationSub_remove(donationSubCode=${l.donationSubCode})}" onclick="if(!confirm('삭제 시 복구할 수 없습니다. 삭제하시겠습니까?')){return false;}">삭제</a>
+										
+									</td>
+								</tr>
+								<tr th:if="${getDonationSub == null}">
+									<td colspan="11">등록된 정기기부 구독 신청 정보가 없습니다.</td>
+								</tr>
+						</table>
+					</div> <button type="button" class="btn btn-primary" id="addBtn"
+								onclick="location.href='/admin/donation/donationSub_add'">등록하기</button>
 				</div>
 			</div>
+
 		</div>
+		<!-- /.container-fluid -->
 	</div>
-	<!-- container-fluid -->
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
 
 </th:block>
 

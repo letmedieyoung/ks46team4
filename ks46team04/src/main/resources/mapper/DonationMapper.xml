@@ -43,9 +43,14 @@
 	<select id="getDonationInfoByCode" parameterType="String" resultMap="donationResultMap">
 		/* 특정 정기기부 단가 조회*/
 		SELECT
-			 regular_donation_code
-			,regular_donation_name
-			,regular_donation_price
+			regular_donation_code
+			, regular_donation_name
+			, regular_donation_price
+			, regular_donation_description
+			, regular_donation_reg_id
+			, regular_donationr_reg_date
+			, regular_donation_update_id
+			, regular_donation_update_date
 		FROM
 			regular_donation_unit_price
 		WHERE
@@ -65,6 +70,10 @@
 			<if test="donationDescription != null and donationDescription !=''">
 				,regular_donation_description = #{donationDescription}
 			</if>
+			<if test="donationDescription != null and donationDescription !=''">
+				,regular_donation_description = #{donationDescription}
+			</if>
+			, regular_donation_update_id = #{donationUpdateId}
 		</set>
 		WHERE
 			regular_donation_code = #{donationCode};
@@ -79,4 +88,154 @@
 			regular_donation_code = #{donationCode};
 	</delete>
 	
+	<select id="getDonationPayMethod" resultType="DonationPayMethod">
+		/* 등록된 회원 결제수단 조회 */
+		SELECT 
+			regular_donation_auto_pm_code AS donationPayMethodCode
+			, user_id AS donationPayMethodUserId
+			, pm_code AS donationPayCode
+			, regular_donation_payment_bank AS donationPayMethodBank
+			, regular_donation_payment_account AS donationPayMethodAccount
+			, regular_donation_payment_reg_date AS donationPayMethodRegDate
+			, regular_donation_payment_update_date AS donationPayMethodUpdateDate
+		FROM
+			donation_auto_pay_method;
+	</select>
+	
+	<insert id="addDonationPayMethod" parameterType="DonationPayMethod">
+		/* 등록된 회원 결제수단 등록 */
+		INSERT INTO donation_auto_pay_method
+		(regular_donation_auto_pm_code, user_id, pm_code, regular_donation_payment_bank,
+		regular_donation_payment_account, regular_donation_payment_reg_date, regular_donation_payment_update_date)
+		VALUES
+		(#{donationPayMethodCode}, #{donationPayMethodUserId}, #{donationPayCode}, #{donationPayMethodBank},
+		 #{donationPayMethodAccount}, #{donationPayMethodRegDate}, #{donationPayMethodUpdateDate});		
+	</insert>
+	
+	<select id="getDonationPayMethodInfoByCode" resultType="DonationPayMethod" parameterType="String">
+		/* 특정 등록된 회원 결제수단 조회*/
+		SELECT
+			regular_donation_auto_pm_code AS donationPayMethodCode
+			, user_id AS donationPayMethodUserId
+			, pm_code AS donationPayCode
+			, regular_donation_payment_bank AS donationPayMethodBank
+			, regular_donation_payment_account AS donationPayMethodAccount
+			, regular_donation_payment_reg_date AS donationPayMethodRegDate
+			, regular_donation_payment_update_date AS donationPayMethodUpdateDate
+		FROM
+			donation_auto_pay_method
+		WHERE
+			regular_donation_auto_pm_code = #{donationPayMethodCode};
+	</select>
+	
+	<update id="modifyDonationPayMethod" parameterType="DonationPayMethod">
+		/* 등록된 회원 결제수단 수정 */
+		UPDATE donation_auto_pay_method
+		<set>
+			<if test="donationPayMethodUserId != null and donationPayMethodUserId !=''">
+				user_id = #{donationPayMethodUserId}
+			</if>
+			<if test="donationPayMethodBank != null and donationPayMethodBank !=''">
+				,regular_donation_payment_bank = #{donationPayMethodBank}
+			</if>
+			<if test="donationPayMethodAccount != null and donationPayMethodAccount !=''">
+				,regular_donation_payment_account = #{donationPayMethodAccount}
+			</if>
+		</set>
+		WHERE
+			regular_donation_auto_pm_code = #{donationPayMethodCode};
+	</update>
+	
+	<delete id="removeDonationPayMethod" parameterType="DonationPayMethod">
+		/* 등록된 회원 결제수단 삭제 */
+		DELETE
+		FROM
+		 	donation_auto_pay_method 
+		WHERE 
+			regular_donation_auto_pm_code = #{donationPayMethodCode};		
+	</delete>
+	
+	<select id="getDonationSub" resultType="DonationSub">
+		/* 정기기부 구독 신청 조회 */
+		SELECT 
+			user_regular_donation_subscription_code AS `donationSubCode`
+			, user_id AS `donationSubUserId`
+			, regular_donation_code AS `donationCode`
+			, regular_donation_auto_pm_code AS `donationPayMethodCode`
+			, user_regular_donation_subscription_start_date AS `donationSubStartDate`
+			, user_regular_donation_subscription_end_date AS `donationSubEndDate`
+		FROM
+			user_regular_donation_subscription;
+	</select>
+	
+	<insert id="addDonationSub" parameterType="DonationSub">
+		/* 정기기부 구독 신청 등록 */
+		INSERT INTO user_regular_donation_subscription
+		(user_regular_donation_subscription_code, user_id, regular_donation_code, regular_donation_auto_pm_code,
+		user_regular_donation_subscription_start_date, user_regular_donation_subscription_end_date)
+		VALUES
+		(#{donationSubCode}, #{donationSubUserId}, #{donationCode}, #{donationPayMethodCode},
+		 #{donationSubStartDate}, #{donationSubEndDate});		
+	</insert>
+	
+	<select id="getDonationSubInfoByCode" resultType="DonationSub" parameterType="String">
+		/* 특정 정기기부 구독 신청 조회*/
+		SELECT
+			user_regular_donation_subscription_code AS `donationSubCode`
+			, user_id AS `donationSubUserId`
+			, regular_donation_code AS `donationCode`
+			, regular_donation_auto_pm_code AS `donationPayMethodCode`
+			, user_regular_donation_subscription_start_date AS `donationSubStartDate`
+			, user_regular_donation_subscription_end_date AS `donationSubEndDate`
+		FROM
+			user_regular_donation_subscription
+		WHERE
+			user_regular_donation_subscription_code = #{donationSubCode};
+	</select>
+	
+	<update id="modifyDonationSub" parameterType="DonationSub">
+		/* 정기기부 구독 신청 수정 */
+		UPDATE user_regular_donation_subscription
+		<set>
+			<if test="donationSubUserId != null and donationSubUserId !=''">
+				user_id = #{donationSubUserId}
+			</if>
+			<if test="donationSubStartDate != null and donationSubStartDate !=''">
+				,user_regular_donation_subscription_start_date = #{donationSubStartDate}
+			</if>
+			<if test="donationSubEndDate != null and donationSubEndDate !=''">
+				,user_regular_donation_subscription_end_date = #{donationSubEndDate}
+			</if>
+		</set>
+		WHERE
+			user_regular_donation_subscription_code = #{donationSubCode};
+	</update>
+	
+	<delete id="removeDonationSub" parameterType="DonationSub">
+		/* 정기기부 구독 신청 삭제 */
+		DELETE
+		FROM
+		 	user_regular_donation_subscription 
+		WHERE 
+			user_regular_donation_subscription_code = #{donationSubCode};		
+	</delete>
+	
+	<select id="getDonationPayDetail" resultType="DonationPayDetail">
+		/* 정기기부 구독 결제 상세 조회 */
+		SELECT 
+			regular_donation_payment_code AS `donationPayDetailCode`
+			, user_id AS `donationPayUserId`
+			, user_regular_donation_subscription_code AS `donationSubCode`
+			, regular_donation_code AS `donationCode`
+			, regular_donation_auto_pm_code AS `donationPayMethodCode`
+			, payment_amount AS `donationPayAmount`
+			, sales_commission AS `donationPaySalesCommission`
+			, purchase_budget AS `donationPayPurchaseBudget`
+			, user_regular_donation_payment_date AS `donationPayDate`
+			, user_regular_donation_payment_refund_requested AS `donationPayRefundRequest`
+			, regular_donation_sales_group AS `donationPaySalesGroup`
+			, user_regular_donation_deadline_check AS `donationPayDeadlineCheck`
+		FROM
+			user_regular_donation_payment;
+	</select>
 </mapper>
