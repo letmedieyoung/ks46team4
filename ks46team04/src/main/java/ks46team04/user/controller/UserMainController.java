@@ -15,6 +15,7 @@ import ks46team04.admin.controller.UserController;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.dto.FundingPay;
+import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.User;
 import ks46team04.admin.mapper.UserMapper;
 import ks46team04.admin.service.DonationService;
@@ -38,6 +39,22 @@ public class UserMainController {
 		this.fundingService = fundingService;
 		this.donationService = donationService;
 	}
+	
+	
+	@GetMapping("/myPage_myPayment")
+	public String mypagePayment(Model model
+			 ,@RequestParam(name="keyword", required=false) String keyword
+			 ,@RequestParam(name="searchValue", required=false) String searchValue) {
+		
+		List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword, searchValue);
+		log.info("getDonationPayMethod: {}", refundList);
+		model.addAttribute("title", "마이페이지결제내역");
+		model.addAttribute("refundList", refundList);
+		
+		return "/user/myPage_myPayment";
+	}
+	
+	
 	
 	
 	@GetMapping("/myPage_myAutoPm")
