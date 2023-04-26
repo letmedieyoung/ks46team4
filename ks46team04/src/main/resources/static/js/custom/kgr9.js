@@ -49,14 +49,28 @@ $(function(){
 	
 	
 	$('#submitBtn').click(function(){
+		let formId = $('form').getAttribute('id');
+		console.log(formId)
+		const $inputEles = [];
+		switch(formId){
+			case addGoodsForm:
+				$inputEles = $('#addGoodsForm input');
+				break;
+			case modifyGoodsForm:
+				$inputEles = $('#modifyGoodsForm input');
+				break;
+			case removeGoodsForm:
+				$inputEles = $('#removeGoodsForm input');
+				break;
+		}		
 		let isSubmit = true;
-		let $inputEles = $('#addGoodsForm input');
 		$inputEles.each(function(idx, item){
 			isSubmit = validationCheck(item);
 			return isSubmit;
 		});
 		
-		if(isSubmit) $('#addGoodsForm').submit();
+		let $formEle = document.getElementById(formId);
+		if(isSubmit) $formEle.submit();
 		
 	});
 });
