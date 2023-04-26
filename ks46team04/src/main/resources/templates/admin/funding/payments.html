@@ -34,33 +34,33 @@
 								<th>결제일</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
-											<span class="text text-gray-100">오늘</span>
+										<button type="button" id="todayBtn" class="btn btn-secondary" >
+											<span class="text text-gray-100">오늘</span> 
 										</button>
 									</div>					
 									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
+										<button type="button" id="monthBtn" class="btn btn-secondary">
 											<span class="text text-gray-100">1개월</span>
 										</button>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
+										<button type="button" id="threeMonthBtn" class="btn btn-secondary">
 											<span class="text text-gray-100">3개월</span>
 										</button>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-primary">
+										<button type="button" id="wholePeriodBtn"class="btn btn-primary">
 											<span class="text text-gray-100">전체</span>
 										</button>										
 									</div>
 									<div class="align-items-center search-schedule">
-										<input type="date" class="dateSelect form-control form-control-user-search search-input" />
+										<input type="date" id="startDateInput" class="dateSelect form-control form-control-user-search search-input" />
 									</div>
 									<div class="align-items-center search-schedule">
 										<span>~</span>
 									</div>
 									<div class="align-items-center search-schedule">
-										<input type="date" class="dateSelect form-control form-control-user-search search-input" />
+										<input type="date" id="endDateInput" class="dateSelect form-control form-control-user-search search-input" />
 									</div>								
 								</td>
 							</tr>	
@@ -95,7 +95,7 @@
 		</div>		
 		
 		<!-- 조회 테이블 -->
-		<div class="card mb-4">
+		<div class="list-table card mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>

@@ -38,7 +38,7 @@ public interface FundingMapper {
 	public List<FundingPay> getFundingPayList();
 	
 	// 펀딩 환불신청내역 조회
-	public List<FundingRefund> getRefundList();
+	public List<FundingRefund> getRefundList(String keyword, String searchValue);
 	
 
 }

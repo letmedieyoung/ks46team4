@@ -109,9 +109,9 @@ public class FundingService {
 	
 	
 	//펀딩 환불 신청 내역 조회
-	public List<FundingRefund> getFundingRefundList(){
-		List<FundingRefund> refundList = fundingMapper.getRefundList();
-		log.info("fundingRefundList_Service: {}", refundList);
+	public List<FundingRefund> getFundingRefundList(String keyword, String searchValue){
+		List<FundingRefund> refundList = fundingMapper.getRefundList(keyword, searchValue);
+		//log.info("fundingRefundList_Service: {}", refundList);
 		return refundList;
 	}
 }

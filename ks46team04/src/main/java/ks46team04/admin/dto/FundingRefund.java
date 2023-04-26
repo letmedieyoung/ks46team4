@@ -8,7 +8,7 @@ import lombok.Data;
 public class FundingRefund {
 	private String fundingRefundCode;
 	private String userId;
-	private String fundingPaymentCode;
+	private String fundingPayCode;
 	private String refundRequestDate;
 	private String requestAmount;
 	private String refundBank;

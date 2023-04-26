@@ -27,7 +27,7 @@ import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingService;
 
 @Controller
-@RequestMapping("admin/funding")
+@RequestMapping("/admin/funding")
 public class FundingController {
 	
 	private static final Logger log = LoggerFactory.getLogger(FundingController.class);
@@ -51,7 +51,7 @@ public class FundingController {
 		log.info("funding: {}", funding);
 		fundingMapper.modifyFunding(funding);
 		
-		return "redirect:admin/funding/manage";
+		return "redirect:/admin/funding/manage";
 	}		
 	
 	/**
@@ -122,7 +122,7 @@ public class FundingController {
 		
 		fundingService.deleteFunding(funding);
 		
-		return "redirect:admin/funding/manage";
+		return "redirect:/admin/funding/manage";
 	}	
 		
 	
@@ -135,7 +135,7 @@ public class FundingController {
 	public String registFunding(Funding funding) { 
 		log.info("화면에서 전달받은 데이터 : {}", funding);
 		fundingService.registFunding(funding);
-		return "redirect:admin/funding/manage"; 
+		return "redirect:/admin/funding/manage"; 
 	}		
 	
 	@GetMapping("/register")
@@ -143,7 +143,7 @@ public class FundingController {
 		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
 		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
 	
-		model.addAttribute("title", "registFunding");
+		model.addAttribute("title", "신규펀딩등록");
 		model.addAttribute("foundationNameList", foundationNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		
@@ -177,7 +177,7 @@ public class FundingController {
 		
 		fundingMapper.modifyFundingPay(fundingPay);
 		
-		return "redirect:admin/funding/payments";
+		return "redirect:/admin/funding/payments";
 	}
 	/**
 	 * 펀딩 결제내역 수정화면
@@ -212,15 +212,21 @@ public class FundingController {
 		return "admin/funding/payments";
 	}
 	
+	
+	
 	/**
 	 * 펀딩 환불 관리
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/refund")
-	public String refund(Model model){
-		List<FundingRefund> refundList = fundingService.getFundingRefundList();
-		log.info("refundList_Service: {}", refundList);
+	public String refund(Model model,
+						 @RequestParam(name="keyword", required=false) String keyword,
+						 @RequestParam(name="searchValue", required=false) String searchValue) {
+		List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword, searchValue);	
+				
+		//log.info("refundList_Service: {}", refundList);
+		
 		model.addAttribute("title", "refund");
 		model.addAttribute("refundList", refundList);
 		
