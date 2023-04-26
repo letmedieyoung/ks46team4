@@ -4,17 +4,11 @@ $('#cancelBtn').click(function(){
 	//history.go(-1);
 });
 
-/* 수정버튼 
+/* 수정버튼 */
 $('#modifyBtn').click(function(){
 	preventDefault();
 	$("#modifyFundingForm").submit();
 });
-*/
-document.getElementById('modifyBtn').addEventListener("click", function(event) {
-    event.preventDefault(); // 기본 이벤트 방지
-    document.getElementById('modifyFundingForm').submit(); 
-});
-
 
 /* 검색 결과 초기화 */
 $("#searchReset").click(function(){	
