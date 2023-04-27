@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Donation;
+import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
@@ -166,5 +167,49 @@ public class DonationService {
 		List<DonationPayDetail> getDonationPayDetail = donationMapper.getDonationPayDetail();
 		
 		return getDonationPayDetail;
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 등록
+	 * */
+	public int addDonationPayDetail(DonationPayDetail donationPayDetail) {
+		
+		log.info("화면에서 전달받은 데이터 : {}", addDonationPayDetail(donationPayDetail));
+		
+		int result = donationMapper.addDonationPayDetail(donationPayDetail);
+		return result;
+	}
+	
+	/*
+	 * 특정 정기기부 구독 결제 상세 조회
+	 * */
+	public DonationPayDetail getDonationPayDetailInfoByCode(String donationPayDetailCode) {
+		DonationPayDetail donationPayDetailInfo = donationMapper.getDonationPayDetailInfoByCode(donationPayDetailCode);
+		log.info("donationPayDetailInfo: {}", donationPayDetailInfo);
+		return donationPayDetailInfo;
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 수정
+	 * */
+	public void modifyDonationPayDetail(DonationPayDetail donationPayDetail) {
+		donationMapper.modifyDonationPayDetail(donationPayDetail);
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 삭제
+	 * */
+	public void removeDonationPayDetail(DonationPayDetail donationPayDetail) {
+		donationMapper.removeDonationPayDetail(donationPayDetail);
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 조회
+	 * */
+	public List<DonationMonthPay> getDonationMonthPay(){
+
+		List<DonationMonthPay> getDonationMonthPay = donationMapper.getDonationMonthPay();
+		
+		return getDonationMonthPay;
 	}
 }
