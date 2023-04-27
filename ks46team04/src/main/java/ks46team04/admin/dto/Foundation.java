@@ -8,8 +8,8 @@ public class Foundation {
 	private String foundationAddr;
 	private String foundationRegId;
 	private String foundationRegDate;
-	private String foundationUpdId;
-	private String foundationUpdDate;
+	private String foundationUpdateId;
+	private String foundationUpdateDate;
 	public String getFoundationCode() {
 		return foundationCode;
 	}
@@ -52,25 +52,25 @@ public class Foundation {
 	public void setFoundationRegDate(String foundationRegDate) {
 		this.foundationRegDate = foundationRegDate;
 	}
-	public String getFoundationUpdId() {
-		return foundationUpdId;
+	public String getFoundationUpdateId() {
+		return foundationUpdateId;
 	}
-	public void setFoundationUpdId(String foundationUpdId) {
-		this.foundationUpdId = foundationUpdId;
+	public void setFoundationUpdateId(String foundationUpdateId) {
+		this.foundationUpdateId = foundationUpdateId;
 	}
-	public String getFoundationUpdDate() {
-		return foundationUpdDate;
+	public String getFoundationUpdateDate() {
+		return foundationUpdateDate;
 	}
-	public void setFoundationUpdDate(String foundationUpdDate) {
-		this.foundationUpdDate = foundationUpdDate;
+	public void setFoundationUpdateDate(String foundationUpdateDate) {
+		this.foundationUpdateDate = foundationUpdateDate;
 	}
 	@Override
 	public String toString() {
 		return "Foundation [foundationCode=" + foundationCode + ", foundationName=" + foundationName
 				+ ", foundationManager=" + foundationManager + ", foundationPhone=" + foundationPhone
 				+ ", foundationAddr=" + foundationAddr + ", foundationRegId=" + foundationRegId + ", foundationRegDate="
-				+ foundationRegDate + ", foundationUpdId=" + foundationUpdId + ", foundationUpdDate="
-				+ foundationUpdDate + "]";
+				+ foundationRegDate + ", foundationUpdateId=" + foundationUpdateId + ", foundationUpdateDate="
+				+ foundationUpdateDate + "]";
 	}
 	
 }

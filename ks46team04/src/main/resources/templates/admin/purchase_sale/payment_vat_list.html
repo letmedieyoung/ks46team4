@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/default}">
 <head>
 <!-- Custom styles for this page -->
-
+<link th:href="@{/css/lbr-style.css}" rel="stylesheet">
 </head>
 
 <th:block layout:fragment="customContents">
@@ -12,6 +12,7 @@
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
+
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">수수료 조회</h1>
 		</div>
@@ -24,6 +25,15 @@
 		</p>
 
 		<!-- 기본 -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > <a th:href="@{/admin/purchase_sale/payment_vat_list}">수수료
+						관리</a>
+				</h6>
+			</div>
+		</div>
+
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<br>
@@ -48,11 +58,35 @@
 						</tbody>
 					</table>
 				</div>
-				<button class="btn btn-primary">
+
+				<button id="btn-modal" class="btn btn-primary">
 					<span class="text text-gray-100">수정</span>
 				</button>
-				<br>
-				<br>
+
+				<br> <br>
+
+				<!-- modal -->
+				<div id="modal" class="modal-overlay">
+					<div class="modal-window bg-gray-100">
+						<div class="title">
+							<h3>경고</h3>
+						</div>
+						<div class="close-area x-box">X</div>
+						<div class="content">
+							<p>
+								수수료는 수정 즉시 반영되며<br>
+								달의 매입·매출 정산 마감에 영향을 미칩니다.<br> 
+								수정하시겠습니까?
+							</p>
+						</div>
+						<a th:href="@{/admin/purchase_sale/payment_vat_update}">
+							<button type="button" class="btn btn-secondary">						
+								<span class="text-gray-100">예</span>							
+							</button>
+						</a>
+						<button type="button" class="close-area btn btn-secondary">아니오</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -61,5 +95,38 @@
 
 <!-- 사용자정의 Js 페이지 -->
 <th:block layout:fragment="customJs">
+	<script>
+	const $modal = document.getElementById('modal');
+
+	function modalOn() {
+	    $modal.style.display = 'flex';
+	}
+	function modalOff() {
+	    $modal.style.display = 'none';
+	}
+	const $btnModal = document.getElementById('btn-modal');
+	$btnModal.addEventListener('click', e => {
+	    modalOn();
+	})
+	const $closeBtn = modal.querySelectorAll('.close-area');
+	$.each($closeBtn, (idx,item) => {
+		console.log(item);
+		item.addEventListener('click', e => {
+			modalOff();
+		})
+	});
+	
+	$modal.addEventListener('click', e => {
+	    const evTarget = e.target;
+	    if(evTarget.classList.contains('modal-overlay')) {
+	        modalOff();
+	    }
+	})
+	window.addEventListener('keyup', e => {
+	    if(isModalOn() && e.key === 'Escape') {
+	        modalOff();
+	    }
+	})
+</script>
 </th:block>
 </html>

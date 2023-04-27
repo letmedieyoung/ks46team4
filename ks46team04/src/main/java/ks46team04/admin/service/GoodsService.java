@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Goods;
+import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
 
 @Service
@@ -24,22 +25,19 @@ public class GoodsService {
 	}
 	
 	/**
-	 * 상품 조회
-	 * @return List<Goods>
+	 * 상품 삭제
+	 * @param goodsCode
 	 */
-	public List<Goods> getGoodsList(){
-		List<Goods> goodsList = goodsMapper.getGoodsList();
-		return goodsList;
+	public void removeGoods(String goodsCode) {
+		goodsMapper.removeGoodsByGoodsCode(goodsCode);
 	}
 	
 	/**
-	 * 상품 등록
+	 * 상품 수정
 	 * @param goods
-	 * @return
 	 */
-	public int addGoods(Goods goods) {
-		int result = goodsMapper.addGoods(goods);
-		return result;
+	public void modifyGoods(Goods goods) {
+		goodsMapper.modifyGoods(goods);
 	}
 	
 	/**
@@ -53,11 +51,29 @@ public class GoodsService {
 	}
 	
 	/**
-	 * 상품 수정
+	 * 상품 등록
 	 * @param goods
+	 * @return
 	 */
-	public void modifyGoods(Goods goods) {
-		goodsMapper.modifyGoods(goods);
+	public int addGoods(Goods goods) {
+		int result = goodsMapper.addGoods(goods);
+		return result;
 	}
 	
+	/**
+	 * 상품 분류 조회
+	 * @return
+	 */
+	public List<GoodsCategory> getGoodsCategoryList(){
+		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
+		return goodsCategory;
+	}
+	/**
+	 * 상품 조회
+	 * @return List<Goods>
+	 */
+	public List<Goods> getGoodsList(){
+		List<Goods> goodsList = goodsMapper.getGoodsList();
+		return goodsList;
+	}
 }

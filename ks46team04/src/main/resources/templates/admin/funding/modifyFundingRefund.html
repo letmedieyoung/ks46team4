@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>	
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+	
+
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">		
+		<form id="modifyFundingRefundForm" th:action="@{/admin/funding/modifyFundingRefund}" method="post">
+			<div class="card mb-4">
+				<div class="card-header py-3">
+			    	<h5 class="m-0 font-weight-bold text-gray-800">환불 내역 상세 보기</h5>
+			    </div>
+				<div class="card-body">
+					<div class="table-responsive">					
+						<div th:object="${fundingRefundInfo}" id="fRegInfo">
+							<ul>
+								<li>
+									환불요청일 :
+									<input type="text" id="refundRequestDate" th:value="*{refundRequestDate}" name="refundRequestDate" style="border:none;" disabled="disabled"></input>			
+								</li>
+								<li>
+									결제일 :
+									<input type="text" id="fundingPaymentDate" th:value="*{fundingPaymentDate}" name="fundingPaymentDate" style="border:none;" disabled="disabled"></input>			
+								</li>										
+							</ul>										
+						</div>	
+						<table th:object="${fundingRefundInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingRefundCode">환불코드</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingRefundCode" th:value="*{fundingRefundCode}" name="fundingRefundCode" disabled="disabled" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="refundUserId">회원아이디</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="refundUserId" th:value="*{refundUserId}" name="refundUserId" disabled="disabled" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="pmName">결제수단</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="pmName" name="pmName" disabled="disabled" />					
+										</div>
+									</td>
+								</tr>					
+								<tr>
+									<th class="bg-gray-100">
+										<label for="requestAmount">환불요청금액</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="requestAmount" th:value="*{requestAmount}" name="requestAmount" disabled="disabled" />					
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="requestAmount">환불계좌</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="refundBank" th:value="*{refundBank}" name="refundBank" disabled="disabled"/>
+														
+										</div>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="refundAccount" th:value="*{refundAccount}" name="refundAccount" disabled="disabled"/>					
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="requestReason">환불사유</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<textarea class="form-control form-control-user-search search-input" id="requestReason" th:value="*{requestReason}" name="requestReason" ></textarea>				
+										</div>										
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="requestStatus">처리상태</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" th:value="*{requestStatus}" name="requestStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<option>환불전</option>
+												<option>환불완료</option>													
+											</select>
+										</div>																		
+									</td>
+								</tr>				
+							</tbody>
+						</table>
+						
+						<div align="center">
+							<button type="submit" id="modifyBtn" class="btn btn-primary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">수정</span>
+							</button>
+							<button type="reset" class="cancelBtn btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">취소</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- /.container-fluid -->
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</th:block>
+
+
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/khj.js}"></script>
+</th:block>
+
+</html>

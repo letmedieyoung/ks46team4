@@ -5,7 +5,7 @@ public class Goods {
 	private String goodsCode;
 	private String goodsName;
 	private String goodsCompany;
-	private String goodsCate;
+	private String goodsCategory;
 	private String goodsPrice;
 	private String goodsRegId;
 	private String goodsRegDate;
@@ -29,11 +29,11 @@ public class Goods {
 	public void setGoodsCompany(String goodsCompany) {
 		this.goodsCompany = goodsCompany;
 	}
-	public String getGoodsCate() {
-		return goodsCate;
+	public String getGoodsCategory() {
+		return goodsCategory;
 	}
-	public void setGoodsCate(String goodsCate) {
-		this.goodsCate = goodsCate;
+	public void setGoodsCategory(String goodsCategory) {
+		this.goodsCategory = goodsCategory;
 	}
 	public String getGoodsPrice() {
 		return goodsPrice;
@@ -68,7 +68,7 @@ public class Goods {
 	@Override
 	public String toString() {
 		return "Goods [goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany=" + goodsCompany
-				+ ", goodsCate=" + goodsCate + ", goodsPrice=" + goodsPrice + ", goodsRegId=" + goodsRegId
+				+ ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId=" + goodsRegId
 				+ ", goodsRegDate=" + goodsRegDate + ", goodsUpdateId=" + goodsUpdateId + ", goodsUpdateDate="
 				+ goodsUpdateDate + "]";
 	}

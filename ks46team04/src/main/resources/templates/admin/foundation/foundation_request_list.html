@@ -16,7 +16,8 @@
 
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
 </head>
 <th:block layout:fragment="customContents">
 
@@ -58,19 +59,63 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle"
-											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">
-											<option value="option1">:: 콘텐츠 분류 ::</option>
-											<option value="option1">펀딩</option>
-											<option value="option2">정기 후원</option>
-										</select>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <span class="text">전체</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <span class="text">펀딩</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">정기 후원</span>
+									      </label>
+									    </div>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationPhone">요청 상품명</label>
+									<label for="foundationManager">진행현황</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <span class="text">전체</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <span class="text">진행 전</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">진행 중</span>
+									      </label>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <span class="text">종료</span>
+									      </label>
+									    </div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">
+									<label for="foundationPhone">상품명</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
@@ -94,84 +139,60 @@
 											<input type="number"
 												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품 수량을 입력해주세요." />
+												placeholder="최소 수량을 입력해주세요." />
 										</div>
 										~
 										<div class="col-auto">
 											<input type="number"
 												class="form-control form-control-user-search middle-input"
 												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="상품 수량을 입력해주세요." />
+												placeholder="최대 수량을 입력해주세요." />
 										</div>개
 									</div>
 								</td>
-							</tr>
-								<th class="bg-gray-100">
-									<label for="foundationPhone">배송 요청일</label>
-								</th>
+							<tr>
+								<th class="bg-gray-100">기간 검색</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-											<div class="col-auto">
-												<input type="date" id="start-date" class="form-control">
-											</div>
-											~
-											<div class="col-auto">
-												<input type="date" id="end-date" class="form-control">
-											</div>
-										</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">요청사항 등록일</th>
-								<td>
-									<form>
-										<div class="form-row align-items-center search-schedule">
 										&nbsp;
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">7일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-										</div>
+										 <select id="selectDate" name="selectCategory" class="dropdown btn btn-primary dropdown-toggle"
+										 		 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="">:: 기간 분류 ::</option>
+											<option value="deliveryDate">배송요청일</option>
+											<option value="regUdpDate">등록/수정일</option>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<div class="col-auto">
-												<input type="date" id="start-date" class="form-control">
-											</div>
-											~
-											<div class="col-auto">
-												<input type="date" id="end-date" class="form-control">
-											</div>
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">오늘</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary">
+											<span class="text text-gray-100">1년</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-primary">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									&nbsp;
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="date" id="start-date" class="form-control">
 										</div>
-									</form>
+										~
+										<div class="col-auto">
+											<input type="date" id="end-date" class="form-control">
+										</div>
+									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -179,8 +200,14 @@
 					<div align="center">
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">검색</span>
+							<span class="text">상세검색</span>
 						</button>
+						<a href="/admin/foundation/add_foundation_request">
+							<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">요청사항등록</span>
+							</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -202,10 +229,8 @@
 								<th>초기 요청 수량</th>
 								<th>최종 요청 수량</th>
 								<th>배송 요청일</th>
-								<th>등록자</th>
-								<th>등록일자</th>
-								<th>수정자</th>
-								<th>수정일자</th>
+								<th>등록/수정자</th>
+								<th>등록/수정일</th>
 								<th>진행현황</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -221,10 +246,10 @@
 								<td th:text="${l.initialGoodsAmount}"></td>
 								<td th:text="${l.finalGoodsAmount}"></td>
 								<td th:text="${l.deliveryRequestDate}"></td>
-								<td th:text="${l.requestRegId}"></td>
-								<td th:text="${l.requestRegDate}"></td>
-								<td th:text="${l.requestUpdateId}"></td>
-								<td th:text="${l.requestUpdateDate}"></td>
+								<td th:if="${l.requestUpdateId == null}" th:text="${l.requestRegId}"></td>
+								<td th:unless="|${l.requestUpdateId == null}" th:text="${l.requestUpdateId}(수정)|"></td>
+								<td th:if="${l.requestUpdateDate == null}" th:text="${l.requestRegDate}"></td>
+								<td th:unless="|${l.requestUpdateDate == null}" th:text="${l.requestUpdateDate}(수정)|"></td>
 								<td th:text="${l.requestProgressStatus}"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
@@ -240,7 +265,7 @@
 								</td>
 							</tr>
 							<tr th:if="${foundationRequestList == null}">
-								<td colspan="15">등록된 재단 요청사항 정보가 없습니다.</td>
+								<td colspan="13">등록된 재단 요청사항 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

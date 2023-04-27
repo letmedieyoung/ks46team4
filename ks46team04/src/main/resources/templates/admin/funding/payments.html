@@ -25,48 +25,77 @@
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">펀딩 결제 내역 조회</h6>
 			</div>
+			<!-- 검색 테이블 -->
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-bordered" width="100%" cellspacing="0">	
 						<tbody>
 							<tr>
-								<th>기간</th>
+								<th>결제일</th>
 								<td>
-									<select>
-										<option value="funding_name">결제일</option>																						
-									</select>		
-									<a class="btn btn-light"><span class="text freg-btn">오늘</span></a>							
-									<a class="btn btn-light"><span class="text freg-btn">1개월</span></a>
-									<a class="btn btn-light"><span class="text freg-btn">3개월</span></a>
-									<a class="btn btn-light"><span class="text freg-btn">전체</span></a>
-									<input type="date" />
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="todayBtn" class="btn btn-secondary" >
+											<span class="text text-gray-100">오늘</span> 
+										</button>
+									</div>					
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="monthBtn" class="btn btn-secondary">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="threeMonthBtn" class="btn btn-secondary">
+											<span class="text text-gray-100">3개월</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="wholePeriodBtn"class="btn btn-primary">
+											<span class="text text-gray-100">전체</span>
+										</button>										
+									</div>
+									<div class="align-items-center search-schedule">
+										<input type="date" id="startDateInput" class="dateSelect form-control form-control-user-search search-input" />
+									</div>
+									<div class="align-items-center search-schedule">
 										<span>~</span>
-									<input type="date" />
-									<a class="btn btn-light"><span class="text freg-btn">기간설정</span></a>
+									</div>
+									<div class="align-items-center search-schedule">
+										<input type="date" id="endDateInput" class="dateSelect form-control form-control-user-search search-input" />
+									</div>								
 								</td>
 							</tr>	
 							<tr>
-								<th>검색어</th>
+								<th>검색분류</th>
 								<td>
-									<select>
-										<option value="funding_name">결제코드</option>
-										<option value="funding_name">주문자명</option>
-										<option value="funding_name">주문자아이디</option>
-									</select>										
-									<input type="text" class="search-block"/>
+									<div class="align-items-center search-schedule">
+										<select class="f-date-select form-control form-control-user-search search-input" name="">
+											<option value="funding_name">결제코드</option>
+											<option value="funding_name">주문자명</option>
+											<option value="funding_name">주문자아이디</option>
+										</select>	
+									</div>
+									<div class="align-items-center search-schedule">																
+										<input type="text" class="form-control form-control-user-search search-input" name="" style="width: 300px;"/>
+									</div>
 								</td>
 							</tr>							
 						</tbody>
 					</table>
+					<div align="center">
+						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split" onclick="doSearchFunding()">
+							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+							<span class="text">검색</span>
+						</button>
+						<button type="reset" id="searchReset" class="btn btn-secondary btn-icon-split">								
+							<span class="text">초기화</span>
+						</button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="f-search btn">
-			<a class="btn btn-primary btn-icon-split " onclick="doSearchFunding()"><span class="text sbtn">검색</span></a>
-			<a class="btn btn-primary btn-icon-split "><span class="text sbtn">초기화</span></a>
-		</div>
+		</div>		
 		
-		<div class="card mb-4">
+		<!-- 조회 테이블 -->
+		<div class="list-table card mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>
@@ -75,25 +104,23 @@
 					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 						<thead>
                             <tr>
-                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>
-                                <th>No</th>
+                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>                                
+                                <th>주문일(결제일)</th>
                                 <th>결제코드</th>
                                 <th>주문자아이디</th>
-                                <th>펀딩코드</th>
-                                <th>주문일(결제일)</th>
+                                <th>펀딩코드</th>                                
                                 <th>펀딩금액</th>
                                 <th>결제수단</th>                                
                             </tr>
                         </thead>    
 						<tbody>
 							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
-								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
-								<td th:text="${null}"></td>
-								<td th:text="${l.fundingPaymentCode}"></td>
+								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>								
+								<td th:text="${l.fundingPaymentDate}"></td>							
+								<td><a th:text="${l.fundingPayCode}" th:href="@{modifyFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
 								<td th:text="${l.userId}"></td>
-								<td th:text="${l.fundingCode}"></td>
-								<td th:text="${l.fundingPaymentDate}"></td>
-								<td th:text="${l.fundingPaymentAmount}"></td>
+								<td th:text="${l.fundingCode}"></td>								
+								<td th:text="|₩ ${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}|"></td>								
 								<td th:text="${l.pmName}"></td>
 							</tr>
 							<tr th:if="${fundingPayList == null}">

@@ -30,17 +30,16 @@
 							<tbody>					
 								<tr>
 									<th>검색 분류</th>
-									<td>
-																	
+									<td>																	
 										<div class="align-items-center search-schedule">
-											<select class="form-control form-control-user-search search-input" name="keyword">
+											<select class="form-control form-control-user-search search-input" name="filter">
 												<option value="funding_code">펀딩코드</option>
 												<option value="funding_foundation">재단명</option>
 												<option value="goods_code">상품코드</option>
 											</select>
 										</div>
 										<div class="search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" name="searchValue" style="width: 300px;"/>
+											<input type="text" class="form-control form-control-user-search search-input" name="keyword" style="width: 300px;"/>
 										</div>										
 									</td>								
 								</tr>						
@@ -53,19 +52,36 @@
 												<option value="funding_end_date">펀딩종료일</option>
 											</select>	
 										</div>
-										<div class="align-items-center search-schedule">																				
-											<button type="button" id="todayBtn" class="btn btn-light freg-btn"><span class="text">오늘</span></button>
-											<button type="button" id="monthBtn" class="btn btn-light freg-btn"><span class="text">1개월</span></button>
-											<button type="button" id="threeMonthBtn" class="btn btn-light freg-btn"><span class="text">3개월</span></button>										
+										<div class="align-items-center search-schedule">
+											<div class="align-items-center search-schedule">
+												<button type="button" id="todayBtn" class="btn btn-secondary">
+													<span class="text text-gray-100">오늘</span>
+												</button>
+											</div>
+											<div class="align-items-center search-schedule">
+												<button type="button" id="monthBtn" class="btn btn-secondary">
+													<span class="text text-gray-100">1개월</span>
+												</button>
+											</div>
+											<div class="align-items-center search-schedule">
+												<button type="button" id="threeMonthBtn" class="btn btn-secondary">
+													<span class="text text-gray-100">3개월</span>
+												</button>
+											</div>
+											<div class="align-items-center search-schedule">
+												<button type="button" id="wholePeriodBtn"class="btn btn-primary">												
+													<span class="text text-gray-100">전체</span>
+												</button>										
+											</div>
 										</div>
 										<div class="align-items-center search-schedule">											
-											<input id="startDateInput" name="funding_start_date" class="dateSelect form-control form-control-user-search search-input" type="date" data-placeholder="날짜 선택"></input>
+											<input id="startDateInput" name="funding_start_date" class="dateSelect form-control form-control-user-search search-input" type="date"></input>
 										</div>
 										<div class="align-items-center search-schedule">								
 											<span>~</span>
 										</div>
 										<div class="align-items-center search-schedule">									
-											<input id="endDateInput" name="funding_end_date" class="dateSelect form-control form-control-user-search search-input" type="date" data-placeholder="날짜 선택"/></input>
+											<input id="endDateInput" name="funding_end_date" class="dateSelect form-control form-control-user-search search-input" type="date"></input>
 										</div>
 										
 									</td>
@@ -82,16 +98,21 @@
 								</tr>
 							</tbody>
 						</table>
+						<div align="center">
+							<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split" onclick="doSearchFunding()">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">검색</span>
+							</button>
+							<button type="reset" id="searchReset" class="btn btn-secondary btn-icon-split">								
+								<span class="text">초기화</span>
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>		
-			<div class="f-search btn">
-				<button type="button" class="btn btn-primary btn-icon-split" onclick="doSearchFunding()"><span class="text sbtn">검색</span></button>	
-				<button type="reset" class="btn btn-primary btn-icon-split"><span class="text sbtn">초기화</span></button>
-			</div>
+			</div>			
 		</form>		
 		<!-- 검색 결과 조회 테이블 -->
-		<div class="card mb-4">
+		<div class="list-table card mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 			</div>
@@ -116,7 +137,7 @@
 						<tbody>
 							<tr th:unless="${fundingList == null}" th:each="l : ${fundingList}">
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>															
-								<td><a th:text="${l.fundingCode}" th:href="@{/funding/modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
+								<td><a th:text="${l.fundingCode}" th:href="@{modifyFunding(fundingCode=${l.fundingCode})}"></a></td>
 								<td th:text="${l.fundingName}" id="fundingName"></td>
 								<td th:text="${l.fundingFoundation}"></td>
 								<td th:text="${l.goodsCode}"></td>
@@ -126,7 +147,7 @@
 								<td th:text="${l.fundingProgress}"></td>								
 							</tr>							
 							<tr th:if="${fundingList == null}">
-								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
+								<td colspan="9">등록된 펀딩의 정보가 없습니다.</td>				
 							</tr>
 						</tbody>
 					</table>

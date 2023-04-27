@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ks46team04.admin.dto.InOutcoming;
+import ks46team04.admin.dto.OutcomingDetail;
 import ks46team04.admin.dto.Stock;
+import ks46team04.admin.dto.UnusualStock;
 import ks46team04.admin.service.StockService;
 
 @Controller
@@ -23,61 +26,6 @@ public class StockController {
 	
 	public StockController(StockService stockService) {
 		this.stockService = stockService;
-	}
-	
-	/**
-	 * 상품 입고 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/incoming_stock_list")
-	public String getIncomingStockList(Model model) {
-		
-		model.addAttribute("title", "상품 입고 조회");
-		
-		return "admin/stock/incoming_stock_list";
-	}
-	
-	/**
-	 * 상품 입고 등록
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/add_incoming_stock")
-	public String addIncomingStock(Model model) {
-		
-		model.addAttribute("title", "add_incoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/add_incoming_stock";
-	}
-	
-	/**
-	 * 상품 입고 수정
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_incoming_stock")
-	public String modifyIncomingStock(Model model) {
-		
-		model.addAttribute("title", "modify_incoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/modify_incoming_stock";
-	}
-	
-	/**
-	 * 상품 입고 삭제
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/remove_incoming_stock")
-	public String removeIncomingStock(Model model) {
-		
-		model.addAttribute("title", "remove_incoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/remove_incoming_stock";
 	}
 	
 	/**
@@ -97,49 +45,98 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 재고 수정
+	 * 상품 입출고 조회
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/modify_stock")
-	public String modifyStock(Model model) {
+	@GetMapping("/in_outcoming_list")
+	public String getInOutcomingList(Model model) {
 		
-		model.addAttribute("title", "modify_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		List<InOutcoming> inOutcomingList = stockService.getInOutcomingList();
 		
-		return "admin/stock/modify_stock";
+		model.addAttribute("title", "상품 입출고 조회");
+		model.addAttribute("inOutcomingList", inOutcomingList);
+		
+		return "admin/stock/in_outcoming_list";
 	}
 	
 	/**
-	 * 상품 재고 삭제
+	 * 상품 입출고 등록
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/remove_stock")
-	public String removeStock(Model model) {
+	@GetMapping("/add_in_outcoming")
+	public String addInOutcoming(Model model) {
 		
-		model.addAttribute("title", "remove_stock");
+		model.addAttribute("title", "상품 입출고 등록");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
-		return "admin/stock/remove_stock";
+		return "admin/stock/add_in_outcoming";
 	}
 	
 	/**
-	 * 상품 비정상재고 상세정보 조회
+	 * 상품 입출고 수정
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modify_in_outcoming")
+	public String modifyInOutcoming(Model model) {
+		
+		model.addAttribute("title", "상품 입출고 수정");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/modify_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 삭제
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/remove_in_outcoming")
+	public String removeInOutcoming(Model model) {
+		
+		model.addAttribute("title", "상품 입출고 삭제");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/remove_in_outcoming";
+	}
+	
+	/**
+	 * 상품 출고 상세정보 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/outcoming_detail_list")
+	public String getOutcomingDetailList(Model model) {
+		
+		List<OutcomingDetail> outcomingDetailList = stockService.getOutcomingDetailList();
+		
+		model.addAttribute("title", "상품 출고 상세정보 조회");
+		model.addAttribute("outcomingDetailList", outcomingDetailList);
+		
+		return "admin/stock/outcoming_detail_list";
+	}
+	
+	
+	/**
+	 * 상품 비정상재고 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/unusual_stock_detail_list")
 	public String getUnusualStockList(Model model) {
 		
+		List<UnusualStock> unusualStockList = stockService.getUnsualStockList();
+		
 		model.addAttribute("title", "unusual_stock_detail_list");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		model.addAttribute("unusualStockList", unusualStockList);
 		
 		return "admin/stock/unusual_stock_detail_list";
 	}
 	
 	/**
-	 * 상품 비정상재고 상세정보 등록
+	 * 상품 비정상재고 등록
 	 * @param model
 	 * @return
 	 */
@@ -153,7 +150,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 비정상재고 상세정보 수정
+	 * 상품 비정상재고 수정
 	 * @param model
 	 * @return
 	 */
@@ -167,7 +164,7 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 비정상재고 상세정보 삭제
+	 * 상품 비정상재고 삭제
 	 * @param model
 	 * @return
 	 */
@@ -178,117 +175,5 @@ public class StockController {
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
 		return "admin/stock/remove_unusual_stock_detail";
-	}
-	
-	/**
-	 * 상품 출고 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/outcoming_stock_list")
-	public String getOutcomingStockList(Model model) {
-		
-		model.addAttribute("title", "상품 출고 조회");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/outcoming_stock_list";
-	}
-	
-	/**
-	 * 상품 출고 등록
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/add_outcoming_stock")
-	public String addOutcomingStock(Model model) {
-		
-		model.addAttribute("title", "add_outcoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/add_outcoming_stock";
-	}
-	
-	/**
-	 * 상품 출고 수정
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_outcoming_stock")
-	public String modifyOutcomingStock(Model model) {
-		
-		model.addAttribute("title", "modify_outcoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/modify_outcoming_stock";
-	}
-	
-	/**
-	 * 상품 출고 삭제
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/remove_outcoming_stock")
-	public String removeOutcomingStock(Model model) {
-		
-		model.addAttribute("title", "remove_outcoming_stock");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/remove_outcoming_stock";
-	}
-	
-	/**
-	 * 상품 출고 상세정보 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/outcoming_stock_detail_list")
-	public String getOutcomingStockDetailList(Model model) {
-		
-		model.addAttribute("title", "outcoming_stock_detail_list");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/outcoming_stock_detail_list";
-	}
-	
-	/**
-	 * 상품 출고 상세정보 등록
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/add_outcoming_stock_detail")
-	public String addOutcomingStockDetail(Model model) {
-		
-		model.addAttribute("title", "add_outcoming_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/add_outcoming_stock_detail";
-	}
-	
-	/**
-	 * 상품 출고 상세정보 수정
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_outcoming_stock_detail")
-	public String modifyOutcomingStockDetail(Model model) {
-		
-		model.addAttribute("title", "modify_outcoming_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/modify_outcoming_stock_detail";
-	}
-	
-	/**
-	 * 상품 출고 상세정보 삭제
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/remove_outcoming_stock_detail")
-	public String removeOutcomingStockDetail(Model model) {
-		
-		model.addAttribute("title", "remove_outcoming_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/remove_outcoming_stock_detail";
 	}
 }

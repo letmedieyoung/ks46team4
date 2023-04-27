@@ -11,136 +11,168 @@
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
+	
 
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">		
-		
-		<div class="card mb-4">
-			<div class="card-header py-3">
-            	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 수정</h5>
-         	</div>
-			<div class="card-body">
-				<div class="table-responsive">
-					<form id="modifyFundingForm" th:action="@{/funding/modifyFunding}" method="post">
-					<table th:object="${fundingInfo}" class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
-						<tbody>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingCode">펀딩코드</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" readonly="readonly"/>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingName">펀딩명</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search search-input" th:value="*{fundingName}" id="fundingName" name="fundingName" placeholder="펀딩명을 입력해주세요."/>										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingFoundation">재단 선택</label>
-								</th>
-								<td>									
-									<div class="form-row align-items-center search-schedule">
-										<select class="dropdown btn btn-primary dropdown-toggle"
-											id="FundingFoundation" name="FundingFoundation" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false"  disabled="disabled">
-											<th:block th:unless="${FoundationNameList == null}" th:each="l : ${FoundationNameList}">
-												<option th:value="${l.fundingFoundation}" th:selected="${l.fundingFoundation} == *{foundationName}">[[${l.fundingFoundation}]]</option>
-											</th:block>
-											<th:block th:if="${FoundationNameList == null}">
-												<option>등록된 재단 정보가 없습니다.</option>
-											</th:block>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCode">상품코드</label>
-								</th>
-								<td>									
-									<div class="form-row align-items-center search-schedule">
-										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="goodsCode" disabled="disabled">
-											<th:block th:unless="${fundingList == null}" th:each="l : ${fundingList}">
-												<option th:value="${l.fundingFoundation}">[[${l.goodsCode}]]</option>
-											</th:block>
-											<th:block th:if="${fundingList == null}">
-												<option>등록된 상품 정보가 없습니다.</option>
-											</th:block>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingGoalAmount">목표 금액</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<input type="number" class="form-control form-control-user-search search-input" id="fundingGoalAmount" th:value="*{fundingGoalAmount}" name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingStartDate">펀딩 시작일</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<span id="fundingStartDate" th:text="*{fundingStartDate}" name="fundingStartDate" readonly="readonly"></span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="fundingEndDate">펀딩 종료일</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<span id="fundingEndDate" th:text="*{fundingEndDate}" name="fundingEndDate" readonly="readonly"></span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="bg-gray-100">
-									<label for="fundingProgress">진행 현황</label>
-								</td>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<select class="form-control form-control-user-search search-input" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress">
-											 <option>대기중</option>
-											 <option>진행중</option>
-											 <option>진행완료</option>  
-										</select>
-									</div>									
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<div align="center">
-						<button type="submit" id="modifyBtn" class="btn btn-primary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">수정</span>
-						</button>
-						<button type="reset" id="cancelBtn" class="btn btn-secondary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-							<span class="text">취소</span>
-						</button>
+		<form id="modifyFundingForm" th:action="@{/admin/funding/modifyFunding}" method="post">
+			<div class="card mb-4">
+				<div class="card-header py-3">
+			    	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 수정</h5>
+			    </div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<div th:object="${fundingInfo}" id="fRegInfo">
+							<ul>
+								<li>
+									펀딩등록일 :
+									<input type="text" id="fundingRegDate" th:value="*{fundingRegDate}" name="fundingRegDate" style="border:none;" disabled="disabled"></input>			
+								</li>
+								<li>
+									최종수정일 :
+									<input type="text" id="fundingUpdateDate" th:value="*{fundingUpdateDate}" name="fundingUpdateDate" style="border:none;" disabled="disabled"></input>			
+								</li>										
+							</ul>										
+						</div>						
+						<table th:object="${fundingInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+							<tbody>									
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingCode">펀딩코드</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" readonly="readonly"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingName">펀딩명</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingName" th:value="*{fundingName}" name="fundingName" placeholder="펀딩명을 입력해주세요."/>										
+										</div>
+									</td>
+								</tr>
+								<tr>
+			                        <th class="bg-gray-100">
+										<label for="fundingDescription">상세 내용</label>
+									</th>
+				                	<td>
+				                        <div class="fundingDescription form-row align-items-center search-schedule">
+				                        	<textarea class="form-control" id="fundingDescription" th:value="*{fundingDescription}" name="fundingDescription"></textarea>
+				                    	</div>
+				                	</td>
+			            		</tr>				  
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingProgress">진행 상태</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress">
+												 <option>대기중</option>
+												 <option>진행중</option>
+												 <option>진행완료</option>  
+											</select>
+										</div>									
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingFoundation">재단 선택</label>
+									</th>
+									<td>									
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingFoundation" th:value="*{fundingFoundation}" name="fundingFoundation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<th:block th:unless="${foundationNameList == null}" th:each="l : ${foundationNameList}">
+													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{fundingFoundation}">[[${l.foundationName}]]</option>
+												</th:block>
+												<th:block th:if="${foundationNameList == null}">
+													<option>등록된 재단 정보가 없습니다.</option>
+												</th:block>
+											</select>											
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="goodsCode">상품코드</label>
+									</th>
+									<td>									
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" th:value="*{goodsCode}" name="goodsCode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<th:block th:unless="${goodsCodeList == null}" th:each="l : ${goodsCodeList}">
+													<option th:value="${l.goodsCode}" th:selected="${l.goodsCode} == *{goodsCode}">[[${l.goodsCode}]]</option>
+												</th:block>
+												<th:block th:if="${goodsCodeList == null}">
+													<option>등록된 상품 정보가 없습니다.</option>
+												</th:block>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingGoalAmount">목표 금액</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="number" class="form-control form-control-user-search search-input" id="fundingGoalAmount" th:value="*{fundingGoalAmount}" name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingStartDate">펀딩 시작일</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">									
+											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingStartDate" th:value="*{fundingStartDate}" name="fundingStartDate" />																				
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="fundingEndDate">펀딩 종료일</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingEndDate" th:value="*{fundingEndDate}" name="fundingEndDate" />										
+										</div>
+									</td>
+								</tr>
+								<tr>
+		                        	<th class="bg-gray-100">
+										<label for="fundingRegId">등록아이디</label>
+									</th>
+		                        	<td>														
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId"/>					
+										</div>								
+									</td>
+		                        </tr>								
+							</tbody>
+						</table>
+						
+						<div align="center">
+							<button type="submit" id="modifyBtn" class="btn btn-primary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">수정</span>
+							</button>
+							<button type="reset" class="cancelBtn btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+								<span class="text">취소</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</form>
 	</div>
 	<!-- /.container-fluid -->
 	

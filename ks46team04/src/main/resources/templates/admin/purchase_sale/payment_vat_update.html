@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/default}">
 <head>
 <!-- Custom styles for this page -->
-
+	
 </head>
 
 <th:block layout:fragment="customContents">
@@ -15,25 +15,48 @@
 			<h1 class="h3 mb-0 text-gray-800">수수료 수정</h1>
 		</div>
 
-		<p>정기 기부와 펀딩 결제에 공통적으로 적용되는 수수료 수정 페이지입니다.</p>
+		<p>
+			정기 기부와 펀딩 결제에 공통적으로 적용되는 수수료 수정 페이지입니다.<br>
+			<br> 수수료는 달 마감 결산액에 한꺼번에 적용된다.<br> 따라서 수수료를 업데이트하면 그 즉시 그
+			달의 마감에 영향을 미친다.<br> 수수료는 곧바로 수정 및 업데이트가 가능하다.<br>
+			input 요소가 하나라서 엔터를 누르면 submit 되는 부분을 막았다. 그렇지만 엔터를 눌렀을 때도 알림창이 생겼으면 좋겠다.
+		</p>
 
 		<!-- 수정 start -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > <a th:href="@{/admin/purchase_sale/payment_vat_list}">수수료
+						관리</a> > <a th:href="@{/admin/purchase_sale/payment_vat_update}">수수료
+						수정</a>
+				</h6>
+			</div>
+		</div>
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">수수료 수정</h6>
 			</div>
 			<div class="card-body">
+				<p>
+					- 0에서 100 사이의 수만 입력<br> - 스크립트단에서 소수점 두자리 이하는 버려집니다.<br>
+				</p>
 				<br>
-				<form class="user">
+				<form id="vatModifyForm" class="user" th:action="@{/admin/purchase_sale/payment_vat_update}" method="POST">
 					<div class="form-group">
 						<input type="text" class="form-control form-control-user"
-							id="modify-vat" placeholder="수수료를 입력하세요"> %
+							id="modifyVat" name="vatRatio" placeholder="수수료를 입력하세요">
+						%
 					</div>
+					<br>
+					<button type="button" id="vatSubmitBtn" class="btn btn-primary">
+						<span class="text text-gray-100">수정 확정</span>
+					</button>
+					
+					<button type="button" id="modifyCancel" class="btn btn-primary">
+						<span class="text text-gray-100">취소</span>
+					</button>
+					<br>
 				</form>
-				<br>
-				<button class="btn btn-primary">
-					<span class="text text-gray-100">수정 확정</span>
-				</button>
 			</div>
 		</div>
 	</div>
@@ -42,5 +65,75 @@
 
 <!-- 사용자정의 Js 페이지 -->
 <th:block layout:fragment="customJs">
+	<script>
+		/**
+			입력 조건
+			1. null, 공백, undefined가 아니어야한다
+			2. 숫자여야한다.
+			3. 소수점 두자리까지만이며 그 이하의 자리는 버린다.
+			
+			+) 컴펌을 모달로 바꾸고 싶다. 엔터를 입력했을 때도 입력이 되었으면 좋겠다.
+		*/
+		
+		// 취소버튼
+		$('#modifyCancel').click(function(){
+			location.href = '/admin/purchase_sale/payment_vat_list';
+		}); 
+		
+		// 인풋 하나만 있을 경우 엔터에 submit 되는 경우 방지
+		$('#modifyVat').keydown(function(){
+			if(event.keyCode === 13){
+				event.preventDefault();
+			}
+		});	
+			
+		// 제출 버튼 클릭 시
+		$('#vatSubmitBtn').click(function(){
+			const $vatSubmitBtn = $('#vatSubmitBtn');
+			const $modifyVat = $('#modifyVat');
+			const $vatModifyForm = $('#vatModifyForm');
+			let inputval = $modifyVat.val();
+			
+			//입력 값 여부 체크
+			if(typeof inputval == 'undefined' ||
+					  inputval == null ||
+					  inputval == '' ||
+					  /\s{1,}/.test(inputval)){		//정규표현식 패턴으로, \s는 공백 문자를 의미하고, {1,}는 최소 1개 이상의 연속된 공백 문자를 의미. test() 메서드를 이용하여 문자열에 정규표현식 패턴이 존재하는지를 검사한다.
+
+				alert('입력된 값이 없습니다.');
+				modifyVat.focus();
+			
+			}else{
+				//입력 값이 있으면
+			
+				let isCollectNum = true;
+				
+				if (/^[0-9]+(\.[0-9]+)?$/.test(inputval)) {
+					  // 입력값이 숫자와 소수점으로 이루어진 문자열이면
+					  let numValue = parseFloat(inputval);
+					  if (numValue >= 0 && numValue <= 100) {
+					    console.log("올바른 입력값입니다.");
+						numValue = numValue.toFixed(2);
+						console.log(numValue);
+						let isOk = confirm(`${numValue}%로 수수료가 수정됩니다.`);
+						if(isOk) $vatModifyForm.submit();
+						else $modifyVat.focus();
+					  } else {
+					    alert('0부터 100 사이의 값이 아닙니다.');
+					    isCollectNum = false;
+					  }
+				} else {
+				  // 입력값이 조건에 맞지 않으면
+				  alert('올바른 입력값이 아닙니다.');
+				  isCollectNum = false;
+				}
+				
+				 if(!isCollectNum) {
+					 $modifyVat.val('');
+					 $modifyVat.focus();
+				 }				 
+			}	
+		});
+	</script>
 </th:block>
 </html>

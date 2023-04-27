@@ -1,6 +1,25 @@
 @charset "UTF-8";
 
-/* manage */
+label {
+	margin: 4px 0;
+}
+
+ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+th {
+	vertical-align: middle;
+}
+
+.list-table {
+	margin-top: 70px;
+}
+
+
+
+/* manage 펀딩 컨텐츠 관리 */
 .manageBtn {
 	margin-bottom: 15px;
 	border: 1px solid #999;
@@ -18,8 +37,6 @@
 	padding: 6px;
 	text-align: center;
 }
-
-
 
 .fradio {
 	margin-right: 5px;
@@ -40,7 +57,12 @@
 }
 
 
-/* refund */
+/* pay 결제내역 */
+
+
+
+
+/* refund 환불관리 */
 .f-refund th {
 	font-size: 15px;
 	padding: 6px;
@@ -51,3 +73,21 @@
 	padding: 6px;
 }
 
+.refund-table label {
+	margin-bottom: 0;
+}
+
+
+/* 수정화면 공통 */
+#fRegInfo {
+	font-size: 15px;
+}
+
+#fRegInfo input {
+	background-color: #fff;	
+}
+
+.modify-table th {
+	width: 9em;
+	vertical-align: middle;
+}

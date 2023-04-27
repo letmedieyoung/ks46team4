@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default3}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="customContents">
+	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<h1 class="h3 mb-4 text-gray-800">펀딩 결제 내역</h1>
+			<p class="mb-4"> </p>
+
+		<!-- DataTales Example -->
+		
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">펀딩 결제 내역 조회</h6>
+			</div>
+			<div class="card-body overflow-x">
+				<div class="table-responsive">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+						<thead class="bg-gray-100" >
+                            <tr>
+                                         
+                                <th>결제코드</th>
+                                <th>펀딩명</th>
+                                <th>재단명</th>
+                                <th>주문일(결제일)</th>
+                                <th>펀딩금액</th>
+                                                              
+                            </tr>
+                        </thead>    
+						<tbody>
+							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
+										
+								<td th:text="${l.fundingPayCode}"></td>
+									<td>
+									<div th:if="${l.fundingCode == 'funding1'}">면역력이 떨어진 아이들에게 힘을 보태주세요.</div>
+									<div
+										th:if="${l.fundingCode == 'funding2'}">기후우울로 고통받는 사람들에게 힘을 보태주세요.</div>
+									<div
+										th:if="${l.fundingCode == 'funding3'}">소화가 어려운 아이들에게 힘을 보태주세요.</div>
+								</td>
+								<td>
+									<div th:if="${l.fundingCode == 'funding1'}">초록우산 어린이재단</div>
+									<div
+										th:if="${l.fundingCode == 'funding2'}">사단법인 따뜻한하루</div>
+									<div
+										th:if="${l.fundingCode == 'funding3'}">초록우산 어린이재단</div>
+								</td>
+								<td th:text="${l.fundingPaymentDate}"></td>
+								<td th:text="${l.fundingPaymentAmount}"></td>
+								
+							</tr>
+							<tr th:if="${fundingPayList == null}">
+								<td colspan="6">데이터가 존재하지 않습니다.</td>				
+							</tr>							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

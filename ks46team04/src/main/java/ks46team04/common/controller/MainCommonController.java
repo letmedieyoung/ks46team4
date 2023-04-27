@@ -10,6 +10,6 @@ public class MainCommonController {
 	@GetMapping("/")
 	public String mainHome(Model model) {
 		
-		return "funding_index";
+		return "common/funding_index";
 	}
 }

@@ -1,13 +1,20 @@
 /* 취소 버튼 */ 
-$('#cancelBtn').click(function(){
-	location.href = '/funding/manage';
-	//history.go(-1);
+$(document).ready(function() {
+  $('.cancelBtn').click(function() {
+    window.history.back();
+  });
 });
 
+
 /* 수정버튼 */
-$("#modifyBtn").on("click", function(e){
-	e.preventDefault();
+$('#modifyBtn').click(function(){
+	preventDefault();
 	$("#modifyFundingForm").submit();
+});
+
+/* 검색 결과 초기화 */
+$("#searchReset").click(function(){	
+	location.reload();
 });
 
 
@@ -17,8 +24,8 @@ function doSearchFunding(){
 	
 	const searchInfo = {}; // 비어 있는 객체 searchInfo 선언 
 	// 1. 검색 조건
-	const search1 = $('select[name="keyword"]').val(); //jQuery를 사용. name="keyword"인 셀렉트 요소의 값을 반환해, "search1"에 대입한다.
-	searchInfo[search1] = $('input[name="searchValue"]').val();	//input 요소의 값을 searchInfo객체의 search1프로퍼티에 대입
+	const search1 = $('select[name="filter"]').val(); //jQuery를 사용. name="keyword"인 셀렉트 요소의 값을 반환해, "search1"에 대입한다.
+	searchInfo[search1] = $('input[name="keyword"]').val();	//input 요소의 값을 searchInfo객체의 search1프로퍼티에 대입
 	// 2. 검색 조건
 	const search2 = $('select[name="searchDateCate"]').val();
 	searchInfo[search2] = $(`input[name="${search2}"]`).val();
@@ -53,8 +60,7 @@ function doSearchFunding(){
 					html += `	<td>${searchInfo.fundingStartDate}</td>`;
 					html += `	<td>${searchInfo.fundingEndDate}</td>`;
 					html += `	<td>${searchInfo.fundingProgress}</td>`;
-					html += '</tr>';
-					
+					html += '</tr>';					
 				}
 			}else{
 				html = '<tr><td colspan="9">검색내용이 없습니다.</td></tr>'
@@ -65,8 +71,7 @@ function doSearchFunding(){
 		error :function(){
 			console.log("실패함");
 		}
-	});
-	
+	});	
 }
    	
   	
@@ -150,6 +155,7 @@ $('#fregistBtn').click(function(){
 
 	
 /* 기간 조회 */
+function addDateListeners() {
   const todayBtn = document.getElementById('todayBtn');
   const monthBtn = document.getElementById('monthBtn');
   const threeMonthBtn = document.getElementById('threeMonthBtn');
@@ -187,3 +193,6 @@ $('#fregistBtn').click(function(){
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+}
+
+addDateListeners();
