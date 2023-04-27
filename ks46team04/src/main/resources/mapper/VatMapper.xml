@@ -27,5 +27,12 @@
 		LIMIT 1;		
  	</select>
  	
- 	
+ 	<update id="modifyVat" parameterType="String">
+ 		UPDATE
+			payment_vat
+		SET
+			payment_vat = #{vatRatio}
+		WHERE
+			payment_vat_code = 'payment_vat1';
+ 	</update>
  </mapper>

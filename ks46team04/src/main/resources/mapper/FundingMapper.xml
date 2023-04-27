@@ -119,8 +119,9 @@
 		
 		
 							<!--펀딩 결제 내역 -->	
-	<select id="getFundingPayInfoByCode" parameterType="String">
+	<select id="getFundingPayInfoByCode" parameterType="String" resultType="fundingPay">
 		/* 특정 펀딩 결제 내역 */
+		SELECT
 			fp.funding_payment_code  	AS fundingPayCode,
 			fp.user_id		  			AS userId,
 			fp.funding_code		  		AS fundingCode,
@@ -152,34 +153,63 @@
 			payment_method AS pm
 			ON
 			fp.pm_code = pm.pm_code
-		ORDER BY funding_payment_code DESC;	
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code;
 	</select>
 
 
-							<!-- 펀딩 환불 -->
-	<select id="getRefundList" parameterType="String" resultType="fundingRefund">
-		/* 펀딩 환불 신청 내역 조회 */
+
+									<!-- 펀딩 환불 -->							
+	<select id="getFundingRefundInfoByCode" parameterType="String" resultType="fundingRefund">
+		/* 특정 펀딩 환불내역 조회*/
 		SELECT
-			fr.funding_payment_refund_code  	AS fundingRefundCode,
-			fr.user_id 					  		AS userId,
-			fr.funding_payment_code 		  	AS fundingPayCode,
-			fr.funding_refund_request_date   	AS refundRequestDate,
-			fr.funding_refund_request_amount 	AS requestAmount,
-			fr.funding_refund_bank_name 	  	AS refundBank,
-			fr.funding_refund_account 		  	AS refundAccount,
-			fr.funding_refund_request_reason 	AS requestReason,
-			fr.funding_refund_status 		  	AS requestStatus,
-			fr.funding_refund_approval_date  	AS approvalDate,
-			fr.funding_refund_rejection_date 	AS rejectionDate,			
-			fp.funding_payment_date				AS fundingPaymentDate,
-			pm.pm_name							AS pmName
+			fr.funding_payment_refund_code 		AS fundingRefundCode,		  	
+			fr.user_id 					   		AS refundUserId,		  	
+			fr.funding_payment_code		   		AS fundingPayCode,
+			fr.funding_refund_request_date 		AS refundRequestDate,		  	
+			fr.funding_refund_request_amount	AS requestAmount, 		
+			fr.funding_refund_bank_name			AS refundBank,  				
+			fr.funding_refund_account			AS refundAccount,	  	
+			fr.funding_refund_request_reason	AS requestReason,
+			fr.funding_refund_status			AS requestStatus,
+			fr.funding_refund_approval_date		AS approvalDate,
+			funding_refund_rejection_date		AS rejectionDate,
+			funding_payment_date				AS fundingPaymentDate
 		FROM
 			funding_payment_refund AS fr
 			JOIN
+			funding_payments AS fp
+				ON fp.funding_payment_code = fr.funding_payment_code
+			JOIN
 			payment_method AS pm
+				ON pm.pm_code = fp.pm_code
+	</select> 
+							
+	<select id="getRefundList" parameterType="list" resultType="fundingRefund">
+		/* 펀딩 환불 신청내역 조회 */
+		SELECT
+			fr.funding_payment_refund_code  	AS fundingRefundCode,
+			fr.user_id 					   	 	AS refundUserId,
+			fr.funding_payment_code 			AS fundingPayCode,
+			fr.funding_refund_request_date 		AS refundRequestDate,
+			fr.funding_refund_request_amount	AS requestAmount,
+			fr.funding_refund_bank_name 		AS refundBank,
+			fr.funding_refund_account 			AS refundAccount,
+			fr.funding_refund_request_reason 	AS requestReason,
+			fr.funding_refund_status 			AS requestStatus,
+			fr.funding_refund_approval_date 	AS approvalDate,
+			fr.funding_refund_rejection_date 	AS rejectionDate,			
+			fp.funding_payment_date 			AS fundingPaymentDate,
+			pm.pm_name 							AS pmName
+		FROM
+			funding_payment_refund AS fr
 			JOIN
 			funding_payments AS fp
-		<where>
+				ON fp.funding_payment_code = fr.funding_payment_code
+			JOIN
+			payment_method AS pm
+				ON pm.pm_code = fp.pm_code		
+		<where>			
 			<if test="keyword != null and keyword != ''">			
 				${keyword} LIKE CONCAT('%', #{searchValue},'%')
 			</if>		

@@ -32,12 +32,16 @@ public interface FundingMapper {
 	
 	// 결제내역 수정
 	public int modifyFundingPay(FundingPay fundingPay);
-	// 특정 결제내역 조회
+	// 특정 펀딩 결제내역 조회
 	public FundingPay getFundingPayInfoByCode(String fundingPayCode);
 	// 펀딩 결제내역 조회
 	public List<FundingPay> getFundingPayList();
 	
-	// 펀딩 환불신청내역 조회
+	// 환불내역 수정
+	public int modifyFundingRefund(FundingRefund fundingRefund);
+	// 특정 펀딩 환불내역 조회
+	public FundingRefund getFundingRefundInfoByCode(String fundingRefundCode);
+	// 펀딩 환불내역 조회
 	public List<FundingRefund> getRefundList(String keyword, String searchValue);
 	
 

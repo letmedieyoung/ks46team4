@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default2}">
+<head>
+	<link rel="stylesheet" type="text/css" href="@{/resources/static/css/style.css}"></link>
+ 
+</head>
 
 <th:block layout:fragment="customContents2">
 	<!-- slider_area_start -->
@@ -12,18 +16,18 @@
 				<div class="row">
 					<div class="col-lg-9">
 						<div class="slider_text ">
-							<span>Get Started Today.</span>
+							<span>오늘 시작하세요</span>
 							<h3>Help the children When They Need</h3>
 							<p>
 								ksmart46기 4팀<br>
-								develop 프로젝트_v7<br>
-								2023-04-21 17:22<br> 
+								develop 프로젝트_v8<br>
+								2023-04-27 17:22<br> 
 								-view 화면 연결 진행 및 DB연결 CRUD 중<br>
 								-진행 중 펀딩, 종료 펀딩 화면 미완<br>
 								-로그인 및 다른 기능 미완<br>
 								-공지사항, 문의하기, faq 화면 미완(보류)<br>
 							</p>
-							<a href="#" class="boxed-btn3">Learn More </a>
+							<a href="#" class="boxed-btn3">자세히 보기</a>
 						</div>
 					</div>
 				</div>
@@ -39,7 +43,7 @@
 				<div class="col-lg-6">
 					<div class="section_title text-center mb-55">
 						<h3>
-							<span>◅ 진행 중 펀딩 ▻</span>
+							<span>진행 중 펀딩</span>
 						</h3>
 					</div>
 				</div>
@@ -55,21 +59,21 @@
 								<div class="custom_progress_bar">
 									<div class="progress">
 										<div class="progress-bar" role="progressbar"
-											style="width: 30%;" aria-valuenow="30" aria-valuemin="0"
+											style="width: 59%;" aria-valuenow="59" aria-valuemin="0"
 											aria-valuemax="100">
-											<span class="progres_count"> 30% </span>
+											<span class="progres_count"> 59% </span>
 										</div>
 									</div>
 								</div>
 								<div
 									class="balance d-flex justify-content-between align-items-center">
-									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+									<span>달성 금액 : 590,000원</span> 
 								</div>
-								<h4>진행중 펀딩 제목1</h4>
+								<h4>면역력이 떨어진 아이들에게 힘을 보태주세요</h4>
 								<p>
-									진행중 펀딩 내용1 진행중 펀딩 내용1<br>진행중 펀딩 내용1 진행중 펀딩 내용1
+									초록우산 어린이재단
 								</p>
-								<a class="read_more" href="#">Read More</a>
+								<a class="read_more" th:href="@{/common/funding_detail}">더보기</a>
 							</div>
 						</div>
 						<div class="single_cause">
@@ -88,13 +92,13 @@
 								</div>
 								<div
 									class="balance d-flex justify-content-between align-items-center">
-									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+									<span>달성 금액 : 685,000 원</span> <span>Goal: $9000.00 </span>
 								</div>
-								<h4>진행중 펀딩 제목2</h4>
+								<h4>기후우울로 고통받는 사람들에게 힘을 보태주세요</h4>
 								<p>
-									진행중 펀딩 내용2 진행중 펀딩 내용2<br>진행중 펀딩 내용2 진행중 펀딩 내용2
+									사단법인 따뜻한하루
 								</p>
-								<a class="read_more" href="#">Read More</a>
+								<a class="read_more" th:href="@{/common/funding_detail2}">더보기</a>
 							</div>
 						</div>
 						<div class="single_cause">
@@ -113,13 +117,13 @@
 								</div>
 								<div
 									class="balance d-flex justify-content-between align-items-center">
-									<span>Raised: $5000.00 </span> <span>Goal: $9000.00 </span>
+									<span>달성 금액 : 265,000 원</span> <span>Goal: $9000.00 </span>
 								</div>
-								<h4>진행중 펀딩 제목3</h4>
+								<h4>소화가 어려운 아이들에게 힘을 보태주세요</h4>
 								<p>
-									진행중 펀딩 내용3 진행중 펀딩 내용3<br>진행중 펀딩 내용3 진행중 펀딩 내용3
+									초록우산 어린이재단
 								</p>
-								<a class="read_more" href="#">Read More</a>
+								<a class="read_more" th:href="@{/common/funding_detail3}">더보기</a>
 							</div>
 						</div>
 						<div class="single_cause">
@@ -167,7 +171,7 @@
 							</div>
 							<div class="events">
 								<h3 class="counter">120</h3>
-								<p>Finished Event</p>
+								<p>개의 프로젝트</p>
 							</div>
 						</div>
 					</div>
@@ -179,7 +183,7 @@
 							</div>
 							<div class="events">
 								<h3 class="counter">120</h3>
-								<p>Finished Event</p>
+								<p>개의 마음</p>
 							</div>
 						</div>
 					</div>
@@ -191,7 +195,7 @@
 							</div>
 							<div class="events">
 								<h3 class="counter">120</h3>
-								<p>Finished Event</p>
+								<p>번의 행복</p>
 							</div>
 						</div>
 					</div>
@@ -203,7 +207,7 @@
 							</div>
 							<div class="events">
 								<h3 class="counter">120</h3>
-								<p>Finished Event</p>
+								<p>원의 기부금</p>
 							</div>
 						</div>
 					</div>
@@ -224,7 +228,7 @@
 				<div class="col-lg-6">
 					<div class="section_title text-center mb-55">
 						<h3>
-							<span>◅ 종료된 펀딩 ▻</span>
+							<span>종료된 펀딩</span>
 						</h3>
 					</div>
 				</div>

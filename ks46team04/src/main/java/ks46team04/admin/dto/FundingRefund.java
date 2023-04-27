@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class FundingRefund {
 	private String fundingRefundCode;
-	private String userId;
+	private String refundUserId;
 	private String fundingPayCode;
 	private String refundRequestDate;
 	private String requestAmount;

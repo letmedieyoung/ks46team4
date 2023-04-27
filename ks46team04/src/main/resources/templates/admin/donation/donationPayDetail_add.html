@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/default}">
+
+<script type="text/javascript">
+
+	$('#addBtn').click(function() {
+		const addDonationForm = $('#addDonationForm');
+		const inputGroup = $('#addDonationForm input');
+		let isSubmit = true;
+		inputGroup.each(function(idx, item) {
+				if (!isSubmit) {
+				let msg = $(item).parents('tr').find('label').text();
+				alert(msg + '입력해주세요.');
+				$(item).focus();
+				return false;
+			}
+		});
+		if (isSubmit)
+			addDonationForm.submit();
+	});
+</script>
+
+<th:block layout:fragment="customContents">
+	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+	
+	    <!-- Page Heading -->
+	    
+	    <!-- DataTales Example -->
+     	<div class="card mb-4">
+        	 <div class="card-header py-3">
+             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 결제 상세 등록</h5>
+        	 </div>
+         <div class="card-body">
+				<div class="table-responsive">
+					<form action="/admin/donation/donationPayDetail_add" method="POST"
+						id="addDonationPayDetailForm" name="addDonationPayDetailForm">
+						<table class="table table-bordered freg" id="addDonationPayDetail"
+							width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>회원 아이디</th>
+									<td><input type="text" id="donationPayUserId"
+										name="donationPayUserId" style="width: 400px;"
+										placeholder="회원 아이디을를 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>결제금액</th>
+									<td><input type="number" id="donationPayAmount"
+										name="donationPayAmount" style="width: 400px;"
+										placeholder="결제금액을 입력해주세요." /> <span>원</span></td>
+								</tr>
+								<tr>
+									<th>수수료</th>
+									<td><input type="number" id="donationPaySalesCommission"
+										name="donationPaySalesCommission" style="width: 400px;"
+										placeholder="수수료를 입력해주세요." /> <span>원</span></td>
+								</tr>
+								<tr>
+									<th>매입예산</th>
+									<td><input type="number" id="donationPayPurchaseBudget"
+										name="donationPayPurchaseBudget" style="width: 400px;"
+										placeholder="매입예산을 입력해주세요." /> <span>원</span></td>
+								</tr>
+								<tr>
+									<th>결제일</th>
+									<td>
+										<div>
+											<input type="date" id="donationPayDate"
+												name="donationPayDate"
+												style="width: 400px;"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>환불 요청 여부</th>
+									<td>
+										<div>
+										 <input type='radio' name='refund' value='O' /> 환불요청O &nbsp; &nbsp;
+ 										 <input type='radio' name='refund' value='X' /> 환불요청X
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>정기기부 마감 여부</th>
+									<td>
+										<div>
+										<input type='radio' name='end' value='O' /> 마감O &nbsp; &nbsp;
+ 										<input type='radio' name='end' value='X' /> 마감X
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<button type="button" class="btn btn-primary" id="addBtn"
+											onclick="addBtn()">등록</button>
+										<button type="button" class="btn btn-primary" id="resetBtn"
+											onclick="location.href='/admin/donation/donationPayDetail_list'">입력취소</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+    	</div>
+	</div>
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

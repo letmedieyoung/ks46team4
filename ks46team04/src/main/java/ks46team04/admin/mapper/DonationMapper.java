@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks46team04.admin.dto.Donation;
+import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
@@ -60,4 +61,19 @@ public interface DonationMapper {
 	
 	/* 정기기부 구독 결제 상세 조회 */
 	public List<DonationPayDetail> getDonationPayDetail();
+	
+	/* 정기기부 구독 결제 상세 등록 */
+	public int addDonationPayDetail(DonationPayDetail donationPayDetail);
+	
+	/* 특정 정기기부 구독 결제 상세 조회 */
+ 	public DonationPayDetail getDonationPayDetailInfoByCode(String donationPayDetailCode);
+ 	
+	/* 정기기부 구독 결제 상세 수정 */
+	public int modifyDonationPayDetail(DonationPayDetail donationPayDetail);
+	
+	/* 정기기부 구독 결제 상세 삭제 */
+	public int removeDonationPayDetail(DonationPayDetail donationPayDetail);
+
+	/* 정기기부 월별 결제 합계 조회 */
+	public List<DonationMonthPay> getDonationMonthPay();
 }
