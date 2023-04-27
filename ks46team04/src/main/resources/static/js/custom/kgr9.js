@@ -13,14 +13,14 @@ $('#resetBtn').click(function(){
 });
 
 /**
- * addGoodsBtn 상품등록 버튼
+ * searchBtn 상세검색 버튼
  */
-$('#addGoodsBtn').click(function(){
-	 location.href = '/admin/goods/add_goods';
+$('#searchBtn').click(function(){
+	 location.reload();
 });
 
 /**
- * select value 값 -> input value로 넣기
+ * select box value 값 -> input value로 넣기
  */
 function func(category) {
 	const selectInput = document.querySelector('#goodsCategory');
@@ -32,7 +32,7 @@ function func(category) {
  */
 
 /**
- * add_goods.html submitBtn 버튼
+ * form submitBtn 등록하기 버튼 클릭 시 공란 체크
  */
 $(function(){
 	function validationCheck(ele){
@@ -46,31 +46,19 @@ $(function(){
 		}
 		return isValid;
 	};
-	
-	
 	$('#submitBtn').click(function(){
-		let formId = $('form').getAttribute('id');
-		console.log(formId)
-		const $inputEles = [];
-		switch(formId){
-			case addGoodsForm:
-				$inputEles = $('#addGoodsForm input');
-				break;
-			case modifyGoodsForm:
-				$inputEles = $('#modifyGoodsForm input');
-				break;
-			case removeGoodsForm:
-				$inputEles = $('#removeGoodsForm input');
-				break;
-		}		
+		const addGoodsForm = $('#addGoodsForm');
+		const inputGroup = $('#addGoodsForm input');
 		let isSubmit = true;
-		$inputEles.each(function(idx, item){
+		inputGroup.each(function(idx, item){
 			isSubmit = validationCheck(item);
-			return isSubmit;
+			if(!isSubmit) {
+				let msg = $(item).parents('tr').find('label').text();
+				alert(msg + '입력해주세요.');
+				$(item).focus();
+				return false;
+			}
 		});
-		
-		let $formEle = document.getElementById(formId);
-		if(isSubmit) $formEle.submit();
-		
+	if(isSubmit) addGoodsForm.submit();
 	});
 });

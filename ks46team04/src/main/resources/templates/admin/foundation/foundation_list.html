@@ -52,7 +52,22 @@
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">등록/수정일자</th>
+								<th class="bg-gray-100">
+									<label for="goodsCompany">재단 주소</label>
+								</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="주소를 검색하거나 입력해주세요."/>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+											<span class="text">주소 검색</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">등록/수정일</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
@@ -62,14 +77,14 @@
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										<button class="btn btn-secondary">
-											<span class="text text-gray-100">7일</span>
-										</button>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
 											<span class="text text-gray-100">1개월</span>
 										</button>
 									</div>
+									<div class="form-row align-items-center search-schedule">
+											<button class="btn btn-secondary">
+												<span class="text text-gray-100">1년</span>
+											</button>
+										</div>
 									<div class="form-row align-items-center search-schedule">
 										<button class="btn btn-primary">
 											<span class="text text-gray-100">전체</span>
@@ -90,43 +105,20 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">재단 주소</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="주소를 검색하거나 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">주소 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">등록/수정자</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="등록/수정자를 입력해주세요." />
-									</div>
-								</td>
-							</tr>
+							
 						</tbody>
 					</table>
 					<div align="center">
-						<button type="button" id="totalSearchBtn" class="btn btn-secondary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">전체검색</span>
-						</button>
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 							<span class="text">상세검색</span>
 						</button>
+						<a href="/admin/foundation/add_foundation">
+							<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">재단등록</span>
+							</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -146,7 +138,7 @@
 								<th>연락처</th>
 								<th>주소</th>
 								<th>등록/수정자</th>
-								<th>등록/수정일자</th>
+								<th>등록/수정일</th>
 								<th>수정</th>
 								<th>삭제</th>
 							</tr>

@@ -34,7 +34,9 @@
 			, goods_update_id
 			, goods_update_date
 		FROM
-			goods_reg_info;
+			goods_reg_info
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(goods_code, 'goods', -1) AS UNSIGNED) DESC;
 	</select>
 	
 	<select id="getGoodsCategoryList" resultMap="goodsCategoryResultMap">
@@ -51,7 +53,7 @@
 		INSERT INTO goods_reg_info
 			(goods_code, goods_name, goods_company, goods_category, goods_price, goods_reg_id, goods_reg_date)
 		VALUES
-			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
+			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, '세션아이디', NOW());
 	</insert>
 	
 	<select id="getGoodsInfoByCode" resultMap="goodsResultMap">
