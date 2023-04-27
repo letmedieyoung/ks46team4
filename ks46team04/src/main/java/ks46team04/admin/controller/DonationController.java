@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ks46team04.admin.dto.Donation;
+import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
@@ -241,6 +242,72 @@ public class DonationController {
 		model.addAttribute("getDonationPayDetail", getDonationPayDetail);
 		
 		return "admin/donation/donationPayDetail_list";
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 등록
+	 */
+	@PostMapping("/donationPayDetail_add")
+	public String addDonationPayDetail(DonationPayDetail donationPayDetail) {
+		
+	log.info("화면에서 전달받은 데이터 : {}", donationPayDetail);
+	
+	donationService.addDonationPayDetail(donationPayDetail);
+	
+	return "redirect:/admin/donation/donationPayDetail_list";
+	
+		}
+	
+	@GetMapping("/donationPayDetail_add")
+	public String addDonationPayDetail(Model model) {
+		
+		model.addAttribute("title", "정기기부 구독 결제 상세 등록");
+		
+		return "/admin/donation/donationPayDetail_add";
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 수정
+	 */
+	@PostMapping("/donationPayDetail_modify")
+	public String modifyDonationPayDetail(DonationPayDetail donationPayDetail) {
+		
+		donationService.modifyDonationPayDetail(donationPayDetail);
+		
+		return "redirect:/admin/donation/donationPayDetail_list";
+	}
+	@GetMapping("/donationPayDetail_modify")
+	public String modifyDonationPayDetail(Model model, @RequestParam(name="donationPayDetailCode") String donationPayDetailCode){
+		
+		DonationPayDetail donationPayDetailInfo = donationService.getDonationPayDetailInfoByCode(donationPayDetailCode);
+		log.info("donationPayDetailInfo: {}", donationPayDetailInfo);
+		model.addAttribute("title", "정기기부 구독 결제 상세 수정");
+		model.addAttribute("donationPayDetailInfo", donationPayDetailInfo);
+		
+		return "admin/donation/donationPayDetail_modify";
+	}
+	
+	/*
+	 * 정기기부 구독 결제 상세 삭제
+	 * */
+	@GetMapping("/donationPayDetail_remove")
+	public String removeDonationPayDetail(DonationPayDetail donationPayDetail) {
+		donationService.removeDonationPayDetail(donationPayDetail);
+		return "redirect:/admin/donation/donationPayDetail_list";
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 조회
+	 */
+	@GetMapping("/donationMonthPay_list")
+	public String getDonationMonthPay(Model model) {
+		
+		List<DonationMonthPay> getDonationMonthPay = donationService.getDonationMonthPay();
+		
+		model.addAttribute("title", "정기기부 월별 결제 합계 목록");
+		model.addAttribute("getDonationMonthPay", getDonationMonthPay);
+		
+		return "admin/donation/donationMonthPay_list";
 	}
 	
 	/*LBR*/

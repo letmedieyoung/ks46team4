@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/default}">
+
+<script type="text/javascript">
+
+	$('#addBtn').click(function() {
+		const addDonationForm = $('#addDonationForm');
+		const inputGroup = $('#addDonationForm input');
+		let isSubmit = true;
+		inputGroup.each(function(idx, item) {
+				if (!isSubmit) {
+				let msg = $(item).parents('tr').find('label').text();
+				alert(msg + '입력해주세요.');
+				$(item).focus();
+				return false;
+			}
+		});
+		if (isSubmit)
+			addDonationForm.submit();
+	});
+</script>
+
+<th:block layout:fragment="customContents">
+	
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+	
+	    <!-- Page Heading -->
+	    
+	    <!-- DataTales Example -->
+     	<div class="card mb-4">
+        	 <div class="card-header py-3">
+             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 단가 등록</h5>
+        	 </div>
+         <div class="card-body">
+				<div class="table-responsive">
+					<form action="/admin/donation/donation_add" method="POST"
+						id="addDonationForm" name="addDonationForm">
+						<table class="table table-bordered freg" id="addDonation"
+							width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>콘텐츠명</th>
+									<td><input type="text" id="donationName"
+										name="donationName" style="width: 400px;"
+										placeholder="콘텐츠명을 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 금액</th>
+									<td><input type="number" id="donationPrice"
+										name="donationPrice" style="width: 400px;"
+										placeholder="콘텐츠 금액을 입력해주세요." /> <span>원</span></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 상세내용</th>
+									<td>
+										<div>
+											<input type="text" id="donationDescription"
+												name="donationDescription"
+												style="width: 400px; height: 200px;"
+												placeholder="콘텐츠 상세설명을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<button type="button" class="btn btn-primary" id="addBtn"
+											onclick="addBtn()">등록</button>
+										<button type="button" class="btn btn-primary" id="resetBtn"
+											onclick="location.href='/donation/donation_list'">입력취소</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+    	</div>
+	</div>
+	
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

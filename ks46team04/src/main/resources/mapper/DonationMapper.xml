@@ -238,4 +238,78 @@
 		FROM
 			user_regular_donation_payment;
 	</select>
+	
+	<insert id="addDonationPayDetail" parameterType="DonationPayDetail">
+		/* 정기기부 구독 결제 상세 등록 */
+		INSERT INTO user_regular_donation_payment
+		(user_id, payment_amount, sales_commission, purchase_budget,user_regular_donation_payment_date
+		user_regular_donation_payment_refund_requested, user_regular_donation_deadline_check)
+		VALUES
+		(#{donationPayUserId}, #{donationPayAmount}, #{donationPaySalesCommission}, #{donationPayPurchaseBudget},
+		 #{donationPayDate}, #{donationPayRefundRequest},#{donationPayDeadlineCheck});		
+	</insert>
+	
+	<select id="getDonationPayDetailInfoByCode" resultType="DonationPayDetail" parameterType="String">
+		/* 특정 정기기부 구독 결제 상세 조회*/
+		SELECT
+			regular_donation_payment_code AS `donationPayDetailCode`
+			, user_id AS `donationPayUserId`
+			, user_regular_donation_subscription_code AS `donationSubCode`
+			, regular_donation_code AS `donationCode`
+			, regular_donation_auto_pm_code AS `donationPayMethodCode`
+			, payment_amount AS `donationPayAmount`
+			, sales_commission AS `donationPaySalesCommission`
+			, purchase_budget AS `donationPayPurchaseBudget`
+			, user_regular_donation_payment_date AS `donationPayDate`
+			, user_regular_donation_payment_refund_requested AS `donationPayRefundRequest`
+			, regular_donation_sales_group AS `donationPaySalesGroup`
+			, user_regular_donation_deadline_check AS `donationPayDeadlineCheck`
+		FROM
+			user_regular_donation_payment
+		WHERE
+			regular_donation_payment_code = #{donationPayDetailCode};
+	</select>
+	
+	<update id="modifyDonationPayDetail" parameterType="DonationPayDetail">
+		/* 정기기부 구독 결제 상세 수정 */
+		UPDATE user_regular_donation_payment
+		<set>
+			<if test="donationPayUserId != null and donationPayUserId !=''">
+				user_id = #{donationPayUserId}
+			</if>
+			<if test="donationPayAmount != null and donationPayAmount !=''">
+				,payment_amount = #{donationPayAmount}
+			</if>
+			<if test="donationPaySalesCommission != null and donationPaySalesCommission !=''">
+				,sales_commission = #{donationPaySalesCommission}
+			</if>
+			<if test="donationPayPurchaseBudget != null and donationPayPurchaseBudget !=''">
+				,purchase_budget = #{donationPayPurchaseBudget}
+			</if>
+			<if test="donationPayDate != null and donationPayDate !=''">
+				,user_regular_donation_payment_date = #{donationPayDate}
+			</if>
+			<if test="donationPayRefundRequest != null and donationPayRefundRequest !=''">
+				,user_regular_donation_payment_refund_requested = #{donationPayRefundRequest}
+			</if>
+			<if test="donationPayDeadlineCheck != null and donationPayDeadlineCheck !=''">
+				,user_regular_donation_deadline_check = #{donationPayDeadlineCheck}
+			</if>
+		</set>
+		WHERE
+			regular_donation_payment_code = #{donationPayDetailCode};
+	</update>
+	
+	<select id="getDonationMonthPay" resultType="DonationMonthPay">
+		/* 정기기부 월별 결제 합계 조회 */
+		SELECT 
+			month_regular_donation_payment_code AS `donationMonthPayCode`
+			, regular_donation_code AS `donationCode`
+			, payment_year AS `donationMonthPayYear`
+			, payment_month AS `donationMonthPayMonth`
+			, total_payment_amount AS `donationMonthPayAmount`
+			, donation_monthly_deadline_group AS `donationMonthPayDeadlineGroup`
+		FROM
+			month_regular_donation_payment;
+	</select>
 </mapper>
