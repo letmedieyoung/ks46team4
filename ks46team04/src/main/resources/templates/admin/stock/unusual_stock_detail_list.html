@@ -54,33 +54,17 @@
 								</td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100">비정상 재고 일자<br>검색분류</th>
-								<td >
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<label>
-									    	<input type="radio" id="allContent" name="content" value="allContent" checked>
-									    	<span class="text">전체</span>&nbsp;&nbsp;
-								      	</label>
-								    </div>
-									<div class="form-row align-items-center search-schedule">
-								     	<label>
-									    	<input type="radio" id="fundingContent" name="content" value="fundingContent">
-									   		<span class="text">발생일자</span>&nbsp;&nbsp;
-								     	</label>
-								    </div>
-									<div class="form-row align-items-center search-schedule">
-								    	<label>
-									      	<input type="radio" id="donationContent" name="content" value="donationContent">
-									      	<span class="text">등록/수정일자</span>
-								    	</label>
-								    </div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">비정상 재고<br>발생/등록(수정)일자</th>
+								<th class="bg-gray-100">기간 검색</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="option1">:: 기간 분류 ::</option>
+											<option value="option1">비정상재고발생일</option>
+											<option value="option2">등록/수정일</option>
+										</select>
+										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 											<button class="btn btn-secondary">
 												<span class="text text-gray-100">오늘</span>
@@ -88,22 +72,7 @@
 										</div>
 										<div class="form-row align-items-center search-schedule">
 											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">7일</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
 												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
 											</button>
 										</div>
 										<div class="form-row align-items-center search-schedule">
@@ -164,29 +133,19 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">등록/수정자</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="등록/수정자를 입력해주세요." />
-									</div>
-								</td>
-							</tr>
 						</tbody>
 					</table>
 					<div align="center">
-						<button type="button" id="totalSearchBtn" class="btn btn-secondary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">전체검색</span>
-						</button>
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 							<span class="text">상세검색</span>
 						</button>
+						<a href="/admin/stock/add_unusual_stock_detail">
+							<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+								<span class="text">비정상재고등록</span>
+							</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -203,11 +162,11 @@
 								<th>상품비정상재고코드</th>
 								<th>상품코드</th>
 								<th>상품재고코드</th>
-								<th>비정상재고 수량</th>
-								<th>비정상재고 발생일</th>
-								<th>비정상재고 사유</th>
+								<th>비정상 재고 수량</th>
+								<th>비정상 재고 발생일</th>
+								<th>비정상 재고 사유</th>
 								<th>등록/수정자</th>
-								<th>등록/수정일자</th>
+								<th>등록/수정일</th>
 								<th>수정</th>
 								<th>삭제</th>
 							</tr>
