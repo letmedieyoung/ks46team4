@@ -1,14 +1,17 @@
 /**
+ * 체크박스 전체 선택
+ */
+$('#allCheck').click(function () {
+	$('.checks').prop('checked', $(this).prop('checked'));
+});
+
+
+
+
+/**
  * totalSearchBtn 전체검색 버튼
  */
 $('#totalSearchBtn').click(function(){
-	 location.reload();
-});
-
-/**
- * resetBtn 입력취소 버튼
- */
-$('#resetBtn').click(function(){
 	 location.reload();
 });
 
@@ -18,6 +21,7 @@ $('#resetBtn').click(function(){
 $('#searchBtn').click(function(){
 	 location.reload();
 });
+
 
 /**
  * select box value 값 -> input value로 넣기
@@ -42,7 +46,7 @@ $(function(){
 			let msg = $(ele).parents('tr').find('label').text();
 			alert(`${msg} 필수 항목입니다.`)
 			$(ele).focus();
-			isValid = false;	
+			isValid = false;
 		}
 		return isValid;
 	};

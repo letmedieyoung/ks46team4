@@ -6,3 +6,9 @@
     margin-right: 0.2rem;
     padding: 1.13rem 1rem
 } 
+.hidden {
+	style:"display:none;"
+}
+.check-block {
+	display: block;
+}
