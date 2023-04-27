@@ -32,4 +32,16 @@ public class VatService {
 		
 		return getVatRow;
 	}
+	
+	public void modifyVat(Vat vat) {
+		log.info("vat: {}", vat);
+		String vatRatio = vat.getVatRatio();
+		
+		if(vatRatio != null) {
+			vatRatio = String.valueOf(Double.valueOf(vatRatio) / 100);
+			System.out.println(vatRatio);
+			vatMapper.modifyVat(vatRatio);
+		}
+	}
+	
 }
