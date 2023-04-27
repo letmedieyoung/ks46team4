@@ -36,9 +36,8 @@
 								</li>										
 							</ul>										
 						</div>						
-						<table th:object="${fundingInfo}" class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
-							<tbody>														
-																
+						<table th:object="${fundingInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+							<tbody>									
 								<tr>
 									<th class="bg-gray-100">
 										<label for="fundingCode">펀딩코드</label>
@@ -70,9 +69,9 @@
 				                	</td>
 			            		</tr>				  
 								<tr>
-									<td class="bg-gray-100">
+									<th class="bg-gray-100">
 										<label for="fundingProgress">진행 상태</label>
-									</td>
+									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress">
@@ -165,7 +164,7 @@
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">수정</span>
 							</button>
-							<button type="reset" id="cancelBtn" class="btn btn-secondary btn-icon-split">
+							<button type="reset" class="cancelBtn btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
 								<span class="text">취소</span>
 							</button>

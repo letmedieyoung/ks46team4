@@ -107,7 +107,7 @@
 								<th>환불요청일</th>
 								<th>환불코드</th>                                
                                 <th>결제코드</th>
-                                <th>주문자아이디</th>
+                                <th>회원아이디</th>
                                 <th>결제일</th>
                                 <th>결제수단</th>
                                 <th>환불요청금액</th>
@@ -123,7 +123,7 @@
 								<td th:text="${l.refundRequestDate}"></td>
 								<td><a th:text="${l.fundingRefundCode}" th:href="@{modifyFundingRefund(fundingRefundCode=${l.fundingRefundCode})}"></a></td>								
 								<td th:text="${l.fundingPayCode}"></td>								
-								<td th:text="${l.userId}"></td>
+								<td th:text="${l.refundUserId}"></td>
 								<td th:text="${l.fundingPaymentDate}"></td>
 								<td th:text="${l.pmName}"></td>
 								<td th:text="|₩ ${#numbers.formatInteger(l.requestAmount, 3, 'COMMA')}|"></td>
@@ -133,7 +133,7 @@
 								<td th:text="${l.requestStatus}"></td>
 							</tr>
 							<tr th:if="${refundList == null}">
-								<td colspan="7">등록된 펀딩의 정보가 없습니다.</td>				
+								<td colspan="12">등록된 펀딩의 정보가 없습니다.</td>				
 							</tr>						
 						</tbody>
 					</table>					

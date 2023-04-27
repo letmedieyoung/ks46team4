@@ -120,7 +120,7 @@
 								<td><a th:text="${l.fundingPayCode}" th:href="@{modifyFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
 								<td th:text="${l.userId}"></td>
 								<td th:text="${l.fundingCode}"></td>								
-								<td th:text="${l.fundingPaymentAmount}"></td>
+								<td th:text="|₩ ${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}|"></td>								
 								<td th:text="${l.pmName}"></td>
 							</tr>
 							<tr th:if="${fundingPayList == null}">

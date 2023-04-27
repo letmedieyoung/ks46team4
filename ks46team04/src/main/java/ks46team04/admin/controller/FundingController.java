@@ -42,7 +42,7 @@ public class FundingController {
 	
 	
 	/**
-	 * 펀딩 수정
+	 * 펀딩 수정 처리
 	 * @param funding
 	 * @return
 	 */
@@ -55,7 +55,7 @@ public class FundingController {
 	}		
 	
 	/**
-	 * 펀딩수정화면
+	 * 펀딩 수정 화면
 	 * @param fundingCode
 	 * @param model
 	 * @return
@@ -168,7 +168,7 @@ public class FundingController {
 	
 	
 	/**
-	 * 펀딩 결제내역 수정
+	 * 펀딩 결제내역 수정 처리
 	 * @param fundingPay
 	 * @return
 	 */
@@ -180,7 +180,7 @@ public class FundingController {
 		return "redirect:/admin/funding/payments";
 	}
 	/**
-	 * 펀딩 결제내역 수정화면
+	 * 펀딩 결제내역 수정 화면
 	 * @param fundingPayCode
 	 * @param model
 	 * @return
@@ -188,17 +188,15 @@ public class FundingController {
 	@GetMapping("/modifyFundingPay")
 	public String modifyFundingPay(@RequestParam(name="fundingPayCode") String fundingPayCode, Model model) {
 		
-		FundingPay fundingPayInfo = fundingService.getFundingPayInfoByCode(fundingPayCode);
-		List<FundingPay> fundingPayList = fundingService.getFundingPayList();		
+		FundingPay fundingPayInfo = fundingService.getFundingPayInfoByCode(fundingPayCode);		
 		
-		model.addAttribute("title", "펀딩결제내역수정");	
-		model.addAttribute("fundingPayList", fundingPayList);
+		model.addAttribute("title", "펀딩결제내역수정");		
 		model.addAttribute("fundingPayInfo", fundingPayInfo);		
 		
 		return "admin/funding/modifyFundingPay";
 	}	
 	/**
-	 * 펀딩 결제 내역 조회
+	 * 펀딩 결제내역 조회
 	 * @param model
 	 * @return
 	 */
@@ -212,8 +210,35 @@ public class FundingController {
 		return "admin/funding/payments";
 	}
 	
-	
-	
+	/**
+	 * 환불내역 수정 처리
+	 * @param fundingRefund
+	 * @return
+	 */
+	@PostMapping("/modifyFundingRefund")
+	public String modifyFundingRefund(FundingRefund FundingRefund) {		
+		
+		log.info("funding: {}", FundingRefund);
+		fundingMapper.modifyFundingRefund(FundingRefund);		
+		
+		return "redirect:/admin/funding/refund";
+	}	
+	/**
+	 * 펀딩 환불내역 수정화면
+	 * @param fundingRefundCode
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modifyFundingRefund")
+	public String modifyFundingRefund(@RequestParam(name="fundingRefundCode") String fundingRefundCode, Model model) {
+						
+		FundingRefund fundingRefundInfo = fundingService.getFundingRefundInfoByCode(fundingRefundCode);		
+		
+		model.addAttribute("title", "펀딩환불내역");		
+		model.addAttribute("fundingRefundInfo", fundingRefundInfo);		
+		
+		return "admin/funding/modifyFundingRefund";
+	}
 	/**
 	 * 펀딩 환불 관리
 	 * @param model
