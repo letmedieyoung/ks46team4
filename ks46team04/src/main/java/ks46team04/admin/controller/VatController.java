@@ -53,9 +53,10 @@ public class VatController {
 	}
 	
 	@PostMapping("/payment_vat_update")
-	public String modifyVat(@RequestParam(name="modifyVat") String modifyVat) {
+	public String modifyVat(Vat vat) {
+		log.info("vat: {}", vat);
+		vatService.modifyVat(vat);
 		
-		
-		return "redirect:/admin/purchase_sale/payment_vat_update";
+		return "redirect:/admin/purchase_sale/payment_vat_list";
 	}
 }
