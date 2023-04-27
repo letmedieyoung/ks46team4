@@ -79,21 +79,30 @@
 		UPDATE goods_reg_info
 		<set>
 			<if test="goodsName != null and goodsName !=''">
-				g_name = #{goodsName}
-			</if>
-			<if test="goodsCate != null and goodsCate !=''">
-				,goods_category = #{goodsCategory}
+				goods_name = #{goodsName}
 			</if>
 			<if test="goodsCompany != null and goodsCompany !=''">
 				,goods_company = #{goodsCompany}
 			</if>
+			<if test="goodsCategory != null and goodsCategory !=''">
+				,goods_category = #{goodsCategory}
+			</if>
 			<if test="goodsPrice != null and goodsPrice !=''">
 				,goods_price = #{goodsPrice}
 			</if>
+			,goods_update_id = '세션아이디'
+			,goods_update_date = NOW()
 		</set>
 		WHERE
 			goods_code = #{goodsCode};
 	</update>
 	
+	<delete id="removeGoodsByGoodsCode" parameterType="String">
+		DELETE 
+		FROM 
+			goods_reg_info
+		WHERE 
+			goods_code = #{goodsCode};
+	</delete>
 	
 </mapper>
