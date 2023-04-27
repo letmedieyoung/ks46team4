@@ -23,8 +23,16 @@
 			    	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 결제 내역 조회</h5>
 			    </div>
 				<div class="card-body">
-					<div class="table-responsive">						
-						<table th:object="${fundingPayInfo}" class="table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
+					<div class="table-responsive">
+						<div th:object="${fundingPayInfo}" id="fRegInfo">
+							<ul>
+								<li>
+									펀딩결제일 :
+									<input type="text" id="fundingPaymentDate" th:value="*{fundingPaymentDate}" name="fundingPaymentDate" style="border:none;" disabled="disabled"></input>			
+								</li>																		
+							</ul>										
+						</div>						
+						<table th:object="${fundingPayInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th class="bg-gray-100">
@@ -32,7 +40,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingPayCode" th:value="*{fp.fundingPayCode}" name="fundingPayCode"/>
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingPayCode" th:value="*{fundingPayCode}" name="fundingPayCode" disabled="disabled"/>
 										</div>
 									</td>
 								</tr>
@@ -42,7 +50,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="userId" th:value="*{fp.userId}" name="userId"/>
+											<input type="text" class="form-control form-control-user-search search-input" id="userId" th:value="*{userId}" name="userId"/>
 										</div>
 									</td>
 								</tr>
@@ -52,27 +60,21 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode"/>
+											<th:block th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
+												<a th:href="@{/modifyFunding(fundingCode=${l.fundingCode})}" target="_blank">
+													<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode"/>
+												</a>
+											</th:block>
 										</div>
 									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="fundingPaymentDate">결제일</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingPaymentDate" th:value="*{fundingPaymentDate}" name="fundingPaymentDate" />
-										</div>
-									</td>
-								</tr>
+								</tr>								
 								<tr>
 									<th class="bg-gray-100">
 										<label for="fundingPaymentAmount">펀딩금액</label>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingPaymentAmount" th:value="*{fundingPaymentAmount}" name="fundingPaymentAmount" />
+											<input type="number" class="form-control form-control-user-search search-input" id="fundingPaymentAmount" th:value="*{fundingPaymentAmount}" name="fundingPaymentAmount" />
 										</div>
 									</td>
 								</tr>
@@ -93,7 +95,7 @@
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">수정</span>
 							</button>
-							<button type="reset" id="cancelBtn" class="btn btn-secondary btn-icon-split">
+							<button type="reset" class="cancelBtn btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
 								<span class="text">취소</span>
 							</button>

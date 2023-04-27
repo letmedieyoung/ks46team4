@@ -1,8 +1,10 @@
 /* 취소 버튼 */ 
-$('#cancelBtn').click(function(){
-	location.href = '/funding/manage';
-	//history.go(-1);
+$(document).ready(function() {
+  $('.cancelBtn').click(function() {
+    window.history.back();
+  });
 });
+
 
 /* 수정버튼 */
 $('#modifyBtn').click(function(){
@@ -153,6 +155,7 @@ $('#fregistBtn').click(function(){
 
 	
 /* 기간 조회 */
+function addDateListeners() {
   const todayBtn = document.getElementById('todayBtn');
   const monthBtn = document.getElementById('monthBtn');
   const threeMonthBtn = document.getElementById('threeMonthBtn');
@@ -190,3 +193,6 @@ $('#fregistBtn').click(function(){
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+}
+
+addDateListeners();
