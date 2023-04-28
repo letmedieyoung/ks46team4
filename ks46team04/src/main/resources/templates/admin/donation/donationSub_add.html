@@ -3,25 +3,6 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/default}">
 
-<script type="text/javascript">
-
-	$('#addBtn').click(function() {
-		const addDonationForm = $('#addDonationForm');
-		const inputGroup = $('#addDonationForm input');
-		let isSubmit = true;
-		inputGroup.each(function(idx, item) {
-				if (!isSubmit) {
-				let msg = $(item).parents('tr').find('label').text();
-				alert(msg + '입력해주세요.');
-				$(item).focus();
-				return false;
-			}
-		});
-		if (isSubmit)
-			addDonationForm.submit();
-	});
-</script>
-
 <th:block layout:fragment="customContents">
 	
 	<!-- Begin Page Content -->

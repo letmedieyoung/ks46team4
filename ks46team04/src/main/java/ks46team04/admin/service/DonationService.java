@@ -11,6 +11,7 @@ import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
+import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.mapper.DonationMapper;
 
@@ -40,12 +41,13 @@ public class DonationService {
 	
 	/*
 	 * 정기기부 단가 등록
-	 * */
+	 */
 	public int addDonation(Donation donation) {
 		
 		log.info("화면에서 전달받은 데이터 : {}", addDonation(donation));
 		
 		int result = donationMapper.addDonation(donation);
+		
 		return result;
 	}
 	
@@ -245,5 +247,49 @@ public class DonationService {
 	 * */
 	public void removeDonationMonthPay(DonationMonthPay donationMonthPay) {
 		donationMapper.removeDonationMonthPay(donationMonthPay);
+	}
+	
+	/*
+	 * 정기기부 환불 조회
+	 * */
+	public List<DonationRefund> getDonationRefund(){
+
+		List<DonationRefund> getDonationRefund = donationMapper.getDonationRefund();
+		
+		return getDonationRefund;
+	}
+	
+	/*
+	 * 정기기부 환불 등록
+	 * */
+	public int addDonationRefund(DonationRefund donationRefund) {
+		
+		log.info("화면에서 전달받은 데이터 : {}", addDonationRefund(donationRefund));
+		
+		int result = donationMapper.addDonationRefund(donationRefund);
+		return result;
+	}
+	
+	/*
+	 * 특정 정기기부 환불 조회
+	 * */
+	public DonationRefund getDonationRefundInfoByCode(String donationRefundCode) {
+		DonationRefund donationRefundInfo = donationMapper.getDonationRefundInfoByCode(donationRefundCode);
+		log.info("donationRefundInfo: {}", donationRefundInfo);
+		return donationRefundInfo;
+	}
+	
+	/*
+	 * 정기기부 환불 수정
+	 * */
+	public void modifyDonationRefund(DonationRefund donationRefund) {
+		donationMapper.modifyDonationRefund(donationRefund);
+	}
+	
+	/*
+	 * 정기기부 환불 삭제
+	 * */
+	public void removeDonationRefund(DonationRefund donationRefund) {
+		donationMapper.removeDonationRefund(donationRefund);
 	}
 }

@@ -16,6 +16,7 @@ import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
+import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.service.DonationService;
 import lombok.AllArgsConstructor;
 
@@ -46,7 +47,7 @@ public class DonationController {
 
 	/*
 	 * 정기기부 단가 등록
-	 */
+	*/
 	@PostMapping("/donation_add")
 	public String addDonation(Donation donation) {
 		
@@ -62,8 +63,8 @@ public class DonationController {
 	public String addDonation(Model model) {
 		
 		model.addAttribute("title", "정기기부 단가 등록");
-		
-		return "admin/donation/donation_add";
+
+		return "/admin/donation/donation_add";
 	}
 	
 	/*
@@ -362,20 +363,72 @@ public class DonationController {
 		return "redirect:/admin/donation/donationMonthPay_list";
 	}
 	
-	/*LBR*/
+	/*
+	 * 정기기부 환불 조회
+	 */
 	@GetMapping("/donationRefund_list")
-	public String getDonationrefundList() {
+	public String getDonationRefund(Model model) {
+		
+		List<DonationRefund> getDonationRefund = donationService.getDonationRefund();
+		
+		model.addAttribute("title", "정기기부 환불 목록");
+		model.addAttribute("getDonationRefund", getDonationRefund);
 		
 		return "admin/donation/donationRefund_list";
 	}
 	
+	/*
+	 * 정기기부 환불 등록
+	 */
+	@PostMapping("/donationRefund_add")
+	public String addDonationRefund(DonationRefund donationRefund) {
+		
+	log.info("화면에서 전달받은 데이터 : {}", donationRefund);
+	
+	donationService.addDonationRefund(donationRefund);
+	
+	return "redirect:/admin/donation/donationdonationRefund_list";
+	
+		}
+	
 	@GetMapping("/donationRefund_add")
-	public String addDonationrefund() {
-		return "admin/donation/donationRefund_add";
+	public String addDonationRefund(Model model) {
+		
+		model.addAttribute("title", "정기기부 환불 등록");
+		
+		return "/admin/donation/donationRefund_add";
+	}
+	
+	/*
+	 * 정기기부 환불 수정
+	 */
+	@PostMapping("/donationRefund_modify")
+	public String modifyDonationRefund(DonationRefund donationRefund) {
+		
+		donationService.modifyDonationRefund(donationRefund);
+		
+		return "redirect:/admin/donation/donationRefund_list";
 	}
 	
 	@GetMapping("/donationRefund_modify")
-	public String modifyDonationrefund() {
+	public String modifyDonationRefund(Model model, @RequestParam(name="donationRefundCode") String donationRefundCode){
+		
+		DonationRefund donationRefundInfo = donationService.getDonationRefundInfoByCode(donationRefundCode);
+		
+		log.info("donationRefundInfo: {}", donationRefundInfo);
+		
+		model.addAttribute("title", "정기기부 월별 결제 합계 수정");
+		model.addAttribute("donationRefundInfo", donationRefundInfo);
+		
 		return "admin/donation/donationRefund_modify";
-	}	
+	}
+	
+	/*
+	 * 정기기부 환불 삭제
+	 * */
+	@GetMapping("/donationRefund_remove")
+	public String removeDonationRefund(DonationRefund donationRefund) {
+		donationService.removeDonationRefund(donationRefund);
+		return "redirect:/admin/donation/donationRefund_list";
+	}
 }

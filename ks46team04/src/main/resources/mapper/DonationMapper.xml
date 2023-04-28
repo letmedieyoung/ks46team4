@@ -74,6 +74,7 @@
 				,regular_donation_description = #{donationDescription}
 			</if>
 			, regular_donation_update_id = #{donationUpdateId}
+			, regular_donation_update_date = NOW()
 		</set>
 		WHERE
 			regular_donation_code = #{donationCode};
@@ -141,6 +142,7 @@
 			<if test="donationPayMethodAccount != null and donationPayMethodAccount !=''">
 				,regular_donation_payment_account = #{donationPayMethodAccount}
 			</if>
+				,regular_donation_payment_update_date = NOW()
 		</set>
 		WHERE
 			regular_donation_auto_pm_code = #{donationPayMethodCode};
@@ -300,6 +302,15 @@
 			regular_donation_payment_code = #{donationPayDetailCode};
 	</update>
 	
+	<delete id="removeDonationPayDetail" parameterType="DonationPayDetail">
+		/* 정기기부 구독 결제 상세 삭제 */
+		DELETE
+		FROM
+		 	user_regular_donation_payment 
+		WHERE 
+			regular_donation_payment_code = #{donationPayDetailCode};		
+	</delete>
+	
 	<select id="getDonationMonthPay" resultType="DonationMonthPay">
 		/* 정기기부 월별 결제 합계 조회 */
 		SELECT 
@@ -355,4 +366,119 @@
 		WHERE
 			month_regular_donation_payment_code = #{donationMonthPayCode};
 	</update>
+	
+	<delete id="removeDonationMonthPay" parameterType="DonationMonthPay">
+		/* 정기기부 월별 결제 합계 삭제 */
+		DELETE
+		FROM
+		 	month_regular_donation_payment 
+		WHERE 
+			month_regular_donation_payment_code = #{donationMonthPayCode};		
+	</delete>
+	
+	<select id="getDonationRefund" resultType="DonationRefund">
+	/* 정기기부 환불 조회 */
+	SELECT
+		regular_donation_payment_refund_code AS `donationRefundCode`
+		, user_id AS `donationRefundUserId`
+		, user_regular_donation_payment_code AS `donationPayCode`
+		, regular_donation_refund_request_date AS `donationRefundRequestDate`
+		, regular_donation_refund_request_amount AS `donationRefundRequestAmount`
+		, regular_donation_refund_request_reason AS `donationRefundRequestReason`
+		, regular_donation_refund_bank_name AS `donationRefundBank`
+		, regular_donation_refund_account AS `donationRefundAccount`
+		, regular_donation_refund_status AS `donationRefundStatus`
+		, regular_donation_refund_approval_date AS `donationRefundApprovalDate`
+		, regular_donation_refund_rejection_date AS `donationRefundRejectionDate`
+		, regular_donation_refund_reg_id AS `donationRefundRegId`
+		, regular_donation_refund_reg_date AS `donationRefundRegDate`
+		, regular_donation_refund_update_id AS `donationRefundUpdateId`
+		, regular_donation_refund_update_date AS `donationRefundUpdateDate`
+	FROM
+		regular_donation_payment_refund;
+	</select>
+	
+	<insert id="addDonationRefund" parameterType="DonationRefund">
+		/* 정기기부 환불 등록 */
+		INSERT INTO regular_donation_payment_refund
+		(regular_donation_payment_refund_code, user_id, user_regular_donation_payment_code, regular_donation_refund_request_date,
+		regular_donation_refund_request_amount, regular_donation_refund_request_reason, regular_donation_refund_bank_name,
+		regular_donation_refund_account, regular_donation_refund_status, regular_donation_refund_approval_date, regular_donation_refund_rejection_date,
+		regular_donation_refund_reg_id, regular_donation_refund_reg_date, regular_donation_refund_update_id, regular_donation_refund_update_date)
+		VALUES
+		(#{donationRefundCode}, #{donationRefundUserId}, #{donationPayCode}, #{donationRefundRequestDate},
+		 #{donationRefundRequestAmount}, #{donationRefundRequestReason}, #{donationRefundBank}, #{donationRefundAccount}, #{donationRefundStatus},
+		 #{donationRefundApprovalDate}, #{donationRefundRejectionDate}, #{donationRefundRegId}, #{donationRefundRegDate}, #{donationRefundUpdateId}, #{donationRefundUpdateDate});		
+	</insert>
+	
+	<select id="getDonationRefundInfoByCode" resultType="DonationRefund" parameterType="String">
+		/* 특정 정기기부 환불 조회*/
+		SELECT
+			regular_donation_payment_refund_code AS `donationRefundCode`
+		, user_id AS `donationRefundUserId`
+		, user_regular_donation_payment_code AS `donationPayCode`
+		, regular_donation_refund_request_date AS `donationRefundRequestDate`
+		, regular_donation_refund_request_amount AS `donationRefundRequestAmount`
+		, regular_donation_refund_request_reason AS `donationRefundRequestReason`
+		, regular_donation_refund_bank_name AS `donationRefundBank`
+		, regular_donation_refund_account AS `donationRefundAccount`
+		, regular_donation_refund_status AS `donationRefundStatus`
+		, regular_donation_refund_approval_date AS `donationRefundApprovalDate`
+		, regular_donation_refund_rejection_date AS `donationRefundRejectionDate`
+		, regular_donation_refund_reg_id AS `donationRefundRegId`
+		, regular_donation_refund_reg_date AS `donationRefundRegDate`
+		, regular_donation_refund_update_id AS `donationRefundUpdateId`
+		, regular_donation_refund_update_date AS `donationRefundUpdateDate`
+		FROM
+			regular_donation_payment_refund
+		WHERE
+			regular_donation_payment_refund_code = #{donationRefundCode};
+	</select>
+	
+	<update id="modifyDonationRefund" parameterType="DonationRefund">
+		/* 정기기부 환불 수정 */
+		UPDATE regular_donation_payment_refund
+		<set>
+			<if test="donationRefundRequestAmount != null and donationRefundRequestAmount !=''">
+				,regular_donation_refund_request_amount  = #{donationRefundRequestAmount}
+			</if>
+			<if test="donationRefundRequestReason != null and donationRefundRequestReason !=''">
+				,regular_donation_refund_request_reason  = #{donationRefundRequestReason}
+			</if>
+			<if test="donationRefundBank != null and donationRefundBank !=''">
+				,regular_donation_refund_bank_name  = #{donationRefundBank}
+			</if>
+			<if test="donationRefundAccount != null and donationRefundAccount !=''">
+				,regular_donation_refund_account  = #{donationRefundAccount}
+			</if>
+			<if test="donationRefundStatus  != null and donationRefundStatus !=''">
+				,regular_donation_refund_status   = #{donationRefundStatus}
+			</if>
+			<if test="donationRefundApprovalDate != null and donationRefundApprovalDate !=''">
+				,regular_donation_refund_approval_date   = #{donationRefundApprovalDate}
+			</if>
+			<if test="donationRefundRejectionDate != null and donationRefundRejectionDate !=''">
+				,regular_donation_refund_rejection_date  = #{donationRefundRejectionDate}
+			</if>
+			<if test="donationRefundRegId != null and donationRefundRegId !=''">
+				,regular_donation_refund_reg_id  = #{donationRefundRegId}
+			</if>
+			<if test="donationRefundRegDate != null and donationRefundRegDate !=''">
+				,regular_donation_refund_reg_date  = #{donationRefundRegDate}
+			</if>
+				,regular_donation_refund_update_id  = #{donationRefundUpdateId}
+				,regular_donation_refund_update_date  = NOW()
+		</set>
+		WHERE
+			regular_donation_payment_refund_code = #{donationRefundCode};
+	</update>
+	
+	<delete id="removeDonationRefund" parameterType="DonationRefund">
+		/* 정기기부 환불 삭제 */
+		DELETE
+		FROM
+		 	regular_donation_payment_refund 
+		WHERE 
+			regular_donation_payment_refund_code = #{donationRefundCode};		
+	</delete>
 </mapper>

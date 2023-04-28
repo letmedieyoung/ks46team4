@@ -13,111 +13,123 @@
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">정기기부 환불 수정</h1>
-		<p class="mb-4">
-			정기기부 환불 수정 - 초안 23-04-21 AM 12:17(LBR)<br> 조회한 환불 목록에서 수정페이지로 이동<br>
-			은행, 계좌번호, 사유를 잘못 적거나/ 승인, 반려 처리를 잘못한 경우 수정<br> 전체 환불 조회 -> 해당 환불
-			수정
-		</p>
-
-		<div class="card shadow mb-4">
+<div class="card mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">정기기부 환불 수정</h6>
+				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 환불 수정</h5>
 			</div>
 			<div class="card-body">
-				<br>
-				<!-- 회원 아이디(자동)|해당 결제 건(자동)|요청 일자(자동-폼 작성시점)|금액|은행명|환불 계좌|요청 사유|처리 상태|승인 일자|반려 일자 -->
-
-				<!-- 등록 테이블 -->
-				<form>
-					<div class="table-responsive">
-						<table class="table table-bordered search-table"
-							id="searchdataTable" width="100%" cellspacing="0">
-							<tbody>
-								<tr>
-									<th class="bg-gray-100">회원 아이디</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
+				<div class="card-body">
+				<div class="table-responsive">
+					<form id="modifyDonationRefundForm" th:action="@{/admin/donation/donationRefund_modify}" method="post">
+						<table th:object="${donationRefundInfo}" class="table table-bordered freg" id="modifyDonationRefund" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th>코드</th>
+										<td><input type="text" id="donationRefundCode"
+											th:value="*{donationRefundCode}"
+											name="donationRefundCode" style="width: 400px;" readonly="readonly" /></td>
+									</tr>
+									<tr>
+										<th>회원 아이디</th>
+										<td><input type="text" id="donationRefundUserId"
+											th:value="*{donationRefundUserId}"
+											name="donationRefundUserId" style="width: 400px;" readonly="readonly" /></td>
+									</tr>
+									<tr>
+										<th>회원 정기기부 결제 코드</th>
+										<td><input type="text" id="donationPayCode"
+											th:value="*{donationPayCode}"
+											name="donationPayCode" style="width: 400px;" readonly="readonly" /></td>
+									</tr>
+									<tr>
+										<th>환불 요청 일자</th>
+										<td><input type="text" id="donationRefundRequestDate"
+											th:value="*{donationRefundRequestDate}"
+											name="donationRefundRequestDate" style="width: 400px;"readonly="readonly" /></td>
+									</tr>
+									<tr>
+										<th>환불 요청 금액</th>
+										<td><input type="number" id="donationRefundRequestAmount"
+											th:value="*{donationRefundRequestAmount}"
+											name="donationRefundRequestAmount" style="width: 400px;"/><span>원</span></td>
+									</tr>
+									<tr>
+										<th>환불 요청 사유</th>
+										<td><input type="text" id="donationRefundRequestReason"
+											th:value="*{donationRefundRequestReason}"
+											name="donationRefundRequestReason" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>환불 계좌 은행명</th>
+										<td><input type="text" id="donationRefundBank"
+											th:value="*{donationRefundBank}"
+											name="donationRefundBank" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>환불 계좌번호</th>
+										<td><input type="text" id="donationRefundAccount"
+											th:value="*{donationRefundAccount}"
+											name="donationRefundAccount" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>요청 처리</th>
+										<td><select>
+												<option value="option1">:: 요청 처리 분류 ::</option>
+												<option value="option2">승인</option>
+												<option value="option2">반려</option>
+										</select></td>
+									</tr>
+									<tr>
+										<th>승인 일자</th>
+										<td><input type="date" id="donationRefundApprovalDate"
+											th:value="*{donationRefundApprovalDate}"
+											name="donationRefundApprovalDate" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>반려 일자</th>
+										<td><input type="date" id="donationRefundRejectionDate"
+											th:value="*{donationRefundRejectionDate}"
+											name="donationRefundRejectionDate" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>등록자</th>
+										<td><input type="text" id="donationRefundRegId"
+											th:value="*{donationRefundRegId}"
+											name="donationRefundRegId" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>등록일자</th>
+										<td><input type="date" id="donationRefundRegDate"
+											th:value="*{donationRefundRegDate}"
+											name="donationRefundRegDate" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>수정자</th>
+										<td><input type="text" id="donationRefundUpdateId"
+											th:value="*{donationRefundUpdateId}"
+											name="donationRefundUpdateId" style="width: 400px;"/></td>
+									</tr>
+									<tr>
+										<th>수정일자</th>
+										<td><input type="date" id="donationRefundUpdateDate"
+											th:value="*{donationRefundUpdateDate}"
+											name="donationRefundUpdateDate" style="width: 400px;" readonly="readonly"/></td>
+									</tr>
+									<tr>
+									<td colspan="2"> <div style="display: flex; justify-content: center;">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn"
+											onclick="location.href='/admin/donation/donationRefund_list'">입력취소</button> </div>
+									</td>
 								</tr>
-								<tr>
-									<th class="bg-gray-100">요청 일자</th>
-									<td><input type="date"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">해당<br>결제 건
-									</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">금액</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
-								</tr>
-
-								<tr>
-									<th class="bg-gray-100">은행명</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">환불 계좌</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-
-								<tr>
-									<th class="bg-gray-100">요청 사유</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-insert"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">요청 처리</th>
-									<td><select
-										class="dropdown btn btn-primary dropdown-toggle"
-										id="dropdownMenuButton" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 요청 처리 분류 ::</option>
-											<option value="option2">승인</option>
-											<option value="option2">반려</option>
-									</select></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">승인 일자</th>
-									<td><input type="date"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">반려 일자</th>
-									<td><input type="date"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</form>
 					</div>
-				</form>
-				<div class="mx-auto" style="width: 230px;">
-					<button type="submit" class="btn btn-primary">
-						<span class="text text-gray-100">수정 완료</span>
-					</button>
-					<button type="reset" class="btn btn-primary"
-						style="margin-left: 10px;">
-						<span class="text text-gray-100">취소</span>
-					</button>
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 	<!-- container-fluid -->
 </th:block>
 
