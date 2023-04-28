@@ -212,24 +212,7 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		return "admin/user/modifyUser";
 	}
 	
-	@PostMapping("/addUser")
-	public String addUser(User user) {
-		log.info("화면에서 전달받은 데이터 : {}", user);
-		userService.addUser(user);
-		return "redirect:/admin/user/userList";
-	}
-	
-	@PostMapping("/idCheck")
-	@ResponseBody
-	public boolean idCheck(@RequestParam(name="userId") String userId) {
-		boolean checked = true;
-		//아이디 중복체크
-		checked = userMapper.idCheck(userId);
-		
-		return checked;
-	}
-	
-	
+
 	@GetMapping("/addUser")
 	public String addUser(Model model) {
 		
@@ -242,6 +225,25 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		
 		return "admin/user/addUser";
 	}
+	
+	@PostMapping("/idCheck")
+	@ResponseBody
+	public boolean idCheck(@RequestParam(name="userId") String userId) {
+		boolean checked = true;
+		//아이디 중복체크
+		checked = userMapper.idCheck(userId);	//중복된 값이 없고 사용가능하면 true
+		
+		return checked;
+	}
+	
+	@PostMapping("/addUser")
+	public String addUser(User user) {
+		log.info("화면에서 전달받은 데이터 : {}", user);
+		userService.addUser(user);
+		return "redirect:/admin/user/userList";
+	}
+	
+
 	
 	@GetMapping("/userList")
 	public String getUserList( Model model
