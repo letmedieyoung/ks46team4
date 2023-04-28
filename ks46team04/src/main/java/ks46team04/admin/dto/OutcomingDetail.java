@@ -11,8 +11,8 @@ public class OutcomingDetail {
 	private String foundationCode;
 	private String outcomingDetailRegId;
 	private String outcomingDetailRegDate;
-	private String outcomingDetailUpdateId;
-	private String outcomingDetailUpdateDate;
+	private String outcomingDetailUpdId;
+	private String outcomingDetailUpdDate;
 	public String getOutcomingDetailCode() {
 		return outcomingDetailCode;
 	}
@@ -67,17 +67,17 @@ public class OutcomingDetail {
 	public void setOutcomingDetailRegDate(String outcomingDetailRegDate) {
 		this.outcomingDetailRegDate = outcomingDetailRegDate;
 	}
-	public String getOutcomingDetailUpdateId() {
-		return outcomingDetailUpdateId;
+	public String getOutcomingDetailUpdId() {
+		return outcomingDetailUpdId;
 	}
-	public void setOutcomingDetailUpdateId(String outcomingDetailUpdateId) {
-		this.outcomingDetailUpdateId = outcomingDetailUpdateId;
+	public void setOutcomingDetailUpdId(String outcomingDetailUpdId) {
+		this.outcomingDetailUpdId = outcomingDetailUpdId;
 	}
-	public String getOutcomingDetailUpdateDate() {
-		return outcomingDetailUpdateDate;
+	public String getOutcomingDetailUpdDate() {
+		return outcomingDetailUpdDate;
 	}
-	public void setOutcomingDetailUpdateDate(String outcomingDetailUpdateDate) {
-		this.outcomingDetailUpdateDate = outcomingDetailUpdateDate;
+	public void setOutcomingDetailUpdDate(String outcomingDetailUpdDate) {
+		this.outcomingDetailUpdDate = outcomingDetailUpdDate;
 	}
 	@Override
 	public String toString() {
@@ -85,7 +85,8 @@ public class OutcomingDetail {
 				+ ", outcomingGoods=" + outcomingGoods + ", outcomingQuantity=" + outcomingQuantity + ", outcomingDate="
 				+ outcomingDate + ", outcomingId=" + outcomingId + ", foundationCode=" + foundationCode
 				+ ", outcomingDetailRegId=" + outcomingDetailRegId + ", outcomingDetailRegDate="
-				+ outcomingDetailRegDate + ", outcomingDetailUpdateId=" + outcomingDetailUpdateId
-				+ ", outcomingDetailUpdateDate=" + outcomingDetailUpdateDate + "]";
+				+ outcomingDetailRegDate + ", outcomingDetailUpdId=" + outcomingDetailUpdId
+				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
 	}
+	
 }

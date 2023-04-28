@@ -200,14 +200,8 @@
 					<div align="center">
 						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">상세검색</span>
+							<span class="text">검색</span>
 						</button>
-						<a href="/admin/foundation/add_foundation_request">
-							<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-								<span class="text">요청사항등록</span>
-							</button>
-						</a>
 					</div>
 				</div>
 			</div>
@@ -217,10 +211,21 @@
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<div class="table-responsive overflow-x">
+					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+						<span class="text">선택삭제</span>
+					</button>
+					<a href="/admin/foundation/add_foundation_request">
+						<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
+							<span class="text">요청사항등록</span>
+						</button>
+					</a>
+					<br><br>
 					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
 						cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
+								<th><input type="checkbox" id="allCheck"></th>
+								<th>No</th>
 								<th>재단요청코드</th>
 								<th>재단코드</th>
 								<th>재단명</th>
@@ -229,15 +234,15 @@
 								<th>초기 요청 수량</th>
 								<th>최종 요청 수량</th>
 								<th>배송 요청일</th>
-								<th>등록/수정자</th>
 								<th>등록/수정일</th>
 								<th>진행현황</th>
 								<th>수정</th>
-								<th>삭제</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:unless="${foundationRequestList == null}" th:each=" l : ${foundationRequestList}">
+								<td><input class="checks" type="checkbox" th:value="${l.foundationRequestCode}"></td>
+								<th th:text="${l.listNo}"></th>
 								<td th:text="${l.foundationRequestCode}"></td>
 								<td th:text="${l.foundationCode}"></td>
 								<td th:text="${l.foundationName}"></td>
@@ -246,26 +251,18 @@
 								<td th:text="${l.initialGoodsAmount}"></td>
 								<td th:text="${l.finalGoodsAmount}"></td>
 								<td th:text="${l.deliveryRequestDate}"></td>
-								<td th:if="${l.requestUpdateId == null}" th:text="${l.requestRegId}"></td>
-								<td th:unless="|${l.requestUpdateId == null}" th:text="${l.requestUpdateId}(수정)|"></td>
-								<td th:if="${l.requestUpdateDate == null}" th:text="${l.requestRegDate}"></td>
-								<td th:unless="|${l.requestUpdateDate == null}" th:text="${l.requestUpdateDate}(수정)|"></td>
+								<td th:if="${l.requestUpdDate == null}" th:text="${l.requestRegDate}"></td>
+								<td th:unless="|${l.requestUpdDate == null}" th:text="${l.requestUpdDate}(수정)|"></td>
 								<td th:text="${l.requestProgressStatus}"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
+										th:href="@{/admin/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
 										<span class="text">수정</span>
-									</a>
-								</td>
-								<td>
-									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/foundation/remove_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
-										<span class="text">삭제</span>
 									</a>
 								</td>
 							</tr>
 							<tr th:if="${foundationRequestList == null}">
-								<td colspan="13">등록된 재단 요청사항 정보가 없습니다.</td>
+								<td colspan="12">등록된 재단 요청사항 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -291,10 +288,71 @@
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		$('#allCheck').click(function () {
+			$('.checks').prop('checked', $(this).prop('checked'));
+		});
+		$('.checks').click(function () {
+			let length = $('.checks').length;
+			let checkedLength = $('.checks:checked').length;
+			if (length == checkedLength) {
+				$('#allCheck').prop('checked', true);
+			} else {
+				$('#allCheck').prop('checked', false);
+			}
+		});
+		/**
+		 * 체크박스 선택 후 deleteBtn 버튼
+		 */
+		$('#delCheckBtn').click(function () {
+			
+			const checkedArr = $('.checks:checked');
+			console.log(checkedArr);
+			
+			let length = checkedArr.length;
+			
+			const valueArr = [];
+			let msg = '삭제하시겠습니까?';
+			
+			if (length == 0) {
+				alert("선택된 항목이 없습니다.");
+			}
+			else {
+				let result = confirm(msg);
+				
+				if(result == true){
+					
+					$(checkedArr).each(function() {
+						valueArr.push($(this).attr('value'));
+			        });
+					console.log(valueArr);
+					
+					let request = $.ajax({
+						url: '/admin/foundation/remove_foundation_request',
+						method: 'POST',
+						data: { valueArr : valueArr },
+						dataType: 'json'
+					});
+					
+					request.done(function(result){
+						if(result){
+							alert('삭제되었습니다.');
+							location.reload();
+						}
+					});
+					
+					request.fail(function(jqXHR, textStatus){
+						alert(`Request failed: ${textStatus}`);
+					});
+				}else{
+					location.reload();
+				}
+			}
+		});
+	</script>
 </th:block>
 
 </html>

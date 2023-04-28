@@ -26,32 +26,37 @@ public class StockService {
 		this.stockMapper = stockMapper;
 	}
 	
+	
+	
+	
+
+	
+	
+	
 	/**
-	 * 상품 재고 조회
+	 * 상품 비정상재고 조회
 	 * @return
 	 */
-	public List<Stock> getStockList(){
-		List<Stock> stockList = stockMapper.getStockList();
-		return stockList;
+	public List<UnusualStock> getUnsualStockList(){
+		List<UnusualStock> unusualStockList = stockMapper.getUnusualStockList();
+		return unusualStockList;
 	}
 	
 	/**
-	 * 상품 입출고 조회
+	 * 상품 출고 상세정보 조회
 	 * @return
 	 */
-	public List<InOutcoming> getInOutcomingList(){
-		List<InOutcoming> inOutcomingList = stockMapper.getInOutcomingList();
-		return inOutcomingList;
+	public List<OutcomingDetail> getOutcomingDetailList(){
+		List<OutcomingDetail> outcomingDetailList = stockMapper.getOutcomingDetailList();
+		return outcomingDetailList;
 	}
 	
 	/**
-	 * 상품 입출고 등록
+	 * 상품 입출고 수정
 	 * @param inOutcoming
-	 * @return
 	 */
-	public int addInOutcoming(InOutcoming inOutcoming) {
-		int result = stockMapper.addInOutcoming(inOutcoming);
-		return result;
+	public void modifyInOutcoming(InOutcoming inOutcoming) {
+		stockMapper.modifyInOutcoming(inOutcoming);
 	}
 	
 	/**
@@ -65,28 +70,31 @@ public class StockService {
 	}
 	
 	/**
-	 * 상품 입출고 수정
+	 * 상품 입출고 등록
 	 * @param inOutcoming
+	 * @return
 	 */
-	public void modifyInOutcoming(InOutcoming inOutcoming) {
-		stockMapper.modifyInOutcoming(inOutcoming);
+	public int addInOutcoming(InOutcoming inOutcoming) {
+		int result = stockMapper.addInOutcoming(inOutcoming);
+		return result;
+	}
+
+	/**
+	 * 상품 입출고 조회
+	 * @return
+	 */
+	public List<InOutcoming> getInOutcomingList(){
+		List<InOutcoming> inOutcomingList = stockMapper.getInOutcomingList();
+		return inOutcomingList;
 	}
 	
 	/**
-	 * 상품 출고 상세정보 조회
+	 * 상품 재고 조회
 	 * @return
 	 */
-	public List<OutcomingDetail> getOutcomingDetailList(){
-		List<OutcomingDetail> outcomingDetailList = stockMapper.getOutcomingDetailList();
-		return outcomingDetailList;
+	public List<Stock> getStockList(){
+		List<Stock> stockList = stockMapper.getStockList();
+		return stockList;
 	}
 	
-	/**
-	 * 상품 비정상재고 조회
-	 * @return
-	 */
-	public List<UnusualStock> getUnsualStockList(){
-		List<UnusualStock> unusualStockList = stockMapper.getUnusualStockList();
-		return unusualStockList;
-	}
 }

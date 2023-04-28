@@ -158,7 +158,6 @@
 								<th>입고/출고수량</th>
 								<th>입/출고 분류</th>
 								<th>입고/출고일자</th>
-								<th>등록/수정자</th>
 								<th>등록/수정일</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -172,10 +171,8 @@
 								<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
 								<td th:unless="${l.inOutcomingType == 'incoming'}">출고</td>
 								<td th:text="${l.inOutcomingDate}"></td>
-								<td th:if="${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingRegId}"></td>
-								<td th:unless="|${l.inOutcomingUpdateId == null}" th:text="${l.inOutcomingUpdateId}(수정)|"></td>
-								<td th:if="${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingRegDate}"></td>
-								<td th:unless="|${l.inOutcomingUpdateDate == null}" th:text="${l.inOutcomingUpdateDate}(수정)|"></td>
+								<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
+								<td th:unless="|${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
@@ -190,7 +187,7 @@
 								</td>
 							</tr>
 							<tr th:if="${inOutcomingList == null}">
-								<td colspan="9">등록된 상품 재고 정보가 없습니다.</td>
+								<td colspan="8">등록된 상품 재고 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

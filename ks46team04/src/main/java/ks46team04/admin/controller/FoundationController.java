@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.FoundationRequest;
@@ -19,67 +22,88 @@ public class FoundationController {
 
 	private static final Logger log = LoggerFactory.getLogger(FoundationController.class);
 
-	private final FoundationService founationService;
+	private final FoundationService foundationService;
 	
 	public FoundationController(FoundationService foundationService) {
-		this.founationService = foundationService;
+		this.foundationService = foundationService;
+	}
+	
+	
+	
+	/**
+	 * 재단 요청사항 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/remove_foundation_request")
+	@ResponseBody
+	public List<String> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
+		
+		log.info("valueArr: {}", valueArr);
+		foundationService.removeFoundationRequest(valueArr);
+		
+		return valueArr;
 	}
 	
 	/**
-	 * 재단 정보 조회
-	 * @param model
+	 * 재단 요청사항 수정 @PostMapping
+	 * @param foundationRequest
 	 * @return
 	 */
-	@GetMapping("/foundation_list")
-	public String getFoundationList(Model model) {
+	@PostMapping("/modify_foundation_request")
+	public String modifyFoundationRequest(FoundationRequest foundationRequest) {
 		
-		List<Foundation> foundationList = founationService.getFoundationList();
-
-		model.addAttribute("title", "재단 목록");
-		model.addAttribute("foundationList", foundationList);
+		log.info("foundationRequest: {}", foundationRequest);
 		
-		return "admin/foundation/foundation_list";
+		foundationService.modifyFoundationRequest(foundationRequest);;
+		
+		return "redirect:/admin/foundation/foundation_request_list";
 	}
 	
 	/**
-	 * 재단 정보 등록
+	 * 재단 요청사항 수정 @GetMapping
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/add_foundation")
-	public String addFoundation(Model model) {
+	@GetMapping("/modify_foundation_request")
+	public String modifyFoundationRequest(Model model, @RequestParam(name="foundationRequestCode") String foundationRequestCode){
 		
-		model.addAttribute("title", "재단 등록");
+		FoundationRequest foundationRequestInfo = foundationService.getFoundationRequestInfoByCode(foundationRequestCode);
+		log.info("foundationRequestInfo: {}", foundationRequestInfo);
 		
-		return "admin/foundation/add_foundation";
+		model.addAttribute("title", "재단 요청사항 수정");
+		model.addAttribute("foundationRequestInfo", foundationRequestInfo);
+		
+		return "admin/foundation/modify_foundation_request";
 	}
 	
 	/**
-	 * 재단 정보 수정
-	 * @param model
+	 * 재단 요청사항 등록 @PostMapping
+	 * @param foundationRequest
 	 * @return
 	 */
-	@GetMapping("/modify_foundation")
-	public String modifyFoundation(Model model) {
+	@PostMapping("/add_foundation_request")
+	public String addFoundationRequest(FoundationRequest foundationRequest) {
 		
-		model.addAttribute("title", "재단 수정");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		log.info("foundationRequest: {}", foundationRequest);
+		foundationService.addFoundationRequest(foundationRequest);
 		
-		return "admin/foundation/modify_foundation";
+		return "redirect:/admin/foundation/foundation_request_list";
 	}
 	
 	/**
-	 * 재단 정보 삭제
+	 * 재단 요청사항 등록 @GetMapping
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/remove_foundation")
-	public String removeFoundation(Model model) {
+	@GetMapping("/add_foundation_request")
+	public String addFoundationRequest(Model model) {
 		
-		model.addAttribute("title", "재단 삭제");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		log.info("model: {}", model);
 		
-		return "admin/foundation/remove_foundation";
+		model.addAttribute("title", "재단 요청사항 등록");
+		
+		return "admin/foundation/add_foundation_request";
 	}
 	
 	/**
@@ -90,7 +114,9 @@ public class FoundationController {
 	@GetMapping("/foundation_request_list")
 	public String getFoundationRequestList(Model model) {
 		
-		List<FoundationRequest> foundationRequestList = founationService.getFoundationRequestlist();
+		List<FoundationRequest> foundationRequestList = foundationService.getFoundationRequestlist();
+		
+		log.info("foundationRequestList: {}", foundationRequestList);
 		
 		model.addAttribute("title", "재단 요청사항 조회");
 		model.addAttribute("foundationRequestList", foundationRequestList);
@@ -99,41 +125,97 @@ public class FoundationController {
 	}
 	
 	/**
-	 * 재단 요청사항 등록
-	 * @param model
+	 * 재단 삭제
+	 * @param valueArr
 	 * @return
 	 */
-	@GetMapping("/add_foundation_request")
-	public String addFoundationRequest(Model model) {
+	@PostMapping("/remove_foundation")
+	@ResponseBody
+	public List<String> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
 		
-		model.addAttribute("title", "재단 요청사항 등록");
+		log.info("valueArr: {}", valueArr);
+		foundationService.removeFoundation(valueArr);
 		
-		return "admin/foundation/add_foundation_request";
+		return valueArr;
 	}
 	
 	/**
-	 * 재단 요청사항 수정
-	 * @param model
+	 * 재단 수정 @PostMapping
+	 * @param foundation
 	 * @return
 	 */
-	@GetMapping("/modify_foundation_request")
-	public String modifyFoundationRequest(Model model) {
+	@PostMapping("/modify_foundation")
+	public String modifyFoundation(Foundation foundation) {
 		
-		model.addAttribute("title", "재단 요청사항 수정");
+		log.info("foundation: {}", foundation);
 		
-		return "admin/foundation/modify_foundation_request";
+		foundationService.modifyFoundation(foundation);;
+		
+		return "redirect:/admin/foundation/foundation_list";
 	}
 	
 	/**
-	 * 재단 요청사항 삭제
+	 * 재단 수정 @GetMapping
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/remove_foundation_request")
-	public String removeFoundationRequest(Model model) {
+	@GetMapping("/modify_foundation")
+	public String modifyFoundation(Model model, @RequestParam(name="foundationCode") String foundationCode) {
 		
-		model.addAttribute("title", "재단 요청사항 삭제");
+		Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
 		
-		return "admin/foundation/remove_foundation_request";
+		log.info("foundationInfo: {}", foundationInfo);
+		
+		model.addAttribute("title", "재단 수정");
+		model.addAttribute("foundationInfo", foundationInfo);
+		
+		return "admin/foundation/modify_foundation";
 	}
+	
+	/**
+	 * 재단 등록 @PostMapping
+	 * @param foundation
+	 * @return
+	 */
+	@PostMapping("/add_foundation")
+	public String addFoundation(Foundation foundation) {
+		
+		log.info("foundation: {}", foundation);
+		foundationService.addFoundation(foundation);
+		
+		return "redirect:/admin/foundation/foundation_list";
+	}
+	
+	/**
+	 * 재단 등록 @GetMapping
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/add_foundation")
+	public String addFoundation(Model model) {
+		
+		log.info("model: {}", model);
+		
+		model.addAttribute("title", "재단 등록");
+		
+		return "admin/foundation/add_foundation";
+	}
+	
+	/**
+	 * 재단 목록 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/foundation_list")
+	public String getFoundationList(Model model) {
+		
+		List<Foundation> foundationList = foundationService.getFoundationList();
+		log.info("foundationList: {}", foundationList);
+
+		model.addAttribute("title", "재단 목록");
+		model.addAttribute("foundationList", foundationList);
+		
+		return "admin/foundation/foundation_list";
+	}
+	
 }
