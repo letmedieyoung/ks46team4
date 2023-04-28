@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="ks46team04.common.mapper.CommonMapper">
+ 	
+ 	<select id="getPrimaryKey" parameterType="string" resultType="string">
+ 		/* 자동증가 코드 */
+ 		SELECT 
+			(
+			  CASE
+			    WHEN COUNT(*) = 0 THEN CONCAT(#{tableName},1) 
+			    ELSE
+			      CONCAT(#{tableName},max(cast(SUBSTRING_INDEX(${columnName}, #{tableName}, -1) AS UNSIGNED))+1)
+			  END
+			  ) as newGoodsCode
+		FROM
+			${tableName}; 
+				
+ 	</select>
+ 	
+ </mapper>
