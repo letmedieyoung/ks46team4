@@ -42,12 +42,6 @@
 							width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th>회원 아이디</th>
-									<td><input type="text" id="donationName"
-										name="donationName" style="width: 400px;"
-										placeholder="회원아이디를 입력해주세요." /></td>
-								</tr>
-								<tr>
 									<th>구독 시작일</th>
 									<td>
 										<form>
@@ -61,11 +55,11 @@
 									</td>
 								</tr>
 								<tr>
-									<td colspan="3">
-										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button>
+									<td colspan="3">  <div style="display: flex; justify-content: center;">
+										<button type="button" class="btn btn-primary" id="addBtn" style="display: inline-block;"
+											onclick="addBtn()">등록</button>  &nbsp;
 										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationSub_list'">입력취소</button>
+											onclick="location.href='/admin/donation/donationSub_list'">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>

@@ -76,4 +76,16 @@ public interface DonationMapper {
 
 	/* 정기기부 월별 결제 합계 조회 */
 	public List<DonationMonthPay> getDonationMonthPay();
+	
+	/* 정기기부 월별 결제 합계 등록 */
+	public int addDonationMonthPay(DonationMonthPay donationMonthPay);
+	
+	/* 특정 정기기부 월별 결제 합계 조회 */
+ 	public DonationMonthPay getDonationMonthPayInfoByCode(String donationMonthPayCode);
+ 	
+	/* 정기기부 월별 결제 합계 수정 */
+	public int modifyDonationMonthPay(DonationMonthPay DonationMonthPay);
+	
+	/* 정기기부 월별 결제 합계 삭제 */
+	public int removeDonationMonthPay(DonationMonthPay DonationMonthPay);
 }

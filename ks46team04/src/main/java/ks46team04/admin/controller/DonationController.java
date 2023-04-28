@@ -310,6 +310,58 @@ public class DonationController {
 		return "admin/donation/donationMonthPay_list";
 	}
 	
+	/*
+	 * 정기기부 월별 결제 합계 등록
+	 */
+	@PostMapping("/donationMonthPay_add")
+	public String addDonationMonthPay(DonationMonthPay donationMonthPay) {
+		
+	log.info("화면에서 전달받은 데이터 : {}", donationMonthPay);
+	
+	donationService.addDonationMonthPay(donationMonthPay);
+	
+	return "redirect:/admin/donation/donationMonthPay_list";
+	
+		}
+	
+	@GetMapping("/donationMonthPay_add")
+	public String addDonationMonthPay(Model model) {
+		
+		model.addAttribute("title", "정기기부 월별 결제 합계 등록");
+		
+		return "/admin/donation/donationMonthPay_add";
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 수정
+	 */
+	@PostMapping("/donationMonthPay_modify")
+	public String modifyDonationMonthPay(DonationMonthPay donationMonthPay) {
+		
+		donationService.modifyDonationMonthPay(donationMonthPay);
+		
+		return "redirect:/admin/donation/donationMonthPay_list";
+	}
+	@GetMapping("/donationMonthPay_modify")
+	public String modifyDonationMonthPay(Model model, @RequestParam(name="donationMonthPayCode") String donationMonthPayCode){
+		
+		DonationMonthPay donationMonthPayInfo = donationService.getDonationMonthPayInfoByCode(donationMonthPayCode);
+		log.info("donationMonthPayInfo: {}", donationMonthPayInfo);
+		model.addAttribute("title", "정기기부 월별 결제 합계 수정");
+		model.addAttribute("donationMonthPayInfo", donationMonthPayInfo);
+		
+		return "admin/donation/donationMonthPay_modify";
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 삭제
+	 * */
+	@GetMapping("/donationMonthPay_remove")
+	public String removeDonationMonthPay(DonationMonthPay donationMonthPay) {
+		donationService.removeDonationMonthPay(donationMonthPay);
+		return "redirect:/admin/donation/donationMonthPay_list";
+	}
+	
 	/*LBR*/
 	@GetMapping("/donationRefund_list")
 	public String getDonationrefundList() {
