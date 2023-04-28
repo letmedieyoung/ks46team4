@@ -24,23 +24,71 @@ public class FoundationService {
 		this.foundationMapper = foundationMapper;
 	}
 	
+	
+	
 	/**
-	 * 재단 조회
-	 * @return List<Foundation>
+	 * 재단 요청사항 삭제
+	 * @param valueArr
 	 */
-	public List<Foundation> getFoundationList(){
-		List<Foundation> foundationList = foundationMapper.getFoundationList();
-		return foundationList;
+	public void removeFoundationRequest(List<String> valueArr) {
+		for(int i=0; i<valueArr.size(); i++) {
+			foundationMapper.removeFoundationRequest(valueArr.get(i));
+		}
 	}
 	
 	/**
-	 * 재단 등록
-	 * @param foundation
+	 * 재단 요청사항 수정
+	 * @param foundationRequest
+	 */
+	public void modifyFoundationRequest(FoundationRequest foundationRequest) {
+		foundationMapper.modifyFoundationRequest(foundationRequest);
+	}
+	
+	/**
+	 * 특정 재단 요청사항 조회
+	 * @param foundationRequestCode
 	 * @return
 	 */
-	public int addFoundation(Foundation foundation) {
-		int result = foundationMapper.addFoundation(foundation);
+	public FoundationRequest getFoundationRequestInfoByCode(String foundationRequestCode) {
+		FoundationRequest foundationRequestInfo = foundationMapper.getFoundationRequestInfoByCode(foundationRequestCode);
+		return foundationRequestInfo;
+	}
+	
+	/**]
+	 * 재단 요청사항 등록
+	 * @param foundationRequest
+	 * @return
+	 */
+	public int addFoundationRequest(FoundationRequest foundationRequest) {
+		int result = foundationMapper.addFoundationRequest(foundationRequest);
 		return result;
+	}
+	
+	/**
+	 * 재단 요청사항 조회
+	 * @return
+	 */
+	public List<FoundationRequest> getFoundationRequestlist(){
+		List<FoundationRequest> foundationRequestList = foundationMapper.getFoundationRequestList();
+		return foundationRequestList;
+	}
+	
+	/**
+	 * 재단 삭제
+	 * @param valueArr
+	 */
+	public void removeFoundation(List<String> valueArr) {
+		for(int i=0; i<valueArr.size(); i++) {
+			foundationMapper.removeFoundation(valueArr.get(i));
+		}
+	}
+	
+	/**
+	 * 재단 수정
+	 * @param foundation
+	 */
+	public void modifyFoundation(Foundation foundation) {
+		foundationMapper.modifyFoundation(foundation);
 	}
 	
 	/**
@@ -55,48 +103,22 @@ public class FoundationService {
 	}
 	
 	/**
-	 * 재단 수정
+	 * 재단 등록
 	 * @param foundation
-	 */
-	public void modifyFoundation(Foundation foundation) {
-		foundationMapper.modifyFoundation(foundation);
-	}
-	
-	/**
-	 * 재단 요청사항 조회
 	 * @return
 	 */
-	public List<FoundationRequest> getFoundationRequestlist(){
-		List<FoundationRequest> foundationRequestList = foundationMapper.getFoundationRequestList();
-		return foundationRequestList;
-	}
-	
-	/**]
-	 * 재단 요청사항 등록
-	 * @param foundationRequest
-	 * @return
-	 */
-	public int addFoundationRequest(FoundationRequest foundationRequest) {
-		int result = foundationMapper.addFoundationRequest(foundationRequest);
+	public int addFoundation(Foundation foundation) {
+		int result = foundationMapper.addFoundation(foundation);
 		return result;
 	}
 	
 	/**
-	 * 특정 재단 요청사항 조회
-	 * @param foundationRequestCode
-	 * @return
+	 * 재단 조회
+	 * @return List<Foundation>
 	 */
-	public FoundationRequest getFoundationRequestInfoByCode(String foundationRequestCode) {
-		FoundationRequest foundationRequestInfo = foundationMapper.getFoundationRequestInfoByCode(foundationRequestCode);
-		return foundationRequestInfo;
-	}
-	
-	/**
-	 * 재단 요청사항 수정
-	 * @param foundationRequest
-	 */
-	public void modifyFoundationRequest(FoundationRequest foundationRequest) {
-		foundationMapper.modifyFoundationRequest(foundationRequest);
+	public List<Foundation> getFoundationList(){
+		List<Foundation> foundationList = foundationMapper.getFoundationList();
+		return foundationList;
 	}
 	
 }

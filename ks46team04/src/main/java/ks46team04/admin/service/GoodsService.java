@@ -28,8 +28,10 @@ public class GoodsService {
 	 * 상품 삭제
 	 * @param goodsCode
 	 */
-	public void removeGoods(String goodsCode) {
-		goodsMapper.removeGoodsByGoodsCode(goodsCode);
+	public void removeGoods(List<String> valueArr) {
+		for(int i=0; i<valueArr.size(); i++) {
+			goodsMapper.removeGoods(valueArr.get(i));
+		}
 	}
 	
 	/**

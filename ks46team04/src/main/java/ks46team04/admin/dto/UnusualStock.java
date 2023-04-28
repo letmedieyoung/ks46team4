@@ -10,8 +10,8 @@ public class UnusualStock {
 	private String unusualStockReason;
 	private String unusualStockRegId;
 	private String unusualStockRegDate;
-	private String unusualStockUpdateId;
-	private String unusualStockUpdateDate;
+	private String unusualStockUpdId;
+	private String unusualStockUpdDate;
 	public String getUnusualStockCode() {
 		return unusualStockCode;
 	}
@@ -60,25 +60,26 @@ public class UnusualStock {
 	public void setUnusualStockRegDate(String unusualStockRegDate) {
 		this.unusualStockRegDate = unusualStockRegDate;
 	}
-	public String getUnusualStockUpdateId() {
-		return unusualStockUpdateId;
+	public String getUnusualStockUpdId() {
+		return unusualStockUpdId;
 	}
-	public void setUnusualStockUpdateId(String unusualStockUpdateId) {
-		this.unusualStockUpdateId = unusualStockUpdateId;
+	public void setUnusualStockUpdId(String unusualStockUpdId) {
+		this.unusualStockUpdId = unusualStockUpdId;
 	}
-	public String getUnusualStockUpdateDate() {
-		return unusualStockUpdateDate;
+	public String getUnusualStockUpdDate() {
+		return unusualStockUpdDate;
 	}
-	public void setUnusualStockUpdateDate(String unusualStockUpdateDate) {
-		this.unusualStockUpdateDate = unusualStockUpdateDate;
+	public void setUnusualStockUpdDate(String unusualStockUpdDate) {
+		this.unusualStockUpdDate = unusualStockUpdDate;
 	}
 	@Override
 	public String toString() {
 		return "UnusualStock [unusualStockCode=" + unusualStockCode + ", goodsCode=" + goodsCode + ", goodsStockCode="
 				+ goodsStockCode + ", unusualStockQuantity=" + unusualStockQuantity + ", unusualStockDate="
 				+ unusualStockDate + ", unusualStockReason=" + unusualStockReason + ", unusualStockRegId="
-				+ unusualStockRegId + ", unusualStockRegDate=" + unusualStockRegDate + ", unusualStockUpdateId="
-				+ unusualStockUpdateId + ", unusualStockUpdateDate=" + unusualStockUpdateDate + "]";
+				+ unusualStockRegId + ", unusualStockRegDate=" + unusualStockRegDate + ", unusualStockUpdId="
+				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + "]";
 	}
+	
 	
 }

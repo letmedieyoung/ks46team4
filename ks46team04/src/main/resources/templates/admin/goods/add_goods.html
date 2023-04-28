@@ -47,7 +47,7 @@
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
 												&nbsp;
-												<button type="submit" id="overlapCheck" class="btn btn-primary btn-icon-split">
+												<button type="button" id="overlapCheck" class="btn btn-primary btn-icon-split">
 													<span class="text">중복확인</span>
 												</button>
 											</div>
@@ -140,7 +140,30 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script>
+		/**
+		 * overlapCheck 상세검색 버튼
+		 */
+		$('#overlapCheck').click(function(){
+			const goodsNameEle = $('#goodsName');
+			let goodsName = goodsNameEle.val();
+			console.log(goodsName);
+			
+			let request = $.ajax({
+				url: '/admin/goods/goodsNameCheck',
+				method: 'POST',
+				data: { 'goodsName' : goodsName },
+				dataType: 'json'
+			});
+			
+			request.done(function(){
+					alert('중복된 상품명입니다.');
+			});
+			
+			request.fail(function(jqXHR, textStatus){
+				alert(`Request failed: ${textStatus}`);
+			});
 		
+		});
 	</script>
 </th:block>
 

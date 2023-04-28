@@ -9,8 +9,8 @@ public class InOutcoming {
 	private String inOutcomingDate;
 	private String inOutcomingRegId;
 	private String inOutcomingRegDate;
-	private String inOutcomingUpdateId;
-	private String inOutcomingUpdateDate;
+	private String inOutcomingUpdId;
+	private String inOutcomingUpdDate;
 	public String getInOutcomingCode() {
 		return inOutcomingCode;
 	}
@@ -53,25 +53,23 @@ public class InOutcoming {
 	public void setInOutcomingRegDate(String inOutcomingRegDate) {
 		this.inOutcomingRegDate = inOutcomingRegDate;
 	}
-	public String getInOutcomingUpdateId() {
-		return inOutcomingUpdateId;
+	public String getInOutcomingUpdId() {
+		return inOutcomingUpdId;
 	}
-	public void setInOutcomingUpdateId(String inOutcomingUpdateId) {
-		this.inOutcomingUpdateId = inOutcomingUpdateId;
+	public void setInOutcomingUpdId(String inOutcomingUpdId) {
+		this.inOutcomingUpdId = inOutcomingUpdId;
 	}
-	public String getInOutcomingUpdateDate() {
-		return inOutcomingUpdateDate;
+	public String getInOutcomingUpdDate() {
+		return inOutcomingUpdDate;
 	}
-	public void setInOutcomingUpdateDate(String inOutcomingUpdateDate) {
-		this.inOutcomingUpdateDate = inOutcomingUpdateDate;
+	public void setInOutcomingUpdDate(String inOutcomingUpdDate) {
+		this.inOutcomingUpdDate = inOutcomingUpdDate;
 	}
 	@Override
 	public String toString() {
 		return "InOutcoming [inOutcomingCode=" + inOutcomingCode + ", goodsCode=" + goodsCode + ", inOutcomingQuantity="
 				+ inOutcomingQuantity + ", inOutcomingType=" + inOutcomingType + ", inOutcomingDate=" + inOutcomingDate
 				+ ", inOutcomingRegId=" + inOutcomingRegId + ", inOutcomingRegDate=" + inOutcomingRegDate
-				+ ", inOutcomingUpdateId=" + inOutcomingUpdateId + ", inOutcomingUpdateDate=" + inOutcomingUpdateDate
-				+ "]";
+				+ ", inOutcomingUpdId=" + inOutcomingUpdId + ", inOutcomingUpdDate=" + inOutcomingUpdDate + "]";
 	}
-	
 }
