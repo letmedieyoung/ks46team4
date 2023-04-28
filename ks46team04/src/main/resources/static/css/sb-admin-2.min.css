@@ -10390,3 +10390,11 @@ form.user .form-control-user-plus {
 	font-style: italic;
 	padding-left: 20px;
 }
+
+.required-text-pw{
+	font-size: 0.7rem;
+	font-style: italic;
+	padding-left: 20px;
+}
+
+

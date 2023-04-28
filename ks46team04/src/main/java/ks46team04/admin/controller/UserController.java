@@ -219,7 +219,7 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		List<UserLevel> userLevelList = userService.getUserLevelList();
 		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
 		
-		model.addAttribute("title", "회원가입");
+		model.addAttribute("title", "Pilling Good - 회원 관리 - 회원 등록");
 		model.addAttribute("userLevelList", userLevelList);
 		model.addAttribute("activityStatusList", activityStatusList);
 		

@@ -77,7 +77,7 @@
 										<div class="form-row align-items-center search-schedule">
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
-												id="userId" name="userId" placeholder="영문+숫자 6~12자 이내" />
+												 id="userId" name="userId" placeholder="영문+숫자 6~12자 이내" />
 											&nbsp;
 											<button type="button" id="checkBtn"
 												class="btn btn-primary btn-icon-split">
@@ -117,23 +117,22 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="password"
-												class="form-control form-control-user-search search-input-gr"
-												id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내" />
-											<span class="required-text"></span>
+											<input type="password" 	class="form-control form-control-user-search search-input-gr"
+												 id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내" />
+											<span class="required-text-pw"></span>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100" ><label for="userPwcheck">비밀번호 확인</label></th>
+									<th class="bg-gray-100" >
+										<label for="userPwcheck">비밀번호 확인</label>
+										<span class="required-fields">*</span>
+									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">	
-											<input 
-												type="password"
-												class="form-control form-control-user-search search-input-gr"
-												id="userPwcheck" name="userPwcheck"
-												placeholder="비밀번호 확인" />
-											<span class="required-text"></span>
+											<input type="password" class="form-control form-control-user-search search-input-gr"
+												 id="userPwCheck" name="userPwCheck" placeholder="비밀번호 확인" />
+											<span class="required-text-pw"></span>
 										</div>
 									</td>
 								</tr>
@@ -296,7 +295,7 @@
 
 <th:block layout:fragment="customJs">
 	<script>	
-		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값
+		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값, submit 할 때 검사
 		
 		// 값 여부 체크
 		function validationCheck(ele){
@@ -315,7 +314,7 @@
 			const userId = $userIdEle.val(); 
 			console.log(userId + " <- 유저가 입력한 아이디 값");
 			
-			let $rqText = $userIdEle.siblings('.required-text');
+			let $rqText = $userIdEle.siblings('.required-text');	//안내 메시지
 			
 			// (아이디 중복 체크 -) 값 여부 체크
 			if(typeof userId == 'undefined' ||	userId == null ||
@@ -327,7 +326,7 @@
 				// 1. 아이디 양식 확인 - 영문+숫자 6~12자 이내
 				let regIdForm = /^[a-zA-Z0-9]{6,12}$/;
 				
-				if(regIdForm.test(userId)){		// id양식이 맞는다면
+				if(userId.length >= 6 && userId.length <= 12 && regIdForm.test(userId)){		// id양식이 맞는다면
 					// 2. 디비에 존재하는 id와 비교
 					let request = $.ajax({
 						url: '/admin/user/idCheck',
@@ -369,255 +368,54 @@
 		});
 		
 		
-	</script>
-
-
-
-	<script>
-	/* 	$(function() {
-			alert('제이쿼리');
-			function validationCheck(ele) {
-				let data = $(ele).val();
-				let isValid = true;
-				if (typeof data == 'undefined' || data == null || data == '') {
-					isValid = false;
-				}
-				return isValid;
-				
-			}
-			// 입력란이 변경될 때 실행될 이벤트 핸들러
-			$(
-					'#userId, #userLevel, #userPw, #userPwcheck, #userName, #userBirth, #userPhone, #userEmail, #userAddr')
-					.change(
-							function() {
-								// 입력란이 변경될 때 다른 입력 요소들을 비활성화
-								$('#addUserForm input')
-										.not(
-												'#userId, #userLevel, #userPw, #userPwcheck, #userName, #userBirth, #userPhone, #userEmail, #userAddr')
-										.prop('disabled', true);
-								$('#addUserForm button').not('#submitBtn')
-										.prop('disabled', true);
-								$('#addUserForm select').prop('disabled', true);
-							});
-			// 제출 버튼을 클릭했을 때 실행될 이벤트 핸들러
-			$('#submitBtn').click(
-					function() {
-						// 아이디 입력란에서 입력된 값 가져오기
-						const userIdEle = $('#userId');
-						let userId = userIdEle.val();
-						// 등급 입력란에서 입력된 값 가져오기
-						const userLevelEle = $('#userLevel');
-						let userLevel = userLevelEle.val();
-						// 비밀번호 입력란에서 입력된 값 가져오기
-						const userPwEle = $('#userPw');
-						let userPw = userPwEle.val();
-						// 비밀번호 확인 입력란에서 입력된 값 가져오기
-						const userPwCheckEle = $('#userPwcheck');
-						let userPwCheck = userPwCheckEle.val();
-						// 이름 입력란에서 입력된 값 가져오기
-						const userNameEle = $('#userName');
-						let userName = userNameEle.val();
-						// 생년월일 입력란에서 입력된 값 가져오기
-						const userBirthEle = $('#userBirth');
-						let userBirth = userBirthEle.val();
-						// 연락처 입력란에서 입력된 값 가져오기
-						const userPhoneEle = $('#userPhone');
-						let userPhone = userPhoneEle.val();
-						// 이메일 입력란에서 입력된 값 가져오기
-						const userEmailEle = $('#userEmail');
-						let userEmail = userEmailEle.val();
-						// 주소 입력란에서 입력된 값 가져오기
-						const userAddrEle = $('#userAddr');
-						let userAddr = userAddrEle.val();
-						// 입력란이 비어있는 경우 알림 표시 후 반환
-						if (typeof userId == 'undefined' || userId == null
-								|| userId == '') {
-							alert('회원아이디를 입력해주세요');
-							userIdEle.focus();
-							return false;
-						}
-						let pttrn = /^[a-z]{6,11}$/
-						if (!pttrn.test(userId)) {
-							alert('아이디 형식에 맞지 않아요(영문소문자,숫자로 6~12자 이내)');
-							userIdEle.select();
-							return false;
-						}
-
-						if (typeof userLevel == 'undefined'
-								|| userLevel == null || userLevel == '') {
-							alert('회원등급을 입력해주세요');
-							userLevelEle.focus();
-							return false;
-						}
-
-						if (typeof userLevel !== '1' && userLevel !== '2') {
-							alert('회원등급은 1(관리자) 2(회원) 중 하나로 입력해주세요');
-							userLevelEle.focus();
-							return false;
-						}
-						if (typeof userPw == 'undefined' || userPw == null
-								|| userPw == '') {
-							alert('회원비밀번호를 입력해주세요');
-							userPwEle.focus();
-							return false;
-						}
-						let pttrn2 = /^[a-z0-9]{8,19}$/
-						if (!pttrn2.test(userPw)) {
-							alert('비밀번호 형식에 맞지 않아요(영문소문자,숫자로 8~20자 이내)');
-							userPwEle.select();
-							return false;
-						}
-
-						if (typeof userPwcheck == 'undefined'
-								|| userPwcheck == null || userPwcheck == '') {
-							alert('회원비밀번호확인란을 입력해주세요');
-							userPwcheckEle.focus();
-							return false;
-						}
-						if (userPw !== userPwcheck) {
-							alert('비밀번호가 일치하지 않습니다');
-							userPwcheckEle.focus();
-							return false;
-						}
-				
-						if (typeof userName == 'undefined' || userName == null
-								|| userName == '') {
-							alert('회원이름을 입력해주세요');
-							userNameEle.focus();
-							return false;
-						}
-						if (typeof userBirth == 'undefined'
-								|| userBirth == null || userBirth == '') {
-							alert('회원생년월일을 입력해주세요');
-							userBirthEle.focus();
-							return false;
-						}
-						if (typeof userPhone == 'undefined'
-								|| userPhone == null || userPhone == '') {
-							alert('회원연락처를 입력해주세요');
-							userPhoneEle.focus();
-							return false;
-						}
-						if (typeof userEmail == 'undefined'
-							|| userEmail == null || userEmail == '') {
-						alert('회원이메일을 입력해주세요');
-						userEmailEle.focus();
-						return false;
-					}
-						let pttrn3 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-							if (!pttrn3.test(userEmail)) {
-								alert('이메일 형식에 맞지 않아요');
-								userEmailEle.select();
-								return false;
-							}
-							
-							return true;
-					
-							
-							// 클릭 이벤트 처리
-							$('#checkBtn').on('click', function() {
-								alert('메시지');
-							
-							   /*  let userId = $('#userId').val();
-							    let userIdEle = $('#userId');
-								// AJAX 요청 전송
-								let request = $.ajax({
-									url : '/admin/user/idCheck',
-									method : 'POST',
-									data : {
-										'userId' : userId
-									},
-									dataType : 'json'
-								});
-								// 요청이 성공한 경우
-								request.done(function(check) {
-									console.log(typeof check)
-									console.log(check)
-									// 중복된 아이디인 경우, 알림 메시지 출력 후 입력 요소 초기화
-									if (!check) {
-										alert('중복된 아이디 입니다.');
-										userIdEle.val('');
-										userIdEle.focus();
-									} else {
-									 // 중복되지 않은 아이디인 경우, 모든 입력 요소 활성화
-										$('#addUserForm input').prop(
-												'disabled', false);
-										$('#addUserForm button').prop(
-												'disabled', false);
-										$('#addUserForm select').prop(
-												'disabled', false);
-									}
-								});
-
-								request.fail(function(jqXHR, textStatus) {
-									alert(`Request failed: ${textStatus}`);
-								});						
-								 
-							});
-							
-
-			// POST 요청 보내기
-			$.ajax({
-						type : 'POST',
-						url : '/admin/user/addUser', // 컨트롤러나 서비스의 URL
-						data : {
-							'userId' : userId,
-							'userLevel' : userLevel,
-							'userPw' : userPw,
-							'userPwcheck' : userPwcheck,
-							'userName' : userName,
-							'userBirth' : userBirth,
-							'userPhone' : userPhone,
-							'userEmail' : userEmail,
-							'userAddr' : userAddr
-						}, // 입력된 데이터를 전송
-
-						success : function(data) {
-							// 요청이 성공하면 응답 데이터를 처리
-							alert(data.message);
-
-							// 회원 가입이 완료되면 userList 페이지로 리다이렉트
-							window.location.href = 'http://localhost/admin/user/userList';
-						},
-						error : function(xhr, status, error) {
-							// 요청이 실패하면 에러 처리
-							alert('Error: ' + error);
-						}
-						});
-		});
+		//비밀번호-------------------------
+		$('#userPw').on('input', function(event){
+			const $userPwEle = $('#userPw');
+			const userPw = $userPwEle.val();
+			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
+			let $rqTextPwCheck = $userPwEle.siblings('.required-text-pw');
+			let msg = '';
 			
-
-			//모든 입력 요소에 대해 유효성 검사 수행
-					 $('#submitBtn').click(function(){
-						const addUserForm = $('#addUserForm');
-						const inputGroup = $('#addUserForm input');
-						let isSubmit = true;
-						inputGroup.each(function(idx, item){
-							isSubmit = validationCheck(item);
-							if(!isSubmit) {
-								let msg = $(item).parents('tr').find('label').text();
-								alert(msg + '입력해주세요.');
-								$(item).focus();
-								return false;
-							
-					// 모든 입력 요소가 유효한 경우 폼 제출
-				
-										$('#submitBtn')
-										.click(
-												function() {
-										if (isSubmit) {
-											addUserForm.submit();
-											alert('회원가입이 완료되었습니다');
-											$('#addUserForm')[0].reset(); // 폼 초기화
-											$(
-													'#addUserForm input, #addUserForm button, #addUserForm select')
-													.prop('disabled', false); // 입력 요소 활성화
-										
-												};
-									});
-							}}); 
+			console.log(userPw);
+			console.log(userPw.length);
+			
+			let regPwFormAlpha = /^[A-Za-z0-9]+$/;		//특수문자 포함여부만 파악
+			let regPwFormLeng = /^[A-Za-z0-9]{8,20}$/;	//글자수까지 파악
+			let pwColor = 1;
+			
+			console.log((userPw.length < 8) + ' <- 1번');
+			console.log((userPw.length > 20) + '<- 2번');
+			console.log(regPwFormLeng.test(userPw)+ ' < 3번');
+			if(!regPwFormAlpha.test(userPw)){
+				msg = `*입력 규칙에 맞지 않습니다(영문)+숫자`;
+			}else if(userPw.length < 8){
+				msg = `*글자 수가 적습니다(8~20자 이내)`;
+			}else if(userPw.length > 20){
+				msg = `*글자 수가 많습니다(8~20자 이내)`;
+			}else if(regPwFormLeng.test(userPw)){
+				pwColor = 2;
+				msg = `✔ 사용 가능한 비밀번호입니다`;
+			}
+			
+			/* if(userPw.length < 8){
+				msg = `*글자 수가 적습니다(8~20자 이내)`;
+			}else if(userPw.length > 20){
+				msg = `*글자 수가 많습니다(8~20자 이내)`;
+			}else if(regPwForm.test(userPw)){
+				pwColor = 2;
+				msg = `✔ 사용 가능한 비밀번호입니다`;
+			}else{
+				msg = `*입력 규칙에 맞지 않습니다(영문)+숫자`;
+			} */
+			
+			if(pwColor === 1){
+				$('.required-text-pw').css("color", "red");
+			}else{
+				$('.required-text-pw').css("color", "green");
+			}
+			$rqTextPw.text(msg);
+		});
 		
-								 */
 	</script>
 </th:block>
 
