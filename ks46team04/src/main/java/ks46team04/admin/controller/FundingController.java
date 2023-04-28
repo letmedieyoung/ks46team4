@@ -22,6 +22,7 @@ import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
+import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.GoodsCode;
 import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingService;
@@ -69,10 +70,12 @@ public class FundingController {
 		
 		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
 		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
+		List<FundingProgress> fundingProgressList = fundingService.getFundingProgressList();
 		
 		model.addAttribute("title", "펀딩 정보 수정");	
 		model.addAttribute("foundationNameList", foundationNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
+		model.addAttribute("fundingProgressList", fundingProgressList);
 		model.addAttribute("fundingInfo", fundingInfo);
 		
 		return "admin/funding/modifyFunding";

@@ -30,7 +30,7 @@
 						<table class="refund-s-table table table-bordered" width="100%" cellspacing="0">	
 							<tbody>
 							<tr>
-								<th>환불신청일</th>
+								<th>환불요청일</th>
 								<td>										
 									<div class="align-items-center search-schedule">
 										<button type="button" id="todayBtn" class="btn btn-secondary" >
@@ -46,12 +46,7 @@
 										<button type="button" id="threeMonthBtn" class="btn btn-secondary">
 											<span class="text text-gray-100">3개월</span>
 										</button>
-									</div>
-									<div class="align-items-center search-schedule">
-										<button type="button" id="wholePeriodBtn"class="btn btn-primary">												
-											<span class="text text-gray-100">전체</span>
-										</button>										
-									</div>
+									</div>									
 									<div class="align-items-center search-schedule">
 										<input type="date" id="startDateInput" class="dateSelect form-control form-control-user-search search-input" />
 									</div>
@@ -137,8 +132,8 @@
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
 								<td th:text="${l.refundRequestDate}"></td>
 								<td><a th:text="${l.fundingRefundCode}" th:href="@{modifyFundingRefund(fundingRefundCode=${l.fundingRefundCode})}"></a></td>								
-								<td th:text="${l.fundingPayCode}"></td>								
-								<td th:text="${l.refundUserId}"></td>
+								<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}" target="_blank"></a></td>								
+								<td><a th:text="${l.refundUserId}" th:href="@{/admin/user/modifyUser(userId=${l.refundUserId})}" target="_blank"></a></td>
 								<td th:text="${l.fundingPaymentDate}"></td>
 								<td th:text="${l.pmName}"></td>
 								<td th:text="|₩ ${#numbers.formatInteger(l.requestAmount, 3, 'COMMA')}|"></td>

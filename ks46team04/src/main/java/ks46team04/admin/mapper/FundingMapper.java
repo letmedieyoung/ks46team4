@@ -9,6 +9,7 @@ import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
+import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.GoodsCode;
 
 @Mapper
@@ -16,6 +17,8 @@ public interface FundingMapper {
 	// 펀딩 등록	
 	public int registFunding(Funding funding);	
 	
+	// 펀딩 수정 - 진행상태 
+	public List<FundingProgress> getFundingProgressList();		
 	// 펀딩 수정 - 재단명 조회
 	public List<FundingFoundation> getFoundationNameList();	
 	// 펀딩 수정 - 상품코드 조회

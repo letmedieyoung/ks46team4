@@ -9,10 +9,10 @@
 		<result column="funding_foundation"		property="fundingFoundation"/>
 		<result column="goods_code"				property="goodsCode"/>
 		<result column="funding_goal_amount"	property="fundingGoalAmount"/>
-		<result column="funding_start_date"	property="fundingStartDate"/>
-		<result column="funding_end_date"	property="fundingEndDate"/>
-		<result column="funding_progress"	property="fundingProgress"/>
-		<result column="funding_reg_Date"	property="fundingRegDate"/>
+		<result column="funding_start_date"		property="fundingStartDate"/>
+		<result column="funding_end_date"		property="fundingEndDate"/>
+		<result column="funding_progress"		property="fundingProgress"/>
+		<result column="funding_reg_Date"		property="fundingRegDate"/>
 		<result column="funding_update_Date"	property="fundingUpdateDate"/>
 	</resultMap>
 	
@@ -22,7 +22,7 @@
 		(funding_code, funding_name, funding_description, funding_foundation, goods_code, funding_goal_amount,
 		 funding_start_date, funding_end_date, funding_progress, funding_reg_id, funding_reg_date, funding_update_id, funding_update_date)
 		VALUES 
-		(#{fundingCode}, #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
+		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
 		 #{fundingStartDate}, #{fundingEndDate}, #{fundingProgress}, #{fundingRegId}, CURDATE(), #{fundingUpdateId}, #{fundingUpdateDate});
 	</insert>
 	
@@ -56,6 +56,14 @@
 			funding_code = #{fundingCode}		
 	</select> 
 	
+	<select id="getFundingProgressList" resultType="FundingProgress">
+		/* 진행상태 조회 */
+		SELECT
+			funding_progress AS fundingProgress
+		FROM
+			funding_progress_status;					
+	</select>
+	
 	<select id="getGoodsCodeList" resultType="GoodsCode">
 		/* 상품코드 조회 */
 		SELECT
@@ -63,8 +71,7 @@
 		FROM
 			goods_reg_info
 		ORDER BY 
-			CAST(SUBSTRING_INDEX(goods_code, 'goods',-1) AS unsigned), goods_code;
-			
+			CAST(SUBSTRING_INDEX(goods_code, 'goods',-1) AS unsigned), goods_code;			
 	</select>	
 	
 	<select id="getFoundationNameList" resultType="FundingFoundation">

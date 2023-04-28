@@ -84,17 +84,24 @@ th {
 	vertical-align: middle;	
 }
 
+.mTitle{
+	margin-top:30px;
+}
+
+
+
+
 
 
 /* refund 환불관리 */
 .f-refund th {
-	font-size: 15px;
-	padding: 6px;
 	text-align: center;
 }
+
 .f-refund td {
 	font-size: 15px;
 	padding: 6px;
+	text-align: center;
 }
 
 .refund-s-table label {
