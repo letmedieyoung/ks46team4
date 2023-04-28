@@ -9,10 +9,10 @@
 		<result column="funding_foundation"		property="fundingFoundation"/>
 		<result column="goods_code"				property="goodsCode"/>
 		<result column="funding_goal_amount"	property="fundingGoalAmount"/>
-		<result column="funding_start_date"	property="fundingStartDate"/>
-		<result column="funding_end_date"	property="fundingEndDate"/>
-		<result column="funding_progress"	property="fundingProgress"/>
-		<result column="funding_reg_Date"	property="fundingRegDate"/>
+		<result column="funding_start_date"		property="fundingStartDate"/>
+		<result column="funding_end_date"		property="fundingEndDate"/>
+		<result column="funding_progress"		property="fundingProgress"/>
+		<result column="funding_reg_Date"		property="fundingRegDate"/>
 		<result column="funding_update_Date"	property="fundingUpdateDate"/>
 	</resultMap>
 	
@@ -22,7 +22,7 @@
 		(funding_code, funding_name, funding_description, funding_foundation, goods_code, funding_goal_amount,
 		 funding_start_date, funding_end_date, funding_progress, funding_reg_id, funding_reg_date, funding_update_id, funding_update_date)
 		VALUES 
-		(#{fundingCode}, #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
+		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
 		 #{fundingStartDate}, #{fundingEndDate}, #{fundingProgress}, #{fundingRegId}, CURDATE(), #{fundingUpdateId}, #{fundingUpdateDate});
 	</insert>
 	
@@ -56,12 +56,22 @@
 			funding_code = #{fundingCode}		
 	</select> 
 	
+	<select id="getFundingProgressList" resultType="FundingProgress">
+		/* 진행상태 조회 */
+		SELECT
+			funding_progress AS fundingProgress
+		FROM
+			funding_progress_status;					
+	</select>
+	
 	<select id="getGoodsCodeList" resultType="GoodsCode">
 		/* 상품코드 조회 */
 		SELECT
 			goods_code AS goodsCode
 		FROM
-			goods_reg_info;
+			goods_reg_info
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(goods_code, 'goods',-1) AS unsigned), goods_code;			
 	</select>	
 	
 	<select id="getFoundationNameList" resultType="FundingFoundation">
@@ -127,13 +137,20 @@
 			fp.funding_code		  		AS fundingCode,
 			fp.funding_payment_date 	AS fundingPaymentDate,	
 			fp.funding_payment_amount 	AS fundingPaymentAmount,			
-			pm.pm_name				  	AS pmName
+			pm.pm_name				  	AS pmName,
+			u.user_name					AS userName,
+			u.user_phone				AS userPhone,
+			ef.funding_name 			AS fundingName,
+			ef.funding_foundation		AS fundingFoundation,
+			ef.funding_progress			AS fundingProgress
 		FROM
 			funding_payments AS fp
 			JOIN
-			payment_method AS pm
-			ON
-			fp.pm_code = pm.pm_code
+			payment_method AS pm ON	fp.pm_code = pm.pm_code
+			JOIN
+			user_info AS u ON fp.user_id = u.user_id
+			JOIN
+			each_funding_info AS ef	ON fp.funding_code = ef.funding_code				
 		WHERE
 			funding_payment_code = #{fundingPayCode}		
 	</select> 
@@ -146,13 +163,13 @@
 			fp.funding_code		  		AS fundingCode,
 			fp.funding_payment_date 	AS fundingPaymentDate,	
 			fp.funding_payment_amount 	AS fundingPaymentAmount,			
-			pm.pm_name				  	AS pmName
+			pm.pm_name				  	AS pmName			
 		FROM
 			funding_payments AS fp
 			JOIN
-			payment_method AS pm
+			payment_method AS pm			
 			ON
-			fp.pm_code = pm.pm_code
+				fp.pm_code = pm.pm_code			
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code;
 	</select>
@@ -173,8 +190,9 @@
 			fr.funding_refund_request_reason	AS requestReason,
 			fr.funding_refund_status			AS requestStatus,
 			fr.funding_refund_approval_date		AS approvalDate,
-			funding_refund_rejection_date		AS rejectionDate,
-			funding_payment_date				AS fundingPaymentDate
+			fr.funding_refund_rejection_date	AS rejectionDate,
+			fp.funding_payment_date				AS fundingPaymentDate,
+			pm.pm_name							AS pmName
 		FROM
 			funding_payment_refund AS fr
 			JOIN
@@ -208,7 +226,7 @@
 				ON fp.funding_payment_code = fr.funding_payment_code
 			JOIN
 			payment_method AS pm
-				ON pm.pm_code = fp.pm_code		
+				ON pm.pm_code = fp.pm_code	
 		<where>			
 			<if test="keyword != null and keyword != ''">			
 				${keyword} LIKE CONCAT('%', #{searchValue},'%')

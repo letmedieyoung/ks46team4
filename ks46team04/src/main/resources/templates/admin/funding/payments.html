@@ -33,26 +33,21 @@
 							<tr>
 								<th>결제일</th>
 								<td>
-									<div class="form-row align-items-center search-schedule">
+									<div class="align-items-center search-schedule">
 										<button type="button" id="todayBtn" class="btn btn-secondary" >
 											<span class="text text-gray-100">오늘</span> 
 										</button>
 									</div>					
-									<div class="form-row align-items-center search-schedule">
+									<div class="align-items-center search-schedule">
 										<button type="button" id="monthBtn" class="btn btn-secondary">
 											<span class="text text-gray-100">1개월</span>
 										</button>
 									</div>
-									<div class="form-row align-items-center search-schedule">
+									<div class="align-items-center search-schedule">
 										<button type="button" id="threeMonthBtn" class="btn btn-secondary">
 											<span class="text text-gray-100">3개월</span>
 										</button>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="wholePeriodBtn"class="btn btn-primary">
-											<span class="text text-gray-100">전체</span>
-										</button>										
-									</div>
+									</div>									
 									<div class="align-items-center search-schedule">
 										<input type="date" id="startDateInput" class="dateSelect form-control form-control-user-search search-input" />
 									</div>
@@ -117,9 +112,9 @@
 							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>								
 								<td th:text="${l.fundingPaymentDate}"></td>							
-								<td><a th:text="${l.fundingPayCode}" th:href="@{modifyFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
-								<td th:text="${l.userId}"></td>
-								<td th:text="${l.fundingCode}"></td>								
+								<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
+								<td><a th:text="${l.userId}" th:href="@{/admin/user/modifyUser(userId=${l.userId})}" target="_blank"></a></td>
+								<td><a th:text="${l.fundingCode}" th:href="@{modifyFunding(fundingCode=${l.fundingCode})}" target="_blank"></a></td>								
 								<td th:text="|₩ ${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}|"></td>								
 								<td th:text="${l.pmName}"></td>
 							</tr>

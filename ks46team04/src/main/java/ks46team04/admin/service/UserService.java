@@ -82,12 +82,11 @@ public class UserService {
 		return userInfo;
 	}
 	
-	public int addUser(User user) {
-		int result = 
-				userMapper.addUser(user);
+public int addUser(User user) {
+	int result = userMapper.addUser(user);
 		
-		return result;
-	}
+	return result;
+}
 	
 public List<UserDrop> getUserDropList(){
 		

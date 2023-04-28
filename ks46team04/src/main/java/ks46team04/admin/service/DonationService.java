@@ -212,4 +212,38 @@ public class DonationService {
 		
 		return getDonationMonthPay;
 	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 등록
+	 * */
+	public int addDonationMonthPay(DonationMonthPay donationMonthPay) {
+		
+		log.info("화면에서 전달받은 데이터 : {}", addDonationMonthPay(donationMonthPay));
+		
+		int result = donationMapper.addDonationMonthPay(donationMonthPay);
+		return result;
+	}
+	
+	/*
+	 * 특정 정기기부 월별 결제 합계 조회
+	 * */
+	public DonationMonthPay getDonationMonthPayInfoByCode(String donationMonthPayCode) {
+		DonationMonthPay donationMonthPayInfo = donationMapper.getDonationMonthPayInfoByCode(donationMonthPayCode);
+		log.info("donationMonthPayInfo: {}", donationMonthPayInfo);
+		return donationMonthPayInfo;
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 수정
+	 * */
+	public void modifyDonationMonthPay(DonationMonthPay donationMonthPay) {
+		donationMapper.modifyDonationMonthPay(donationMonthPay);
+	}
+	
+	/*
+	 * 정기기부 월별 결제 합계 삭제
+	 * */
+	public void removeDonationMonthPay(DonationMonthPay donationMonthPay) {
+		donationMapper.removeDonationMonthPay(donationMonthPay);
+	}
 }

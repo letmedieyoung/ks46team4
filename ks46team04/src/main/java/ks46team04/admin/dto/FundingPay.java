@@ -18,6 +18,11 @@ public class FundingPay {
 	private boolean fundingRefundRequest;
 	private String fundingGroupCode;
 	private String deadlineStatus;
+	private String userName;
+	private String userPhone;
+	private String fundingName;
+	private String fundingFoundation;
+	private String fundingProgress;
 	
 	private List<FundingPay> fundingPayList;
 

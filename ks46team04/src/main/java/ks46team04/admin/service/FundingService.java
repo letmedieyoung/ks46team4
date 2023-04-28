@@ -12,6 +12,7 @@ import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
+import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.GoodsCode;
 import ks46team04.admin.mapper.FundingMapper;
 
@@ -35,6 +36,14 @@ public class FundingService {
 	 */
 	public void modifyFunding(Funding funding) {
 		fundingMapper.modifyFunding(funding);
+	}
+	/**
+	 * 펀딩 수정화면 - 진행상태 불러오기
+	 * @return List<FudingProgress>
+	 */
+	public List<FundingProgress> getFundingProgressList(){
+		List<FundingProgress> fundingProgressList = fundingMapper.getFundingProgressList();
+		return fundingProgressList;
 	}	
 	/**
 	 * 펀딩 수정화면 - 상품코드 불러오기
@@ -81,11 +90,11 @@ public class FundingService {
 	
 		
 	/**
-	 * 펀딩 결제내역 수정
+	 * 펀딩 결제내역 상세 정보
 	 * @param fundingPay
 	 */
-	public void modifyFundingPay(FundingPay fundingpay) {
-		fundingMapper.modifyFundingPay(fundingpay);
+	public void detailFundingPay(FundingPay fundingpay) {
+		fundingMapper.detailFundingPay(fundingpay);
 	}
 	/**
 	 * 특정 펀딩 결제내역 조회

@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+
+
+table a{
+	text-decoration: underline;
+	color: #858796;
+}
+
 label {
 	margin: 4px 0;
 }
@@ -20,9 +27,15 @@ th {
 
 
 /* manage 펀딩 컨텐츠 관리 */
-.manageBtn {
-	margin-bottom: 15px;
-	border: 1px solid #999;
+
+.dateSelect input[type='date']::before {
+  content: attr(data-placeholder);
+  width: 100%;
+}
+
+.dateSelect input[type='date']:focus::before,
+.dateSelect input[type='date']:valid::before {
+  display: none;
 }
 
 #fundingName{
@@ -46,31 +59,53 @@ th {
 	margin-right: 5px;
 }
 
-.dateSelect input[type='date']::before {
-  content: attr(data-placeholder);
-  width: 100%;
+.manageBtn {
+	margin-bottom: 15px;
+	border: 1px solid #999;
 }
 
-.dateSelect input[type='date']:focus::before,
-.dateSelect input[type='date']:valid::before {
-  display: none;
+.manage-s-table label {
+	margin-left: 8px;
 }
+
+
 
 
 /* pay 결제내역 */
+
+
+/* modifyPay 결제내역 상세 */
+.mTitle h2{
+	display: inline-block;
+	font-size: 17px;
+	font-weight: 600;
+	color: #1b1e26;
+	line-height: 1.5em;
+	vertical-align: middle;	
+}
+
+.mTitle{
+	margin-top:30px;
+}
+
+
 
 
 
 
 /* refund 환불관리 */
 .f-refund th {
+	text-align: center;
+}
+
+.f-refund td {
 	font-size: 15px;
 	padding: 6px;
 	text-align: center;
 }
-.f-refund td {
-	font-size: 15px;
-	padding: 6px;
+
+.refund-s-table label {
+	margin-left: 8px;
 }
 
 .refund-table label {
@@ -78,7 +113,8 @@ th {
 }
 
 
-/* 수정화면 공통 */
+
+/* 상세 정보 화면 공통 */
 #fRegInfo {
 	font-size: 15px;
 }
@@ -90,4 +126,9 @@ th {
 .modify-table th {
 	width: 9em;
 	vertical-align: middle;
+}
+
+input[type="text"]:disabled,
+input[type="number"]:disabled {
+  background: #fff;
 }

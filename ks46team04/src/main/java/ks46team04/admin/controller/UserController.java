@@ -6,6 +6,7 @@ package ks46team04.admin.controller;
 
 import java.util.List;
 
+
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -211,11 +212,18 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 		return "admin/user/modifyUser";
 	}
 	
-	@PostMapping("/addUser")
-	public String addUser(User user) {
-		log.info("화면에서 전달받은 데이터 : {}", user);
-		userService.addUser(user);
-		return "redirect:/admin/user/userList";
+
+	@GetMapping("/addUser")
+	public String addUser(Model model) {
+		
+		List<UserLevel> userLevelList = userService.getUserLevelList();
+		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
+		
+		model.addAttribute("title", "Pilling Good - 회원 관리 - 회원 등록");
+		model.addAttribute("userLevelList", userLevelList);
+		model.addAttribute("activityStatusList", activityStatusList);
+		
+		return "admin/user/addUser";
 	}
 	
 	@PostMapping("/idCheck")
@@ -223,22 +231,19 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	public boolean idCheck(@RequestParam(name="userId") String userId) {
 		boolean checked = true;
 		//아이디 중복체크
-		checked = userMapper.idCheck(userId);
+		checked = userMapper.idCheck(userId);	//중복된 값이 없고 사용가능하면 true
 		
 		return checked;
 	}
 	
-	
-	@GetMapping("/addUser")
-	public String addUser(Model model) {
-		
-		List<UserLevel> userLevelList = userService.getUserLevelList();
-		
-		model.addAttribute("title", "회원가입");
-		model.addAttribute("userLevelList", userLevelList);
-		
-		return "admin/user/addUser";
+	@PostMapping("/addUser")
+	public String addUser(User user) {
+		log.info("화면에서 전달받은 데이터 : {}", user);
+		userService.addUser(user);
+		return "redirect:/admin/user/userList";
 	}
+	
+
 	
 	@GetMapping("/userList")
 	public String getUserList( Model model

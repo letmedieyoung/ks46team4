@@ -32,44 +32,40 @@
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
         	 <div class="card-header py-3">
-             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 단가 등록</h5>
+             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 월별 결제 합계 등록</h5>
         	 </div>
          <div class="card-body">
 				<div class="table-responsive">
-					<form action="/admin/donation/donation_add" method="POST"
-						id="addDonationForm" name="addDonationForm">
-						<table class="table table-bordered freg" id="addDonation"
+					<form action="/admin/donation/donationMonthPay_add" method="POST"
+						id="addDonationMonthPayForm" name="addDonationMonthPayForm">
+						<table class="table table-bordered freg" id="addDonationMonthPay"
 							width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th>콘텐츠명</th>
-									<td><input type="text" id="donationName"
-										name="donationName" style="width: 400px;"
-										placeholder="콘텐츠명을 입력해주세요." /></td>
+									<th>연도</th>
+									<td><input type="text" id="donationMonthPayYear"
+										name="donationMonthPayYear" style="width: 400px;" />
 								</tr>
 								<tr>
-									<th>콘텐츠 금액</th>
-									<td><input type="number" id="donationPrice"
-										name="donationPrice" style="width: 400px;"
-										placeholder="콘텐츠 금액을 입력해주세요." /> <span>원</span></td>
+									<th>월</th>
+									<td><input type="text" id="donationMonthPayMonth"
+										name="donationMonthPayMonth" style="width: 400px;" />
 								</tr>
 								<tr>
-									<th>콘텐츠 상세내용</th>
+									<th>총 결제금액</th>
 									<td>
 										<div>
-											<input type="text" id="donationDescription"
-												name="donationDescription"
-												style="width: 400px; height: 200px;"
-												placeholder="콘텐츠 상세설명을 입력해주세요." />
+											<input type="number" id="donationMonthPayAmount"
+												name="donationMonthPayAmount" style="width: 400px;" /><span>원</span>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<td colspan="3">
+									<td colspan="3"> <div style="display: flex; justify-content: center;">
 										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button>
+											onclick="addBtn()">등록</button> &nbsp;
 										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/donation/donation_list'">입력취소</button>
+											onclick="location.href='/admin/donation/donationMonthPay_list'">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>
