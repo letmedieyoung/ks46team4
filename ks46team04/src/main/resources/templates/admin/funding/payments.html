@@ -117,9 +117,9 @@
 							<tr th:unless="${fundingPayList == null}" th:each="l : ${fundingPayList}">
 								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>								
 								<td th:text="${l.fundingPaymentDate}"></td>							
-								<td><a th:text="${l.fundingPayCode}" th:href="@{modifyFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
-								<td th:text="${l.userId}"></td>
-								<td th:text="${l.fundingCode}"></td>								
+								<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
+								<td><a th:text="${l.userId}" th:href="@{/admin/user/modifyUser(userId=${l.userId})}" target="_blank"></a></td>
+								<td><a th:text="${l.fundingCode}" th:href="@{modifyFunding(fundingCode=${l.fundingCode})}" target="_blank"></a></td>								
 								<td th:text="|₩ ${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}|"></td>								
 								<td th:text="${l.pmName}"></td>
 							</tr>
