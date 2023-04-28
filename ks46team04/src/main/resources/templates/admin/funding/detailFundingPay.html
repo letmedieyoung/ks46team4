@@ -40,7 +40,7 @@
 							<div class="mTitle">
 								<h2>참여한 펀딩 내역</h2>
 							</div>
-							<table th:object="${fundingPayInfo}" class="modify-table table table-bordered search-table" >
+							<table th:object="${fundingPayInfo}" class="detail-table table table-bordered search-table" >
 								<tbody>
 									<tr>
 										<th class="bg-gray-100">
@@ -89,7 +89,7 @@
 							<div class="mTitle">
 								<h2>결제 정보</h2>
 							</div>
-							<table th:object="${fundingPayInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">							
+							<table th:object="${fundingPayInfo}" class="detail-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">							
 							<tbody>																
 								<tr>
 									<th class="bg-gray-100">
@@ -118,7 +118,7 @@
 							<div class="mTitle">
 								<h2>결제 회원 정보</h2>
 							</div>
-							<table th:object="${fundingPayInfo}" class="modify-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">							
+							<table th:object="${fundingPayInfo}" class="detail-table table table-bordered search-table" id="searchTable" width="100%" cellspacing="0">							
 							<tbody>																
 								<tr>
 									<th class="bg-gray-100">
@@ -157,11 +157,7 @@
 							<button type="button" id="confirmBtn" class="btn btn-primary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">확인</span>
-							</button>
-							<button type="reset" class="cancelBtn btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">취소</span>
-							</button>
+							</button>							
 						</div>
 					</div>
 				</div>
