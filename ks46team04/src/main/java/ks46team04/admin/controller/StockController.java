@@ -28,20 +28,133 @@ public class StockController {
 		this.stockService = stockService;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
-	 * 상품 재고 조회
+	 * 상품 출고 상세정보 조회
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/stock_list")
-	public String getStockList(Model model) {
+	@GetMapping("/outcoming_detail_list")
+	public String getOutcomingDetailList(Model model) {
 		
-		List<Stock> stockList = stockService.getStockList();
+		List<OutcomingDetail> outcomingDetailList = stockService.getOutcomingDetailList();
 		
-		model.addAttribute("title", "상품 재고 조회");
-		model.addAttribute("stockList", stockList);
+		model.addAttribute("title", "상품 출고 상세정보 조회");
+		model.addAttribute("outcomingDetailList", outcomingDetailList);
 		
-		return "admin/stock/stock_list";
+		return "admin/stock/outcoming_detail_list";
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 상품 비정상재고 삭제
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/remove_unusual_stock_detail")
+	public String removeUnusualStock(Model model) {
+		
+		model.addAttribute("title", "remove_unusual_stock_detail");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/remove_unusual_stock_detail";
+	}
+	
+	/**
+	 * 상품 비정상재고 수정
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modify_unusual_stock_detail")
+	public String modifyUnusualStock(Model model) {
+		
+		model.addAttribute("title", "modify_unusual_stock_detail");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/modify_unusual_stock_detail";
+	}
+	
+	/**
+	 * 상품 비정상재고 등록
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/add_unusual_stock_detail")
+	public String addUnusualStock(Model model) {
+		
+		model.addAttribute("title", "add_unusual_stock_detail");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/add_unusual_stock_detail";
+	}
+	
+	/**
+	 * 상품 비정상재고 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/unusual_stock_detail_list")
+	public String getUnusualStockList(Model model) {
+		
+		List<UnusualStock> unusualStockList = stockService.getUnsualStockList();
+		
+		model.addAttribute("title", "unusual_stock_detail_list");
+		model.addAttribute("unusualStockList", unusualStockList);
+		
+		return "admin/stock/unusual_stock_detail_list";
+	}
+
+	/**
+	 * 상품 입출고 삭제
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/remove_in_outcoming")
+	public String removeInOutcoming(Model model) {
+		
+		model.addAttribute("title", "상품 입출고 삭제");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/remove_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 수정
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modify_in_outcoming")
+	public String modifyInOutcoming(Model model) {
+		
+		model.addAttribute("title", "상품 입출고 수정");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/modify_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 등록
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/add_in_outcoming")
+	public String addInOutcoming(Model model) {
+		
+		model.addAttribute("title", "상품 입출고 등록");
+		model.addAttribute("content", "thymeleaf layout 완성");
+		
+		return "admin/stock/add_in_outcoming";
 	}
 	
 	/**
@@ -61,119 +174,18 @@ public class StockController {
 	}
 	
 	/**
-	 * 상품 입출고 등록
+	 * 상품 재고 조회
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/add_in_outcoming")
-	public String addInOutcoming(Model model) {
+	@GetMapping("/stock_list")
+	public String getStockList(Model model) {
 		
-		model.addAttribute("title", "상품 입출고 등록");
-		model.addAttribute("content", "thymeleaf layout 완성");
+		List<Stock> stockList = stockService.getStockList();
 		
-		return "admin/stock/add_in_outcoming";
-	}
-	
-	/**
-	 * 상품 입출고 수정
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_in_outcoming")
-	public String modifyInOutcoming(Model model) {
+		model.addAttribute("title", "상품 재고 조회");
+		model.addAttribute("stockList", stockList);
 		
-		model.addAttribute("title", "상품 입출고 수정");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/modify_in_outcoming";
-	}
-	
-	/**
-	 * 상품 입출고 삭제
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/remove_in_outcoming")
-	public String removeInOutcoming(Model model) {
-		
-		model.addAttribute("title", "상품 입출고 삭제");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/remove_in_outcoming";
-	}
-	
-	/**
-	 * 상품 출고 상세정보 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/outcoming_detail_list")
-	public String getOutcomingDetailList(Model model) {
-		
-		List<OutcomingDetail> outcomingDetailList = stockService.getOutcomingDetailList();
-		
-		model.addAttribute("title", "상품 출고 상세정보 조회");
-		model.addAttribute("outcomingDetailList", outcomingDetailList);
-		
-		return "admin/stock/outcoming_detail_list";
-	}
-	
-	
-	/**
-	 * 상품 비정상재고 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/unusual_stock_detail_list")
-	public String getUnusualStockList(Model model) {
-		
-		List<UnusualStock> unusualStockList = stockService.getUnsualStockList();
-		
-		model.addAttribute("title", "unusual_stock_detail_list");
-		model.addAttribute("unusualStockList", unusualStockList);
-		
-		return "admin/stock/unusual_stock_detail_list";
-	}
-	
-	/**
-	 * 상품 비정상재고 등록
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/add_unusual_stock_detail")
-	public String addUnusualStock(Model model) {
-		
-		model.addAttribute("title", "add_unusual_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/add_unusual_stock_detail";
-	}
-	
-	/**
-	 * 상품 비정상재고 수정
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_unusual_stock_detail")
-	public String modifyUnusualStock(Model model) {
-		
-		model.addAttribute("title", "modify_unusual_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/modify_unusual_stock_detail";
-	}
-	
-	/**
-	 * 상품 비정상재고 삭제
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/remove_unusual_stock_detail")
-	public String removeUnusualStock(Model model) {
-		
-		model.addAttribute("title", "remove_unusual_stock_detail");
-		model.addAttribute("content", "thymeleaf layout 완성");
-		
-		return "admin/stock/remove_unusual_stock_detail";
+		return "admin/stock/stock_list";
 	}
 }

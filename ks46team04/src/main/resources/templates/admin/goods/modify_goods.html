@@ -45,7 +45,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCode" name="goodsCode" th:value="*{goodsCode}" placeholder="상품명을 검색하거나 입력해주세요."/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCode" name="goodsCode" th:value="*{goodsCode}"/>
 											</div>
 										</td>
 									</tr>
@@ -120,7 +120,7 @@
 									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 									<span class="text">수정하기</span>
 								</button>
-								<button type="reset" class="btn btn-secondary btn-icon-split">
+								<button type="button" id="returnBtn" class="btn btn-secondary btn-icon-split">
 									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
 									<span class="text">돌아가기</span>
 								</button>

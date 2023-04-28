@@ -12,13 +12,16 @@ import ks46team04.admin.dto.GoodsCategory;
 public interface GoodsMapper {
 	
 	//상품삭제
-	public int removeGoodsByGoodsCode(String goodsCode);
+	public int removeGoods(String goodsCode);
 	
 	//상품수정
 	public int modifyGoods(Goods goods);
 	
 	//특정 상품조회
 	public Goods getGoodsInfoByCode(String goodsCode);
+	
+	//상품명 중복체크
+	public boolean goodsNameCheck(String goodsName);
 	
 	//상품등록 
 	public int addGoods(Goods goods);

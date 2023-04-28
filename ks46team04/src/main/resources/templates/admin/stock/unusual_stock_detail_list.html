@@ -165,7 +165,6 @@
 								<th>비정상 재고 수량</th>
 								<th>비정상 재고 발생일</th>
 								<th>비정상 재고 사유</th>
-								<th>등록/수정자</th>
 								<th>등록/수정일</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -179,10 +178,8 @@
 								<td th:text="${l.unusualStockQuantity}"></td>
 								<td th:text="${l.unusualStockDate}"></td>
 								<td th:text="${l.unusualStockReason}"></td>
-								<td th:if="${l.unusualStockUpdateId == null}" th:text="${l.unusualStockRegId}"></td>
-								<td th:unless="|${l.unusualStockUpdateId == null}" th:text="${l.unusualStockUpdateId}(수정)|"></td>
-								<td th:if="${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockRegDate}"></td>
-								<td th:unless="|${l.unusualStockUpdateDate == null}" th:text="${l.unusualStockUpdateDate}(수정)|"></td>
+								<td th:if="${l.unusualStockUpdDate == null}" th:text="${l.unusualStockRegDate}"></td>
+								<td th:unless="|${l.unusualStockUpdDate == null}" th:text="${l.unusualStockUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/stock/modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
@@ -197,7 +194,7 @@
 								</td>
 							</tr>
 							<tr th:if="${unusualStockList == null}">
-								<td colspan="10">등록된 비정상재고 정보가 없습니다.</td>
+								<td colspan="9">등록된 비정상재고 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

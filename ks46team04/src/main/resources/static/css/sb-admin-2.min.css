@@ -10370,3 +10370,31 @@ form.user .form-control-user-plus {
     margin-right: 0.2rem;
     padding: 1.13rem 1rem
 }
+
+
+/* addUser - LBR*/
+.search-input-gr-half {
+    width: 5rem;
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem;
+}
+
+.required-fields{
+	color: red;
+}
+.required-text{
+	color: red;
+	font-size: 0.7rem;
+	font-style: italic;
+	padding-left: 20px;
+}
+
+.required-text-pw{
+	font-size: 0.7rem;
+	font-style: italic;
+	padding-left: 20px;
+}
+
+

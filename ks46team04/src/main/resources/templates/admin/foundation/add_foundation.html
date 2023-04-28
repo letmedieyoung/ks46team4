@@ -34,6 +34,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
+					<form id="addFoundationForm" th:action="@{/admin/foundation/add_foundation}" method="post">
 						<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
@@ -44,9 +45,6 @@
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" placeholder="재단명을 입력해주세요."/>
 											&nbsp;
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">중복확인</span>
-											</button>
 										</div>
 									</td>
 								</tr>
@@ -79,9 +77,6 @@
 											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" placeholder="주소를 검색해주세요."/>
 										</div>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" placeholder="상세주소를 입력해주세요."/>
-										</div>
-										<div class="form-row align-items-center search-schedule">
 											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
 												<span class="text">주소 검색</span>
 											</button>
@@ -95,11 +90,12 @@
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">등록하기</span>
 							</button>
-							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+							<button type="reset" class="btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
 								<span class="text">입력취소</span>
 							</button>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>

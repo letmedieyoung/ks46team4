@@ -168,7 +168,6 @@
 								<th>출고일자</th>
 								<th>출고 담당자</th>
 								<th>출고 재단명</th>
-								<th>등록/수정자</th>
 								<th>등록/수정일</th>
 								<th>수정</th>
 								<th>삭제</th>
@@ -183,10 +182,8 @@
 								<td th:text="${l.outcomingDate}"></td>
 								<td th:text="${l.outcomingId}"></td>
 								<td th:text="${l.foundationCode}"></td>
-								<td th:if="${l.outcomingDetailUpdateId == null}" th:text="${l.outcomingDetailRegId}"></td>
-								<td th:unless="${l.outcomingDetailUpdateId == null}" th:text="${l.outcomingDetailUpdateId}"></td>
-								<td th:if="${l.outcomingDetailUpdateDate == null}" th:text="${l.outcomingDetailRegDate}"></td>
-								<td th:unless="${l.outcomingDetailUpdateDate == null}" th:text="${l.outcomingDetailUpdateDate}"></td>
+								<td th:if="${l.outcomingDetailUpdDate == null}" th:text="${l.outcomingDetailRegDate}"></td>
+								<td th:unless="${l.outcomingDetailUpdDate == null}" th:text="${l.outcomingDetailUpdDate}"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
@@ -201,7 +198,7 @@
 								</td>
 							</tr>
 							<tr th:if="${outcomingDetailList == null}">
-								<td colspan="11">등록된 상품 출고 세부정보가 없습니다.</td>
+								<td colspan="10">등록된 상품 출고 세부정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

@@ -66,14 +66,13 @@
 								<tr>
 									<th>수정일자</th>
 									<td><input type="text" id="donationUpdateDate"
-										th:value="*{donationUpdateDate}" name="donationUpdateDate"
-										style="width: 400px;" readonly="readonly" /></td>
+										th:value="*{donationUpdateDate}" name="donationUpdateDate" style="width: 400px;" readonly="readonly"/></td>
 								</tr>
 								<tr>
-									<td colspan="2">
-										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button>
+									<td colspan="2">  <div style="display: flex; justify-content: center;">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp; 
 										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donation_list'">입력취소</button>
+											onclick="location.href='/admin/donation/donation_list'">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>

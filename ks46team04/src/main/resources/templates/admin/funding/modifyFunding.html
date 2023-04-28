@@ -20,7 +20,7 @@
 		<form id="modifyFundingForm" th:action="@{/admin/funding/modifyFunding}" method="post">
 			<div class="card mb-4">
 				<div class="card-header py-3">
-			    	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 수정</h5>
+			    	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 정보 수정</h5>
 			    </div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -44,7 +44,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" readonly="readonly"/>
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" disabled="disabled" style="border: none;"/>
 										</div>
 									</td>
 								</tr>
@@ -53,7 +53,7 @@
 										<label for="fundingName">펀딩명</label>
 									</th>
 									<td>
-										<div class="form-row align-items-center search-schedule">
+										<div class="form-row align-items-center search-schedule" style="width: 500px;">
 											<input type="text" class="form-control form-control-user-search search-input" id="fundingName" th:value="*{fundingName}" name="fundingName" placeholder="펀딩명을 입력해주세요."/>										
 										</div>
 									</td>
@@ -74,10 +74,10 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress">
-												 <option>대기중</option>
-												 <option>진행중</option>
-												 <option>진행완료</option>  
+											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												 <th:block th:unless="${fundingProgressList == null}"  th:each="l : ${fundingProgressList}">
+													<option th:value="${l.fundingProgress}" th:selected="${l.fundingProgress} == *{fundingProgress}">[[${l.fundingProgress}]]</option>
+												</th:block>																					
 											</select>
 										</div>									
 									</td>

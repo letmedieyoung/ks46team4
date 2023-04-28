@@ -35,6 +35,15 @@
 						<div class="p-5">
 							<div class="text-center">
 								<h1 class="h4 text-gray-900 mb-4">필링굿에 오신 것을 환영합니다</h1>
+								<!-- 
+									아이디 	- 영문+숫자 6~12자 이내
+											- 중복 확인
+									비밀번호	- 영문+숫자 8~20자 이내
+									이름		- 특수 문자나 숫자가 섞이지 않도록(중요도 낮음)
+									생년월일 	- 특이사항 없음
+									이메일 	- 이메일 형식
+									수신여부	- 체크박스 
+								-->
 							</div>
 							<!-- 회원가입 필수 사항 - 회원 아이디,  회원 비밀번호, 회원 이름, 회원 생년월일, 회원 연락처 -->
 							<form class="user">
@@ -73,7 +82,7 @@
 									<div>연락처</div>
 									<div class="row">
 										<div class="col-sm-3 mb-3 mb-sm-0">
-											<select name="telArr" id="telSelect"
+											<select name="userFirstTel" id="userFirstTel"
 												class="form-control-plus form-control-user-plus">
 												<!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
 												<option value="010" selected>010</option>
@@ -109,7 +118,12 @@
 												id="memberThirdTel" placeholder="0000">
 										</div>
 									</div>
+								</div>					
+								<div class="form-group">
+									이메일
+									<input type="email" class="form-control form-control-user" id="memberEmail">
 								</div>
+								
 								<div class="form-group">
 									이메일 수신여부 <br> &nbsp;
 									<div><select id="userEmailAgree">
@@ -125,15 +139,6 @@
                                         <input type="radio" class="form-control form-control-user" id="memberEmailAgree"
                                         value="0" /> 수신거부-->
 								</div>
-
-
-								<div class="form-group">
-									이메일
-									<input type="email" class="form-control form-control-user" id="memberEmail">
-								</div>
-
-
-
 
 								<a href="#" class="btn btn-success btn-user btn-block">
 									가입하기

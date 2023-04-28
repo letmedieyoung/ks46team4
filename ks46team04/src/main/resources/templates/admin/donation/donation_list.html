@@ -20,16 +20,74 @@
 
 <th:block layout:fragment="customContents">
 
-	<!-- Begin Page Content -->
-	<div class="container-fluid">
-
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
 
 			<!-- Page Heading -->
 
 			<!-- DataTales Example -->
-			<div class="card mb-4">
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h5 class="m-0 font-weight-bold text-gray-800">검색</h5>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table>
+						<tbody>
+							<tr>
+								<td>
+									<div class="align-items-center search-schedule">
+										<div class="align-items-center search-schedule">
+											<button type="button" id="todayBtn" class="btn btn-secondary">
+												<span class="text text-gray-100">오늘</span>
+											</button>
+										</div>
+										<div class="align-items-center search-schedule">
+											<button type="button" id="monthBtn" class="btn btn-secondary">
+												<span class="text text-gray-100">1개월</span>
+											</button>
+										</div>
+										<div class="align-items-center search-schedule">
+											<button type="button" id="threeMonthBtn"
+												class="btn btn-secondary">
+												<span class="text text-gray-100">3개월</span>
+											</button>
+										</div>
+										<div class="align-items-center search-schedule">
+											<button type="button" id="wholePeriodBtn"
+												class="btn btn-primary">
+												<span class="text text-gray-100">전체</span>
+											</button>
+										</div>
+									</div>
+									<div class="align-items-center search-schedule">
+										<input id="startDateInput" name="funding_start_date"
+											class="dateSelect form-control form-control-user-search search-input"
+											type="date"></input>
+									</div>
+									<div class="align-items-center search-schedule">
+										<span>~</span>
+									</div>
+									<div class="align-items-center search-schedule">
+										<input id="endDateInput" name="funding_end_date"
+											class="dateSelect form-control form-control-user-search search-input"
+											type="date"></input>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
+
+		<div class="card mb-4">
 				<div class="card-header py-3">
 					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 콘텐츠 조회</h5>
 				</div>
@@ -72,15 +130,15 @@
 									<td colspan="11">등록된 정기기부 단가 정보가 없습니다.</td>
 								</tr>
 						</table>
-					</div> <button type="button" class="btn btn-primary" id="addBtn"
-								onclick="location.href='/admin/donation/donation_add'">등록하기</button>
+					</div>
+								<div style="display: flex; justify-content: center;">
+								<button type="button" class="btn btn-primary" id="addBtn"
+								onclick="location.href='/admin/donation/donation_add'">등록하기</button> </div>
 				</div>
 			</div>
 
 		</div>
 		<!-- /.container-fluid -->
-	</div>
-	<!-- /.container-fluid -->
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i

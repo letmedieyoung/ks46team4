@@ -3,25 +3,6 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/default}">
 
-<script type="text/javascript">
-
-	$('#addBtn').click(function() {
-		const addDonationForm = $('#addDonationForm');
-		const inputGroup = $('#addDonationForm input');
-		let isSubmit = true;
-		inputGroup.each(function(idx, item) {
-				if (!isSubmit) {
-				let msg = $(item).parents('tr').find('label').text();
-				alert(msg + '입력해주세요.');
-				$(item).focus();
-				return false;
-			}
-		});
-		if (isSubmit)
-			addDonationForm.submit();
-	});
-</script>
-
 <th:block layout:fragment="customContents">
 	
 	<!-- Begin Page Content -->
@@ -65,11 +46,11 @@
 									</td>
 								</tr>
 								<tr>
-									<td colspan="3">
+									<td colspan="3"> <div style="display: flex; justify-content: center;">
 										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button>
+											onclick="addBtn()">등록</button> &nbsp; 
 										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/donation/donation_list'">입력취소</button>
+											onclick="location.href='/admin/donation/donation_list'">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>

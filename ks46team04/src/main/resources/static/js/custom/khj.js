@@ -12,6 +12,13 @@ $('#modifyBtn').click(function(){
 	$("#modifyFundingForm").submit();
 });
 
+/* 확인버튼 */ 
+$(document).ready(function() {
+  $('#confirmBtn').click(function() {
+    location.href='/admin/funding/payments'
+  });
+});
+
 /* 검색 결과 초기화 */
 $("#searchReset").click(function(){	
 	location.reload();
@@ -153,8 +160,7 @@ $('#fregistBtn').click(function(){
 	if(isSubmit) $('#registFundingForm').submit(); 		
 });
 
-	
-/* 기간 조회 */
+/* 기간 설정 버튼, 클릭 버튼 컬러 활성화*/
 function addDateListeners() {
   const todayBtn = document.getElementById('todayBtn');
   const monthBtn = document.getElementById('monthBtn');
@@ -163,19 +169,22 @@ function addDateListeners() {
   const endDateInput = document.getElementById('endDateInput');
 
   todayBtn.addEventListener('click', () => {
-    setDateInputs(new Date(), new Date());    
+    setDateInputs(new Date(), new Date());
+    setActiveBtn(todayBtn);
   });
 
   monthBtn.addEventListener('click', () => {
     const today = new Date();
     const oneMonthLater = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     setDateInputs(today, oneMonthLater);
+    setActiveBtn(monthBtn);
   });
 
   threeMonthBtn.addEventListener('click', () => {
     const today = new Date();
     const threeMonthsLater = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
     setDateInputs(today, threeMonthsLater);
+    setActiveBtn(threeMonthBtn);
   });
 
   function setDateInputs(startDate, endDate) {
@@ -195,4 +204,27 @@ function addDateListeners() {
   }
 }
 
+function handleClick(event) {
+  setActiveBtn(event.target);
+  addDateListeners()[event.target.id].click();
+}
+
+function setActiveBtn(btn) {
+  const activeBtn = document.querySelector('.btn.active');
+  if (activeBtn) {
+    activeBtn.classList.remove('active');
+  }
+  btn.classList.add('active');
+}
+
 addDateListeners();
+
+const todayBtn = document.getElementById('todayBtn');
+const monthBtn = document.getElementById('monthBtn');
+const threeMonthBtn = document.getElementById('threeMonthBtn');
+const wholePeriodBtn = document.getElementById('wholePeriodBtn');
+
+todayBtn.addEventListener('click', handleClick);
+monthBtn.addEventListener('click', handleClick);
+threeMonthBtn.addEventListener('click', handleClick);
+wholePeriodBtn.addEventListener('click', handleClick);

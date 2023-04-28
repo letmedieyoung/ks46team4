@@ -2,6 +2,7 @@ package ks46team04.admin.dto;
 
 public class Goods {
 
+	private String listNo;
 	private String goodsCode;
 	private String goodsName;
 	private String goodsCompany;
@@ -9,8 +10,15 @@ public class Goods {
 	private String goodsPrice;
 	private String goodsRegId;
 	private String goodsRegDate;
-	private String goodsUpdateId;
-	private String goodsUpdateDate;
+	private String goodsUpdId;
+	private String goodsUpdDate;
+	
+	public String getListNo() {
+		return listNo;
+	}
+	public void setListNo(String listNo) {
+		this.listNo = listNo;
+	}
 	public String getGoodsCode() {
 		return goodsCode;
 	}
@@ -53,24 +61,24 @@ public class Goods {
 	public void setGoodsRegDate(String goodsRegDate) {
 		this.goodsRegDate = goodsRegDate;
 	}
-	public String getGoodsUpdateId() {
-		return goodsUpdateId;
+	public String getGoodsUpdId() {
+		return goodsUpdId;
 	}
-	public void setGoodsUpdateId(String goodsUpdateId) {
-		this.goodsUpdateId = goodsUpdateId;
+	public void setGoodsUpdId(String goodsUpdId) {
+		this.goodsUpdId = goodsUpdId;
 	}
-	public String getGoodsUpdateDate() {
-		return goodsUpdateDate;
+	public String getGoodsUpdDate() {
+		return goodsUpdDate;
 	}
-	public void setGoodsUpdateDate(String goodsUpdateDate) {
-		this.goodsUpdateDate = goodsUpdateDate;
+	public void setGoodsUpdDate(String goodsUpdDate) {
+		this.goodsUpdDate = goodsUpdDate;
 	}
 	@Override
 	public String toString() {
-		return "Goods [goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany=" + goodsCompany
-				+ ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId=" + goodsRegId
-				+ ", goodsRegDate=" + goodsRegDate + ", goodsUpdateId=" + goodsUpdateId + ", goodsUpdateDate="
-				+ goodsUpdateDate + "]";
+		return "Goods [listNo=" + listNo + ", goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany="
+				+ goodsCompany + ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId="
+				+ goodsRegId + ", goodsRegDate=" + goodsRegDate + ", goodsUpdId=" + goodsUpdId + ", goodsUpdDate="
+				+ goodsUpdDate + "]";
 	}
 	
 }

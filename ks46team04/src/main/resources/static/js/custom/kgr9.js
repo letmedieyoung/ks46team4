@@ -4,9 +4,15 @@
 $('#allCheck').click(function () {
 	$('.checks').prop('checked', $(this).prop('checked'));
 });
-
-
-
+$('.checks').click(function () {
+	let length = $('.checks').length;
+	let checkedLength = $('.checks:checked').length;
+	if (length == checkedLength) {
+		$('#allCheck').prop('checked', true);
+	} else {
+		$('#allCheck').prop('checked', false);
+	}
+});
 
 /**
  * totalSearchBtn 전체검색 버튼
@@ -21,6 +27,14 @@ $('#totalSearchBtn').click(function(){
 $('#searchBtn').click(function(){
 	 location.reload();
 });
+
+/**
+ * returnBtn 뒤로가기 버튼
+ */
+$('#returnBtn').click(function(){
+	 history.go(-1);
+});
+
 
 
 /**
@@ -55,7 +69,7 @@ $(function(){
 		const inputGroup = $('#addGoodsForm input');
 		let isSubmit = true;
 		inputGroup.each(function(idx, item){
-			isSubmit = validationCheck(item);
+		isSubmit = validationCheck(item);
 			if(!isSubmit) {
 				let msg = $(item).parents('tr').find('label').text();
 				alert(msg + '입력해주세요.');

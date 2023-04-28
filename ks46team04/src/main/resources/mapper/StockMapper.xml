@@ -25,8 +25,8 @@
 		<result column="incoming_outcoming_date"					property="inOutcomingDate"/>
 		<result column="incoming_outcoming_reg_id"					property="inOutcomingRegId"/>
 		<result column="incoming_outcoming_reg_date"				property="inOutcomingRegDate"/>
-		<result column="incoming_outcoming_update_id"				property="inOutcomingUpdateId"/>
-		<result column="incoming_outcoming_update_date"				property="inOutcomingUpdateDate"/>
+		<result column="incoming_outcoming_update_id"				property="inOutcomingUpdId"/>
+		<result column="incoming_outcoming_update_date"				property="inOutcomingUpdDate"/>
 	</resultMap>
 	
 	<resultMap type="OutcomingDetail" id="outcomingDetailResultMap">
@@ -39,8 +39,8 @@
 		<result column="foundation_code"							property="foundationCode"/>
 		<result column="outcoming_reg_id"							property="outcomingDetailRegId"/>
 		<result column="outcoming_reg_date"							property="outcomingDetailRegDate"/>
-		<result column="outcoming_update_id"						property="outcomingDetailUpdateId"/>
-		<result column="outcoming_update_date"						property="outcomingDetailUpdateDate"/>
+		<result column="outcoming_update_id"						property="outcomingDetailUpdId"/>
+		<result column="outcoming_update_date"						property="outcomingDetailUpdDate"/>
 	</resultMap>
 		
 	<resultMap type="UnusualStock" id="unusualStockResultMap">
@@ -52,41 +52,29 @@
 		<result column="unusual_stock_reason"						property="unusualStockReason"/>
 		<result column="unusual_stock_reg_id"						property="unusualStockRegId"/>
 		<result column="unusual_stock_reg_date"						property="unusualStockRegDate"/>
-		<result column="unusual_stock_update_id"					property="unusualStockUpdateId"/>
-		<result column="unusual_stock_update_date"					property="unusualStockUpdateDate"/>
+		<result column="unusual_stock_update_id"					property="unusualStockUpdId"/>
+		<result column="unusual_stock_update_date"					property="unusualStockUpdDate"/>
 	</resultMap>	
 	
-	<select id="getStockList" resultMap="stockResultMap">
-		/* 상품 재고 조회 */
-		SELECT
-			goods_stock_code
-			, goods_code
-			, goods_lot_number
-			, current_stock_amount
-			, stocktaking_check
-			, stocktaking_date
-			, goods_expiry_date
-			, final_stock_amount
-			, unusual_stock_amount
-			, unusual_stock_check
-		FROM
-			goods_stock;
-	</select>
 	
-	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
-		/* 상품 입출고 조회 */
-		SELECT 
-			incoming_outcoming_history_code
+	
+	
+	
+	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
+		/* 비정상 재고 조회 */
+		SELECT
+			unusual_stock_detail_code
 			, goods_code
-			, incoming_outcoming_quantity
-			, incoming_outcoming_type
-			, incoming_outcoming_date
-			, incoming_outcoming_reg_id
-			, incoming_outcoming_reg_date
-			, incoming_outcoming_update_id
-			, incoming_outcoming_update_date
+			, goods_stock_code
+			, unusual_stock_quantity
+			, unusual_stock_date
+			, unusual_stock_reason
+			, unusual_stock_reg_id
+			, unusual_stock_reg_date
+			, unusual_stock_update_id
+			, unusual_stock_update_date
 		FROM
-			incoming_outcoming_history;
+			unusual_stock_detail;
 	</select>
 	
 	<select id="getOutcomingDetailList" resultMap="outcomingDetailResultMap">
@@ -107,21 +95,37 @@
 			outcoming_detail;
 	</select>
 	
-	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
-		/* 비정상 재고 조회 */
-		SELECT
-			unusual_stock_detail_code
+	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
+		/* 상품 입출고 조회 */
+		SELECT 
+			incoming_outcoming_history_code
 			, goods_code
-			, goods_stock_code
-			, unusual_stock_quantity
-			, unusual_stock_date
-			, unusual_stock_reason
-			, unusual_stock_reg_id
-			, unusual_stock_reg_date
-			, unusual_stock_update_id
-			, unusual_stock_update_date
+			, incoming_outcoming_quantity
+			, incoming_outcoming_type
+			, incoming_outcoming_date
+			, incoming_outcoming_reg_id
+			, incoming_outcoming_reg_date
+			, incoming_outcoming_update_id
+			, incoming_outcoming_update_date
 		FROM
-			unusual_stock_detail;
+			incoming_outcoming_history;
+	</select>
+	
+	<select id="getStockList" resultMap="stockResultMap">
+		/* 상품 재고 조회 */
+		SELECT
+			goods_stock_code
+			, goods_code
+			, goods_lot_number
+			, current_stock_amount
+			, stocktaking_check
+			, stocktaking_date
+			, goods_expiry_date
+			, final_stock_amount
+			, unusual_stock_amount
+			, unusual_stock_check
+		FROM
+			goods_stock;
 	</select>
 	
 </mapper>

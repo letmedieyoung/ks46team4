@@ -8,6 +8,7 @@ import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
+import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.dto.Goods;
 
@@ -76,4 +77,31 @@ public interface DonationMapper {
 
 	/* 정기기부 월별 결제 합계 조회 */
 	public List<DonationMonthPay> getDonationMonthPay();
+	
+	/* 정기기부 월별 결제 합계 등록 */
+	public int addDonationMonthPay(DonationMonthPay donationMonthPay);
+	
+	/* 특정 정기기부 월별 결제 합계 조회 */
+ 	public DonationMonthPay getDonationMonthPayInfoByCode(String donationMonthPayCode);
+ 	
+	/* 정기기부 월별 결제 합계 수정 */
+	public int modifyDonationMonthPay(DonationMonthPay DonationMonthPay);
+	
+	/* 정기기부 월별 결제 합계 삭제 */
+	public int removeDonationMonthPay(DonationMonthPay DonationMonthPay);
+	
+	/* 정기기부 환불 조회 */
+	public List<DonationRefund> getDonationRefund();
+	
+	/* 정기기부 환불 등록 */
+	public int addDonationRefund(DonationRefund donationRefund);
+	
+	/* 특정 정기기부 환불 조회 */
+ 	public DonationRefund getDonationRefundInfoByCode(String donationRefundCode);
+ 	
+	/* 정기기부 환불 수정 */
+	public int modifyDonationRefund(DonationRefund donationRefund);
+	
+	/* 정기기부 환불 삭제 */
+	public int removeDonationRefund(DonationRefund donationRefund);
 }
