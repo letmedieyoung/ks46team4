@@ -70,7 +70,7 @@ public class FundingController {
 		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
 		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
 		
-		model.addAttribute("title", "펀딩수정");	
+		model.addAttribute("title", "펀딩 정보 수정");	
 		model.addAttribute("foundationNameList", foundationNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		model.addAttribute("fundingInfo", fundingInfo);
@@ -88,7 +88,7 @@ public class FundingController {
 		
 		List<Funding> fundingList = fundingService.getFundingList();
 			
-		model.addAttribute("title", "펀딩목록조회");
+		model.addAttribute("title", "펀딩 관리");
 		model.addAttribute("fundingList", fundingList);
 		
 		return "admin/funding/manage";
@@ -159,7 +159,7 @@ public class FundingController {
 	@GetMapping("/current_amount")
 	public String exam2(Model model){
 	
-		model.addAttribute("title", "current_amount");
+		model.addAttribute("title", "펀딩 별 진행현황");
 		model.addAttribute("content", "컨텐츠 별 진행 현황");
 		
 		return "admin/funding/current_amount";
@@ -168,32 +168,32 @@ public class FundingController {
 	
 	
 	/**
-	 * 펀딩 결제내역 수정 처리
+	 * 펀딩 결제내역 상세 확인 처리
 	 * @param fundingPay
 	 * @return
 	 */
-	@PostMapping("/modifyFundingPay")
-	public String modifyFundingPay(FundingPay fundingPay) {		
+	@PostMapping("/detailFundingPay")
+	public String detailFundingPay(FundingPay fundingPay) {		
 		
-		fundingMapper.modifyFundingPay(fundingPay);
+		fundingMapper.detailFundingPay(fundingPay);
 		
 		return "redirect:/admin/funding/payments";
 	}
 	/**
-	 * 펀딩 결제내역 수정 화면
+	 * 펀딩 결제내역 상세 정보 화면
 	 * @param fundingPayCode
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/modifyFundingPay")
-	public String modifyFundingPay(@RequestParam(name="fundingPayCode") String fundingPayCode, Model model) {
+	@GetMapping("/detailFundingPay")
+	public String detailFundingPay(@RequestParam(name="fundingPayCode") String fundingPayCode, Model model) {
 		
 		FundingPay fundingPayInfo = fundingService.getFundingPayInfoByCode(fundingPayCode);		
 		
-		model.addAttribute("title", "펀딩결제내역수정");		
+		model.addAttribute("title", "펀딩 결제내역 상세정보");		
 		model.addAttribute("fundingPayInfo", fundingPayInfo);		
 		
-		return "admin/funding/modifyFundingPay";
+		return "admin/funding/detailFundingPay";
 	}	
 	/**
 	 * 펀딩 결제내역 조회
@@ -204,7 +204,7 @@ public class FundingController {
 	public String payments(Model model){
 		List<FundingPay> fundingPayList = fundingService.getFundingPayList();
 		log.info("fundingPayList_Service: {}", fundingPayList);
-		model.addAttribute("title", "funding_payments");
+		model.addAttribute("title", "펀딩 결제내역");
 		model.addAttribute("fundingPayList", fundingPayList);
 		
 		return "admin/funding/payments";
@@ -234,7 +234,7 @@ public class FundingController {
 						
 		FundingRefund fundingRefundInfo = fundingService.getFundingRefundInfoByCode(fundingRefundCode);		
 		
-		model.addAttribute("title", "펀딩환불내역");		
+		model.addAttribute("title", "펀딩 환불내역 수정");		
 		model.addAttribute("fundingRefundInfo", fundingRefundInfo);		
 		
 		return "admin/funding/modifyFundingRefund";
@@ -252,7 +252,7 @@ public class FundingController {
 				
 		//log.info("refundList_Service: {}", refundList);
 		
-		model.addAttribute("title", "refund");
+		model.addAttribute("title", "펀딩 환불관리");
 		model.addAttribute("refundList", refundList);
 		
 		return "admin/funding/refund";

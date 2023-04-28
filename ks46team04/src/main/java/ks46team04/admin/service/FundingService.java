@@ -81,11 +81,11 @@ public class FundingService {
 	
 		
 	/**
-	 * 펀딩 결제내역 수정
+	 * 펀딩 결제내역 상세 정보
 	 * @param fundingPay
 	 */
-	public void modifyFundingPay(FundingPay fundingpay) {
-		fundingMapper.modifyFundingPay(fundingpay);
+	public void detailFundingPay(FundingPay fundingpay) {
+		fundingMapper.detailFundingPay(fundingpay);
 	}
 	/**
 	 * 특정 펀딩 결제내역 조회

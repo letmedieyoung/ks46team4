@@ -12,6 +12,13 @@ $('#modifyBtn').click(function(){
 	$("#modifyFundingForm").submit();
 });
 
+/* 확인버튼 */ 
+$(document).ready(function() {
+  $('#confirmBtn').click(function() {
+    location.href='/admin/funding/payments'
+  });
+});
+
 /* 검색 결과 초기화 */
 $("#searchReset").click(function(){	
 	location.reload();

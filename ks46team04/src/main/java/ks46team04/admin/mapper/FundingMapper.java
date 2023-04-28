@@ -30,8 +30,8 @@ public interface FundingMapper {
 	// 펀딩 삭제
 	public int deleteFunding(Funding funding);	
 	
-	// 결제내역 수정
-	public int modifyFundingPay(FundingPay fundingPay);
+	// 결제내역 상세 정보 확인
+	public int detailFundingPay(FundingPay fundingPay);
 	// 특정 펀딩 결제내역 조회
 	public FundingPay getFundingPayInfoByCode(String fundingPayCode);
 	// 펀딩 결제내역 조회
