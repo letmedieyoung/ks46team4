@@ -9,7 +9,7 @@ public class Donation {
 	private String donationRegDate;
 	private String donationUpdateId;
 	private String donationUpdateDate;
-	
+
 	public String getDonationCode() {
 		return donationCode;
 	}
