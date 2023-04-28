@@ -13,67 +13,54 @@
 		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
-				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 단가 수정</h5>
+				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 월별 결제 합계 수정</h5>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<form id="modifyDonationForm" th:action="@{/admin/donation/donation_modify}" method="post">
-						<table th:object="${donationInfo}" class="table table-bordered freg" id="modifyDonation" width="100%" cellspacing="0">
+					<form id="modifyDonationMonthPayForm" th:action="@{/admin/donation/donationMonthPay_modify}" method="post">
+						<table th:object="${donationMonthPayInfo}" class="table table-bordered freg" id="modifyDonationMonthPay" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th>코드</th>
+									<td><input type="text" id="donationMonthPayCode"
+										th:value="*{donationMonthPayCode}" name="donationMonthPayCode"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>정기기부 콘텐츠 코드</th>
 									<td><input type="text" id="donationCode"
 										th:value="*{donationCode}" name="donationCode"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>콘텐츠명</th>
-									<td><input type="text" id="donationName"
-										th:value="*{donationName}" name="donationName"
-										style="width: 400px;" placeholder="콘텐츠명을 입력해주세요." /></td>
+									<th>연도</th>
+									<td><input type="text" id="donationMonthPayYear"
+										th:value="*{donationMonthPayYear}" name="donationMonthPayYear"
+										style="width: 400px;" placeholder="연도를 입력해주세요." /></td>
 								</tr>
 								<tr>
-									<th>콘텐츠 금액</th>
-									<td><input type="number" id="donationPrice"
-										th:value="*{donationPrice}" name="donationPrice"
-										style="width: 400px;" placeholder="콘텐츠 금액을 입력해주세요." /><span>원</span></td>
+									<th>월</th>
+									<td><input type="text" id="donationMonthPayMonth"
+										th:value="*{donationMonthPayMonth}" name="donationMonthPayMonth"
+										style="width: 400px;" placeholder="월을 입력해주세요." /></td>
 								</tr>
 								<tr>
-									<th>콘텐츠 상세설명</th>
-									<td><input type="text" id="donationDescription"
-										th:value="*{donationDescription}" name="donationDescription"
-										style="width: 400px; height: 200px;"
-										placeholder="콘텐츠 상세설명을 입력해주세요." /></td>
+									<th>총 결제금액</th>
+									<td><input type="number" id="donationMonthPayAmount"
+										th:value="*{donationMonthPayAmount}" name="donationMonthPayAmount"
+										style="width: 400px;" placeholder="총 결제금액을 입력해주세요." /><span>원</span></td>
 								</tr>
 								<tr>
-									<th>등록자</th>
-									<td><input type="text" id="donationRegId"
-										th:value="*{donationRegId}" name="donationRegId"
+									<th>월 마감 그룹 코드</th>
+									<td><input type="text" id="donationMonthPayDeadlineGroup"
+										th:value="*{donationMonthPayDeadlineGroup}" name="donationMonthPayDeadlineGroup"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>등록일자</th>
-									<td><input type="text" id="donationRegDate"
-										th:value="*{donationRegDate}" name="donationRegDate"
-										style="width: 400px;" readonly="readonly" /></td>
-								</tr>
-								<tr>
-									<th>수정자</th>
-									<td><input type="text" id="donationUpdateId"
-										th:value="*{donationUpdateId}" name="donationUpdateId"
-										style="width: 400px;" placeholder="수정자 아이디를 입력해주세요." /></td>
-								</tr>
-								<tr>
-									<th>수정일자</th>
-									<td><input type="text" id="donationUpdateDate"
-										th:value="*{donationUpdateDate}" name="donationUpdateDate"
-										style="width: 400px;" readonly="readonly" /></td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button>
+									<td colspan="2"> <div style="display: flex; justify-content: center;">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
 										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donation_list'">입력취소</button>
+											onclick="location.href='/admin/donation/donationMonthPay_list'">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>

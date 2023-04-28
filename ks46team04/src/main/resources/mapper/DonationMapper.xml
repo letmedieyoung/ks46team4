@@ -312,4 +312,47 @@
 		FROM
 			month_regular_donation_payment;
 	</select>
+	
+	<insert id="addDonationMonthPay" parameterType="DonationMonthPay">
+		/* 정기기부 월별 결제 합계 등록 */
+		INSERT INTO month_regular_donation_payment
+		(month_regular_donation_payment_code, regular_donation_code, payment_year, payment_month,
+		total_payment_amount, donation_monthly_deadline_group)
+		VALUES
+		(#{donationMonthPayCode}, #{donationCode}, #{donationMonthPayYear}, #{donationMonthPayMonth},
+		 #{donationMonthPayAmount}, #{donationMonthPayDeadlineGroup});		
+	</insert>
+	
+	<select id="getDonationMonthPayInfoByCode" resultType="DonationMonthPay" parameterType="String">
+		/* 특정 정기기부 월별 결제 합계 조회*/
+		SELECT
+			month_regular_donation_payment_code AS `donationMonthPayCode`
+			, regular_donation_code AS `donationCode`
+			, payment_year AS `donationMonthPayYear`
+			, payment_month AS `donationMonthPayMonth`
+			, total_payment_amount AS `donationMonthPayAmount`
+			, donation_monthly_deadline_group AS `donationMonthPayDeadlineGroup`
+		FROM
+			month_regular_donation_payment
+		WHERE
+			month_regular_donation_payment_code = #{donationMonthPayCode};
+	</select>
+	
+	<update id="modifyDonationMonthPay" parameterType="DonationMonthPay">
+		/* 정기기부 월별 결제 합계 수정 */
+		UPDATE month_regular_donation_payment
+		<set>
+			<if test="donationMonthPayYear != null and donationMonthPayYear !=''">
+				payment_year  = #{donationMonthPayYear}
+			</if>
+			<if test="donationMonthPayMonth != null and donationMonthPayMonth !=''">
+				,payment_month  = #{donationMonthPayMonth}
+			</if>
+			<if test="donationMonthPayAmount != null and donationMonthPayAmount !=''">
+				,total_payment_amount  = #{donationMonthPayAmount}
+			</if>
+		</set>
+		WHERE
+			month_regular_donation_payment_code = #{donationMonthPayCode};
+	</update>
 </mapper>

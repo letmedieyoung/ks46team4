@@ -31,7 +31,7 @@
 			<!-- DataTales Example -->
 			<div class="card mb-4">
 				<div class="card-header py-3">
-					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 월별 결제 합계</h5>
+					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 월별 결제 합계 조회</h5>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -49,7 +49,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:unless="${DonationMonthPay == null}" th:each=" l : ${DonationMonthPay}">
+								<tr th:unless="${getDonationMonthPay == null}" th:each=" l : ${getDonationMonthPay}">
 									<td th:text="${l.donationMonthPayCode}"></td>
 									<td th:text="${l.donationCode}"></td>
 									<td th:text="${l.donationMonthPayYear}"></td>
@@ -64,12 +64,14 @@
 										
 									</td>
 								</tr>
-								<tr th:if="${DonationMonthPay == null}">
+								<tr th:if="${getDonationMonthPay == null}">
 									<td colspan="11">등록된 정기기부 월별 결제 합계 정보가 없습니다</td>
 								</tr>
 						</table>
-					</div> <button type="button" class="btn btn-primary" id="addBtn"
-								onclick="location.href='/admin/donation/donationMonthPay_add'">등록하기</button>
+					</div>
+						<div style="display: flex; justify-content: center;">
+						<button type="button" class="btn btn-primary" id="addBtn"
+								onclick="location.href='/admin/donation/donationMonthPay_add'">등록하기</button></div>
 				</div>
 			</div>
 
