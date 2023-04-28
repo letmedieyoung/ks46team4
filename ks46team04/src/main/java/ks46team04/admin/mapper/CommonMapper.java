@@ -1,4 +1,4 @@
-package ks46team04.common.mapper;
+package ks46team04.admin.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
