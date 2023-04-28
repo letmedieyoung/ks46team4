@@ -6,6 +6,7 @@ package ks46team04.admin.controller;
 
 import java.util.List;
 
+
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -233,9 +234,11 @@ List<UserSleep> userSleepList = userService.getUserSleepList();
 	public String addUser(Model model) {
 		
 		List<UserLevel> userLevelList = userService.getUserLevelList();
+		List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
 		
 		model.addAttribute("title", "회원가입");
 		model.addAttribute("userLevelList", userLevelList);
+		model.addAttribute("activityStatusList", activityStatusList);
 		
 		return "admin/user/addUser";
 	}
