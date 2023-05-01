@@ -33,6 +33,7 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 	
+	
 	public List<User> getUserDetailList(String userId){
 		
 		List<User> userDetailList = userMapper.getUserDetailList(userId);
