@@ -59,7 +59,7 @@
 			
 			<div class="card-body">
 				<p>
-					지정값 부르기를 하면, 지정해둔 테스트 값을 폼에 불러옵니다.<br>
+					지정값 부르기를 하면 지정해둔 테스트 값을 폼에 불러옵니다.<br>
 					단, 아이디가 중복되어 수정이 필요할 수도 있습니다.<br>
 					입력된 값을 리셋하고 싶다면 하단의 [입력리셋] 버튼을 눌러주세요.
 				<p>
@@ -654,7 +654,9 @@
 				}
 			});	//each문 끝
 			
-			
+						
+			if(isSubmit){
+				
 				//연락처 통합 ('-')로 연결
 				const userFirstTel = $('#userFirstTel').val();
 				const userSecondTel = $('#userSecondTel').val();
@@ -672,8 +674,7 @@
 					let fullAddress = `[${userPostCode}] ${userAddr} ${userAddrDetail}`;
 	
 					console.log(fullAddress);
-				}			
-			if(isSubmit){
+				}
 				$addUserForm.submit();
 			}
 		});
