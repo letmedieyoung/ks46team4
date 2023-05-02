@@ -1,7 +1,6 @@
 package ks46team04.admin.controller;
 
 import java.util.List;
-
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -215,7 +214,7 @@ public class UserController {
 
 	@PostMapping("/addUser")
 	public String addUser(User user) {
-		log.info("화면에서 전달받은 데이터 : {}", user);
+		log.info("화면에서 전달받은 데이터(user) : {}", user);
 		userService.addUser(user);
 		return "redirect:/admin/user/userList";
 	}
