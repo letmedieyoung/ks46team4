@@ -75,7 +75,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text"
+											<input type="text" maxlength="12"
 												class="form-control form-control-user-search search-input-gr"
 												 id="userId" name="userId" placeholder="영문+숫자 6~12자 이내" />
 											&nbsp;
@@ -116,8 +116,9 @@
 										<span class="required-fields">*</span>
 									</th>
 									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="password" 	class="form-control form-control-user-search search-input-gr"
+										<div class="form-row align-items-center search-schedule pw">
+											<input type="password" maxlength="20" 	
+												class="form-control form-control-user-search search-input-gr"
 												 id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내" />
 											<span class="required-text-pw"></span>
 										</div>
@@ -129,8 +130,9 @@
 										<span class="required-fields">*</span>
 									</th>
 									<td>
-										<div class="form-row align-items-center search-schedule">	
-											<input type="password" class="form-control form-control-user-search search-input-gr"
+										<div class="form-row align-items-center search-schedule pwCheck">	
+											<input type="password" maxlength="20"
+													class="form-control form-control-user-search search-input-gr"
 												 id="userPwCheck" name="userPwCheck" placeholder="비밀번호 확인" />
 											<span class="required-text-pw"></span>
 										</div>
@@ -144,7 +146,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text"
+											<input type="text" maxlength="24"
 												class="form-control form-control-user-search search-input-gr"
 												id="userName" name="userName" placeholder="예) 홍길동" />
 											<span class="required-text"></span>
@@ -198,12 +200,12 @@
                                                 <option value="070">070</option> -->
 											</select>
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
-											<input type="text"
+											<input type="text" maxlength="4"
 												class="form-control form-control-user-search search-input-gr-half"
 												id="userSecondTel" name="userSecondTel"
 												placeholder="0000" />
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
-											<input type="text"
+											<input type="text" maxlength="4"
 												class="form-control form-control-user-search search-input-gr-half"
 												id="userThirdTel" name="userThirdTel"
 												placeholder="0000" />
@@ -251,17 +253,24 @@
 									<td>
 										<div class=" align-items-center search-schedule">
 											<input type="text"
-												class="form-control form-control-user-search search-input-gr"
-												id="userAddr" name="userAddr" placeholder="주소를 입력해주세요." />
+												class="form-control form-control-user-search search-input-gr-half-two"
+												id="userPostCode" name="userPostCode" placeholder="우편번호" readonly/>
 											&nbsp;
-											<button type="button" id="checkBtn2"
+											<button type="button" id="checkBtn2" onclick="DaumPostcode()"
 												class="btn btn-primary btn-icon-split" style="margin-left: -9px;">
-												<span class="text">주소 검색</span>
+												<span class="text">우편번호 찾기</span>
 											</button>
 											<div style="padding: 5px 0;"></div>
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
-												id="userAddrDetail" name="userAddrDetail" placeholder="상세주소를 입력해주세요" />
+												id="userAddr" name="userAddr" placeholder="주소" readonly/>
+											<input type="text"
+											class="form-control form-control-user-search search-input-gr-half-two"
+											id="userExtraAddress" name="userExtraAddress" placeholder="참고항목" readonly/>
+											<div style="padding: 5px 0;"></div>
+											<input type="text"
+												class="form-control form-control-user-search search-input-gr"
+												id="userAddrDetail" name="userAddrDetail" placeholder="상세주소" />
 										</div>
 									</td>
 								</tr>
@@ -296,6 +305,7 @@
 <th:block layout:fragment="customJs">
 	<script>	
 		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값, submit 할 때 검사
+		let isPwCheck = false;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사
 		
 		// 값 여부 체크
 		function validationCheck(ele){
@@ -364,16 +374,15 @@
 		
 		$('#userId').change(function(){
 			isIdCheck = false;
-			console.log(`${isIdCheck} <- 아이디 체크 여부`);
 		});
 		
 		
 		//비밀번호-------------------------
 		$('#userPw').on('input', function(event){
+			isPwCheck = false;
 			const $userPwEle = $('#userPw');
 			const userPw = $userPwEle.val();
 			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
-			let $rqTextPwCheck = $userPwEle.siblings('.required-text-pw');
 			let msg = '';
 			
 			console.log(userPw);
@@ -399,6 +408,7 @@
 			
 			/* if(userPw.length < 8){
 				msg = `*글자 수가 적습니다(8~20자 이내)`;
+				
 			}else if(userPw.length > 20){
 				msg = `*글자 수가 많습니다(8~20자 이내)`;
 			}else if(regPwForm.test(userPw)){
@@ -409,13 +419,213 @@
 			} */
 			
 			if(pwColor === 1){
-				$('.required-text-pw').css("color", "red");
+				$('.pw > .required-text-pw').css("color", "red");
 			}else{
-				$('.required-text-pw').css("color", "green");
+				$('.pw > .required-text-pw').css("color", "green");
 			}
 			$rqTextPw.text(msg);
+			
+			pwCheck();
+		});
+	
+		
+		//비밀번호 확인-------------------------
+		$('#userPwCheck').on('input', function(event){
+			pwCheck();
+		});
+		//비밀번호 확인 함수-------------------------
+		function pwCheck(){
+			const $userPwEle = $('#userPw');
+			const userPw = $userPwEle.val();
+			
+			const $userPwCheckEle = $('#userPwCheck');
+			const userPwCheck = $userPwCheckEle.val();
+			
+			let $rqTextPwCheck = $userPwCheckEle.siblings('.required-text-pw');
+			let msg = '';
+			let pwColor = 1;
+			let checkResult = false;
+			if(typeof userPwCheck != 'undefined' &&	userPwCheck != null &&
+					userPwCheck != ''){
+				if(userPwCheck.length == userPw.length && userPw === userPwCheck){
+					pwColor = 2;
+					msg = `✔ 비밀번호가 일치합니다.`;
+					checkResult = true;
+				}else{
+					msg = `*비밀번호가 일치하지 않습니다.`;
+					checkResult = false;
+				}
+				
+				if(pwColor === 1){
+					$('.pwCheck > .required-text-pw').css("color", "red");
+				}else{
+					$('.pwCheck > .required-text-pw').css("color", "green");
+				}
+				$rqTextPwCheck.text(msg);
+				return checkResult;
+			}
+		}
+		//날짜 확인 -------------------------
+		//170살을 넘을 수 없음. 오늘 날짜를 넘길 수 없음.
+		//오늘 날짜를 파악하는 함수
+		$('#userBirth').on('input', function(){
+			//서버에서 한국 표준시 가져오기
+			let xmlHttpRequest;
+			if(window.XMLHttpRequest){// code for Firefox, Mozilla, IE7, etc.
+				xmlHttpRequest = new XMLHttpRequest();
+			}else if(window.ActiveXObject){// code for IE5, IE6
+				xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			}else{
+				return;
+			}
+
+			xmlHttpRequest.open('HEAD', window.location.href.toString(), false);
+			xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+			xmlHttpRequest.send('');
+
+			let serverDate = xmlHttpRequest.getResponseHeader("Date");
+			const today = new Date(serverDate);
+			console.log(today);
+			//표준시 가져오기 end
+			
+			const minBirthDate = new Date(today.getFullYear() - 150, today.getMonth(), today.getDate());
+			
+			const selectedBirthDate = $('#userBirth').val();
+			const [year, month, day] = selectedBirthDate.split('-');
+			const userBirthDate = new Date(year, month-1, day);
+			if (userBirthDate > today) {
+			 	// 생년월일이 오늘을 넘거나
+			 	alert('생년월일은 오늘을 넘길 수 없습니다.');
+			 	$('#userBirth').val('');
+			 	$('#userBirth').focus();
+			}else if(userBirthDate < minBirthDate){
+				//150살 이상을 선택
+				alert('150살을 넘도록 설정하였습니다.');
+				$('#userBirth').val('');
+			 	$('#userBirth').focus();
+			}
+			
 		});
 		
+		//연락처 입력-------------------------
+		function validateFourDigitNumber(userTel) {
+			console.log(userTel);
+			if (/^\d{4}$/.test(userTel)) {
+				
+		    	return true;
+			} else {
+				
+				return false;
+		 	}
+		}
+		
+		$('#userSecondTel').on('blur', function(){
+			let $userSecondTelEle = $('#userSecondTel');
+			let userSecondTel = $('#userSecondTel').val();
+			let numberCheck = validateFourDigitNumber(userSecondTel);	
+			let $rqTextPwCheck = $userSecondTelEle.siblings('.required-text');
+			
+			if(typeof userSecondTel != 'undefined' && userSecondTel != null &&
+					userSecondTel != '' && !(/\s{1,}/.test(userSecondTel))){
+				let numberCheck = validateFourDigitNumber(userSecondTel);	
+				if(numberCheck == false){
+					$rqTextPwCheck.text(`*번호 네 자리를 입력하세요`);
+					$userSecondTelEle.val('');
+					$userSecondTelEle.focus();
+				}else{
+					$rqTextPwCheck.text('');
+				}
+			}
+		});
+		
+		$('#userThirdTel').on('blur', function(){
+			let $userThirdTelEle = $('#userThirdTel');
+			let userThirdTel = $('#userThirdTel').val();
+			
+			let $rqTextPwCheck = $userThirdTelEle.siblings('.required-text');
+			
+			if(typeof userThirdTel != 'undefined' && userThirdTel != null &&
+					userThirdTel != '' && !(/\s{1,}/.test(userThirdTel))){
+				let numberCheck = validateFourDigitNumber(userThirdTel);	
+				if(numberCheck == false){
+					$rqTextPwCheck.text(`*번호 네 자리를 입력하세요`);
+					$userThirdTelEle.val('');
+					$userThirdTelEle.focus();
+				}else{
+					$rqTextPwCheck.text('');
+				}
+			}
+		});
+		
+		//이메일 입력-------------------------
+		$('#userEmail').on('blur', function(){
+			const $emailEle = $('#userEmail');
+			const email = $('#userEmail').val();
+			const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			let $rqTextCheck = $emailEle.siblings('.required-text');
+			
+			if(emailPattern.test(email)){
+				$rqTextCheck.text('');
+			}else{
+				$rqTextCheck.text(`*이메일 형식에 맞지 않습니다`);
+			}
+		});
+	</script>
+	
+	
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+	    function DaumPostcode() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                var addr = ''; // 주소 변수
+	                var extraAddr = ''; // 참고항목 변수
+	
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+	
+	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                if(data.userSelectedType === 'R'){
+	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    // 건물명이 있고, 공동주택일 경우 추가한다.
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                    // 조합된 참고항목을 해당 필드에 넣는다.
+	                    document.getElementById('userExtraAddress').value = extraAddr;
+	                
+	                } else {
+	                    document.getElementById('userExtraAddress').value = '';
+	                }
+	
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById('userPostCode').value = data.zonecode;
+	                document.getElementById('userAddr').value = addr;
+	                // 커서를 상세주소 필드로 이동한다.
+	                document.getElementById('userAddrDetail').focus();
+	            }
+	        }).open();
+	    }
+	</script>
+	<script>
+	//필수항목 체크 후 제출 기능, insert문 작성
+	//상단에 버튼 하나 만들어두고 값 넣어두기
 	</script>
 </th:block>
 
