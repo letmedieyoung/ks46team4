@@ -71,8 +71,7 @@
 				<p>
 					<span class="required-fields">*</span> 은 필수 입력 사항입니다.
 				</p>
-				<form id="addUserForm" th:action="@{admin/user/addUser}"
-				method="post">
+				<form id="addUserForm" th:action="@{/admin/user/addUser}" method="post">
 
 					<div class="table-responsive">
 						<table class="table table-bordered search-table-gr table-layout"
@@ -108,7 +107,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary required-form" id="userRank">
+											<select class="dropdown btn btn-primary required-form" id="userLevel" name="userLevel">
 													<option value="0">:: 등급 설정 ::</option>
 													<option value="1">관리자</option>
 													<option value="2">회원</option>
@@ -256,7 +255,7 @@
 									</td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100"><label for="userAddr">주소</label></th>
+									<th class="bg-gray-100"><label for="userPostCode">주소</label></th>
 									<td>
 										<div class=" align-items-center search-schedule">
 											<input type="text"
@@ -270,7 +269,7 @@
 											<div style="padding: 5px 0;"></div>
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
-												id="userAddr" name="userAddr" placeholder="주소" readonly/>
+												id="userAddrRoad" name="userAddrRoad" placeholder="주소" readonly/>
 											<input type="text"
 											class="form-control form-control-user-search search-input-gr-half-two"
 											id="userExtraAddress" name="userExtraAddress" placeholder="참고주소" readonly/>
@@ -386,7 +385,7 @@
 		
 		//비밀번호-------------------------
 		$('#userPw').on('input', function(event){
-			isPwCheck = 3;
+			isPwCheck = 2;
 			const $userPwEle = $('#userPw');
 			let userPw = $userPwEle.val();
 			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
@@ -457,10 +456,10 @@
 				if(userPwCheck.length == userPw.length && userPw === userPwCheck){
 					pwColor = 2;
 					msg = `✔ 비밀번호가 일치합니다.`;
-					isPwCheck = 2;
+					isPwCheck = 1;
 				}else{
 					msg = `*비밀번호가 일치하지 않습니다.`;
-					isPwCheck = 3;
+					isPwCheck = 2;
 				}
 				
 				if(pwColor === 1){
@@ -619,7 +618,7 @@
 	
 	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
 	                document.getElementById('userPostCode').value = data.zonecode;
-	                document.getElementById('userAddr').value = addr;
+	                document.getElementById('userAddrRoad').value = addr;
 	                // 커서를 상세주소 필드로 이동한다.
 	                document.getElementById('userAddrDetail').focus();
 	            }
@@ -642,47 +641,66 @@
 					alert(msg + '은(는) 필수항목입니다');
 					$(item).focus();
 					return false;
-					alert('아이디 중복 체크를 해주세요');
-					$('#checkBtn').focus();
-					return false;
-				}else if(isPwCheck == 3){
-					alert('비밀번호가 서로 다릅니다');
-					$('#userPw').val('');
-					$('#userPwCheck').val('');
-					$('#userPw').focus();
-					return false;
 				}
 			});	//each문 끝
 			
-						
-			if(isSubmit){
-				
+			if(isIdCheck == false){
+				alert('아이디를 중복 체크 해주세요');
+				$('#checkBtn').focus();
+				return false;
+			}else if(isPwCheck == 2){
+				alert('비밀번호가 서로 다릅니다');
+				$('#userPw').val('');
+				$('#userPwCheck').val('');
+				$('#userPw').focus();
+				return false;
+			}		
+			
+			console.log(isSubmit, isIdCheck, isIdCheck);
+			if(isSubmit == true && isIdCheck == true && isPwCheck == 1){
 				//연락처 통합 ('-')로 연결
 				const userFirstTel = $('#userFirstTel').val();
 				const userSecondTel = $('#userSecondTel').val();
 				const userThirdTel = $('#userThirdTel').val();
-				let UserTel = `${userFirstTel}-${userSecondTel}-${userThirdTel}`;
+				let UserTel = null; 
+				UserTel = `${userFirstTel}-${userSecondTel}-${userThirdTel}`;
 				console.log(UserTel);
+				
+				const hiddenTelNum = $('<input>').attr({
+					  type: 'hidden',
+					  name: 'userPhone',
+					  value: UserTel,
+					});
+				$addUserForm.append(hiddenTelNum);
 				
 				//우편번호 값이 존재하면 주소가 입력됐음으로 간주하고 주소지 문자열 통합
 				let userPostCode = $('#userPostCode').val();
-				if(typeof userPostCode != 'undefined' || userPostCode != null ||
+				if(typeof userPostCode != 'undefined' && userPostCode != null &&
 						userPostCode != ''){
 					//주소 문자열 일정 형식으로 통합 - [우편번호]주소(extraAddress), 상세주소 
-					let userAddr = $('#userAddr').val() + ($('#userExtraAddress').val() ? + $('#userExtraAddress').val() + ',' : '');
+					let userAddrRoad = $('#userAddrRoad').val() + ($('#userExtraAddress').val() ? $('#userExtraAddress').val() + ',' : '');
 					let userAddrDetail = $('#userAddrDetail').val();
-					let fullAddress = `[${userPostCode}] ${userAddr} ${userAddrDetail}`;
-	
+					let fullAddress = null; 
+					fullAddress = `[${userPostCode}] ${userAddrRoad} ${userAddrDetail}`;
+					
 					console.log(fullAddress);
-				}
+						
+					const hiddenAddr = $('<input>').attr({
+						  type: 'hidden',
+						  name: 'userAddr',
+						  value: fullAddress,
+						});
+					$addUserForm.append(hiddenAddr);
+				}	
 				$addUserForm.submit();
 			}
 		});
 	
 		//이메일 입력-------------------------
 		$('#saveValue').click(function(){
+			isPwCheck = 1;
 			let userId = $('#userId').val(`dkssud1234`); 
-			let userRank = $('#userRank').val(`2`);
+			let userLevel = $('#userLevel').val(`2`);
 			let userPw = $('#userPw').val(`dkssud1234`);
 			let userPwCheck = $('#userPwCheck').val(`dkssud1234`);
 			let userName = $('#userName').val(`홍길동`);
@@ -692,8 +710,8 @@
 			let userThirdTel = $('#userThirdTel').val(`5678`);
 			let email = $('#userEmail').val(`emailEx00@gmail.com`);
 			let userPostCode = $('#userPostCode').val(`54888`);
-			let userAddr = $('#userAddr').val(`전북 전주시 덕진구 기린대로 499`)
-			let userExtraAddress = $('#userExtraAddress').val(` (덕진동1가)`)
+			let userAddrRoad = $('#userAddrRoad').val(`전북 전주시 덕진구 기린대로 499`)
+			let userExtraAddress = $('#userExtraAddress').val(`(덕진동1가)`)
 			let userAddrDetail = $('#userAddrDetail').val(`303호 한국스마트정보교육원`);
 		});
 	</script>
