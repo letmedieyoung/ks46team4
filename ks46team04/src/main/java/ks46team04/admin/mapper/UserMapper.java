@@ -16,6 +16,7 @@ import ks46team04.admin.dto.UserSleep;
 
 @Mapper
 public interface UserMapper {
+	
 	// 회원 탈퇴
 	public int removeUserById(String userId);
 	// 회원수정

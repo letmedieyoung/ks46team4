@@ -33,6 +33,7 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 	
+	
 	public List<User> getUserDetailList(String userId){
 		
 		List<User> userDetailList = userMapper.getUserDetailList(userId);
@@ -82,7 +83,7 @@ public class UserService {
 		return userInfo;
 	}
 	
-public int addUser(User user) {
+public int addUser(User user) {	
 	int result = userMapper.addUser(user);
 		
 	return result;
