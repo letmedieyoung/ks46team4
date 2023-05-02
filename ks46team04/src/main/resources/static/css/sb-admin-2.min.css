@@ -10381,6 +10381,14 @@ form.user .form-control-user-plus {
     padding: 1.13rem 1rem;
 }
 
+.search-input-gr-half-two {
+    width: 8rem;
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem;
+}
+
 .required-fields{
 	color: red;
 }
