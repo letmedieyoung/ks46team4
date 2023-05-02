@@ -59,6 +59,16 @@
 			
 			<div class="card-body">
 				<p>
+					지정값 부르기를 하면 지정해둔 테스트 값을 폼에 불러옵니다.<br>
+					단, 아이디가 중복되어 수정이 필요할 수도 있습니다.<br>
+					입력된 값을 리셋하고 싶다면 하단의 [입력리셋] 버튼을 눌러주세요.
+				<p>
+				<button type="button" id="saveValue"
+					class="btn btn-primary btn-icon-split">
+					<span class="text">지정값 부르기</span>
+				</button>
+				<hr>
+				<p>
 					<span class="required-fields">*</span> 은 필수 입력 사항입니다.
 				</p>
 				<form id="addUserForm" th:action="@{admin/user/addUser}"
@@ -76,7 +86,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" maxlength="12"
-												class="form-control form-control-user-search search-input-gr"
+												class="form-control form-control-user-search search-input-gr required-form"
 												 id="userId" name="userId" placeholder="영문+숫자 6~12자 이내" />
 											&nbsp;
 											<button type="button" id="checkBtn"
@@ -98,10 +108,8 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle"
-												id="dropdownMenuButton" data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false">
-													<option>:: 등급 설정 ::</option>
+											<select class="dropdown btn btn-primary required-form" id="userRank">
+													<option value="0">:: 등급 설정 ::</option>
 													<option value="1">관리자</option>
 													<option value="2">회원</option>
 											</select>
@@ -118,7 +126,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule pw">
 											<input type="password" maxlength="20" 	
-												class="form-control form-control-user-search search-input-gr"
+												class="form-control form-control-user-search search-input-gr required-form"
 												 id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내" />
 											<span class="required-text-pw"></span>
 										</div>
@@ -132,7 +140,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule pwCheck">	
 											<input type="password" maxlength="20"
-													class="form-control form-control-user-search search-input-gr"
+													class="form-control form-control-user-search search-input-gr required-form"
 												 id="userPwCheck" name="userPwCheck" placeholder="비밀번호 확인" />
 											<span class="required-text-pw"></span>
 										</div>
@@ -147,7 +155,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" maxlength="24"
-												class="form-control form-control-user-search search-input-gr"
+												class="form-control form-control-user-search search-input-gr required-form"
 												id="userName" name="userName" placeholder="예) 홍길동" />
 											<span class="required-text"></span>
 										</div>
@@ -161,7 +169,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<input type="date"
-												class="form-control form-control-user-search search-input-gr"
+												class="form-control form-control-user-search search-input-gr required-form"
 												id="userBirth" name="userBirth" />
 											<span class="required-text"></span>
 										</div>
@@ -174,13 +182,11 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle"
-												name="userFirstTel" id="userFirstTel" data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false">
-												<!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
+											<select class="dropdown btn btn-primary required-form" id="userFirstTel">
+													<!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
 												<option value="010" selected>010</option>
-												<!-- 
-                                                <option value="02">02</option>
+												
+                                                <!--<option value="02">02</option>
                                                 <option value="031">031</option>
                                                 <option value="032">032</option>
                                                 <option value="033">033</option>
@@ -199,14 +205,15 @@
                                                 <option value="064">064</option>
                                                 <option value="070">070</option> -->
 											</select>
+
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
 											<input type="text" maxlength="4"
-												class="form-control form-control-user-search search-input-gr-half"
+												class="form-control form-control-user-search search-input-gr-half required-form"
 												id="userSecondTel" name="userSecondTel"
 												placeholder="0000" />
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
 											<input type="text" maxlength="4"
-												class="form-control form-control-user-search search-input-gr-half"
+												class="form-control form-control-user-search search-input-gr-half required-form"
 												id="userThirdTel" name="userThirdTel"
 												placeholder="0000" />
 											<span class="required-text"></span>
@@ -221,7 +228,7 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<input type="email"
-												class="form-control form-control-user-search search-input-gr"
+												class="form-control form-control-user-search search-input-gr required-form"
 												id="userEmail" name="userEmail"
 												placeholder="예) email00@gmail.com " />
 										<span class="required-text"></span>
@@ -236,12 +243,12 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<div>
-												<input type="radio" id="userEmailAgree" value="1" name="userEmailAgree" /> 
+												<input type="radio" id="userEmailAgree" class="required-form" value="1" name="userEmailAgree" /> 
 												<label for="userEmailAgree">수신동의</label> 
 											</div>
 											<div style="padding: 0 10px;"></div>
 											<div>
-												<input type="radio" id="userEmaildDisAgree" value="0" name="userEmailAgree" checked/> 
+												<input type="radio" id="userEmaildDisAgree" class="required-form" value="0" name="userEmailAgree" checked/> 
 												<label for="userEmaildDisAgree">수신거부</label>
 												<span class="required-text"></span>
 											</div>
@@ -266,7 +273,7 @@
 												id="userAddr" name="userAddr" placeholder="주소" readonly/>
 											<input type="text"
 											class="form-control form-control-user-search search-input-gr-half-two"
-											id="userExtraAddress" name="userExtraAddress" placeholder="참고항목" readonly/>
+											id="userExtraAddress" name="userExtraAddress" placeholder="참고주소" readonly/>
 											<div style="padding: 5px 0;"></div>
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
@@ -287,7 +294,7 @@
 							<button type="reset" id="resetBtn"
 								class="btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">입력취소</span>
+								<span class="text">입력리셋</span>
 							</button>
 						</div>
 					</div>
@@ -305,7 +312,7 @@
 <th:block layout:fragment="customJs">
 	<script>	
 		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값, submit 할 때 검사
-		let isPwCheck = false;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사
+		let isPwCheck = 0;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력전/1=비번일치/2비번=불일치
 		
 		// 값 여부 체크
 		function validationCheck(ele){
@@ -321,7 +328,7 @@
 		// 아이디 중복 체크
 		$('#checkBtn').click(function(){
 			const $userIdEle = $('#userId');
-			const userId = $userIdEle.val(); 
+			let userId = $userIdEle.val(); 
 			console.log(userId + " <- 유저가 입력한 아이디 값");
 			
 			let $rqText = $userIdEle.siblings('.required-text');	//안내 메시지
@@ -379,9 +386,9 @@
 		
 		//비밀번호-------------------------
 		$('#userPw').on('input', function(event){
-			isPwCheck = false;
+			isPwCheck = 3;
 			const $userPwEle = $('#userPw');
-			const userPw = $userPwEle.val();
+			let userPw = $userPwEle.val();
 			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
 			let msg = '';
 			
@@ -436,24 +443,24 @@
 		//비밀번호 확인 함수-------------------------
 		function pwCheck(){
 			const $userPwEle = $('#userPw');
-			const userPw = $userPwEle.val();
+			let userPw = $userPwEle.val();
 			
 			const $userPwCheckEle = $('#userPwCheck');
-			const userPwCheck = $userPwCheckEle.val();
+			let userPwCheck = $userPwCheckEle.val();
 			
 			let $rqTextPwCheck = $userPwCheckEle.siblings('.required-text-pw');
 			let msg = '';
 			let pwColor = 1;
-			let checkResult = false;
+			
 			if(typeof userPwCheck != 'undefined' &&	userPwCheck != null &&
 					userPwCheck != ''){
 				if(userPwCheck.length == userPw.length && userPw === userPwCheck){
 					pwColor = 2;
 					msg = `✔ 비밀번호가 일치합니다.`;
-					checkResult = true;
+					isPwCheck = 2;
 				}else{
 					msg = `*비밀번호가 일치하지 않습니다.`;
-					checkResult = false;
+					isPwCheck = 3;
 				}
 				
 				if(pwColor === 1){
@@ -462,7 +469,6 @@
 					$('.pwCheck > .required-text-pw').css("color", "green");
 				}
 				$rqTextPwCheck.text(msg);
-				return checkResult;
 			}
 		}
 		//날짜 확인 -------------------------
@@ -511,19 +517,16 @@
 		function validateFourDigitNumber(userTel) {
 			console.log(userTel);
 			if (/^\d{4}$/.test(userTel)) {
-				
 		    	return true;
-			} else {
-				
+			} else {		
 				return false;
 		 	}
 		}
 		
 		$('#userSecondTel').on('blur', function(){
-			let $userSecondTelEle = $('#userSecondTel');
-			let userSecondTel = $('#userSecondTel').val();
-			let numberCheck = validateFourDigitNumber(userSecondTel);	
-			let $rqTextPwCheck = $userSecondTelEle.siblings('.required-text');
+			const $userSecondTelEle = $('#userSecondTel');
+			let userSecondTel = $('#userSecondTel').val();	
+			const $rqTextPwCheck = $userSecondTelEle.siblings('.required-text');
 			
 			if(typeof userSecondTel != 'undefined' && userSecondTel != null &&
 					userSecondTel != '' && !(/\s{1,}/.test(userSecondTel))){
@@ -539,7 +542,7 @@
 		});
 		
 		$('#userThirdTel').on('blur', function(){
-			let $userThirdTelEle = $('#userThirdTel');
+			const $userThirdTelEle = $('#userThirdTel');
 			let userThirdTel = $('#userThirdTel').val();
 			
 			let $rqTextPwCheck = $userThirdTelEle.siblings('.required-text');
@@ -560,9 +563,9 @@
 		//이메일 입력-------------------------
 		$('#userEmail').on('blur', function(){
 			const $emailEle = $('#userEmail');
-			const email = $('#userEmail').val();
+			let email = $('#userEmail').val();
 			const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-			let $rqTextCheck = $emailEle.siblings('.required-text');
+			const $rqTextCheck = $emailEle.siblings('.required-text');
 			
 			if(emailPattern.test(email)){
 				$rqTextCheck.text('');
@@ -626,6 +629,73 @@
 	<script>
 	//필수항목 체크 후 제출 기능, insert문 작성
 	//상단에 버튼 하나 만들어두고 값 넣어두기
+	
+		$('#submitBtn').click(function(){
+			const $addUserForm = $('#addUserForm');
+			const $requiredForm = $('#addUserForm .required-form');
+			let isSubmit = false;
+			$requiredForm.each(function(idx, item){
+				isSubmit = validationCheck(item);
+				
+				if(!isSubmit){
+					let msg = $(item).parents('tr').find('label').text();
+					alert(msg + '은(는) 필수항목입니다');
+					$(item).focus();
+					return false;
+					alert('아이디 중복 체크를 해주세요');
+					$('#checkBtn').focus();
+					return false;
+				}else if(isPwCheck == 3){
+					alert('비밀번호가 서로 다릅니다');
+					$('#userPw').val('');
+					$('#userPwCheck').val('');
+					$('#userPw').focus();
+					return false;
+				}
+			});	//each문 끝
+			
+						
+			if(isSubmit){
+				
+				//연락처 통합 ('-')로 연결
+				const userFirstTel = $('#userFirstTel').val();
+				const userSecondTel = $('#userSecondTel').val();
+				const userThirdTel = $('#userThirdTel').val();
+				let UserTel = `${userFirstTel}-${userSecondTel}-${userThirdTel}`;
+				console.log(UserTel);
+				
+				//우편번호 값이 존재하면 주소가 입력됐음으로 간주하고 주소지 문자열 통합
+				let userPostCode = $('#userPostCode').val();
+				if(typeof userPostCode != 'undefined' || userPostCode != null ||
+						userPostCode != ''){
+					//주소 문자열 일정 형식으로 통합 - [우편번호]주소(extraAddress), 상세주소 
+					let userAddr = $('#userAddr').val() + ($('#userExtraAddress').val() ? + $('#userExtraAddress').val() + ',' : '');
+					let userAddrDetail = $('#userAddrDetail').val();
+					let fullAddress = `[${userPostCode}] ${userAddr} ${userAddrDetail}`;
+	
+					console.log(fullAddress);
+				}
+				$addUserForm.submit();
+			}
+		});
+	
+		//이메일 입력-------------------------
+		$('#saveValue').click(function(){
+			let userId = $('#userId').val(`dkssud1234`); 
+			let userRank = $('#userRank').val(`2`);
+			let userPw = $('#userPw').val(`dkssud1234`);
+			let userPwCheck = $('#userPwCheck').val(`dkssud1234`);
+			let userName = $('#userName').val(`홍길동`);
+			const selectedBirthDate = $('#userBirth').val(`1970-06-24`);
+			let userFirstTel = $('#userFirstTel').val(`010`);
+			let userSecondTel = $('#userSecondTel').val(`1234`);	
+			let userThirdTel = $('#userThirdTel').val(`5678`);
+			let email = $('#userEmail').val(`emailEx00@gmail.com`);
+			let userPostCode = $('#userPostCode').val(`54888`);
+			let userAddr = $('#userAddr').val(`전북 전주시 덕진구 기린대로 499`)
+			let userExtraAddress = $('#userExtraAddress').val(` (덕진동1가)`)
+			let userAddrDetail = $('#userAddrDetail').val(`303호 한국스마트정보교육원`);
+		});
 	</script>
 </th:block>
 
