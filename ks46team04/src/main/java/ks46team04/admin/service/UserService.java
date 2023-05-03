@@ -57,17 +57,16 @@ public class UserService {
 	}
 	
 	
-	public void removeUser(String userId) {
+
+	public void removeUser(String userId, String userPw) {
 		User userInfo = userMapper.getUserInfoById(userId);
 		if(userInfo != null) {
-			String userLevel = userInfo.getUserLevel();
-			switch (userLevel) {
-			case "2":
-				
-				// 회원 탈퇴
-				userMapper.removeUserById(userId);		
+			String checkPw = userInfo.getUserPw();
+			if (checkPw.equals(userPw)) {
+				userMapper.removeUserById(userId);
 			}
-		}	
+		}
+		
 	}
 	
 	public void modifyUser(User user) {

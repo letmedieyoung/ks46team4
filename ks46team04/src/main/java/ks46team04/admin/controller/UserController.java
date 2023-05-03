@@ -103,13 +103,13 @@ public class UserController {
 
 		return "admin/user/userLevel";
 	}
-
+/*
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/admin/user/login";
 	}
-/*
+
 	@PostMapping("/login")
 	public String login(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
 			HttpSession session, RedirectAttributes reAttr) {
@@ -141,25 +141,26 @@ public class UserController {
 		return "admin/user/login";
 	}
 */
+
 	@PostMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId,
-			@RequestParam(name = "userPw") String userPw) {
+							 @RequestParam(name = "userPw") String userPw) {
 
-		String redirectURI = "redirect:/user/removeUser?userId=" + userId;
-		// 비밀번호 확인
+		String redirectURI = "redirect:/user/removeUser?userId=" + userId; // 비밀번호 확인
 		User user = userService.getUserInfoById(userId);
 		if (user != null) {
 			String checkPw = user.getUserPw();
 
 			if (checkPw.equals(userPw)) {
 				// 서비스 호출
-				userService.removeUser(userId);
+				userService.removeUser(userId, userPw);
 				redirectURI = "redirect:/admin/user/userList";
 			}
 		}
 
 		return redirectURI;
 	}
+
 
 	@GetMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId, Model model) {
