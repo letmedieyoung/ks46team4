@@ -186,7 +186,7 @@ public class UserController {
 		model.addAttribute("title", "회원수정");
 		model.addAttribute("userLevelList", userLevelList);
 		model.addAttribute("userInfo", userInfo);
-
+		
 		return "admin/user/modifyUser";
 	}
 
