@@ -10413,3 +10413,9 @@ form.user .form-control-user-plus {
 .login_logo :hover{
 	color: white;
 }
+
+
+.radio-sm {
+  width: 1rem;
+  height: 1rem;
+}
