@@ -28,15 +28,21 @@
                                 <a th:href="@{/user/mypage_index}">
                                     <span class="top-sign">마이페이지</span>
                                 </a>
-                                <!-- <a th:unless="${session.SID == null} th:href="@{/user/mypage_index}">
-                                    <span class="top-sign">마이페이지</span>
-                                </a>-->
+                     
                                 <a th:href="@{/admin/admin_index}">
                                     <span class="top-sign">관리페이지</span>
                                 </a>
-                                 <!-- <a th:unless="${session.SLEVEL == null or session.SLEVEL != 1}" th:href="@{/admin/admin_index(userLevel=${session.SLEVEL == 1 ? '1' : ''})}">
+                                
+								<!--     <a th:unless="${session.SID == null}" th:href="@{/user/mypage_index}">
+                                    <span class="top-sign">마이페이지</span>
+                                </a> -->
+                             	<!--   <a th:href="@{/admin/admin_index}">
+                                    <span class="top-sign">관리페이지</span>
+                                </a> -->
+                                
+                                 <a th:unless="${session.SLEVEL == null or session.SLEVEL != '1'}" th:href="@{/admin/admin_index(userLevel=${session.SLEVEL == 1 ? '1' : ''})}">
 	   								<span class="top-sign">관리페이지</span>
-								</a>-->
+								</a>
                                 <a th:href="@{/}">
                                     <span class="top-sign">문의하기</span>
                                 </a>

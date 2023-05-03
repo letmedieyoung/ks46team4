@@ -109,7 +109,7 @@ public class CommonController {
 		
 		@PostMapping("/login")
 		public String login(@RequestParam(name = "userId") String userId
-				  			,@RequestParam(name = "userPw") String userPw
+							,@RequestParam(name = "userPw") String userPw
 				  			,@RequestParam(name = "autoLogin", defaultValue = "false") boolean autoLogin
 				  			,HttpSession session
 				  			,RedirectAttributes reAttr
