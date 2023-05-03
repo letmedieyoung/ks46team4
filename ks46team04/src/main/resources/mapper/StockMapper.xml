@@ -15,6 +15,17 @@
 		<result column="final_stock_amount"				property="finalStockAmount"/>
 		<result column="unusual_stock_amount"			property="unusualStockAmount"/>
 		<result column="unusual_stock_check"			property="unusualStockCheck"/>
+		<association property="goodsInfo" javaType="Goods">
+			<id		column="goods_code"				property="goodsCode"/>
+			<result column="goods_name"				property="goodsName"/>
+			<result column="goods_company"			property="goodsCompany"/>
+			<result column="goods_category"			property="goodsCategory"/>
+			<result column="goods_price"			property="goodsPrice"/>
+			<result column="goods_reg_id"			property="goodsRegId"/>
+			<result column="goods_reg_date"			property="goodsRegDate"/>
+			<result column="goods_update_id"		property="goodsUpdId"/>
+			<result column="goods_update_date"		property="goodsUpdDate"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="InOutcoming" id="inOutcomingResultMap">
@@ -111,21 +122,76 @@
 			incoming_outcoming_history;
 	</select>
 	
+	<update id="modifyStock" parameterType="Stock">
+		/* 상품 재고 수정 - 재고조사, 비정상재고 등록 */
+		UPDATE goods_stock
+		<set>
+			<if test="stocktakingCheck != null and stocktakingCheck !=''">
+				stocktaking_check = #{stocktakingCheck}
+			</if>
+			<if test="stocktakingDate != null and stocktakingDate !=''">
+				, stocktaking_date = #{stocktakingDate}
+			</if>
+			<if test="unusualStockCheck != null and unusualStockCheck !=''">
+				, unusual_stock_check = #{unusualStockCheck}
+			</if>
+			<if test="unusualStockAmount != null and unusualStockAmount !=''">
+				, unusual_stock_amount = #{unusualStockAmount}
+			</if>
+			<if test="finalStockAmount != null and finalStockAmount !=''">
+				, final_stock_amount = #{finalStockAmount}
+			</if>
+		</set>
+		WHERE
+			goods_stock_code = #{goodsStockCode};
+	</update>
+	
+	<select id="getStockInfoByCode" resultMap="stockResultMap">
+		/* 특정 상품 재고 조회 */
+		SELECT
+			s.goods_stock_code
+			, i.goods_name
+			, i.goods_company
+			, s.goods_code
+			, s.goods_lot_number
+			, s.current_stock_amount
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.goods_expiry_date
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
+		FROM
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code
+		WHERE
+			goods_stock_code = #{goodsStockCode};
+	</select>
+	
 	<select id="getStockList" resultMap="stockResultMap">
 		/* 상품 재고 조회 */
 		SELECT
-			goods_stock_code
-			, goods_code
-			, goods_lot_number
-			, current_stock_amount
-			, stocktaking_check
-			, stocktaking_date
-			, goods_expiry_date
-			, final_stock_amount
-			, unusual_stock_amount
-			, unusual_stock_check
+			s.goods_stock_code
+			, i.goods_name
+			, i.goods_company
+			, s.goods_code
+			, s.goods_lot_number
+			, s.current_stock_amount
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.goods_expiry_date
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
 		FROM
-			goods_stock;
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code;
 	</select>
 	
 </mapper>

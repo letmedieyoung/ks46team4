@@ -1,50 +1,225 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}">재단리스트</title>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">modify_foundation_request</h1>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
 
-	</div>
-	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">재단 요청사항 등록</h6>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="modifyFoundationRequestForm" th:action="@{/admin/foundation/modify_foundation_request}" method="post">
+							<table th:object="${foundationRequestInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr class="hidden">
+										<th class="bg-gray-100">
+											<label for="foundationRequestCode">재단코드</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationRequestCode" name="foundationRequestCode" th:value="*{foundationRequestCode}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationName">재단명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationCode}" placeholder="재단명을 검색하거나 입력해주세요."/>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">재단 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="contentCategory">콘텐츠 분류</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="content(this.value)">
+													<option value="">:: 콘텐츠 분류 ::</option>
+														<option>펀딩</option>
+														<option>정기 후원</option>
+														<option>미정</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="contentCategory" name="contentCategory" th:value="*{contentCategory}" placeholder="콘텐츠 분류를 선택해주세요." />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="requestGoodsName">요청 상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" 
+													class="form-control form-control-user-search middle-input" 
+													id="requestGoodsName" name="requestGoodsName" th:value="*{requestGoodsName}" placeholder="요청 상품을 입력해주세요."/>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">상품 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="initialGoodsAmount">상품 요청 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												초기 :&nbsp;<input type="number" class="form-control number-input" id="initialGoodsAmount" min="0" name="initialGoodsAmount" th:value="*{initialGoodsAmount}" placeholder="0"/>개
+											&nbsp;&nbsp;
+												최종 :&nbsp;<input type="number" class="form-control number-input" id="finalGoodsAmount" min="0" name="finalGoodsAmount" th:value="*{finalGoodsAmount}" placeholder="미정"/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="deliveryRequestDate">배송 요청일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<label for="deliveryRequestDate">
+													<input type="date" class="form-control" id="deliveryRequestDate" name="deliveryRequestDate" th:value="*{deliveryRequestDate}">
+												</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="requestProgressStatus">진행현황</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="status(this.value)">
+													<option value="">:: 진행현황 ::</option>
+														<option>대기중</option>
+														<option>진행중</option>
+														<option>완료</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="requestProgressStatus" name="requestProgressStatus" th:value="*{requestProgressStatus}" placeholder="진행현황을 선택해주세요." />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="requestRegDate">등록일자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="requestRegDate" name="requestRegDate" th:value="*{requestRegDate}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="requestUpdDate">수정일자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="requestUpdDate" name="requestUpdDate" th:value="*{requestUpdDate}" placeholder="수정 전" readonly/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">수정하기</span>
+								</button>
+								<button type="button" id="returnBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">돌아가기</span>
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
 </th:block>
+
 <th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+		<script th:inline="javascript">
+		/*
+		* 콘텐츠 분류 select box value 값 -> input value로 넣기
+		*/
+		function content(category) {
+			const selectInput = document.querySelector('#contentCategory');
+			selectInput.value = category;
+		};
+		
+		/**
+		 * 진행현황 select box value 값 -> input value로 넣기
+		 */
+		function status(category) {
+			const selectInput = document.querySelector('#requestProgressStatus');
+			selectInput.value = category;
+		};
+	</script>
 </th:block>
+
 </html>

@@ -1,7 +1,6 @@
 package ks46team04.admin.dto;
 
 public class FoundationRequest {
-	private String listNo;
 	private String foundationRequestCode;
 	private String foundationCode;
 	private String foundationName;
@@ -15,13 +14,6 @@ public class FoundationRequest {
 	private String requestUpdId;
 	private String requestUpdDate;
 	private String requestProgressStatus;
-	
-	public String getListNo() {
-		return listNo;
-	}
-	public void setListNo(String listNo) {
-		this.listNo = listNo;
-	}
 	public String getFoundationRequestCode() {
 		return foundationRequestCode;
 	}
@@ -102,12 +94,12 @@ public class FoundationRequest {
 	}
 	@Override
 	public String toString() {
-		return "FoundationRequest [listNo=" + listNo + ", foundationRequestCode=" + foundationRequestCode
-				+ ", foundationCode=" + foundationCode + ", foundationName=" + foundationName + ", contentCategory="
-				+ contentCategory + ", requestGoodsName=" + requestGoodsName + ", initialGoodsAmount="
-				+ initialGoodsAmount + ", finalGoodsAmount=" + finalGoodsAmount + ", deliveryRequestDate="
-				+ deliveryRequestDate + ", requestRegId=" + requestRegId + ", requestRegDate=" + requestRegDate
-				+ ", requestUpdId=" + requestUpdId + ", requestUpdDate=" + requestUpdDate + ", requestProgressStatus="
+		return "FoundationRequest [foundationRequestCode=" + foundationRequestCode + ", foundationCode="
+				+ foundationCode + ", foundationName=" + foundationName + ", contentCategory=" + contentCategory
+				+ ", requestGoodsName=" + requestGoodsName + ", initialGoodsAmount=" + initialGoodsAmount
+				+ ", finalGoodsAmount=" + finalGoodsAmount + ", deliveryRequestDate=" + deliveryRequestDate
+				+ ", requestRegId=" + requestRegId + ", requestRegDate=" + requestRegDate + ", requestUpdId="
+				+ requestUpdId + ", requestUpdDate=" + requestUpdDate + ", requestProgressStatus="
 				+ requestProgressStatus + "]";
 	}
 	

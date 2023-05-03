@@ -1,7 +1,13 @@
 package ks46team04.admin.dto;
 
 public class OutcomingDetail {
-	
+	private String listNo;
+	public String getListNo() {
+		return listNo;
+	}
+	public void setListNo(String listNo) {
+		this.listNo = listNo;
+	}
 	private String outcomingDetailCode;
 	private String inOutcomingCode;
 	private String outcomingGoods;
@@ -81,12 +87,12 @@ public class OutcomingDetail {
 	}
 	@Override
 	public String toString() {
-		return "OutcomingDetail [outcomingDetailCode=" + outcomingDetailCode + ", inOutcomingCode=" + inOutcomingCode
-				+ ", outcomingGoods=" + outcomingGoods + ", outcomingQuantity=" + outcomingQuantity + ", outcomingDate="
-				+ outcomingDate + ", outcomingId=" + outcomingId + ", foundationCode=" + foundationCode
-				+ ", outcomingDetailRegId=" + outcomingDetailRegId + ", outcomingDetailRegDate="
-				+ outcomingDetailRegDate + ", outcomingDetailUpdId=" + outcomingDetailUpdId
-				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
+		return "OutcomingDetail [listNo=" + listNo + ", outcomingDetailCode=" + outcomingDetailCode
+				+ ", inOutcomingCode=" + inOutcomingCode + ", outcomingGoods=" + outcomingGoods + ", outcomingQuantity="
+				+ outcomingQuantity + ", outcomingDate=" + outcomingDate + ", outcomingId=" + outcomingId
+				+ ", foundationCode=" + foundationCode + ", outcomingDetailRegId=" + outcomingDetailRegId
+				+ ", outcomingDetailRegDate=" + outcomingDetailRegDate + ", outcomingDetailUpdId="
+				+ outcomingDetailUpdId + ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
 	}
 	
 }

@@ -32,20 +32,20 @@
 			
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">상품 수정</h6>
+					<h6 class="m-0 font-weight-bold text-primary">재고 수정</h6>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<form id="modifyGoodsForm" th:action="@{/admin/goods/modify_goods}" method="post">
-							<table th:object="${goodsInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+						<form id="modifyStockForm" th:action="@{/admin/stock/modify_stock}" method="post">
+							<table th:object="${stockInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
 									<tr class="hidden">
 										<th class="bg-gray-100">
-											<label for="goodsCode">상품코드</label>
+											<label for="goodsStockCode">상품재고코드</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCode" name="goodsCode" th:value="*{goodsCode}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsStockCode" name="goodsStockCode" th:value="*{goodsStockCode}"/>
 											</div>
 										</td>
 									</tr>
@@ -55,11 +55,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" placeholder="상품명을 입력해주세요."/>
-												&nbsp;
-												<button type="submit" id="overlapCheck" class="btn btn-primary btn-icon-split">
-													<span class="text">중복확인</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -69,21 +65,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="goodsCate(this.value)">
-													<option value="">:: 상품 분류 ::</option>
-													<th:block th:unless="${goodsCategoryList == null}" th:each="l : ${goodsCategoryList}">
-														<option th:value="${l.goodsCategory}" th:selected="${l.goodsCategory} == *{goodsCategory}">[[${l.goodsCategory}]]</option>
-													</th:block>
-													<th:block th:if="${goodsCategoryList == null}">
-														<option>등록된 상품분류가 없습니다.</option>
-													</th:block>
-												</select>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="goodsCategory" name="goodsCategory" th:value="*{goodsCategory}" placeholder="상품 분류를 선택해주세요." />
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCategory" name="goodsCategory" th:value="*{goodsCategory}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -93,18 +75,33 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsCompany}" placeholder="제조사를 검색하거나 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">제조사 검색</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsCompany}" readonly/>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsPrice">상품 단가</label>
+											<label for="goodsExprityDate">상품 유통기한</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control short-input" id="goodsExprityDate" min="0" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>원
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingCheck">재고조사 여부</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control short-input" id="stocktakingCheck" min="0" name="stocktakingCheck" th:value="*{stocktakingCheck}" placeholder="재고 조사 여부를 입력해주세요." />원
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingDate">재고조사일</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
@@ -114,21 +111,41 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsRegDate">등록일자</label>
+											<label for="currentStockAmount">현재고량</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search short-input" id="goodsRegDate" name="goodsRegDate" th:value="*{goodsRegDate}" readonly/>
+												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsUpdDate">수정일자</label>
+											<label for="unusualStockCheck">비정상재고 유무</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search short-input" id="goodsUpdDate" name="goodsUpdDate" th:value="*{goodsUpdDate}" placeholder="수정 전" readonly/>
+												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockAmount">비정상재고량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="finalStockAmount">출고가능수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
 											</div>
 										</td>
 									</tr>

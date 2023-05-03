@@ -89,6 +89,24 @@ public class StockService {
 	}
 	
 	/**
+	 * 상품 재고 수정 - 재고조사, 비정상재고 등록 
+	 * @param stock
+	 */
+	public void modifyStock(Stock stock) {
+		stockMapper.modifyStock(stock);
+	}
+	
+	/**
+	 * 특정 상품 재고 조회
+	 * @param goodsStockCode
+	 * @return
+	 */
+	public Stock getStockInfoByCode(String goodsStockCode) {
+		Stock stockInfo = stockMapper.getStockInfoByCode(goodsStockCode);
+		return stockInfo;
+	}
+	
+	/**
 	 * 상품 재고 조회
 	 * @return
 	 */

@@ -43,9 +43,9 @@
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+											id="foundationName" name="foundationName" placeholder="재단명을 검색하거나 입력해주세요." />
 										&nbsp;
-										<button type="button" id="goodsSearchBtn"
+										<button type="button" id="foundationSearchBtn"
 											class="btn btn-primary btn-icon-split">
 											<span class="text">재단 검색</span>
 										</button>
@@ -54,26 +54,26 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationManager">콘텐츠 분류</label>
+									<label for="contentCategory">콘텐츠 분류</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <input type="radio" id="allContent" name="contentCategory" value="allContent" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <input type="radio" id="fundingContent" name="contentCategory" value="fundingContent">
 										      <span class="text">펀딩</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <input type="radio" id="donationContent" name="contentCategory" value="donationContent">
 										      <span class="text">정기 후원</span>
 									      </label>
 									    </div>
@@ -82,31 +82,31 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationManager">진행현황</label>
+									<label for="requestProgressStatus">진행현황</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allContent" name="content" value="allContent" checked>
+										      <input type="radio" id="allContent" name="requestProgressStatus" value="allContent" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="fundingContent" name="content" value="fundingContent">
+										      <input type="radio" id="fundingContent" name="requestProgressStatus" value="fundingContent">
 										      <span class="text">진행 전</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <input type="radio" id="donationContent" name="requestProgressStatus" value="donationContent">
 										      <span class="text">진행 중</span>
 									      </label>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="content" value="donationContent">
+										      <input type="radio" id="donationContent" name="requestProgressStatus" value="donationContent">
 										      <span class="text">종료</span>
 									      </label>
 									    </div>
@@ -115,12 +115,12 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationPhone">상품명</label>
+									<label for="requestGoodsName">요청 상품명</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="foundationPhone" name="foundationPhone" placeholder="요청 상품을 입력해주세요."/>
+										<input type="text" class="form-control form-control-user-search middle-input" id="requestGoodsName" name="requestGoodsName" placeholder="요청 상품을 입력해주세요."/>
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
@@ -131,22 +131,22 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationPhone">상품 요청 수량</label>
+									<label for="goodsAmount">상품 요청 수량</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search middle-input"
-												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="최소 수량을 입력해주세요." />
+												class="form-control form-control-user-search number-input"
+												id="initialGoodsAmount" min="0" name="initialGoodsAmount"
+												placeholder="최소 수량" />
 										</div>
 										~
 										<div class="col-auto">
 											<input type="number"
-												class="form-control form-control-user-search middle-input"
-												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="최대 수량을 입력해주세요." />
+												class="form-control form-control-user-search number-input"
+												id="finalGoodsAmount" min="0" name="finalGoodsAmount"
+												placeholder="최대 수량" />
 										</div>개
 									</div>
 								</td>
@@ -155,8 +155,7 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										 <select id="selectDate" name="selectCategory" class="dropdown btn btn-primary dropdown-toggle"
-										 		 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 <select class="dropdown btn btn-primary required-form" id="selectDate" name="selectCategory">
 											<option value="">:: 기간 분류 ::</option>
 											<option value="deliveryDate">배송요청일</option>
 											<option value="regUdpDate">등록/수정일</option>
@@ -226,34 +225,31 @@
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
-								<th>재단요청코드</th>
-								<th>재단코드</th>
 								<th>재단명</th>
 								<th>콘텐츠 분류</th>
+								<th>진행현황</th>
 								<th>요청 상품명</th>
 								<th>초기 요청 수량</th>
 								<th>최종 요청 수량</th>
 								<th>배송 요청일</th>
 								<th>등록/수정일</th>
-								<th>진행현황</th>
 								<th>수정</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:unless="${foundationRequestList == null}" th:each=" l : ${foundationRequestList}">
 								<td><input class="checks" type="checkbox" th:value="${l.foundationRequestCode}"></td>
-								<th th:text="${l.listNo}"></th>
-								<td th:text="${l.foundationRequestCode}"></td>
-								<td th:text="${l.foundationCode}"></td>
+								<th th:text="${lStat.count}"></th>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.contentCategory}"></td>
+								<td th:text="${l.requestProgressStatus}"></td>
 								<td th:text="${l.requestGoodsName}"></td>
 								<td th:text="${l.initialGoodsAmount}"></td>
-								<td th:text="${l.finalGoodsAmount}"></td>
+								<td th:if="${l.finalGoodsAmount == null}" th:text="미정"></td>
+								<td th:unless="${l.finalGoodsAmount == null}" th:text="${l.finalGoodsAmount}"></td>
 								<td th:text="${l.deliveryRequestDate}"></td>
 								<td th:if="${l.requestUpdDate == null}" th:text="${l.requestRegDate}"></td>
-								<td th:unless="|${l.requestUpdDate == null}" th:text="${l.requestUpdDate}(수정)|"></td>
-								<td th:text="${l.requestProgressStatus}"></td>
+								<td th:unless="${l.requestUpdDate == null}" th:text="|${l.requestUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/admin/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">

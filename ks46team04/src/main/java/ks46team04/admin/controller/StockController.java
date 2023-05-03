@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ks46team04.admin.dto.InOutcoming;
 import ks46team04.admin.dto.OutcomingDetail;
@@ -137,6 +139,8 @@ public class StockController {
 	@GetMapping("/modify_in_outcoming")
 	public String modifyInOutcoming(Model model) {
 		
+		log.info("model: {}", model);
+		
 		model.addAttribute("title", "상품 입출고 수정");
 		model.addAttribute("content", "thymeleaf layout 완성");
 		
@@ -150,6 +154,8 @@ public class StockController {
 	 */
 	@GetMapping("/add_in_outcoming")
 	public String addInOutcoming(Model model) {
+		
+		log.info("model: {}", model);
 		
 		model.addAttribute("title", "상품 입출고 등록");
 		model.addAttribute("content", "thymeleaf layout 완성");
@@ -166,11 +172,45 @@ public class StockController {
 	public String getInOutcomingList(Model model) {
 		
 		List<InOutcoming> inOutcomingList = stockService.getInOutcomingList();
+		log.info("inOutcomingList: {}", inOutcomingList);
 		
 		model.addAttribute("title", "상품 입출고 조회");
 		model.addAttribute("inOutcomingList", inOutcomingList);
 		
 		return "admin/stock/in_outcoming_list";
+	}
+	
+	/**
+	 * 상품 재고 수정 @PostMapping
+	 * @param stock
+	 * @return
+	 */
+	@PostMapping("/modify_stock")
+	public String modifyStock(Stock stock) {
+		
+		log.info("stock: {}", stock);
+		
+		stockService.modifyStock(stock);
+		
+		return "redirect:/admin/stock/stock_list";
+	}
+	
+	/**
+	 * 상품 재고 수정 @GetMapping
+	 * @param model
+	 * @param goodsStockCode
+	 * @return
+	 */
+	@GetMapping("/modify_stock")
+	public String modifyStock(Model model, @RequestParam(name="goodsStockCode") String goodsStockCode) {
+		
+		Stock stockInfo = stockService.getStockInfoByCode(goodsStockCode);
+		log.info("stock: {}", stockInfo);
+		
+		model.addAttribute("title", "상품 재고 수정");
+		model.addAttribute("stockInfo", stockInfo);
+		
+		return "admin/stock/modify_stock";
 	}
 	
 	/**
@@ -182,6 +222,7 @@ public class StockController {
 	public String getStockList(Model model) {
 		
 		List<Stock> stockList = stockService.getStockList();
+		log.info("stockList: {}", stockList);
 		
 		model.addAttribute("title", "상품 재고 조회");
 		model.addAttribute("stockList", stockList);
