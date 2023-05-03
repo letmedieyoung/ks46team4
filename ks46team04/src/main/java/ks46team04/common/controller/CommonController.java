@@ -75,7 +75,7 @@ public class CommonController {
 	            response.addCookie(cookie);
 	        }
 	        session.invalidate();
-	        return "redirect:/common/login";
+	        return "redirect:/";
 	    }
 		
 		
@@ -97,9 +97,9 @@ public class CommonController {
 				session.setAttribute("SLEVEL", 	userLevel);
 				session.setAttribute("SNAME", 	userName);
 				
-				Cookie cookie = new Cookie("autoLogin", "true");
+				Cookie cookie = new Cookie("autoLogin", userId);
 	            cookie.setPath("/");
-	            cookie.setMaxAge(60*60*24); //60초 * 60분 * 24시간 하루
+	            cookie.setMaxAge(60*60*24*7); //60초 * 60분 * 24시간 *7일
 	            response.addCookie(cookie);
 
 				redirect = "redirect:/";

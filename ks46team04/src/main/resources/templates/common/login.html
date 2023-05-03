@@ -25,10 +25,17 @@
 <body class="bg-gradient-success">
 
 	<div class="container">
-
+		 <div class="login_logo">	
+		 	<a class="sidebar-brand d-flex align-items-center justify-content-center login_logo" th:href="@{/common/funding_index}">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-capsules"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">Pilling Good</div>
+			</a>
+		</div>	
 		<!-- Outer Row -->
 		<div class="row justify-content-center">
-
+			
 			<div class="col-xl-10 col-lg-12 col-md-9">
 
 				<div class="card o-hidden border-0 shadow-lg my-5">
@@ -57,14 +64,15 @@
 											<div class="custom-control custom-checkbox small">
 												<input type="checkbox" class="custom-control-input" id="autoLogin"
 													name="autoLogin" value="true">
-												<label class="custom-control-label" for="autoLogin">로그인 정보 저장</label>
-
+												<label class="custom-control-label" for="autoLogin">로그인 상태 유지</label>
+												<p>
+													로그인 상태 유지는 로그인 정보가 로그인 시점으로부터 일주일간 쿠키에 담겨 유지됩니다.
+												</p>
 											</div>
 										</div>
 										<a id="submitBtn" class="btn btn-success btn-user btn-block">
 											로그인
 										</a>
-
 									</form>
 
 									<hr>
@@ -92,33 +100,36 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="/js/sb-admin-2.min.js"></script>
-	<script>
+	<script type="text/javascript" th:inline="javascript">
+		let result = [[${result}]];
+		if(result) alert(result);
 
-
-			const validationFn = ele => {
-				let value = $(ele).val().trim();
-				if (value === '') {
-
-					let msg = $(ele).prev('label').text() + '를';
-					alert(`${msg} 입력해주세요`);
-					$(ele).val('').focus();
-					return false;
-				}
-				return true;
-			};
-
-			$('#submitBtn').click(function () {
-				let isSubmit = true;
-				const $inputEle = $('#loginForm input');
-				$inputEle.each(function (idx, item) {
-					isSubmit = validationFn(item) && isSubmit;
-				});
-				if (isSubmit) {
-					const userId = $('#userId').val();
-					const userPw = $('#userPw').val();
-					$('#loginForm').submit();  // 로그인 폼 제출
-				}
+		const validationFn = (ele) => {
+			let value = $(ele).val();
+			let result = true;
+			if(typeof value == 'undefined' || value == null ||
+					  value == '' || /\s{1,}/.test(value)){
+				let msg = $(ele).parents('.form-group').find('label').text();
+				alert(`${msg}를 입력해주세요`);
+				$(ele).val('');
+				$(ele).focus();
+				result = false;
+			}
+			return result;
+		}
+		$('#submitBtn').click(function(){
+			let isSubmit = true;
+			
+			const $inputEle = $('#loginForm input');
+			
+			$inputEle.each(function(idx, item){
+				console.log(item);
+				isSubmit = validationFn(item);
+				return isSubmit;
 			});
+			
+			if(isSubmit) $('#loginForm').submit();
+		});
 
 
 
