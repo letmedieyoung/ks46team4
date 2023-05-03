@@ -36,6 +36,12 @@ public interface StockMapper {
 	//상품 입출고 조회
 	public List<InOutcoming> getInOutcomingList();
 	
+	//상품 재고 수정 - 재고조사, 비정상재고 등록 
+	public int modifyStock(Stock stock);
+	
+	//특정 상품 재고 조회
+	public Stock getStockInfoByCode(String goodsStockCode);
+	
 	//상품 재고 조회
 	public List<Stock> getStockList();
 	

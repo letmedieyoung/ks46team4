@@ -42,9 +42,9 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="재단명을 검색하거나 입력해주세요." />
+											id="foundationName" name="foundationName" placeholder="재단명을 검색하거나 입력해주세요." />
 										&nbsp;
-										<button type="button" id="goodsSearchBtn"
+										<button type="button" id="foundationSearchBtn"
 											class="btn btn-primary btn-icon-split">
 											<span class="text">재단 검색</span>
 										</button>
@@ -53,14 +53,14 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsCompany">재단 주소</label>
+									<label for="foundationAddr">재단 주소</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="주소를 검색하거나 입력해주세요."/>
+										<input type="text" class="form-control form-control-user-search long-input" id="foundationAddr" name="foundationAddr" placeholder="주소를 검색하거나 입력해주세요."/>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+										<button type="button" id="addrSearchBtn" class="btn btn-primary btn-icon-split">
 											<span class="text">주소 검색</span>
 										</button>
 									</div>
@@ -137,7 +137,6 @@
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
-								<th>재단코드</th>
 								<th>재단명</th>
 								<th>담당자</th>
 								<th>연락처</th>
@@ -149,14 +148,13 @@
 						<tbody>
 							<tr th:unless="${foundationList == null}" th:each=" l : ${foundationList}">
 								<td><input class="checks" type="checkbox" th:value="${l.foundationCode}"></td>
-								<th th:text="${l.listNo}"></th>
-								<td th:text="${l.foundationCode}"></td>
+								<th th:text="${lStat.count}"></th>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.foundationManager}"></td>
 								<td th:text="${l.foundationPhone}"></td>
 								<td th:text="${l.foundationAddr}"></td>
 								<td th:if="${l.foundationUpdDate == null}" th:text="${l.foundationRegDate}"></td>
-								<td th:unless="|${l.foundationUpdDate == null}" th:text="${l.foundationUpdDate}(수정)|"></td>
+								<td th:unless="${l.foundationUpdDate == null}" th:text="|${l.foundationUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
 										th:href="@{/admin/foundation/modify_foundation(foundationCode=${l.foundationCode})}">

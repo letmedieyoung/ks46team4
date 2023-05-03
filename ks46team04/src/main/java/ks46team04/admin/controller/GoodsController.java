@@ -65,6 +65,7 @@ public class GoodsController {
 	/**
 	 * 상품 수정 @GetMapping
 	 * @param model
+	 * @param goodsCode
 	 * @return
 	 */
 	@GetMapping("/modify_goods")

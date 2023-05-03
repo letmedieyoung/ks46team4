@@ -1,13 +1,29 @@
 @charset "UTF-8";
+.number-input {
+    width: 9rem; 
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem;
+    text-align: center;
+} 
 .short-input {
     width: 15rem; 
+    height: calc(1em + 0.5rem + 2px);
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 1.13rem 1rem;
+    text-align: center;
+} 
+.long-input {
+    width: 50rem; 
     height: calc(1em + 0.5rem + 2px);
     display: inline-block;
     margin-right: 0.2rem;
     padding: 1.13rem 1rem
 } 
 .hidden {
-	style:"display:none;"
+	display:none;
 }
 .check-block {
 	display: block;

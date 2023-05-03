@@ -60,8 +60,7 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select id="selectCategory" name="selectCategory" onchange="func(this.value)" class="dropdown btn btn-primary dropdown-toggle"
-												 		 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="goodsCate(this.value)">
 													<option value="">:: 상품 분류 ::</option>
 													<th:block th:unless="${goodsCategoryList == null}" th:each="l : ${goodsCategoryList}">
 														<option th:value="${l.goodsCategory}" th:selected="${l.goodsCategory} == *{goodsCategory}">[[${l.goodsCategory}]]</option>
@@ -139,7 +138,15 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
-	<script>
+	<script th:inline="javascript">
+		/**
+		 * 상품분류 select box value 값 -> input value로 넣기
+		 */
+		function goodsCate(category) {
+			const selectInput = document.querySelector('#goodsCategory');
+			selectInput.value = category;
+		};
+		
 		/**
 		 * overlapCheck 상세검색 버튼
 		 */
@@ -156,13 +163,44 @@
 			});
 			
 			request.done(function(){
-					alert('중복된 상품명입니다.');
+				alert('중복된 상품명입니다.');
 			});
 			
 			request.fail(function(jqXHR, textStatus){
 				alert(`Request failed: ${textStatus}`);
 			});
 		
+		});
+		/**
+		 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
+		 */
+		$(function(){
+			function validationCheck(ele){
+				let data = $(ele).val();
+				let isValid = true;
+				if(typeof data == 'undefined' || data == null || data == ''){
+					let msg = $(ele).parents('tr').find('label').text();
+					alert(`${msg} 필수 항목입니다.`)
+					$(ele).focus();
+					isValid = false;
+				}
+				return isValid;
+			};
+			$('#submitBtn').click(function(){
+				const addGoodsForm = $('#addGoodsForm');
+				const inputGroup = $('#addGoodsForm input');
+				let isSubmit = true;
+				inputGroup.each(function(idx, item){
+				isSubmit = validationCheck(item);
+					if(!isSubmit) {
+						let msg = $(item).parents('tr').find('label').text();
+						alert(msg + '입력해주세요.');
+						$(item).focus();
+						return false;
+					}
+				});
+			if(isSubmit) addGoodsForm.submit();
+			});
 		});
 	</script>
 </th:block>

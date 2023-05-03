@@ -11,6 +11,15 @@ public class Stock {
 	private String finalStockAmount;
 	private String unusualStockAmount;
 	private String unusualStockCheck;
+	
+	private Goods goodsInfo;
+	
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
 	public String getGoodsStockCode() {
 		return goodsStockCode;
 	}
@@ -77,7 +86,7 @@ public class Stock {
 				+ goodsLotNumber + ", currentStockAmount=" + currentStockAmount + ", stocktakingCheck="
 				+ stocktakingCheck + ", stocktakingDate=" + stocktakingDate + ", goodsExprityDate=" + goodsExprityDate
 				+ ", finalStockAmount=" + finalStockAmount + ", unusualStockAmount=" + unusualStockAmount
-				+ ", unusualStockCheck=" + unusualStockCheck + "]";
+				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + "]";
 	}
 	
 }

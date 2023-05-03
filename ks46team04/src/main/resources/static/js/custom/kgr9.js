@@ -1,82 +1,74 @@
 /**
- * 체크박스 전체 선택
- */
-$('#allCheck').click(function () {
-	$('.checks').prop('checked', $(this).prop('checked'));
-});
-$('.checks').click(function () {
-	let length = $('.checks').length;
-	let checkedLength = $('.checks:checked').length;
-	if (length == checkedLength) {
-		$('#allCheck').prop('checked', true);
-	} else {
-		$('#allCheck').prop('checked', false);
-	}
-});
-
-/**
- * totalSearchBtn 전체검색 버튼
- */
-$('#totalSearchBtn').click(function(){
-	 location.reload();
-});
-
-/**
- * searchBtn 상세검색 버튼
- */
-$('#searchBtn').click(function(){
-	 location.reload();
-});
-
-/**
  * returnBtn 뒤로가기 버튼
  */
 $('#returnBtn').click(function(){
 	 history.go(-1);
 });
 
-
-
-/**
- * select box value 값 -> input value로 넣기
- */
-function func(category) {
-	const selectInput = document.querySelector('#goodsCategory');
-	selectInput.value = category;
-};
-
 /**
  * 세션에서 id값 가져오기
  */
 
 /**
- * form submitBtn 등록하기 버튼 클릭 시 공란 체크
+ * 기간 조회
+
+$(function() {
+  $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+})
+
+// 날짜 포맷("yyyy-MM-dd") 형식으로 반환
+dateFormatter = function(newDay, today) {
+  let year = newDay.getFullYear()
+  let month = newDay.getMonth()+1
+  let date = newDay.getDate()
+
+  // 기존 날짜와 새로운 날짜가 다를 경우 
+  if(today) {
+    let todayDate = today.getDate()
+
+    if(date != todayDate) {
+      if(month == 0) year-=1
+      month = (month + 11) % 12
+      date = new Date(year, month, 0).getDate()	// 해당 달의 마지막 날짜를 반환
+    }
+  }
+
+  month = ("0"+month).slice(-2)
+  date = ("0"+date).slice(-2)
+
+  return year+"-"+month+"-"+date
+}
+
+document.getElementsByName("filterDate").forEach(e=> {
+  e.addEventListener('click', function() {  
+	
+  let endDate = new Date($("#endDate").val())
+  let newDate = new Date($("#endDate").val())
+
+  switch(this.value) {
+      case '1':
+        console.log("일주일")
+        newDate.setDate(newDate.getDate())
+        newDate = dateFormatter(newDate)
+        break;
+      case '2':
+        newDate.setMonth(newDate.getMonth() - 1)
+        newDate = dateFormatter(newDate, endDate)
+        console.log("1개월")
+        break;
+      case '3':
+        newDate.setFullYear(newDate.getFullYear() - 1)
+        newDate = dateFormatter(newDate, endDate)
+        console.log("1년")
+        break;
+      case '4':
+        newDate.setFullYear(newDate.getFullYear() - 1)
+        newDate = dateFormatter(newDate, endDate)
+        console.log("1년")
+        break;
+  }
+  $("#startDate").val(newDate)
+    
+  })
+})
  */
-$(function(){
-	function validationCheck(ele){
-		let data = $(ele).val();
-		let isValid = true;
-		if(typeof data == 'undefined' || data == null || data == ''){
-			let msg = $(ele).parents('tr').find('label').text();
-			alert(`${msg} 필수 항목입니다.`)
-			$(ele).focus();
-			isValid = false;
-		}
-		return isValid;
-	};
-	$('#submitBtn').click(function(){
-		const addGoodsForm = $('#addGoodsForm');
-		const inputGroup = $('#addGoodsForm input');
-		let isSubmit = true;
-		inputGroup.each(function(idx, item){
-		isSubmit = validationCheck(item);
-			if(!isSubmit) {
-				let msg = $(item).parents('tr').find('label').text();
-				alert(msg + '입력해주세요.');
-				$(item).focus();
-				return false;
-			}
-		});
-	if(isSubmit) addGoodsForm.submit();
-	});
-});
