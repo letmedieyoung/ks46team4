@@ -3,6 +3,6 @@ package ks46team04.admin.dto;
 import lombok.Data;
 
 @Data
-public class FoundationName {
-	private String foundationName;
+public class RefundStatus {
+	private String refundStatus;
 }

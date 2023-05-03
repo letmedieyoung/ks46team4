@@ -15,11 +15,11 @@
 <th:block layout:fragment="customContents">
 	
 	<!-- Begin Page Content -->
-	<div class="container-fluid">
+	<div class="container-fluid">		
 		<h5 class="m-0 font-weight-bold text-gray-800">펀딩 환불 관리</h5>
 		<p class="mb-4"></p>
 		<!-- 검색 테이블 -->
-		<form action="#" name="fdRefundSearchForm" autocomplete="off">
+		<form autocomplete="off">
 			<!-- DataTales Example -->
 			<div class="card mb-4">
 				<div class="card-header py-3">
@@ -62,13 +62,13 @@
 								<th>검색어</th>
 								<td>
 									<div class="align-items-center search-schedule">
-										<select name="keyword" class="f-date-select form-control form-control-user-search search-input">
-											<option value="funding_payment_refund_code">환불코드</option>
+										<select class="f-date-select form-control form-control-user-search search-input">
+											<option value="fr.funding_payment_refund_code">환불코드</option>
 											<option value="fr.user_id">회원아이디</option>											
 										</select>	
 									</div>
 									<div class="align-items-center search-schedule">						
-										<input type="text" name="searchValue" class="dateSelect form-control form-control-user-search search-input" />
+										<input type="text" name="keyword" class="dateSelect form-control form-control-user-search search-input" />
 									</div>	
 								</td>
 							</tr>
@@ -76,13 +76,13 @@
 								<th>처리상태</th>
 								<td>
 									<label>
-										<input type="checkbox" name="refundStatus" value="all" checked="checked"/>전체
+										<input type="radio" name="refundStatus" value="all" checked="checked"/>전체
 									</label>
 									<label>
-										<input type="checkbox" name="refundStatus" value="F"/>환불전
+										<input type="radio" name="refundStatus" value="F"/>환불전
 									</label>
 									<label>
-										<input type="checkbox" name="refundStatus" value="T"/>환불완료
+										<input type="radio" name="refundStatus" value="T"/>환불완료
 									</label>
 									
 								</td>
@@ -113,12 +113,12 @@
 					<table class="table table-bordered f-refund" id="dataTable" width="100%" cellspacing="0">
 						 <thead>
                             <tr>
-                                <th><input type="checkbox" id="allCheckBox" onclick="allChecked()"></th>								
+                                <th><input type="checkbox" id="allCheck"></th>								
+								<th>결제일</th>
 								<th>환불요청일</th>
 								<th>환불코드</th>                                
                                 <th>결제코드</th>
-                                <th>주문자ID</th>
-                                <th>결제일</th>
+                                <th>주문자ID</th>                                
                                 <th>결제수단</th>
                                 <th>환불요청금액</th>
                                 <th>은행</th>
@@ -129,18 +129,18 @@
                         </thead>    
 						<tbody>
 							<tr th:unless="${refundList == null}" th:each="l : ${refundList}">
-								<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>
+								<td><input type="checkbox" name="chk" class="chk"></td>
+								<td th:text="${l.fundingPaymentDate}"></td>
 								<td th:text="${l.refundRequestDate}"></td>
 								<td><a th:text="${l.fundingRefundCode}" th:href="@{modifyFundingRefund(fundingRefundCode=${l.fundingRefundCode})}"></a></td>								
 								<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}" target="_blank"></a></td>								
-								<td><a th:text="${l.refundUserId}" th:href="@{/admin/user/modifyUser(userId=${l.refundUserId})}" target="_blank"></a></td>
-								<td th:text="${l.fundingPaymentDate}"></td>
+								<td><a th:text="${l.refundUserId}" th:href="@{/admin/user/modifyUser(userId=${l.refundUserId})}" target="_blank"></a></td>								
 								<td th:text="${l.pmName}"></td>
 								<td th:text="|₩ ${#numbers.formatInteger(l.requestAmount, 3, 'COMMA')}|"></td>
 								<td th:text="${l.refundBank}"></td>								
 								<td th:text="${l.refundAccount}"></td>	
 								<td th:text="${l.requestReason}"></td>
-								<td th:text="${l.requestStatus}"></td>
+								<td th:text="${l.refundStatus}"></td>
 							</tr>
 							<tr th:if="${refundList == null}">
 								<td colspan="12">등록된 펀딩의 정보가 없습니다.</td>				
@@ -168,5 +168,72 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/khj.js}"></script>
+	
+	<script th:inline="javascript">
+	$('#allCheck').click(function () {
+		$('.chk').prop('checked', $(this).prop('checked'));
+	});
+	$('.chk').click(function () {
+		let length = $('.chk').length;
+		let checkedLength = $('.chk:checked').length;
+		if (length == checkedLength) {
+			$('#allCheck').prop('checked', true);
+		} else {
+			$('#allCheck').prop('checked', false);
+		}
+	});
+	
+	/**
+	 * 체크박스 선택 후 deleteBtn 버튼
+	 */
+	$('#delCheckBtn').click(function () {
+		
+		const checkedArr = $('.chk:checked');
+		console.log(checkedArr);
+		
+		let length = checkedArr.length;
+		
+		const valueArr = [];
+		let msg = '삭제하시겠습니까?';
+		
+		if (length == 0) {
+			alert("선택된 항목이 없습니다.");
+		}
+		else {
+			let result = confirm(msg);
+			
+			if(result == true){
+				
+				$(checkedArr).each(function() {
+					valueArr.push($(this).attr('value'));
+		        });
+				console.log(valueArr);
+				
+				let request = $.ajax({
+					url: '/admin/funding/deleteFunding',
+					method: 'POST',
+					data: { valueArr : valueArr },
+					dataType: 'json'
+				});
+				
+				request.done(function(result){
+					if(result){
+						alert('삭제되었습니다.');
+						location.reload();
+					}
+				});
+				
+				request.fail(function(jqXHR, textStatus){
+					alert(`Request failed: ${textStatus}`);
+					console.log("실패함");
+				});
+			}else{
+				location.reload();
+			}
+		}
+	});
+	</script>
+	
+	
 </th:block>
 </html>

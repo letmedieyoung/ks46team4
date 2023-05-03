@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
-import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.FundingProgress;
+import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.GoodsCode;
+import ks46team04.admin.dto.RefundStatus;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -29,6 +30,15 @@ public class FundingService {
 		this.fundingMapper = fundingMapper;		
 	}	
 	
+	/**
+	 * 펀딩 삭제
+	 * @param valueArr
+	 */
+	public void deleteFunding(List<String> valueArr) {
+		for(int i=0; i<valueArr.size(); i++) {
+			fundingMapper.deleteFunding(valueArr.get(i));
+		}
+	  }
 	
 	/**
 	 * 펀딩 수정 처리
@@ -72,17 +82,20 @@ public class FundingService {
 		return fundingInfo;
 	}
 	
-	//펀딩 목록 조회	
+	/**
+	 * 펀딩 전체 목록 조회
+	 * @param fundingCode
+	 * @return
+	 */	
 	 public List<Funding> getFundingList(){        
 		 return fundingMapper.getFundingList(null);
-	 }	
-	
-	//펀딩 정보 삭제
-	public void deleteFunding(Funding funding) {
-		fundingMapper.deleteFunding(funding);
-	}
+	 }		
 
-	//펀딩 신규 등록
+	/**
+	 * 신규 펀딩 등록
+	 * @param funding
+	 * @return
+	 */
 	public int registFunding(Funding funding) {
 		int result = fundingMapper.registFunding(funding);
 		return result;
@@ -118,7 +131,15 @@ public class FundingService {
 	 */
 	public void modifyFundingRefund(FundingRefund fundingRefund) {
 		fundingMapper.modifyFundingRefund(fundingRefund);
-	}		
+	}	
+	/**
+	 * 펀딩 수정화면 - 진행상태 불러오기
+	 * @return List<RefundStatus>
+	 */
+	public List<RefundStatus> getRefundStatusList(){
+		List<RefundStatus> refundStatusList = fundingMapper.getRefundStatusList();
+		return refundStatusList;
+	}	
 	/**
 	 * 특정 펀딩 환불내역 조회
 	 * @param fundingRefundCode
@@ -130,9 +151,18 @@ public class FundingService {
 		return fundingRefundInfo;
 	}
 	//펀딩 환불내역 조회
-	public List<FundingRefund> getFundingRefundList(String keyword, String searchValue){
-		List<FundingRefund> refundList = fundingMapper.getRefundList(keyword, searchValue);
-		//log.info("fundingRefundList_Service: {}", refundList);
+	public List<FundingRefund> getRefundList(){
+		List<FundingRefund> refundList = fundingMapper.getRefundList();		
 		return refundList;
 	}
+	
+	
+	//펀딩 진행현황 - 목표 금액 합계 조회
+	public int getFundingGoalAmountSum() {
+	        return fundingMapper.getFundingGoalAmountSum();
+	}
+
+	
+	
+	
 }
