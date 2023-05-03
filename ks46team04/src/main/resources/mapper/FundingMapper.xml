@@ -16,6 +16,20 @@
 		<result column="funding_update_Date"	property="fundingUpdateDate"/>
 	</resultMap>
 	
+	<resultMap type="FundingRefund" id="fundingRefundResultMap">
+		<id 	column="funding_payment_refund_code"	property="fundingRefundCode"/>
+		<result column="funding_refund_request_date"	property="refundRequestDate"/>
+		<result column="funding_payment_code"			property="fundingPayCode"/>
+		<result column="user_id"						property="refundUserId"/>
+		<result column="funding_refund_bank_name"		property="refundBank"/>
+		<result column="funding_refund_account"			property="refundAccount"/>
+		<result column="funding_refund_request_amount"	property="requestAmount"/>
+		<result column="funding_refund_approval_date"	property="approvalDate"/>
+		<result column="funding_refund_rejection_date"	property="rejectionDate"/>		
+		<result column="funding_refund_request_reason"	property="requestReason"/>
+		<result column="funding_refund_status"			property="refundStatus"/>
+	</resultMap>
+
 	<insert id="registFunding" parameterType="Funding">
 		/* 펀딩 등록 */
 		INSERT INTO each_funding_info
@@ -34,28 +48,8 @@
 		 	each_funding_info 
 		WHERE 
 			funding_code = #{fundingCode};
-	</delete>	
-	
-	
- 	<select id="getFundingInfoByCode" parameterType="String" resultMap="fundingResultMap">
-		/* 특정 펀딩 조회*/
-		SELECT
-			funding_code,		  	
-			funding_name,		  	
-			funding_foundation, 	
-			goods_code,		  	
-			funding_goal_amount, 		
-			funding_start_date,  				
-			funding_end_date,	  	
-			funding_progress,
-			funding_reg_date,
-			funding_update_date				
-		FROM
-			each_funding_info
-		WHERE
-			funding_code = #{fundingCode}		
-	</select> 
-	
+	</delete>		
+
 	<select id="getFundingProgressList" resultType="FundingProgress">
 		/* 진행상태 조회 */
 		SELECT
@@ -100,6 +94,25 @@
 		WHERE 
 			funding_code = #{fundingCode};
 	</update>
+	
+	<select id="getFundingInfoByCode" parameterType="String" resultMap="fundingResultMap">
+		/* 특정 펀딩 조회*/
+		SELECT
+			funding_code,		  	
+			funding_name,		  	
+			funding_foundation, 	
+			goods_code,		  	
+			funding_goal_amount, 		
+			funding_start_date,  				
+			funding_end_date,	  	
+			funding_progress,
+			funding_reg_date,
+			funding_update_date				
+		FROM
+			each_funding_info
+		WHERE
+			funding_code = #{fundingCode}		
+	</select>  
 	
 	<select id="getFundingList" parameterType="list" resultType="funding">
 		/* 펀딩 목록 조회 */
@@ -169,14 +182,41 @@
 			JOIN
 			payment_method AS pm			
 			ON
-				fp.pm_code = pm.pm_code			
+				fp.pm_code = pm.pm_code
+		<where>			
+			<if test="keyword != null and keyword != ''">			
+				${keyword} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>			
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code;
 	</select>
 
 
 
-									<!-- 펀딩 환불 -->							
+									<!-- 펀딩 환불 -->
+	<select id="getRefundStatusList" resultType="refundStatus">
+		/* 진행상태 조회 */
+		SELECT
+			funding_refund_status AS refundStatus
+		FROM
+			funding_pay_refund_status;					
+	</select>									
+																
+	<update id="modifyFundingRefund" parameterType="fundingRefund">
+		/* 펀딩 환불 상세 정보 수정 */
+		UPDATE funding_payment_refund
+		<set>
+			funding_payment_refund_code = #{fundingRefundCode},
+			user_id = #{refundUserId},
+			funding_refund_request_amount = #{requestAmount},
+			funding_refund_request_reason = #{requestReason},
+			funding_refund_status = #{refundStatus}			
+		</set>
+		WHERE 
+			funding_payment_refund_code = #{fundingRefundCode};
+	</update>	
+												
 	<select id="getFundingRefundInfoByCode" parameterType="String" resultType="fundingRefund">
 		/* 특정 펀딩 환불내역 조회*/
 		SELECT
@@ -188,7 +228,7 @@
 			fr.funding_refund_bank_name			AS refundBank,  				
 			fr.funding_refund_account			AS refundAccount,	  	
 			fr.funding_refund_request_reason	AS requestReason,
-			fr.funding_refund_status			AS requestStatus,
+			fr.funding_refund_status			AS refundStatus,
 			fr.funding_refund_approval_date		AS approvalDate,
 			fr.funding_refund_rejection_date	AS rejectionDate,
 			fp.funding_payment_date				AS fundingPaymentDate,
@@ -201,6 +241,9 @@
 			JOIN
 			payment_method AS pm
 				ON pm.pm_code = fp.pm_code
+		WHERE
+			funding_payment_refund_code = #{fundingRefundCode}	
+			
 	</select> 
 							
 	<select id="getRefundList" parameterType="list" resultType="fundingRefund">
@@ -214,7 +257,7 @@
 			fr.funding_refund_bank_name 		AS refundBank,
 			fr.funding_refund_account 			AS refundAccount,
 			fr.funding_refund_request_reason 	AS requestReason,
-			fr.funding_refund_status 			AS requestStatus,
+			fr.funding_refund_status 			AS refundStatus,
 			fr.funding_refund_approval_date 	AS approvalDate,
 			fr.funding_refund_rejection_date 	AS rejectionDate,			
 			fp.funding_payment_date 			AS fundingPaymentDate,
@@ -227,14 +270,25 @@
 			JOIN
 			payment_method AS pm
 				ON pm.pm_code = fp.pm_code	
-		<where>			
-			<if test="keyword != null and keyword != ''">			
-				${keyword} LIKE CONCAT('%', #{searchValue},'%')
-			</if>		
+		<where>
+			<if test="searchList != null">			
+				<foreach collection="searchList" item="item">
+					<if test="item.value != null and item.value != ''">					
+						AND ${item.key} LIKE CONCAT('%', #{item.value}, '%')
+					</if>
+				</foreach>
+			</if>
 		</where>
 		ORDER BY funding_payment_refund_code DESC;
 	</select>
 	
+	<select id="getFundingGoalAmountSum" resultType="java.lang.Integer">
+		SELECT SUM(funding_goal_amount)
+		FROM
+			each_funding_info
+		WHERE
+			funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
+	</select>
 	
 	
 	

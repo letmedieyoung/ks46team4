@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
-
 <head>
 	<meta charset="UTF-8">
 	<title th:text="${title}"></title>	
@@ -12,9 +11,7 @@
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 	
-
 <th:block layout:fragment="customContents">
-
 	<!-- Begin Page Content -->
 	<div class="container-fluid">		
 		<form id="modifyFundingForm" th:action="@{/admin/funding/modifyFunding}" method="post">
@@ -44,7 +41,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" disabled="disabled" style="border: none;"/>
+											<input type="text" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" disabled="disabled" style="border: none;" class="form-control form-control-user-search search-input" />
 										</div>
 									</td>
 								</tr>
@@ -54,7 +51,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule" style="width: 500px;">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingName" th:value="*{fundingName}" name="fundingName" placeholder="펀딩명을 입력해주세요."/>										
+											<input type="text" id="fundingName" th:value="*{fundingName}" name="fundingName" placeholder="펀딩명을 입력해주세요." class="form-control form-control-user-search search-input"/>										
 										</div>
 									</td>
 								</tr>
@@ -64,7 +61,7 @@
 									</th>
 				                	<td>
 				                        <div class="fundingDescription form-row align-items-center search-schedule">
-				                        	<textarea class="form-control" id="fundingDescription" th:value="*{fundingDescription}" name="fundingDescription"></textarea>
+				                        	<textarea class="form-control"  id="fundingDescription" th:value="*{fundingDescription}"name="fundingDescription"></textarea>
 				                    	</div>
 				                	</td>
 			            		</tr>				  
@@ -77,7 +74,7 @@
 											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingProgress" th:value="*{fundingProgress}" name="fundingProgress" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												 <th:block th:unless="${fundingProgressList == null}"  th:each="l : ${fundingProgressList}">
 													<option th:value="${l.fundingProgress}" th:selected="${l.fundingProgress} == *{fundingProgress}">[[${l.fundingProgress}]]</option>
-												</th:block>																					
+												</th:block>																				
 											</select>
 										</div>									
 									</td>
@@ -88,7 +85,7 @@
 									</th>
 									<td>									
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle" id="fundingFoundation" th:value="*{fundingFoundation}" name="fundingFoundation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<select id="fundingFoundation" th:value="*{fundingFoundation}" name="fundingFoundation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="dropdown btn btn-primary dropdown-toggle">
 												<th:block th:unless="${foundationNameList == null}" th:each="l : ${foundationNameList}">
 													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{fundingFoundation}">[[${l.foundationName}]]</option>
 												</th:block>
@@ -105,7 +102,7 @@
 									</th>
 									<td>									
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" th:value="*{goodsCode}" name="goodsCode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<select id="goodsCode" th:value="*{goodsCode}" name="goodsCode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown btn btn-primary dropdown-toggle">
 												<th:block th:unless="${goodsCodeList == null}" th:each="l : ${goodsCodeList}">
 													<option th:value="${l.goodsCode}" th:selected="${l.goodsCode} == *{goodsCode}">[[${l.goodsCode}]]</option>
 												</th:block>
@@ -122,7 +119,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="number" class="form-control form-control-user-search search-input" id="fundingGoalAmount" th:value="*{fundingGoalAmount}" name="fundingGoalAmount" placeholder="금액을 입력해주세요." />
+											<input type="number"id="fundingGoalAmount" th:value="*{fundingGoalAmount}" name="fundingGoalAmount" class="form-control form-control-user-search search-input" />
 										</div>
 									</td>
 								</tr>
@@ -132,7 +129,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">									
-											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingStartDate" th:value="*{fundingStartDate}" name="fundingStartDate" />																				
+											<input type="datetime-local" id="fundingStartDate" th:value="*{fundingStartDate}" name="fundingStartDate" class="form-control form-control-user-search search-input"/>																				
 										</div>
 									</td>
 								</tr>
@@ -142,7 +139,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="datetime-local" class="form-control form-control-user-search search-input" id="fundingEndDate" th:value="*{fundingEndDate}" name="fundingEndDate" />										
+											<input type="datetime-local" id="fundingEndDate" th:value="*{fundingEndDate}" name="fundingEndDate"  class="form-control form-control-user-search search-input"/>										
 										</div>
 									</td>
 								</tr>
@@ -152,7 +149,7 @@
 									</th>
 		                        	<td>														
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId"/>					
+											<input type="text" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId" class="form-control form-control-user-search search-input" />					
 										</div>								
 									</td>
 		                        </tr>								

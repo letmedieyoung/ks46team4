@@ -14,7 +14,7 @@ public class FundingRefund {
 	private String refundBank;
 	private String refundAccount;
 	private String requestReason;
-	private String requestStatus;
+	private String refundStatus;
 	private String approvalDate;
 	private String rejectionDate;	
 	private String fundingPaymentDate;
