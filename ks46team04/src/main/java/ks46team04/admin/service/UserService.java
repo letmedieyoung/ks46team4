@@ -65,11 +65,9 @@ public class UserService {
 			case "2":
 				
 				// 회원 탈퇴
-				userMapper.removeUserById(userId);
-				
+				userMapper.removeUserById(userId);		
 			}
-		}
-		
+		}	
 	}
 	
 	public void modifyUser(User user) {
@@ -83,21 +81,20 @@ public class UserService {
 		return userInfo;
 	}
 	
-public int addUser(User user) {	
-	int result = userMapper.addUser(user);
-		
-	return result;
-}
+	public int addUser(User user) {	
+		int result = userMapper.addUser(user);
+			
+		return result;
+	}
 	
-public List<UserDrop> getUserDropList(){
-		
+	public List<UserDrop> getUserDropList(){	
 		List<UserDrop> userDropList = userMapper.getUserDropList();
 		
 		return userDropList;
 	}
 	
 	
-public List<UserSleep> getUserSleepList(){
+	public List<UserSleep> getUserSleepList(){
 		
 		List<UserSleep> userSleepList = userMapper.getUserSleepList();
 		
@@ -105,23 +102,20 @@ public List<UserSleep> getUserSleepList(){
 	}
 	
 	
-public List<LoginLog> getLoginLogList(){
-		
+	public List<LoginLog> getLoginLogList(){		
 		List<LoginLog> loginLogList = userMapper.getLoginLogList();
 		
 		return loginLogList;
 	}	
 	
-public List<ActivityStatus> getActivityStatusList(){
-		
+	public List<ActivityStatus> getActivityStatusList(){	
 		List<ActivityStatus> activityStatusList = userMapper.getActivityStatusList();
 		
 		return activityStatusList;
 	}
 	
 
-	public List<UserLevel> getUserLevelList(){
-		
+	public List<UserLevel> getUserLevelList(){	
 		List<UserLevel> userLevelList = userMapper.getUserLevelList();
 		
 		return userLevelList;

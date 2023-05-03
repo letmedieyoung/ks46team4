@@ -109,7 +109,7 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/admin/user/login";
 	}
-
+/*
 	@PostMapping("/login")
 	public String login(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
 			HttpSession session, RedirectAttributes reAttr) {
@@ -140,7 +140,7 @@ public class UserController {
 
 		return "admin/user/login";
 	}
-
+*/
 	@PostMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId,
 			@RequestParam(name = "userPw") String userPw) {

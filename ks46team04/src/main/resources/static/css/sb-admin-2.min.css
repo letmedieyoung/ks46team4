@@ -10405,4 +10405,11 @@ form.user .form-control-user-plus {
 	padding-left: 20px;
 }
 
-
+.login_logo{
+	color: white;
+	font-size: 3rem;
+	margin-top: 2rem;
+}
+.login_logo :hover{
+	color: white;
+}
