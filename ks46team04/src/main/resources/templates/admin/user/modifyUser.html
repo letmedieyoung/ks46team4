@@ -35,21 +35,62 @@
 						userPwEle.focus();
 						return false;
 					}
-					$('#modifyUserForm input[name=userPw]').val(userPw);
-					$('#modifyUserForm').submit();
-				});
-		$('#modifyUserForm').ready(function() {
-	        var userLevel = '${userInfo.userLevel}'; // 회원의 등급 정보 가져오기
+					
+					const userBirthEle = $('#modifyuserBirth');
+					const userBirth = userBirthEle.val();
+					if (typeof userBirth == 'undefined' || userBirth == null || userBirth == '') {
+						alert('회원생년월일을 입력해주세요');
+						userBirthEle.focus();
+						return false;
+					}
 
-	        // 회원이면 "회원" 옵션 선택, 관리자면 "관리자" 옵션 선택
-	        if (userLevel == 2) {
-	            $('#modifyuserLevel').val(2); // "회원" 옵션의 value 값인 2로 설정
-	        } else if (userLevel == 1) {
-	            $('#modifyuserLevel').val(1); // "관리자" 옵션의 value 값인 1로 설정
-	        }
-	    });
+					const userPhoneEle = $('#modifyuserPhone');
+					const userPhone = userPhoneEle.val();
+					if (typeof userPhone == 'undefined' || userPhone == null || userPhone == '') {
+						alert('회원연락처를 입력해주세요');
+						userPhoneEle.focus();
+						return false;
+					}
+
+					const userEmailEle = $('#modifyuserEmail');
+					const userEmail = userEmailEle.val();
+					if (typeof userEmail == 'undefined' || userEmail == null || userEmail == '') {
+						alert('회원이메일을 입력해주세요');
+						userEmailEle.focus();
+						return false;
+					}
+					
+					 // 주소 필드의 값을 체크하여, 값이 없으면 null로 설정
+				    const userAddrEle = $('#modifyuserAddr');
+				    const userAddr = userAddrEle.val();
+				    if (typeof userAddr == 'undefined' || userAddr == null || userAddr == '') {
+				        userAddrEle.val(null);
+				    }
+				    
+				    // Ajax 요청 보내기
+				    $.ajax({
+				        type: 'POST',
+				        url: `/modifyUser?userId=${userInfo.userId}`, // 수정 처리를 담당하는 URL
+				        data: $('#modifyUserForm').serialize(), // 폼 데이터 전송
+				        success: function(result) {
+				            // 서버에서 전송한 응답을 처리하는 코드 작성
+				            if (result.success) {
+				                alert('회원 정보가 수정되었습니다.');
+				            } else {
+				                alert('회원 정보 수정에 실패하였습니다.');
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            console.error(error);
+				            alert('회원 정보 수정 중 오류가 발생하였습니다.');
+				        }
+				    });
+				});
+
+
 		$('#modifyresetBtn').click(function() {
-			location.href = '/user/userList';
+			$('#modifyUserForm')[0].reset(); // 폼 필드 초기화
+			//location.href = '/user/userList';
 			//history.go(-1);
 		});
 	</script>
@@ -89,11 +130,12 @@
 							<tr>
 								<th class="bg-gray-100"><label for="userLevel">등급</label></th>
 								<td><select class="dropdown btn btn-primary required-form"
-									id="modifyuserLevel" name="userLevel">
-										<option value="1" th:selected="${userInfo.userLevel == 1}">관리자</option>
-            <option value="2" th:selected="${userInfo.userLevel == 2}">회원</option>
+									id="modifyuserLevel" th:value="${userInfo.userLevel}" name="userLevel">
+										<option value="1" th:selected="${userInfo.userLevel == '1'}">관리자</option>
+           								<option value="2" th:selected="${userInfo.userLevel == '2'}">회원</option>
 								</select></td>
 							</tr>
+							
 
 							<tr>
 								<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
@@ -106,33 +148,34 @@
 								<th class="bg-gray-100"><label for="userName">이름</label></th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="modifyuserName" th:value="${userInfo.userName}" name="userName"
-									placeholder="이름을 입력해주세요." /></td>
+									id="modifyuserName" th:value="${userInfo.userName}"
+									name="userName" readonly="readonly" /></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
 								</th>
 								<td><input type="date"
 									class="form-control form-control-user-search search-input-gr"
-									id="modifyuserBirth" th:value="${userInfo.userBirth}" name="userBirth"
-									placeholder="생년월일을 선택해주세요." /></td>
+									id="modifyuserBirth" th:value="${userInfo.userBirth}"
+									name="userBirth" placeholder="생년월일을 선택해주세요." /></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userPhone">연락처</label>
 								</th>
 								<td><input type="tel"
 									class="form-control form-control-user-search search-input-gr"
-									id="modifyuserPhone" th:value="${userInfo.userPhone}" name="userPhone"
-									placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
+									id="modifyuserPhone" th:value="${userInfo.userPhone}"
+									name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userEmailAgree">이메일
+									<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label></th>
-								<td><select id="modifyuserEmailAgree" name="userEmailAgree"
+								<td><select class="dropdown btn btn-primary required-form"
+									id="modifyuserEmailAgree" name="userEmailAgree"
 									th:value="${userInfo.userEmailAgree}">
-										<option value="Y" th:selected="${userEmailAgree == 'Y'}">수신동의</option>
+										<option value="1" th:selected="${userInfo.userEmailAgree == '1'}">수신동의</option>
 
-										<option value="N" th:selected="${userEmailAgree == 'N'}">수신거부</option>
+										<option value="0" th:selected="${userInfo.userEmailAgree == '0'}">수신거부</option>
 								</select></td>
 
 							</tr>
@@ -141,15 +184,15 @@
 								</th>
 								<td><input type="email"
 									class="form-control form-control-user-search search-input-gr"
-									id="modifyuserEmail" th:value="${userInfo.userEmail}" name="userEmail"
-									placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
+									id="modifyuserEmail" th:value="${userInfo.userEmail}"
+									name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="modifyuserAddr" th:value="${userInfo.userAddr}" name="userAddr"
-									placeholder="주소를 입력해주세요." /></td>
+									id="modifyuserAddr" th:value="${userInfo.userAddr}"
+									name="userAddr" placeholder="주소를 입력해주세요." /></td>
 							</tr>
 							<tr>
 								<td colspan="2">
