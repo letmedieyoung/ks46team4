@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletRequest;
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
-import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.FundingRefund;
-import ks46team04.admin.dto.GoodsCode;
-import ks46team04.admin.dto.RefundStatus;
+import ks46team04.admin.dto.Goods;
 import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingService;
+
 
 @Controller
 @RequestMapping("/admin/funding")
@@ -86,25 +86,20 @@ public class FundingController {
 		 
 		log.info("fundingModify: {}", fundingInfo);
 
-		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
-		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
-		List<FundingProgress> fundingProgressList = fundingService.getFundingProgressList();
-
-		
+		List<Foundation> foundationNameList = fundingService.getFoundationNameList();
+		List<Goods> goodsNameList = fundingService.getGoodsNameList();
+		List<Goods> goodsCodeList = fundingService.getGoodsCodeList();
+		List<Funding> fundingProgressList = fundingService.getFundingProgressList();
+	
 		model.addAttribute("title", "펀딩 정보 수정");	
 		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsNameList", goodsNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		model.addAttribute("fundingProgressList", fundingProgressList);
-		model.addAttribute("fundingInfo", fundingInfo);
-		
+		model.addAttribute("fundingInfo", fundingInfo);	
 
 		return "admin/funding/modifyFunding";
 	}
-	
-	
-
-
-	
 
 	
 	/**
@@ -147,24 +142,30 @@ public class FundingController {
 	 * @return
 	 */
 	@PostMapping("/register") 
-	public String registFunding(Funding funding) { 
-		log.info("화면에서 전달받은 데이터 : {}", funding);
+	public String registFunding(Funding funding,
+								HttpServletRequest request) { 
+		log.info("화면에서 전달받은 데이터 : {}", funding);	
+		
 		fundingService.registFunding(funding);
 		return "redirect:/admin/funding/manage"; 
 	}		
 	
 	@GetMapping("/register")
 	public String registFunding(Model model){
-		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
-		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
+		List<Foundation> foundationNameList = fundingService.getFoundationNameList();
+		List<Goods> goodsNameList = fundingService.getGoodsNameList();
+		List<Goods> goodsCodeList = fundingService.getGoodsCodeList();
 	
 		model.addAttribute("title", "신규펀딩등록");
 		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsNameList", goodsNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		
 		return "admin/funding/register";
 	}
 
+	
+	
 	
 	/**
 	 * 펀딩 컨텐츠 별 진행현황
@@ -172,13 +173,21 @@ public class FundingController {
 	 * @return
 	 */
 	@GetMapping("/current_amount")
-	public String getFundingGoalAmountSum(Model model) {
-	    int fundingGoalAmountSum = fundingService.getFundingGoalAmountSum();
-	    model.addAttribute("fundingGoalAmountSum", fundingGoalAmountSum);
+	public String currentProgress(Model model) {	
+		
+		int targetSum = fundingMapper.getTargetSum();
+		int currentSum = fundingMapper.sumOfCurrentAmount();
+		
+		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
+		model.addAttribute("content", "펀딩 컨텐츠 별 진행현황");
+		model.addAttribute("targetSum", targetSum);
+		model.addAttribute("currentSum", currentSum);
 	    
 	    return "admin/funding/current_amount";
 	}
 	
+
+
 	
 	
 	/**
@@ -250,7 +259,7 @@ public class FundingController {
 	public String modifyFundingRefund(@RequestParam(name="fundingRefundCode") String fundingRefundCode, Model model) {
 						
 		FundingRefund fundingRefundInfo = fundingService.getFundingRefundInfoByCode(fundingRefundCode);	
-		List<RefundStatus> refundStatusList = fundingService.getRefundStatusList();
+		List<FundingRefund> refundStatusList = fundingService.getRefundStatusList();
 		
 		model.addAttribute("title", "펀딩 환불내역 수정");
 		model.addAttribute("refundStatusList", refundStatusList);
@@ -258,6 +267,18 @@ public class FundingController {
 		
 		return "admin/funding/modifyFundingRefund";
 	}
+	/**
+	 * 버튼으로 환불 처리
+	 * @param refundArr
+	 */
+	@PostMapping("/refund")
+	@ResponseBody
+	public List<String> refundFunding(@RequestParam(value="refundArr[]") List<String> refundArr) {
+	    log.info("refundArr: {}", refundArr);
+	    fundingService.updateFundingRefundStatus(refundArr);
+	    return refundArr;
+	}
+
 	/**
 	 * 펀딩 환불 관리
 	 * @param model

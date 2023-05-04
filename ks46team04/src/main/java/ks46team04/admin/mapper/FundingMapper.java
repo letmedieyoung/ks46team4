@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
-import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.FundingRefund;
-import ks46team04.admin.dto.GoodsCode;
-import ks46team04.admin.dto.RefundStatus;
+import ks46team04.admin.dto.Goods;
 
 @Mapper
 public interface FundingMapper {
@@ -19,11 +18,13 @@ public interface FundingMapper {
 	public int registFunding(Funding funding);	
 	
 	// 펀딩 수정 - 진행상태 
-	public List<FundingProgress> getFundingProgressList();		
+	public List<Funding> getFundingProgressList();		
 	// 펀딩 수정 - 재단명 조회
-	public List<FundingFoundation> getFoundationNameList();	
+	public List<Foundation> getFoundationNameList();	
+	// 펀딩 수정 - 상품명 조회
+	public List<Goods> getGoodsNameList();	
 	// 펀딩 수정 - 상품코드 조회
-	public List<GoodsCode> getGoodsCodeList();	
+	public List<Goods> getGoodsCodeList();	
 	// 펀딩 정보 수정
 	public int modifyFunding(Funding funding);
 	// 특정 펀딩 조회
@@ -42,15 +43,21 @@ public interface FundingMapper {
 	public List<FundingPay> getFundingPayList();
 	
 	// 환불내역 수정 - 진행상태 
-	public List<RefundStatus> getRefundStatusList();
+	public List<FundingRefund> getRefundStatusList();
 	// 환불내역 수정
 	public int modifyFundingRefund(FundingRefund fundingRefund);
 	// 특정 펀딩 환불내역 조회
 	public FundingRefund getFundingRefundInfoByCode(String fundingRefundCode);
+	// 체크박스 선택된 펀딩 환불 처리	
+	public int updateFundingRefundStatus(@Param("fundingCode") String fundingCode, @Param("refundStatus") String refundStatus);
 	// 펀딩 환불내역 조회
 	public List<FundingRefund> getRefundList();
 	
-	// 펀딩 진행현황 - 목표 금액 합계 조회
-	public int getFundingGoalAmountSum();
+   
+	// 펀딩 진행상황 - 진행 중 펀딩 현재 모금액의 합계
+	public int sumOfCurrentAmount();
+	// 펀딩 진행상황 - 진행 중 펀딩 목표액의 합계
+	public int getTargetSum();
+
 	
 }

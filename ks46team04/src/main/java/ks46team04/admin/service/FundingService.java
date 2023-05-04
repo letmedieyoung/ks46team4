@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingFoundation;
 import ks46team04.admin.dto.FundingPay;
-import ks46team04.admin.dto.FundingProgress;
 import ks46team04.admin.dto.FundingRefund;
-import ks46team04.admin.dto.GoodsCode;
-import ks46team04.admin.dto.RefundStatus;
+import ks46team04.admin.dto.Goods;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -24,7 +22,7 @@ public class FundingService {
 	private static final Logger log = LoggerFactory.getLogger(FundingService.class);
 	
 	@Autowired
-	private final FundingMapper fundingMapper;	
+	private final FundingMapper fundingMapper;
 	
 	public FundingService(FundingMapper fundingMapper) {
 		this.fundingMapper = fundingMapper;		
@@ -49,26 +47,34 @@ public class FundingService {
 	}
 	/**
 	 * 펀딩 수정화면 - 진행상태 불러오기
-	 * @return List<FudingProgress>
+	 * @return List<Fuding>
 	 */
-	public List<FundingProgress> getFundingProgressList(){
-		List<FundingProgress> fundingProgressList = fundingMapper.getFundingProgressList();
+	public List<Funding> getFundingProgressList(){
+		List<Funding> fundingProgressList = fundingMapper.getFundingProgressList();
 		return fundingProgressList;
 	}	
 	/**
-	 * 펀딩 수정화면 - 상품코드 불러오기
-	 * @return List<FudingFoundation>
+	 * 펀딩 수정화면 - 상품명 불러오기
+	 * @return List<GoodsName>
 	 */
-	public List<GoodsCode> getGoodsCodeList(){
-		List<GoodsCode> goodsCodeList = fundingMapper.getGoodsCodeList();
+	public List<Goods> getGoodsNameList(){
+		List<Goods> goodsNameList = fundingMapper.getGoodsNameList();
+		return goodsNameList;
+	}
+	/**
+	 * 펀딩 수정화면 - 상품코드 불러오기
+	 * @return List<GoodsName>
+	 */
+	public List<Goods> getGoodsCodeList(){
+		List<Goods> goodsCodeList = fundingMapper.getGoodsCodeList();
 		return goodsCodeList;
 	}	
 	/**
 	 * 펀딩 수정화면 - 재단명 불러오기
-	 * @return List<FudingFoundation>
+	 * @return List<Foundation>
 	 */
-	public List<FundingFoundation> getFoundationNameList(){
-		List<FundingFoundation> foundationNameList = fundingMapper.getFoundationNameList();
+	public List<Foundation> getFoundationNameList(){
+		List<Foundation> foundationNameList = fundingMapper.getFoundationNameList();
 		return foundationNameList;
 	}	
 	/**
@@ -101,7 +107,26 @@ public class FundingService {
 		return result;
 	}
 	
-		
+	/**
+	 * 펀딩 진행상황 - 진행 중 펀딩 현재 모금액의 합계
+	 * @param currentSum
+	 * @return
+	 */	
+    public int currentSum() {
+    	return fundingMapper.sumOfCurrentAmount();
+    }
+	/**
+	 * 펀딩 진행상황 - 진행 중 펀딩 목표액의 합계
+	 * @param targetSum
+	 * @return
+	 */	
+    public int getTargetAmount() {
+    	return fundingMapper.getTargetSum();
+    }
+	
+
+	
+	
 	/**
 	 * 펀딩 결제내역 상세 정보
 	 * @param fundingPay
@@ -136,8 +161,8 @@ public class FundingService {
 	 * 펀딩 수정화면 - 진행상태 불러오기
 	 * @return List<RefundStatus>
 	 */
-	public List<RefundStatus> getRefundStatusList(){
-		List<RefundStatus> refundStatusList = fundingMapper.getRefundStatusList();
+	public List<FundingRefund> getRefundStatusList(){
+		List<FundingRefund> refundStatusList = fundingMapper.getRefundStatusList();
 		return refundStatusList;
 	}	
 	/**
@@ -150,6 +175,16 @@ public class FundingService {
 		log.info("fundingRefundInfo: {}", fundingRefundCode);
 		return fundingRefundInfo;
 	}
+	/**
+	 * 버튼으로 환불 처리
+	 * @param refundArr
+	 */
+	public void updateFundingRefundStatus(List<String> refundArr) {
+	    for (String value : refundArr) {
+	        fundingMapper.updateFundingRefundStatus(value, "환불완료");
+	    }
+	}
+
 	//펀딩 환불내역 조회
 	public List<FundingRefund> getRefundList(){
 		List<FundingRefund> refundList = fundingMapper.getRefundList();		
@@ -158,9 +193,9 @@ public class FundingService {
 	
 	
 	//펀딩 진행현황 - 목표 금액 합계 조회
-	public int getFundingGoalAmountSum() {
-	        return fundingMapper.getFundingGoalAmountSum();
-	}
+	//public int getFundingGoalAmountSum() {
+	//       return fundingMapper.getFundingGoalAmountSum();
+	//}
 
 	
 	

@@ -44,10 +44,10 @@ public class CommonController {
 			return "common/funding_index";
 		}
 		
-		@GetMapping("/funding_detail")
+		@GetMapping("/funding1")
 		public String nowFunding1(Model model) {
 			
-			return "common/funding_detail";
+			return "common/funding1";
 		}
 		
 		@GetMapping("/funding_detail2")
