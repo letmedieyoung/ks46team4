@@ -55,17 +55,17 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" readonly/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsInfo.goodsName}" readonly/>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsCategory">상품 분류</label>
+											<label for="goodsLotNumber">제조번호</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCategory" name="goodsCategory" th:value="*{goodsCategory}" readonly/>
+												<input type="text" class="form-control form-control-user-search short-input" id="goodsLotNumber" name="goodsLotNumber" th:value="*{goodsLotNumber}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -75,7 +75,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsCompany}" readonly/>
+												<input type="text" class="form-control form-control-user-search short-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsInfo.goodsCompany}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -85,17 +85,27 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsExprityDate" min="0" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>원
+												<input type="text" class="form-control short-input" id="goodsExprityDate" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="stocktakingCheck">재고조사 여부</label>
+											<label for="stocktakingCheck">재고조사 현황</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="stocktakingCheck" min="0" name="stocktakingCheck" th:value="*{stocktakingCheck}" placeholder="재고 조사 여부를 입력해주세요." />원
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="stocktakingCheckSelect" name="stocktakingCheckSelect" onchange="stocktaking(this.value)">
+													<option value="">:: 재고조사 현황 ::</option>
+													<option th:selected="*{stocktakingCheck} == '1'" >완료</option>
+													<option th:selected="*{stocktakingCheck} == '0'" >미완료</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="stocktakingCheck" name="stocktakingCheck" th:value="*{stocktakingCheck}" placeholder="재고조사 현황을 선택해주세요." />
 											</div>
 										</td>
 									</tr>
@@ -105,7 +115,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+												<input type="text" class="form-control short-input" id="stocktakingDate" name="stocktakingDate" th:value="*{stocktakingDate}" placeholder="재고조사일을 입력해주세요." />
 											</div>
 										</td>
 									</tr>
@@ -115,17 +125,28 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+												<input type="number" class="form-control short-input" id="currentStockAmount" min="0" name="goodsPrice" th:value="*{currentStockAmount}" placeholder="현재고량를 입력해주세요." />개
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="unusualStockCheck">비정상재고 유무</label>
+											<label for="unusualStockCheck">비정상재고</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="unusualStockCheckSelect" name="unusualStockCheckSelect" onchange="unusualStock(this.value)">
+													<option value="">:: 비정상재고 ::</option>
+													<option th:selected="*{stocktakingCheck} == '1' and *{unusualStockCheck} == '0'" >무</option>
+													<option th:selected="*{stocktakingCheck} == '0' and *{unusualStockCheck} == '0'">재고조사 미진행</option>
+													<option th:selected="*{unusualStockCheck} == '1'" >유</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="unusualStockCheck" name="unusualStockCheck" th:value="*{unusualStockCheck}" placeholder="비정상재고 유무를 선택해주세요." />
 											</div>
 										</td>
 									</tr>
@@ -135,7 +156,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+												<input type="number" class="form-control short-input" id="unusualStockAmount" name="unusualStockAmount" th:value="*{unusualStockAmount}" placeholder="비정상재고량을 입력해주세요." />개
 											</div>
 										</td>
 									</tr>
@@ -145,7 +166,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="goodsPrice" min="0" name="goodsPrice" th:value="*{goodsPrice}" placeholder="상품 단가를 입력해주세요." />원
+												<input type="number" class="form-control short-input" id="finalStockAmount" name="finalStockAmount" th:value="*{unusualStockAmount}" placeholder="출고가능수량을 입력해주세요." />개
 											</div>
 										</td>
 									</tr>
@@ -186,13 +207,33 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		 * 상품분류 select box value 값 -> input value로 넣기
-		 */
-		function goodsCate(category) {
-			const selectInput = document.querySelector('#goodsCategory');
+		/*
+		* 재고조사 현황 select box value 값 -> input value로 넣기
+		*/
+		function stocktaking(category) {
+			const selectInput = document.querySelector('#stocktakingCheck');
 			selectInput.value = category;
 		};
+		
+		/**
+		 * 비정상재고 select box value 값 -> input value로 넣기
+		 */
+		function unusualStock(category) {
+			const selectInput = document.querySelector('#unusualStockCheck');
+			selectInput.value = category;
+		};
+		
+		/**
+		 * 재고조사 현황 select box selected 값 -> input text로 넣기
+		 */
+		var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		
+		/**
+		 * 비정상재고 select box selected 값 -> input text로 넣기
+		 */
+		var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 	</script>
 </th:block>
 

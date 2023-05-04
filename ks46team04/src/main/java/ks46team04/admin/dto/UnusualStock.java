@@ -1,7 +1,6 @@
 package ks46team04.admin.dto;
 
 public class UnusualStock {
-
 	private String unusualStockCode;
 	private String goodsCode;
 	private String goodsStockCode;
@@ -12,6 +11,15 @@ public class UnusualStock {
 	private String unusualStockRegDate;
 	private String unusualStockUpdId;
 	private String unusualStockUpdDate;
+	
+	private Goods goodsInfo;
+	
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
 	public String getUnusualStockCode() {
 		return unusualStockCode;
 	}
@@ -78,7 +86,7 @@ public class UnusualStock {
 				+ goodsStockCode + ", unusualStockQuantity=" + unusualStockQuantity + ", unusualStockDate="
 				+ unusualStockDate + ", unusualStockReason=" + unusualStockReason + ", unusualStockRegId="
 				+ unusualStockRegId + ", unusualStockRegDate=" + unusualStockRegDate + ", unusualStockUpdId="
-				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + "]";
+				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + ", goodsInfo=" + goodsInfo + "]";
 	}
 	
 	

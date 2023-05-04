@@ -227,8 +227,8 @@
 								<th>No</th>
 								<th>재단명</th>
 								<th>콘텐츠 분류</th>
-								<th>진행현황</th>
 								<th>요청 상품명</th>
+								<th>진행현황</th>
 								<th>초기 요청 수량</th>
 								<th>최종 요청 수량</th>
 								<th>배송 요청일</th>
@@ -242,8 +242,8 @@
 								<th th:text="${lStat.count}"></th>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.contentCategory}"></td>
-								<td th:text="${l.requestProgressStatus}"></td>
 								<td th:text="${l.requestGoodsName}"></td>
+								<td th:text="${l.requestProgressStatus}"></td>
 								<td th:text="${l.initialGoodsAmount}"></td>
 								<td th:if="${l.finalGoodsAmount == null}" th:text="미정"></td>
 								<td th:unless="${l.finalGoodsAmount == null}" th:text="${l.finalGoodsAmount}"></td>

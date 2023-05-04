@@ -55,7 +55,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationCode}" placeholder="재단명을 검색하거나 입력해주세요."/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 검색하거나 입력해주세요."/>
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
@@ -73,9 +73,9 @@
 												&nbsp;
 												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="content(this.value)">
 													<option value="">:: 콘텐츠 분류 ::</option>
-														<option>펀딩</option>
-														<option>정기 후원</option>
-														<option>미정</option>
+													<option th:selected="*{contentCategory} == '펀딩'" >펀딩</option>
+													<option th:selected="*{contentCategory} == '정기 후원'" >정기 후원</option>
+													<option th:selected="*{contentCategory} == '미정'" >미정</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
@@ -135,9 +135,9 @@
 												&nbsp;
 												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="status(this.value)">
 													<option value="">:: 진행현황 ::</option>
-														<option>대기중</option>
-														<option>진행중</option>
-														<option>완료</option>
+														<option th:selected="*{requestProgressStatus} == '대기중'" >대기중</option>
+														<option th:selected="*{requestProgressStatus} == '진행중'" >진행중</option>
+														<option th:selected="*{requestProgressStatus} == '완료'" >완료</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">

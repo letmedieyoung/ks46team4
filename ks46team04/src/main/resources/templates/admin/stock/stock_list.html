@@ -134,6 +134,7 @@
 										      <input type="radio" id="undoneStatus" name="status" value="undoneStatus">
 										      <span class="text">미완료</span>
 									      </label>
+										</div>
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
@@ -195,6 +196,7 @@
 										      <input type="radio" id="notExistUnsual" name="unusualStock" value="notExistUnsual">
 										      <span class="text">무</span>
 									      </label>
+										</div>
 									</div>
 								</td>
 							</tr>
@@ -291,14 +293,6 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		 * 상품분류 select box value 값 -> input value로 넣기
-		 */
-		function goodsCate(category) {
-			const selectInput = document.querySelector('#goodsCategory');
-			selectInput.value = category;
-		};
-		
 		/**
 		* 전체 선택
 		*/
