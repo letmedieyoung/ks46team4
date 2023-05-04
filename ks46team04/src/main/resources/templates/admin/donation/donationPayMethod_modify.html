@@ -7,7 +7,6 @@
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-
 		<!-- Page Heading -->
 
 		<!-- DataTales Example -->
@@ -30,13 +29,13 @@
 									<th>회원 아이디</th>
 									<td><input type="text" id="donationPayMethodUserId"
 										th:value="*{donationPayMethodUserId}" name="donationPayMethodUserId"
-										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
-								</tr>
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>							
 								<tr>
 									<th>결제수단 코드</th>
 									<td><input type="text" id="donationPayCode"
 										th:value="*{donationPayCode}" name="donationPayCode"
-										style="width: 400px;" readonly="readonly" /></td>
+										style="width: 400px;" placeholder="결제수단 option으로 수정할 수 있게" /></td>
 								</tr>
 								<tr>
 									<th>은행명</th>
@@ -58,16 +57,9 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>수정일자</th>
-									<td><input type="text" id="donationPayMethodUpdateDate"
-										th:value="*{donationPayMethodUpdateDate}" name="donationPayMethodUpdateDate"
-										style="width: 400px;" readonly="readonly" /></td>
-								</tr>
-								<tr>
 									<td colspan="2"> <div style="display: flex; justify-content: center;">
 										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationPayMethod_list'">입력취소</button></div>
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>
@@ -99,5 +91,10 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationPayMethod_list';
+		});
+	</script>
 </th:block>
 </html>

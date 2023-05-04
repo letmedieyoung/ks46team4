@@ -13,34 +13,62 @@
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
         	 <div class="card-header py-3">
-             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 신청 등록</h5>
+             	<h5 class="m-0 font-weight-bold text-gray-800">구독 신청(유저)</h5>
         	 </div>
          <div class="card-body">
 				<div class="table-responsive">
-					<form action="/admin/donation/donationSub_add" method="POST"
+					<form th:action="@{/admin/donation/donationSub_add}" method="POST"
 						id="addDonationSubForm" name="addDonationSubForm">
 						<table class="table table-bordered freg" id="addDonationSub"
 							width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th>구독 시작일</th>
+									<th>코드</th>
+									<td><input type="text" id="donationSubCode"
+										name="donationSubCode" style="width: 400px;" placeholder="자동증가코드 ! !"/></td>
+								</tr>
+								<tr>
+									<th>회원 아이디</th>
+									<td><input type="text" id="donationSubUserId"
+										name="donationSubUserId" style="width: 400px;" placeholder="회원 아이디를 입력해주세요."/></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 코드</th>
 									<td>
-										<form>
-											<div class="form-row align-items-center search-schedule">
-												<div class="col-auto">
-													<label for="start-date" class="sr-only">시작일</label> <input
-														type="date" id="start-date" class="form-control" />
-												</div>
-											</div>
-										</form>
+										<select id="donationCode" name="donationCode" style="width: 400px;">
+											<th:block th:unless="${donationCode == null}"
+												th:each="l : ${donationCode}">
+												<option th:value="${l.donationCode}">[[${l.donationCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationCode == null}">
+												<option>등록된 콘텐츠 코드 정보가 없습니다.</option>
+											</th:block>
+										</select>
 									</td>
 								</tr>
 								<tr>
+									<th>회원 결제수단</th>
+									<td>
+										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
+											<th:block th:unless="${donationPayMethodCode == null}"
+												th:each="l : ${donationPayMethodCode}">
+												<option th:value="${l.donationPayMethodCode}">[[${l.donationPayMethodCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayMethodCode == null}">
+												<option>등록된 회원 결제수단 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>구독 시작일</th>
+									<td><input type="datetime-local" id="donationSubStartDate"
+										name="donationSubStartDate" style="width: 400px;"/></td>
+								</tr>
+								<tr>
 									<td colspan="3">  <div style="display: flex; justify-content: center;">
-										<button type="button" class="btn btn-primary" id="addBtn" style="display: inline-block;"
-											onclick="addBtn()">등록</button>  &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationSub_list'">입력취소</button></div>
+										<button type="button" class="btn btn-primary" id="addBtn" style="display: inline-block;">등록</button>  &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>
@@ -71,5 +99,26 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$(document).on('click','#addBtn', function(){
+			const addDonationSubForm = $('#addDonationSubForm');
+			const addDonationFormInputs = addDonationSubForm.find('input');
+			let isSubmit = true;
+			$(addDonationFormInputs).each((idx, item) => {
+				let validationCheck = $(item).parents('tr').children().eq(0).text();
+				let validationValue = $(item).val();
+				if(typeof validationValue == 'undefined' || validationValue == null || validationValue == ''){
+					alert(`${validationCheck} 필수 입력 항목입니다.`);
+					$(item).focus();
+					isSubmit = false;
+					return false;
+				}
+			});
+			if(isSubmit) addDonationSubForm.submit();
+		})
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationSub_list';
+		});
+	</script>
 </th:block>
 </html>
