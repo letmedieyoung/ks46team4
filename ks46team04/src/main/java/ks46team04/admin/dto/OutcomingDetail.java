@@ -1,13 +1,6 @@
 package ks46team04.admin.dto;
 
 public class OutcomingDetail {
-	private String listNo;
-	public String getListNo() {
-		return listNo;
-	}
-	public void setListNo(String listNo) {
-		this.listNo = listNo;
-	}
 	private String outcomingDetailCode;
 	private String inOutcomingCode;
 	private String outcomingGoods;
@@ -19,6 +12,22 @@ public class OutcomingDetail {
 	private String outcomingDetailRegDate;
 	private String outcomingDetailUpdId;
 	private String outcomingDetailUpdDate;
+	
+	private FoundationRequest foundationRequestInfo;
+	private Goods goodsInfo;
+	
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
+	public FoundationRequest getFoundationRequestInfo() {
+		return foundationRequestInfo;
+	}
+	public void setFoundationRequestInfo(FoundationRequest foundationRequestInfo) {
+		this.foundationRequestInfo = foundationRequestInfo;
+	}
 	public String getOutcomingDetailCode() {
 		return outcomingDetailCode;
 	}
@@ -87,12 +96,13 @@ public class OutcomingDetail {
 	}
 	@Override
 	public String toString() {
-		return "OutcomingDetail [listNo=" + listNo + ", outcomingDetailCode=" + outcomingDetailCode
-				+ ", inOutcomingCode=" + inOutcomingCode + ", outcomingGoods=" + outcomingGoods + ", outcomingQuantity="
-				+ outcomingQuantity + ", outcomingDate=" + outcomingDate + ", outcomingId=" + outcomingId
-				+ ", foundationCode=" + foundationCode + ", outcomingDetailRegId=" + outcomingDetailRegId
-				+ ", outcomingDetailRegDate=" + outcomingDetailRegDate + ", outcomingDetailUpdId="
-				+ outcomingDetailUpdId + ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
+		return "OutcomingDetail [outcomingDetailCode=" + outcomingDetailCode + ", inOutcomingCode=" + inOutcomingCode
+				+ ", outcomingGoods=" + outcomingGoods + ", outcomingQuantity=" + outcomingQuantity + ", outcomingDate="
+				+ outcomingDate + ", outcomingId=" + outcomingId + ", foundationCode=" + foundationCode
+				+ ", outcomingDetailRegId=" + outcomingDetailRegId + ", outcomingDetailRegDate="
+				+ outcomingDetailRegDate + ", outcomingDetailUpdId=" + outcomingDetailUpdId
+				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + ", foundationRequestInfo="
+				+ foundationRequestInfo + ", goodsInfo=" + goodsInfo + "]";
 	}
 	
 }

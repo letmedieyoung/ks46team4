@@ -60,7 +60,7 @@
 			<if test="deliveryRequestDate != null and deliveryRequestDate !=''">
 				, delivery_request_date = #{deliveryRequestDate}
 			</if>
-			, request_update_id = '세션아이디'
+			, request_update_id = #{requestUpdId}
 			, request_update_date = NOW()
 		</set>
 		WHERE
@@ -96,7 +96,7 @@
 				delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
 		VALUES 
 			(sf_new_foundation_request_code(), sf_return_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName}, #{initialGoodsAmount}, #{deliveryRequestDate}, 
-				'세션아이디', NOW(), #{requestProgressStatus});
+				#{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
 	<select id="getFoundationRequestList" resultMap="foundationRequestResultMap">
@@ -146,7 +146,7 @@
 			<if test="foundationAddr != null and foundationAddr !=''">
 				, foundation_addr = #{foundationAddr}
 			</if>
-			, foundation_update_id = '세션아이디'
+			, foundation_update_id = #{foundationUpdId}
 			, foundation_update_date = NOW()
 		</set>
 		WHERE
@@ -178,7 +178,7 @@
 				 foundation_reg_id, foundation_reg_date)
 		VALUES 
 			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationAddr}, 
-				'세션아이디', NOW());
+				#{foundationRegId}, NOW());
 	</insert>
 	
 	<select id="getFoundationList" resultMap="foundationResultMap">

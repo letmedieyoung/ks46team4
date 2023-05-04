@@ -26,12 +26,43 @@ public class StockService {
 		this.stockMapper = stockMapper;
 	}
 	
+	/**
+	 * 상품 비정상재고 삭제
+	 * @param valueArr
+	 */
+	public void removeUnusualStock(List<String> valueArr) {
+		 for (int i = 0; i < valueArr.size(); i++) {
+			 stockMapper.removeUnusualStock(valueArr.get(i));
+		 }
+	}
 	
+	/**
+	 * 상품 비정상재고 수정
+	 * @param unusualStock
+	 */
+	public void modifyUnusualStock(UnusualStock unusualStock) {
+		stockMapper.modifyUnusualStock(unusualStock);
+	}
 	
-	
+	/**
+	 * 특정 상품 비정상재고 조회
+	 * @param unusualStockCode
+	 * @return
+	 */
+	public UnusualStock getUnusualStockInfoByCode(String unusualStockCode) {
+		UnusualStock unusualStockInfo = stockMapper.getUnusualStockInfoByCode(unusualStockCode);
+		return unusualStockInfo;
+	}
 
-	
-	
+	/**
+	 * 상품 비정상재고 등록
+	 * @param unusualStock
+	 * @return
+	 */
+	public int addUnusualStock(UnusualStock unusualStock) {
+		int result = stockMapper.addUnusualStock(unusualStock);
+		return result;
+	}
 	
 	/**
 	 * 상품 비정상재고 조회
@@ -49,6 +80,16 @@ public class StockService {
 	public List<OutcomingDetail> getOutcomingDetailList(){
 		List<OutcomingDetail> outcomingDetailList = stockMapper.getOutcomingDetailList();
 		return outcomingDetailList;
+	}
+	
+	/**
+	 * 상품 입출고 삭제
+	 * @param valueArr
+	 */
+	public void removeInOutcoming(List<String> valueArr) {
+		 for (int i = 0; i < valueArr.size(); i++) {
+			 stockMapper.removeInOutcoming(valueArr.get(i));
+		 }
 	}
 	
 	/**
