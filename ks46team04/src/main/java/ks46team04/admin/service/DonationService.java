@@ -2,26 +2,24 @@ package ks46team04.admin.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
+import ks46team04.admin.dto.DonationCode;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
+import ks46team04.admin.dto.DonationPayMethodCode;
 import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
+import ks46team04.admin.dto.DonationSubCode;
+import ks46team04.admin.dto.PaymentCode;
 import ks46team04.admin.mapper.DonationMapper;
 
 @Service
 @Transactional
 public class DonationService {
-
-	
-	private static final Logger log = LoggerFactory.getLogger(DonationService.class);
-
 	
 	private final DonationMapper donationMapper;
 	
@@ -32,9 +30,23 @@ public class DonationService {
 	/*
 	 * 정기기부 단가 조회
 	 * */
-	public List<Donation> getDonation(){
-
-		List<Donation> getDonation = donationMapper.getDonation();
+	public List<Donation> getDonation(String searchKey, String searchValue){
+		
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "donationCode":
+				searchKey = "regular_donation_code";
+				break;
+			case "donationName":
+				searchKey = "regular_donation_name";
+				break;
+			default:
+				searchKey = "regular_donation_price";
+				break;
+			}
+		}
+		
+		List<Donation> getDonation = donationMapper.getDonation(searchKey, searchValue);
 		
 		return getDonation;
 	}
@@ -43,8 +55,6 @@ public class DonationService {
 	 * 정기기부 단가 등록
 	 */
 	public int addDonation(Donation donation) {
-		
-		log.info("화면에서 전달받은 데이터 : {}", addDonation(donation));
 		
 		int result = donationMapper.addDonation(donation);
 		
@@ -76,9 +86,26 @@ public class DonationService {
 	/*
 	 * 등록된 회원 결제수단 조회
 	 * */
-	public List<DonationPayMethod> getDonationPayMethod(){
+	public List<DonationPayMethod> getDonationPayMethod(String searchKey, String searchValue){
+		
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "donationPayMethodCode":
+				searchKey = "regular_donation_auto_pm_code";
+				break;
+			case "donationPayMethodUserId":
+				searchKey = "user_id";
+				break;
+			case "donationPayMethodBank":
+				searchKey = "regular_donation_payment_bank";
+				break;
+			default:
+				searchKey = "regular_donation_payment_account";
+				break;
+			}
+		}
 
-		List<DonationPayMethod> getDonationPayMethod = donationMapper.getDonationPayMethod();
+		List<DonationPayMethod> getDonationPayMethod = donationMapper.getDonationPayMethod(searchKey, searchValue);
 		
 		return getDonationPayMethod;
 	}
@@ -87,9 +114,7 @@ public class DonationService {
 	 * 등록된 회원 결제수단 등록
 	 * */
 	public int addDonationPayMethod(DonationPayMethod donationPayMethod) {
-		
-		log.info("화면에서 전달받은 데이터 : {}", addDonationPayMethod(donationPayMethod));
-		
+
 		int result = donationMapper.addDonationPayMethod(donationPayMethod);
 		return result;
 	}
@@ -98,8 +123,9 @@ public class DonationService {
 	 * 특정 등록된 회원 결제수단 조회
 	 * */
 	public DonationPayMethod getDonationPayMethodInfoByCode(String donationPayMethodCode) {
+		
 		DonationPayMethod donationPayMethodInfo = donationMapper.getDonationPayMethodInfoByCode(donationPayMethodCode);
-		log.info("donationPayMethodInfo: {}", donationPayMethodInfo);
+
 		return donationPayMethodInfo;
 	}
 	
@@ -120,9 +146,23 @@ public class DonationService {
 	/*
 	 * 정기기부 구독 신청 조회
 	 * */
-	public List<DonationSub> getDonationSub(){
-
-		List<DonationSub> getDonationSub = donationMapper.getDonationSub();
+	public List<DonationSub> getDonationSub(String searchKey, String searchValue){
+		
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "donationSubCode":
+				searchKey = "user_regular_donation_subscription_code";
+				break;
+			case "donationSubUserId":
+				searchKey = "user_id";
+				break;
+			default:
+				searchKey = "regular_donation_code";
+				break;
+			}
+		}
+		
+		List<DonationSub> getDonationSub = donationMapper.getDonationSub(searchKey, searchValue);
 		
 		return getDonationSub;
 	}
@@ -132,9 +172,8 @@ public class DonationService {
 	 * */
 	public int addDonationSub(DonationSub donationSub) {
 		
-		log.info("화면에서 전달받은 데이터 : {}", addDonationSub(donationSub));
-		
 		int result = donationMapper.addDonationSub(donationSub);
+		
 		return result;
 	}
 	
@@ -142,8 +181,9 @@ public class DonationService {
 	 * 특정 정기기부 구독 신청 조회
 	 * */
 	public DonationSub getDonationSubInfoByCode(String donationSubCode) {
+		
 		DonationSub donationSubInfo = donationMapper.getDonationSubInfoByCode(donationSubCode);
-		log.info("donationSubInfo: {}", donationSubInfo);
+
 		return donationSubInfo;
 	}
 	
@@ -164,9 +204,26 @@ public class DonationService {
 	/*
 	 * 정기기부 구독 결제 상세 조회
 	 * */
-	public List<DonationPayDetail> getDonationPayDetail(){
+	public List<DonationPayDetail> getDonationPayDetail(String searchKey, String searchValue){
+			
+			if(searchKey != null) {
+				switch (searchKey) {
+				case "donationPayDetailCode":
+					searchKey = "regular_donation_payment_code";
+					break;
+				case "donationPayUserId":
+					searchKey = "user_id";
+					break;
+				case "donationPayRefundRequest":
+					searchKey = "user_regular_donation_payment_refund_requested";
+					break;
+				default:
+					searchKey = "user_regular_donation_deadline_check";
+					break;
+				}
+			}
 
-		List<DonationPayDetail> getDonationPayDetail = donationMapper.getDonationPayDetail();
+		List<DonationPayDetail> getDonationPayDetail = donationMapper.getDonationPayDetail(searchKey, searchValue);
 		
 		return getDonationPayDetail;
 	}
@@ -176,8 +233,6 @@ public class DonationService {
 	 * */
 	public int addDonationPayDetail(DonationPayDetail donationPayDetail) {
 		
-		log.info("화면에서 전달받은 데이터 : {}", addDonationPayDetail(donationPayDetail));
-		
 		int result = donationMapper.addDonationPayDetail(donationPayDetail);
 		return result;
 	}
@@ -186,8 +241,9 @@ public class DonationService {
 	 * 특정 정기기부 구독 결제 상세 조회
 	 * */
 	public DonationPayDetail getDonationPayDetailInfoByCode(String donationPayDetailCode) {
+		
 		DonationPayDetail donationPayDetailInfo = donationMapper.getDonationPayDetailInfoByCode(donationPayDetailCode);
-		log.info("donationPayDetailInfo: {}", donationPayDetailInfo);
+
 		return donationPayDetailInfo;
 	}
 	
@@ -208,9 +264,23 @@ public class DonationService {
 	/*
 	 * 정기기부 월별 결제 합계 조회
 	 * */
-	public List<DonationMonthPay> getDonationMonthPay(){
-
-		List<DonationMonthPay> getDonationMonthPay = donationMapper.getDonationMonthPay();
+	public List<DonationMonthPay> getDonationMonthPay(String searchKey, String searchValue){
+		
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "donationMonthPayCode":
+				searchKey = "month_regular_donation_payment_code";
+				break;
+			case "donationMonthPayYear":
+				searchKey = "payment_year";
+				break;
+			default:
+				searchKey = "payment_month";
+				break;
+			}
+		}
+		
+		List<DonationMonthPay> getDonationMonthPay = donationMapper.getDonationMonthPay(searchKey, searchValue);
 		
 		return getDonationMonthPay;
 	}
@@ -220,9 +290,8 @@ public class DonationService {
 	 * */
 	public int addDonationMonthPay(DonationMonthPay donationMonthPay) {
 		
-		log.info("화면에서 전달받은 데이터 : {}", addDonationMonthPay(donationMonthPay));
-		
 		int result = donationMapper.addDonationMonthPay(donationMonthPay);
+		
 		return result;
 	}
 	
@@ -230,8 +299,9 @@ public class DonationService {
 	 * 특정 정기기부 월별 결제 합계 조회
 	 * */
 	public DonationMonthPay getDonationMonthPayInfoByCode(String donationMonthPayCode) {
+		
 		DonationMonthPay donationMonthPayInfo = donationMapper.getDonationMonthPayInfoByCode(donationMonthPayCode);
-		log.info("donationMonthPayInfo: {}", donationMonthPayInfo);
+
 		return donationMonthPayInfo;
 	}
 	
@@ -252,9 +322,29 @@ public class DonationService {
 	/*
 	 * 정기기부 환불 조회
 	 * */
-	public List<DonationRefund> getDonationRefund(){
+	public List<DonationRefund> getDonationRefund(String searchKey, String searchValue){
 
-		List<DonationRefund> getDonationRefund = donationMapper.getDonationRefund();
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "donationRefundCode":
+				searchKey = "regular_donation_payment_refund_code";
+				break;
+			case "donationRefundUserId":
+				searchKey = "user_id";
+				break;
+			case "donationRefundBank":
+				searchKey = "regular_donation_refund_bank_name";
+				break;
+			case "donationRefundAccount":
+				searchKey = "regular_donation_refund_account";
+				break;
+			default:
+				searchKey = "regular_donation_refund_status";
+				break;
+			}
+		}
+		
+		List<DonationRefund> getDonationRefund = donationMapper.getDonationRefund(searchKey, searchValue);
 		
 		return getDonationRefund;
 	}
@@ -264,9 +354,8 @@ public class DonationService {
 	 * */
 	public int addDonationRefund(DonationRefund donationRefund) {
 		
-		log.info("화면에서 전달받은 데이터 : {}", addDonationRefund(donationRefund));
-		
 		int result = donationMapper.addDonationRefund(donationRefund);
+		
 		return result;
 	}
 	
@@ -274,8 +363,9 @@ public class DonationService {
 	 * 특정 정기기부 환불 조회
 	 * */
 	public DonationRefund getDonationRefundInfoByCode(String donationRefundCode) {
+		
 		DonationRefund donationRefundInfo = donationMapper.getDonationRefundInfoByCode(donationRefundCode);
-		log.info("donationRefundInfo: {}", donationRefundInfo);
+
 		return donationRefundInfo;
 	}
 	
@@ -291,5 +381,45 @@ public class DonationService {
 	 * */
 	public void removeDonationRefund(DonationRefund donationRefund) {
 		donationMapper.removeDonationRefund(donationRefund);
+	}
+	
+	/*
+	 * DonationCode 값 가져오기
+	 * */
+	public List<DonationCode> getdonationCode(){
+		List<DonationCode> donationCode = donationMapper.getdonationCode();
+		return donationCode;
+	}
+	
+	/*
+	 * DonationPayMethodCode 값 가져오기
+	 * */
+	public List<DonationPayMethodCode> getdonationPayMethodCode(){
+		List<DonationPayMethodCode> donationPayMethodCode = donationMapper.getdonationPayMethodCode();
+		return donationPayMethodCode;
+	}
+	
+	/*
+	 * DonationSubCode 값 가져오기
+	 * */
+	public List<DonationSubCode> getdonationSubCode(){
+		List<DonationSubCode> donationSubCode = donationMapper.getdonationSubCode();
+		return donationSubCode;
+	}
+	
+	/*
+	 * PaymentCode 값 가져오기
+	 * */
+	public List<PaymentCode> getpaymentCode(){
+		List<PaymentCode> paymentCode = donationMapper.getpaymentCode();
+		return paymentCode;
+	}
+	
+	/*
+	 * DonationPayDetailCode 값 가져오기
+	 * */
+	public List<DonationPayDetail> getdonationPayDetailCode(){
+		List<DonationPayDetail> donationPayDetailCode = donationMapper.getdonationPayDetailCode();
+		return donationPayDetailCode;
 	}
 }

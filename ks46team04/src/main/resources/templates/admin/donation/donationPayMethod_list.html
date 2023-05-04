@@ -31,6 +31,18 @@
 			<!-- DataTales Example -->
 			<div class="card mb-4">
 				<div class="card-header py-3">
+					<h5 class="m-0 font-weight-bold text-gray-800">등록된 회원 결제수단 검색</h5>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<div
+							th:include="~{admin/search/donation_search :: donationPayMethodSearch}"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header py-3">
 					 <h5 class="m-0 font-weight-bold text-gray-800">등록된 회원 결제수단 조회</h5>
 				</div>
 				<div class="card-body">
@@ -72,8 +84,7 @@
 						</table>
 					</div>
 						<div style="display: flex; justify-content: center;">
-						<button type="button" class="btn btn-primary" id="addBtn"
-								onclick="location.href='/admin/donation/donationPayMethod_add'">등록하기</button></div>
+						<button type="button" class="btn btn-primary" id="addBtn">등록하기</button></div>
 				</div>
 			</div>
 
@@ -103,5 +114,13 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#dataTable').DataTable({
+			"ordering" : false 
+		});
+		$('#addBtn').click(function(){
+			location.href='/admin/donation/donationPayMethod_add';
+		});
+	</script>
 </th:block>
 </html>

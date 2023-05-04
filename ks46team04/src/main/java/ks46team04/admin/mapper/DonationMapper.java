@@ -5,18 +5,21 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks46team04.admin.dto.Donation;
+import ks46team04.admin.dto.DonationCode;
 import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
+import ks46team04.admin.dto.DonationPayMethodCode;
 import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
-import ks46team04.admin.dto.Goods;
+import ks46team04.admin.dto.DonationSubCode;
+import ks46team04.admin.dto.PaymentCode;
 
 @Mapper
 public interface DonationMapper {
 	
 	/*정기기부 단가 조회*/
-	public List<Donation> getDonation();
+	public List<Donation> getDonation(String searchKey, String searchValue);
 	
 	/*정기기부 단가 등록*/
 	public int addDonation(Donation donation);
@@ -31,7 +34,7 @@ public interface DonationMapper {
 	public int removeDonation(Donation donation);
 	
 	/* 등록된 회원 결제수단 조회 */
-	public List<DonationPayMethod> getDonationPayMethod();
+	public List<DonationPayMethod> getDonationPayMethod(String searchKey, String searchValue);
 	
 	/* 등록된 회원 결제수단 등록 */
 	public int addDonationPayMethod(DonationPayMethod donationPayMethod);
@@ -46,7 +49,7 @@ public interface DonationMapper {
 	public int removeDonationPayMethod(DonationPayMethod donationPayMethod);
 	
 	/* 정기기부 구독 신청 조회 */
-	public List<DonationSub> getDonationSub();
+	public List<DonationSub> getDonationSub(String searchKey, String searchValue);
 	
 	/* 정기기부 구독 신청 등록 */
 	public int addDonationSub(DonationSub donationSub);
@@ -61,7 +64,7 @@ public interface DonationMapper {
 	public int removeDonationSub(DonationSub donationSub);
 	
 	/* 정기기부 구독 결제 상세 조회 */
-	public List<DonationPayDetail> getDonationPayDetail();
+	public List<DonationPayDetail> getDonationPayDetail(String searchKey, String searchValue);
 	
 	/* 정기기부 구독 결제 상세 등록 */
 	public int addDonationPayDetail(DonationPayDetail donationPayDetail);
@@ -76,7 +79,7 @@ public interface DonationMapper {
 	public int removeDonationPayDetail(DonationPayDetail donationPayDetail);
 
 	/* 정기기부 월별 결제 합계 조회 */
-	public List<DonationMonthPay> getDonationMonthPay();
+	public List<DonationMonthPay> getDonationMonthPay(String searchKey, String searchValue);
 	
 	/* 정기기부 월별 결제 합계 등록 */
 	public int addDonationMonthPay(DonationMonthPay donationMonthPay);
@@ -91,7 +94,7 @@ public interface DonationMapper {
 	public int removeDonationMonthPay(DonationMonthPay DonationMonthPay);
 	
 	/* 정기기부 환불 조회 */
-	public List<DonationRefund> getDonationRefund();
+	public List<DonationRefund> getDonationRefund(String searchKey, String searchValue);
 	
 	/* 정기기부 환불 등록 */
 	public int addDonationRefund(DonationRefund donationRefund);
@@ -104,4 +107,20 @@ public interface DonationMapper {
 	
 	/* 정기기부 환불 삭제 */
 	public int removeDonationRefund(DonationRefund donationRefund);
+	
+	/* DonationCode 값 가져오기 */
+	public List<DonationCode> getdonationCode();
+	
+	/* DonationPayMethodCode 값 가져오기 */
+	public List<DonationPayMethodCode> getdonationPayMethodCode();
+	
+	/* DonationSubCode 값 가져오기 */
+	public List<DonationSubCode> getdonationSubCode();
+	
+	/* PaymentCode 값 가져오기 */
+	public List<PaymentCode> getpaymentCode();
+	
+	/* DonationPayDetailCode 값 가져오기 */
+	public List<DonationPayDetail> getdonationPayDetailCode();
+
 }

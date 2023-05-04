@@ -25,71 +25,21 @@
 
 			<!-- Page Heading -->
 
-			<!-- DataTales Example -->
+		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
-				<h5 class="m-0 font-weight-bold text-gray-800">검색</h5>
+				<h5 class="m-0 font-weight-bold text-gray-800">콘텐츠 검색</h5>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table>
-						<tbody>
-							<tr>
-								<td>
-									<div class="align-items-center search-schedule">
-										<div class="align-items-center search-schedule">
-											<button type="button" id="todayBtn" class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="align-items-center search-schedule">
-											<button type="button" id="monthBtn" class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="align-items-center search-schedule">
-											<button type="button" id="threeMonthBtn"
-												class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
-											</button>
-										</div>
-										<div class="align-items-center search-schedule">
-											<button type="button" id="wholePeriodBtn"
-												class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-										</div>
-									</div>
-									<div class="align-items-center search-schedule">
-										<input id="startDateInput" name="funding_start_date"
-											class="dateSelect form-control form-control-user-search search-input"
-											type="date"></input>
-									</div>
-									<div class="align-items-center search-schedule">
-										<span>~</span>
-									</div>
-									<div class="align-items-center search-schedule">
-										<input id="endDateInput" name="funding_end_date"
-											class="dateSelect form-control form-control-user-search search-input"
-											type="date"></input>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div th:include="~{admin/search/donation_search :: donationSearch}"></div>
 				</div>
 			</div>
 		</div>
-
-
-
-
-
-
-
+		
 		<div class="card mb-4">
 				<div class="card-header py-3">
-					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 콘텐츠 조회</h5>
+					 <h5 class="m-0 font-weight-bold text-gray-800">콘텐츠 조회</h5>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -132,8 +82,7 @@
 						</table>
 					</div>
 								<div style="display: flex; justify-content: center;">
-								<button type="button" class="btn btn-primary" id="addBtn"
-								onclick="location.href='/admin/donation/donation_add'">등록하기</button> </div>
+								<button type="button" class="btn btn-primary" id="addBtn">등록하기</button> </div>
 				</div>
 			</div>
 
@@ -161,5 +110,13 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#dataTable').DataTable({
+			"ordering" : false 
+		});
+	$('#addBtn').click(function(){
+		location.href='/admin/donation/donation_add';
+	});
+	</script>
 </th:block>
 </html>

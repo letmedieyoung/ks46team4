@@ -13,11 +13,11 @@
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
         	 <div class="card-header py-3">
-             	<h5 class="m-0 font-weight-bold text-gray-800">등록된 회원 결제수단 등록</h5>
+             	<h5 class="m-0 font-weight-bold text-gray-800">결제수단 등록(유저)</h5>
         	 </div>
          <div class="card-body">
 				<div class="table-responsive">
-					<form action="/admin/donation/donationPayMethod_add" method="POST"
+					<form th:action="@{/admin/donation/donationPayMethod_add}" method="POST"
 						id="addDonationPayMethodForm" name="addDonationPayMethodForm">
 						<table class="table table-bordered freg" id="addDonationPayDetail"
 							width="100%" cellspacing="0">
@@ -26,7 +26,7 @@
 									<th>회원 아이디</th>
 									<td><input type="text" id="donationPayMethodUserId"
 										name="donationPayMethodUserId" style="width: 400px;"
-										placeholder="회원아이디를 입력해주세요." /></td>
+										placeholder="회원 아이디를 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>은행명</th>
@@ -42,10 +42,8 @@
 								</tr>
 								<tr> 
 									<td colspan="3"> <div style="display: flex; justify-content: center;">
-										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationPayMethod_list'">입력취소</button> </div>
+										<button type="button" class="btn btn-primary" id="addBtn">신청</button> &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>
@@ -76,5 +74,27 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$(document).on('click','#addBtn', function(){
+			const addDonationPayMethodForm = $('#addDonationPayMethodForm');
+			const addDonationFormInputs = addDonationPayMethodForm.find('input');
+			let isSubmit = true;
+			$(addDonationFormInputs).each((idx, item) => {
+				let validationCheck = $(item).parents('tr').children().eq(0).text();
+				let validationValue = $(item).val();
+				if(typeof validationValue == 'undefined' || validationValue == null || validationValue == ''){
+					alert(`${validationCheck} 필수 입력 항목입니다.`);
+					$(item).focus();
+					isSubmit = false;
+					return false;
+				}
+			});
+			if(isSubmit) addDonationPayMethodForm.submit();
+		})
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationPayMethod_list';
+		});
+	</script>
 </th:block>
 </html></html>

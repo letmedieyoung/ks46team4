@@ -13,7 +13,7 @@
 		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
-				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 결제 상세 수정</h5>
+				<h5 class="m-0 font-weight-bold text-gray-800">구독 결제 상세 수정</h5>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -30,22 +30,22 @@
 									<th>회원 아이디</th>
 									<td><input type="text" id="donationPayUserId"
 										th:value="*{donationPayUserId}" name="donationPayUserId"
-										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
+										style="width: 400px;"  readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>정기기부 구독 코드</th>
+									<th>구독 신청 코드</th>
 									<td><input type="text" id="donationSubCode"
 										th:value="*{donationSubCode}" name="donationSubCode"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>정기기부 단가 코드</th>
+									<th>콘텐츠 코드</th>
 									<td><input type="text" id="donationCode"
 										th:value="*{donationCode}" name="donationCode"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>회원 결제 수단 코드</th>
+									<th>결제수단 코드</th>
 									<td><input type="text" id="donationPayMethodCode"
 										th:value="*{donationPayMethodCode}" name="donationPayMethodCode"
 										style="width: 400px;" readonly="readonly" /></td>
@@ -68,47 +68,38 @@
 										th:value="*{donationPayPurchaseBudget}" name="donationPayPurchaseBudget"
 										style="width: 400px;" placeholder="매입예산을 입력해주세요." /><span>원</span></td>
 								</tr>
+
 								<tr>
 									<th>결제일</th>
-									<td>
-										<form>
-											<div class="form-row align-items-center search-schedule">
-												<div class="col-auto">
-													<label for="reg-date" class="sr-only">결제일</label>
-													<input type="date" id="reg-date" class="form-control" />
-												</div>
-											</div>
-										</form>
-									</td>
+									<td><input type="text" id="donationPayDate"
+										th:value="*{donationPayDate}"
+										name="donationPayDate" style="width: 400px;" readonly="readonly" /></td>
 								<tr>
-									<th>정기기부 환불 요청 여부</th>
-									<td>
-										<div>
-										 <input type='radio' name='refund' value='O' /> 환불요청O &nbsp; &nbsp;
- 										 <input type='radio' name='refund' value='X' /> 환불요청X
-										</div>
-									</td>
+									<th>환불 요청 여부</th>
+									<td><select name="donationPayRefundRequest" id="donationPayRefundRequest">
+											<option value="option1">:: 환불 요청 ::</option>
+											<option value="1">요청 O</option>
+											<option value="0">요청 X</option>
+									</select></td>
 								</tr>
 								<tr>
-									<th>정기기부 매출그룹코드</th>
+									<th>매출 그룹 코드</th>
 									<td><input type="text" id="donationPaySalesGroup"
 										th:value="*{donationPaySalesGroup}" name="donationPaySalesGroup"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>정기기부 마감 여부</th>
-									<td>
-										<div>
-										<input type='radio' name='end' value='O' /> 마감O &nbsp; &nbsp;
- 										<input type='radio' name='end' value='X' /> 마감X
-										</div>
-									</td>
+									<th>마감 유무</th>
+									<td><select name="donationPayDeadlineCheck" id="donationPayDeadlineCheck">
+											<option value="option1">:: 마감 ::</option>
+											<option value="마감전">마감전</option>
+											<option value="마감완료">마감완료</option>
+									</select></td>
 								</tr>
 								<tr>
 									<td colspan="2"> <div style="display: flex; justify-content: center;">
 										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationPayDetail_list'">입력취소</button></div>
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>
@@ -140,5 +131,10 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationPayDetail_list';
+		});
+	</script>
 </th:block>
 </html>

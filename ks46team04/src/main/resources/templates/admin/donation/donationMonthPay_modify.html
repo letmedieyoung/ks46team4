@@ -13,7 +13,7 @@
 		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
-				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 월별 결제 합계 수정</h5>
+				<h5 class="m-0 font-weight-bold text-gray-800">월별 결제 합계 수정</h5>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -27,20 +27,20 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>정기기부 콘텐츠 코드</th>
+									<th>콘텐츠 코드</th>
 									<td><input type="text" id="donationCode"
 										th:value="*{donationCode}" name="donationCode"
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
 									<th>연도</th>
-									<td><input type="text" id="donationMonthPayYear"
+									<td><input type="number" id="donationMonthPayYear"
 										th:value="*{donationMonthPayYear}" name="donationMonthPayYear"
 										style="width: 400px;" placeholder="연도를 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>월</th>
-									<td><input type="text" id="donationMonthPayMonth"
+									<td><input type="number" id="donationMonthPayMonth"
 										th:value="*{donationMonthPayMonth}" name="donationMonthPayMonth"
 										style="width: 400px;" placeholder="월을 입력해주세요." /></td>
 								</tr>
@@ -59,8 +59,7 @@
 								<tr>
 									<td colspan="2"> <div style="display: flex; justify-content: center;">
 										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationMonthPay_list'">입력취소</button> </div>
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>
@@ -92,5 +91,10 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationMonthPay_list';
+		});
+	</script>
 </th:block>
 </html>

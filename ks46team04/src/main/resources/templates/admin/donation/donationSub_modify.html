@@ -13,7 +13,7 @@
 		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
-				<h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 신청 수정</h5>
+				<h5 class="m-0 font-weight-bold text-gray-800">구독 신청 내역 수정</h5>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -30,7 +30,7 @@
 									<th>회원 아이디</th>
 									<td><input type="text" id="donationSubUserId"
 										th:value="*{donationSubUserId}" name="donationSubUserId"
-										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
+										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
 									<th>정기기부 콘텐츠 코드</th>
@@ -52,15 +52,13 @@
 								</tr>
 								<tr>
 									<th>구독 종료일</th>
-									<td><input type="text" id="donationSubEndDate"
-										th:value="*{donationSubEndDate}" name="donationSubEndDate"
-										style="width: 400px;" readonly="readonly" /></td>
+									<td><input type="datetime-local" id="donationSubEndDate"
+										th:value="*{donationSubEndDate}" name="donationSubEndDate" style="width: 400px;" /></td>
 								</tr>
 								<tr>
 									<td colspan="2"> <div style="display: flex; justify-content: center;">
 										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationSub_list'">입력취소</button></div>
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>
@@ -92,5 +90,10 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationSub_list';
+		});
+	</script>
 </th:block>
 </html>
