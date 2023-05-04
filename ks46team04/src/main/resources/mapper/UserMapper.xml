@@ -99,9 +99,6 @@
 			<if test="userPw != null and userPw != ''">
 				user_pw = #{userPw},
 			</if>
-			<if test="userName != null and userName != ''">
-				user_name = #{userName},
-			</if>
 			<if test="userBirth != null and userBirth != ''">
 				user_birth = #{userBirth},
 			</if>
@@ -117,9 +114,10 @@
 			<if test="userAddr != null and userAddr != ''">
 				user_addr = #{userAddr},
 			</if>
+			user_update_date = now()
 		</trim>
 		WHERE 
-			user_id = #{userId};
+			user_id = #{userId} AND user_name = #{userName};
 	</update>
 	
 	<select id="getUserDetailList" parameterType="String" resultMap="userResultMap">
@@ -176,6 +174,17 @@
 		(#{userId}, #{userLevel}, #{userPw}, #{userName}, #{userBirth}, #{userPhone}, #{userEmailAgree},
 		 #{userEmail}, #{userAddr}, NOW(), 'status_active');		
 	</insert>
+	
+	<select id="pwCheck" parameterType="String" resultType="boolean">
+		/* 비밀번호 확인 */
+		SELECT
+			COUNT(*) > 0
+		FROM
+			user_info as u
+		WHERE 
+			u.user_id = #{userId} AND u.user_pw = #{userPw};
+	</select>
+	
 
 	<select id="idCheck" parameterType="String" resultType="boolean">
 		/* 아이디 중복체크 */

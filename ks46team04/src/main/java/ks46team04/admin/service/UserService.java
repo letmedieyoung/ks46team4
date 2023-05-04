@@ -69,10 +69,21 @@ public class UserService {
 		
 	}
 	
-	public void modifyUser(User user) {
-		userMapper.modifyUser(user);
-	}
+	public boolean pwCheck(String userId, String userPw) {
+        User user = userMapper.getUserInfoById(userId);
+        if (user != null) {
+            String checkPw = user.getUserPw();
+            if (checkPw.equals(userPw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	
+	public boolean modifyUser(User user) {
+	    return userMapper.modifyUser(user) > 0;
+	} 
 	
 	public User getUserInfoById(String userId) {
 		User userInfo = userMapper.getUserInfoById(userId);

@@ -27,6 +27,8 @@ public interface UserMapper {
 	public int addUser(User user);
 	// 회원아이디 중복체크
 	public boolean idCheck(String userId);
+	// 회원비밀번호 체크
+	public boolean pwCheck(String userId, String userPw);
 	// 회원의 목록 조회
 	public List<User> getUserList(String searchKey, String searchValue);
 	// 회원의 목록 상세 조회
