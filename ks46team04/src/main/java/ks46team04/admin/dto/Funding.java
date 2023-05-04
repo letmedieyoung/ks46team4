@@ -8,7 +8,7 @@ public class Funding {
 	private String fundingCode;
 	private String fundingName;
 	private String fundingDescription;
-	private String fundingFoundation;
+	private String foundationName;
 	private String goodsCode;
 	private int fundingGoalAmount;
 	private String fundingStartDate;
@@ -18,6 +18,10 @@ public class Funding {
 	private String fundingRegDate;
 	private String fundingUpdateId;
 	private String fundingUpdateDate;
+	private String goodsName;
 
+	private int targetSum;
+	private int currentSum;
+	
 	private List<Funding> fundingList;
 }

@@ -6,14 +6,14 @@
 	<resultMap type="Funding" id="fundingResultMap">
 		<id 	column="funding_code"			property="fundingCode"/>
 		<result column="funding_name"			property="fundingName"/>
-		<result column="funding_foundation"		property="fundingFoundation"/>
+		<result column="funding_foundation"		property="foundationName"/>
 		<result column="goods_code"				property="goodsCode"/>
 		<result column="funding_goal_amount"	property="fundingGoalAmount"/>
 		<result column="funding_start_date"		property="fundingStartDate"/>
 		<result column="funding_end_date"		property="fundingEndDate"/>
 		<result column="funding_progress"		property="fundingProgress"/>
 		<result column="funding_reg_Date"		property="fundingRegDate"/>
-		<result column="funding_update_Date"	property="fundingUpdateDate"/>
+		<result column="funding_update_Date"	property="fundingUpdateDate"/>		
 	</resultMap>
 	
 	<resultMap type="FundingRefund" id="fundingRefundResultMap">
@@ -29,6 +29,11 @@
 		<result column="funding_refund_request_reason"	property="requestReason"/>
 		<result column="funding_refund_status"			property="refundStatus"/>
 	</resultMap>
+	
+	<resultMap type="Goods" id="goodsResultMap">
+		<id 	column="goods_code"	property="goodsCode"/>
+		<result column="goods_name"	property="goodsName"/>
+	</resultMap>
 
 	<insert id="registFunding" parameterType="Funding">
 		/* 펀딩 등록 */
@@ -36,7 +41,7 @@
 		(funding_code, funding_name, funding_description, funding_foundation, goods_code, funding_goal_amount,
 		 funding_start_date, funding_end_date, funding_progress, funding_reg_id, funding_reg_date, funding_update_id, funding_update_date)
 		VALUES 
-		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{fundingFoundation}, #{goodsCode}, #{fundingGoalAmount},
+		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{foundationName}, #{goodsCode}, #{fundingGoalAmount},
 		 #{fundingStartDate}, #{fundingEndDate}, #{fundingProgress}, #{fundingRegId}, CURDATE(), #{fundingUpdateId}, #{fundingUpdateDate});
 	</insert>
 	
@@ -50,7 +55,7 @@
 			funding_code = #{fundingCode};
 	</delete>		
 
-	<select id="getFundingProgressList" resultType="FundingProgress">
+	<select id="getFundingProgressList" resultType="Funding">
 		/* 진행상태 조회 */
 		SELECT
 			funding_progress AS fundingProgress
@@ -58,7 +63,15 @@
 			funding_progress_status;					
 	</select>
 	
-	<select id="getGoodsCodeList" resultType="GoodsCode">
+	<select id="getGoodsNameList" resultType="Goods">
+		/* 상품명 조회 */
+		SELECT
+			goods_name AS goodsName
+		FROM
+			goods_reg_info;			
+	</select>
+	
+	<select id="getGoodsCodeList" resultType="Funding">
 		/* 상품코드 조회 */
 		SELECT
 			goods_code AS goodsCode
@@ -68,10 +81,10 @@
 			CAST(SUBSTRING_INDEX(goods_code, 'goods',-1) AS unsigned), goods_code;			
 	</select>	
 	
-	<select id="getFoundationNameList" resultType="FundingFoundation">
+	<select id="getFoundationNameList" resultType="Funding">
 		/* 재단 목록 이름 조회 */
 		SELECT			
-			fl.foundation_name AS foundationName	
+			fl.foundation_name AS foundationName
 		FROM 
 			foundation_list AS fl
 		ORDER BY foundation_code;
@@ -83,7 +96,8 @@
 		<set>
 			funding_code = #{fundingCode},		
 			funding_name = #{fundingName},
-			funding_foundation = #{fundingFoundation},
+			funding_foundation = #{foundationName},
+			goods_name = #{goodsName},		
 			goods_code = #{goodsCode},
 			funding_goal_amount = #{fundingGoalAmount},
 			funding_start_date = #{fundingStartDate},			
@@ -98,18 +112,21 @@
 	<select id="getFundingInfoByCode" parameterType="String" resultMap="fundingResultMap">
 		/* 특정 펀딩 조회*/
 		SELECT
-			funding_code,		  	
-			funding_name,		  	
-			funding_foundation, 	
-			goods_code,		  	
-			funding_goal_amount, 		
-			funding_start_date,  				
-			funding_end_date,	  	
-			funding_progress,
-			funding_reg_date,
-			funding_update_date				
+			f.funding_code,		  	
+			f.funding_name,		  	
+			f.funding_foundation,
+			g.goods_name, 	
+			f.goods_code,		  	
+			f.funding_goal_amount, 		
+			f.funding_start_date,  				
+			f.funding_end_date,	  	
+			f.funding_progress,
+			f.funding_reg_date,
+			f.funding_update_date				
 		FROM
-			each_funding_info
+			each_funding_info AS f
+			JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code
 		WHERE
 			funding_code = #{fundingCode}		
 	</select>  
@@ -119,14 +136,17 @@
 		SELECT
 			f.funding_code		  	AS fundingCode,
 			f.funding_name		  	AS fundingName,
-			f.funding_foundation 	AS fundingFoundation,
-			f.goods_code		  	AS goodsCode,
+			f.funding_foundation 	AS foundationName,			
 			f.funding_goal_amount 	AS fundingGoalAmount,	
 			f.funding_start_date  	AS fundingStartDate,			
 			f.funding_end_date	  	AS fundingEndDate,
-			f.funding_progress 	  	AS fundingProgress		
+			f.funding_progress 	  	AS fundingProgress,
+			f.goods_code			AS goodsCode,
+			g.goods_name		  	AS goodsName
 		FROM
 			each_funding_info AS f
+			JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code				
 		<where>
 			<if test="searchList != null">			
 				<foreach collection="searchList" item="item">
@@ -195,7 +215,7 @@
 
 
 									<!-- 펀딩 환불 -->
-	<select id="getRefundStatusList" resultType="refundStatus">
+	<select id="getRefundStatusList" resultType="fundingRefund">
 		/* 진행상태 조회 */
 		SELECT
 			funding_refund_status AS refundStatus
@@ -245,6 +265,15 @@
 			funding_payment_refund_code = #{fundingRefundCode}	
 			
 	</select> 
+	
+	<select id="updateFundingRefundStatus" resultType="fundingRefund">
+		/* 처리상태 환불완료로 업데이트 */
+		UPDATE funding_payment_refund
+		SET
+			funding_refund_status = '환불완료'	
+		WHERE
+			funding_refund_status = '환불전'
+	</select>					
 							
 	<select id="getRefundList" parameterType="list" resultType="fundingRefund">
 		/* 펀딩 환불 신청내역 조회 */
@@ -282,13 +311,26 @@
 		ORDER BY funding_payment_refund_code DESC;
 	</select>
 	
-	<select id="getFundingGoalAmountSum" resultType="java.lang.Integer">
-		SELECT SUM(funding_goal_amount)
-		FROM
-			each_funding_info
-		WHERE
-			funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
+	
+	<!-- 컨텐츠 별 진행현황 -->
+	<select id="getTargetSum" resultType="Integer">
+		/* 목표 금액 */
+	    SELECT
+	    	SUM(funding_goal_amount) as targetSum
+	    FROM
+	    	funding_current_amount
+	    WHERE funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
 	</select>
+	
+	<select id="sumOfCurrentAmount" resultType="Integer">
+		/* 현재 펀딩 금액 */ 
+	    SELECT
+	    	SUM(funding_current_achieved_amount) as currentSum
+	    FROM
+	    	funding_current_amount
+	    WHERE funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
+	</select>
+
 	
 	
 	

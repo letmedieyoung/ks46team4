@@ -41,7 +41,8 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" disabled="disabled" style="border: none;" class="form-control form-control-user-search search-input" />
+											<label th:text="*{fundingCode}"></label>
+											<input type="hidden" id="fundingCode" th:value="*{fundingCode}" name="fundingCode" style="border: none;" class="form-control form-control-user-search search-input" />
 										</div>
 									</td>
 								</tr>
@@ -61,7 +62,7 @@
 									</th>
 				                	<td>
 				                        <div class="fundingDescription form-row align-items-center search-schedule">
-				                        	<textarea class="form-control"  id="fundingDescription" th:value="*{fundingDescription}"name="fundingDescription"></textarea>
+				                        	<textarea class="form-control" id="fundingDescription" th:value="*{fundingDescription}"name="fundingDescription"></textarea>
 				                    	</div>
 				                	</td>
 			            		</tr>				  
@@ -81,13 +82,13 @@
 								</tr>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="fundingFoundation">재단 선택</label>
+										<label for="foundationName">재단 선택</label>
 									</th>
 									<td>									
 										<div class="form-row align-items-center search-schedule">
-											<select id="fundingFoundation" th:value="*{fundingFoundation}" name="fundingFoundation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="dropdown btn btn-primary dropdown-toggle">
+											<select id="foundationName" th:value="*{foundationName}" name="foundationName" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="dropdown btn btn-primary dropdown-toggle">
 												<th:block th:unless="${foundationNameList == null}" th:each="l : ${foundationNameList}">
-													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{fundingFoundation}">[[${l.foundationName}]]</option>
+													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{foundationName}">[[${l.foundationName}]]</option>
 												</th:block>
 												<th:block th:if="${foundationNameList == null}">
 													<option>등록된 재단 정보가 없습니다.</option>
@@ -98,18 +99,21 @@
 								</tr>
 								<tr>
 									<th class="bg-gray-100">
-										<label for="goodsCode">상품코드</label>
+										<label for="goodsName">펀딩상품</label>
 									</th>
 									<td>									
 										<div class="form-row align-items-center search-schedule">
-											<select id="goodsCode" th:value="*{goodsCode}" name="goodsCode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown btn btn-primary dropdown-toggle">
-												<th:block th:unless="${goodsCodeList == null}" th:each="l : ${goodsCodeList}">
-													<option th:value="${l.goodsCode}" th:selected="${l.goodsCode} == *{goodsCode}">[[${l.goodsCode}]]</option>
+											<select id="goodsName" th:value="*{goodsName}" name="goodsName" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown btn btn-primary dropdown-toggle">
+												<th:block th:unless="${goodsNameList == null}" th:each="l : ${goodsNameList}">
+													<option th:value="${l.goodsName}" th:selected="${l.goodsName} == *{goodsName}">[[${l.goodsName}]]</option>
 												</th:block>
-												<th:block th:if="${goodsCodeList == null}">
+												<th:block th:if="${goodsNameList == null}">
 													<option>등록된 상품 정보가 없습니다.</option>
-												</th:block>
+												</th:block>												
 											</select>
+											<div class="form-row align-items-center search-schedule" style="width: 500px;">												
+												<input type="text" id="goodsCode" th:value="*{goodsCode}" name="goodsCode" class="form-control form-control-user-search search-input" readonly="readonly"/>										
+											</div>
 										</div>
 									</td>
 								</tr>

@@ -38,13 +38,14 @@
 									</div>
 								</div>
 							</div>
-							<div
-								class="balance d-flex justify-content-between align-items-center">
+							<div class="balance d-flex justify-content-between align-items-center">
+								
 								<span>달성 금액
 									<div>590,000 원</div>
-								</span> <span>목표 금액
-									<div>1,000,000 원</div>
 								</span>
+								<label for="fundingGoalAmount"></label>
+								<span>목표 금액</span>
+								<div th:text="${fundingGoalAmount}" th:value="fundingGoalAmount">[[${l.fundingGoalAmount}]]</div>								
 							</div>
 							<hr>
 							<br>
