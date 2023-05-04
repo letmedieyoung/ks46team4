@@ -46,10 +46,12 @@ public class UserMainController {
 			 ,@RequestParam(name="keyword", required=false) String keyword
 			 ,@RequestParam(name="searchValue", required=false) String searchValue) {
 		
-		List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword, searchValue);
-		log.info("getDonationPayMethod: {}", refundList);
-		model.addAttribute("title", "마이페이지결제내역");
-		model.addAttribute("refundList", refundList);
+		/*
+		 * List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword,
+		 * searchValue); log.info("getDonationPayMethod: {}", refundList);
+		 * model.addAttribute("title", "마이페이지결제내역"); model.addAttribute("refundList",
+		 * refundList);
+		 */
 		
 		return "/user/myPage_myPayment";
 	}
