@@ -269,8 +269,9 @@
 	<select id="updateFundingRefundStatus" resultType="fundingRefund">
 		/* 처리상태 환불완료로 업데이트 */
 		UPDATE funding_payment_refund
-		SET
-			funding_refund_status = '환불완료'	
+		<set>
+			funding_refund_status = '환불완료'
+		</set>	
 		WHERE
 			funding_refund_status = '환불전'
 	</select>					
@@ -314,7 +315,7 @@
 	
 	<!-- 컨텐츠 별 진행현황 -->
 	<select id="getTargetSum" resultType="Integer">
-		/* 목표 금액 */
+		/* 진행 펀딩 총 목표 금액 */
 	    SELECT
 	    	SUM(funding_goal_amount) as targetSum
 	    FROM
@@ -323,7 +324,7 @@
 	</select>
 	
 	<select id="sumOfCurrentAmount" resultType="Integer">
-		/* 현재 펀딩 금액 */ 
+		/* 진행 펀딩 현재 모금 합계액 */ 
 	    SELECT
 	    	SUM(funding_current_achieved_amount) as currentSum
 	    FROM
@@ -331,7 +332,16 @@
 	    WHERE funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
 	</select>
 
-	
+	<select id="accomplishmentRate" resultType="Integer">
+		/* 진행 펀딩 전체 달성률 */
+		SELECT
+			(SUM(funding_current_achieved_amount) / SUM(funding_goal_amount)) * 100 AS progress_percentage
+		FROM
+			funding_current_amount
+		WHERE funding_progress = '진행중';
+
+		
+	</select>
 	
 	
 </mapper>

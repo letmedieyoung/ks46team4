@@ -49,15 +49,15 @@ public interface FundingMapper {
 	// 특정 펀딩 환불내역 조회
 	public FundingRefund getFundingRefundInfoByCode(String fundingRefundCode);
 	// 체크박스 선택된 펀딩 환불 처리	
-	public int updateFundingRefundStatus(@Param("fundingCode") String fundingCode, @Param("refundStatus") String refundStatus);
+	public int updateFundingRefundStatus(@Param("fundingRefundCode") String fundingCode, @Param("refundStatus") String refundStatus);
 	// 펀딩 환불내역 조회
-	public List<FundingRefund> getRefundList();
-	
+	public List<FundingRefund> getRefundList(List<Map<String, Object>> searchList);
    
-	// 펀딩 진행상황 - 진행 중 펀딩 현재 모금액의 합계
+	// 펀딩 진행상황 - 진행 펀딩 현재 모금 합계액
 	public int sumOfCurrentAmount();
-	// 펀딩 진행상황 - 진행 중 펀딩 목표액의 합계
+	// 펀딩 진행상황 - 진행 펀딩 총 목표 금액
 	public int getTargetSum();
-
+	// 펀딩 진행상황 - 진행 펀딩 전체 달성률
+	public int accomplishmentRate();
 	
 }
