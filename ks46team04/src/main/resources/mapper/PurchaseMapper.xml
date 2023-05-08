@@ -24,6 +24,7 @@
  	<select id="getTotalPurchaseList" resultMap="purchaseResultMap">
  		/*매입 조회*/
  		SELECT		
+ 			purchase_history_code,
 			purchase_status,			
 			goods_name,		
 			purchase_price,		
@@ -40,5 +41,55 @@
 			purchase_history;
  	</select>
  	
+ 	<insert id="addPurchase" parameterType="Purchase">
+ 		INSERT INTO purchase_history
+		(
+			purchase_history_code,		
+			purchase_status,		
+			goods_code,		
+			goods_name,		
+			purchase_price,		
+			purchase_quantity,		
+			total_purchase_price,		
+			purchase_date,		
+			purchase_reg_id,		
+			purchase_reg_date,			
+			purchase_group_code,		
+			user_purchse_deadlinde_check
+		)VALUES(
+			#{purchaseCode},
+			#{purchaseStatus},
+			#{goodsCode},
+			#{goodsName},
+			${purchasePrice},
+			${purchaseQuantity},
+			${totalPurchasePrice},
+			#{purchaseDate},
+			#{purchaseRegId},
+			NOW(),
+			#{purchaseGroupCode},
+			#{userPurchseDeadlindeCheck}
+		);
+ 	</insert>
  	
+ 	<select id="getPurchaseByCode" parameterType="String" resultMap="purchaseResultMap">
+ 		SELECT		
+			purchase_history_code,
+			purchase_status,			
+			goods_name,		
+			purchase_price,		
+			purchase_quantity,		
+			total_purchase_price,		
+			purchase_date,		
+			purchase_reg_id,		
+			purchase_reg_date,		
+			purchase_update_id,		
+			purchase_update_date,		
+			purchase_group_code,		
+			user_purchse_deadlinde_check
+		FROM
+			purchase_history
+		WHERE 
+			purchase_history_code = #{purchaseCode};	
+ 	</select>
  </mapper>
