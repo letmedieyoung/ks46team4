@@ -7,14 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
-import ks46team04.admin.dto.DonationCode;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
-import ks46team04.admin.dto.DonationPayMethodCode;
 import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
-import ks46team04.admin.dto.DonationSubCode;
-import ks46team04.admin.dto.PaymentCode;
+import ks46team04.admin.dto.Payment;
 import ks46team04.admin.mapper.DonationMapper;
 
 @Service
@@ -96,6 +93,9 @@ public class DonationService {
 			case "donationPayMethodUserId":
 				searchKey = "user_id";
 				break;
+			case "paymentCode":
+				searchKey = "pm_code";
+				break;
 			case "donationPayMethodBank":
 				searchKey = "regular_donation_payment_bank";
 				break;
@@ -156,8 +156,11 @@ public class DonationService {
 			case "donationSubUserId":
 				searchKey = "user_id";
 				break;
-			default:
+			case "donationCode":
 				searchKey = "regular_donation_code";
+				break;
+			default:
+				searchKey = "regular_donation_auto_pm_code";
 				break;
 			}
 		}
@@ -213,6 +216,15 @@ public class DonationService {
 					break;
 				case "donationPayUserId":
 					searchKey = "user_id";
+					break;
+				case "donationSubCode":
+					searchKey = "user_regular_donation_subscription_code";
+					break;
+				case "donationCode":
+					searchKey = "regular_donation_code";
+					break;
+				case "donationPayMethodCode":
+					searchKey = "regular_donation_auto_pm_code";
 					break;
 				case "donationPayRefundRequest":
 					searchKey = "user_regular_donation_payment_refund_requested";
@@ -271,11 +283,17 @@ public class DonationService {
 			case "donationMonthPayCode":
 				searchKey = "month_regular_donation_payment_code";
 				break;
+			case "donationCode":
+				searchKey = "regular_donation_code";
+				break;
 			case "donationMonthPayYear":
 				searchKey = "payment_year";
 				break;
-			default:
+			case "donationMonthPayMonth":
 				searchKey = "payment_month";
+				break;
+			default:
+				searchKey = "donation_monthly_deadline_group";
 				break;
 			}
 		}
@@ -332,6 +350,9 @@ public class DonationService {
 			case "donationRefundUserId":
 				searchKey = "user_id";
 				break;
+			case "donationPayDetailCode":
+				searchKey = "regular_donation_payment_code";
+				break;
 			case "donationRefundBank":
 				searchKey = "regular_donation_refund_bank_name";
 				break;
@@ -386,32 +407,32 @@ public class DonationService {
 	/*
 	 * DonationCode 값 가져오기
 	 * */
-	public List<DonationCode> getdonationCode(){
-		List<DonationCode> donationCode = donationMapper.getdonationCode();
+	public List<Donation> getdonationCode(){
+		List<Donation> donationCode = donationMapper.getdonationCode();
 		return donationCode;
 	}
 	
 	/*
 	 * DonationPayMethodCode 값 가져오기
 	 * */
-	public List<DonationPayMethodCode> getdonationPayMethodCode(){
-		List<DonationPayMethodCode> donationPayMethodCode = donationMapper.getdonationPayMethodCode();
+	public List<DonationPayMethod> getdonationPayMethodCode(){
+		List<DonationPayMethod> donationPayMethodCode = donationMapper.getdonationPayMethodCode();
 		return donationPayMethodCode;
 	}
 	
 	/*
 	 * DonationSubCode 값 가져오기
 	 * */
-	public List<DonationSubCode> getdonationSubCode(){
-		List<DonationSubCode> donationSubCode = donationMapper.getdonationSubCode();
+	public List<DonationSub> getdonationSubCode(){
+		List<DonationSub> donationSubCode = donationMapper.getdonationSubCode();
 		return donationSubCode;
 	}
 	
 	/*
 	 * PaymentCode 값 가져오기
 	 * */
-	public List<PaymentCode> getpaymentCode(){
-		List<PaymentCode> paymentCode = donationMapper.getpaymentCode();
+	public List<Payment> getpaymentCode(){
+		List<Payment> paymentCode = donationMapper.getpaymentCode();
 		return paymentCode;
 	}
 	

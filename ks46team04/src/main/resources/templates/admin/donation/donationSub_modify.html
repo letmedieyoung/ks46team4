@@ -33,22 +33,37 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>정기기부 콘텐츠 코드</th>
-									<td><input type="text" id="donationCode"
-										th:value="*{donationCode}" name="donationCode"
-										style="width: 400px;" readonly="readonly" /></td>
+									<th>콘텐츠 코드</th>
+									<td>
+										<select id="donationCode" name="donationCode" style="width: 400px;">
+											<th:block th:unless="${donationCode == null}"
+												th:each="l : ${donationCode}">
+												<option th:value="${l.donationCode}">[[${l.donationCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationCode == null}">
+												<option>등록된 콘텐츠 코드 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
-									<th>등록된 회원 결제 수단 코드</th>
-									<td><input type="text" id="donationPayMethodCode"
-										th:value="*{donationPayMethodCode}" name="donationPayMethodCode"
-										style="width: 400px;" readonly="readonly" /></td>
+									<th>회원 결제수단 코드</th>
+									<td>
+										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
+											<th:block th:unless="${donationPayMethodCode == null}"
+												th:each="l : ${donationPayMethodCode}">
+												<option th:value="${l.donationPayMethodCode}">[[${l.donationPayMethodCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayMethodCode == null}">
+												<option>등록된 회원 결제수단 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>구독 시작일</th>
-									<td><input type="text" id="donationSubStartDate"
-										th:value="*{donationSubStartDate}" name="donationSubStartDate"
-										style="width: 400px;" readonly="readonly" /></td>
+									<td><input type="datetime-local" id="donationSubStartDate"
+										th:value="*{donationSubStartDate}" name="donationSubStartDate" style="width: 400px;"/></td>
 								</tr>
 								<tr>
 									<th>구독 종료일</th>

@@ -25,7 +25,8 @@
 		<div class="align-items-center search-schedule">
 			<select class="form-control form-control-user-search search-input" name="searchKey">
 				<option value="donationPayMethodCode">코드</option>
-				<option value="donationPayMethodUserId">회원아이디</option>
+				<option value="donationPayMethodUserId">회원 아이디</option>
+				<option value="paymentCode">결제 방식</option>
 				<option value="donationPayMethodBank">은행명</option>
 				<option value="donationPayMethodAccount">계좌번호</option>
 			</select>
@@ -45,8 +46,9 @@
 		<div class="align-items-center search-schedule">
 			<select class="form-control form-control-user-search search-input" name="searchKey">
 				<option value="donationSubCode">코드</option>
-				<option value="donationSubUserId">회원아이디</option>
-				<option value="donationCode">콘텐츠 코드</option>
+				<option value="donationSubUserId">회원 아이디</option>
+				<option value="donationCode">콘텐츠</option>
+				<option value="donationPayMethodCode">회원 결제수단</option>
 			</select>
 		</div>
 		<div class="search-schedule">
@@ -64,7 +66,10 @@
 		<div class="align-items-center search-schedule">
 			<select class="form-control form-control-user-search search-input" name="searchKey">
 				<option value="donationPayDetailCode">코드</option>
-				<option value="donationPayUserId">회원아이디</option>
+				<option value="donationPayUserId">회원 아이디</option>
+				<option value="donationSubCode">구독 신청</option>
+				<option value="donationCode">콘텐츠</option>
+				<option value="donationPayMethodCode">회원 결제수단</option>
 				<option value="donationPayRefundRequest">환불 요청 0/1</option>
 				<option value="donationPayDeadlineCheck">마감전/마감완료</option>
 			</select>
@@ -78,14 +83,16 @@
 		</form>
 	</div>
 	
-	<!-- 정기기부 구독 결제 상세 검색 -->
+	<!-- 정기기부 월별 결제 합계 검색 -->
 	<div th:fragment="donationMonthPaySearch">
 		<form th:action="@{/admin/donation/donationMonthPay_list}" method="get">
 		<div class="align-items-center search-schedule">
 			<select class="form-control form-control-user-search search-input" name="searchKey">
 				<option value="donationMonthPayCode">코드</option>
+				<option value="donationCode">콘텐츠</option>
 				<option value="donationMonthPayYear">연도</option>
 				<option value="donationMonthPayMonth">월</option>
+				<option value="donationMonthPayDeadlineGroup">월 마감 그룹 코드</option>
 			</select>
 		</div>
 		<div class="search-schedule">
@@ -103,7 +110,8 @@
 		<div class="align-items-center search-schedule">
 			<select class="form-control form-control-user-search search-input" name="searchKey">
 				<option value="donationRefundCode">코드</option>
-				<option value="donationRefundUserId">회원아이디</option>
+				<option value="donationRefundUserId">회원 아이디</option>
+				<option value="donationPayDetailCode">결제 상세</option>
 				<option value="donationRefundBank">은행명</option>
 				<option value="donationRefundAccount">계좌번호</option>
 				<option value="donationRefundStatus">환불전/환불완료</option>

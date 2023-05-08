@@ -2,8 +2,6 @@ package ks46team04.admin.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,16 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
-import ks46team04.admin.dto.DonationCode;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
-import ks46team04.admin.dto.DonationPayMethodCode;
 import ks46team04.admin.dto.DonationSub;
-import ks46team04.admin.dto.DonationSubCode;
-import ks46team04.admin.dto.PaymentCode;
 import ks46team04.admin.dto.DonationRefund;
+import ks46team04.admin.dto.Payment;
 import ks46team04.admin.service.DonationService;
 import lombok.AllArgsConstructor;
 
@@ -128,7 +125,10 @@ public class DonationController {
 	@GetMapping("/donationPayMethod_add")
 	public String addDonationPayMethod(Model model) {
 		
+		List<Payment> paymentCode = donationService.getpaymentCode();
+		
 		model.addAttribute("title", "등록된 회원 결제수단 등록");
+		model.addAttribute("paymentCode", paymentCode);
 		
 		return "/admin/donation/donationPayMethod_add";
 	}
@@ -147,9 +147,11 @@ public class DonationController {
 	public String modifyDonationPayMethod(Model model, @RequestParam(name="donationPayMethodCode") String donationPayMethodCode){
 		
 		DonationPayMethod donationPayMethodInfo = donationService.getDonationPayMethodInfoByCode(donationPayMethodCode);
+		List<Payment> paymentCode = donationService.getpaymentCode();
 
 		model.addAttribute("title", "등록된 회원 결제수단 수정");
 		model.addAttribute("donationPayMethodInfo", donationPayMethodInfo);
+		model.addAttribute("paymentCode", paymentCode);
 		
 		return "admin/donation/donationPayMethod_modify";
 	}
@@ -177,7 +179,7 @@ public class DonationController {
 		
 		return "admin/donation/donationSub_list";
 	}
-	
+
 	/*
 	 * 정기기부 구독 신청 등록
 	 */
@@ -193,8 +195,8 @@ public class DonationController {
 	@GetMapping("/donationSub_add")
 	public String addDonationSub(Model model) {
 		
-		List<DonationCode> donationCode = donationService.getdonationCode();
-		List<DonationPayMethodCode> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
 		
 		model.addAttribute("title", "정기기부 구독 신청 등록");
 		model.addAttribute("donationCode", donationCode);
@@ -217,9 +219,13 @@ public class DonationController {
 	public String modifyDonationSub(Model model, @RequestParam(name="donationSubCode") String donationSubCode){
 		
 		DonationSub donationSubInfo = donationService.getDonationSubInfoByCode(donationSubCode);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
 
 		model.addAttribute("title", "정기기부 구독 신청 수정");
 		model.addAttribute("donationSubInfo", donationSubInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
 		return "admin/donation/donationSub_modify";
 	}
@@ -263,9 +269,9 @@ public class DonationController {
 	@GetMapping("/donationPayDetail_add")
 	public String addDonationPayDetail(Model model) {
 		
-		List<DonationCode> donationCode = donationService.getdonationCode();
-		List<DonationPayMethodCode> donationPayMethodCode = donationService.getdonationPayMethodCode();
-		List<DonationSubCode> donationSubCode = donationService.getdonationSubCode();
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		List<DonationSub> donationSubCode = donationService.getdonationSubCode();
 		
 		model.addAttribute("title", "정기기부 구독 결제 상세 등록");
 		model.addAttribute("donationCode", donationCode);
@@ -289,9 +295,15 @@ public class DonationController {
 	public String modifyDonationPayDetail(Model model, @RequestParam(name="donationPayDetailCode") String donationPayDetailCode){
 		
 		DonationPayDetail donationPayDetailInfo = donationService.getDonationPayDetailInfoByCode(donationPayDetailCode);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		List<DonationSub> donationSubCode = donationService.getdonationSubCode();
 
 		model.addAttribute("title", "정기기부 구독 결제 상세 수정");
 		model.addAttribute("donationPayDetailInfo", donationPayDetailInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
+		model.addAttribute("donationSubCode", donationSubCode);
 		
 		return "admin/donation/donationPayDetail_modify";
 	}
@@ -335,7 +347,7 @@ public class DonationController {
 	@GetMapping("/donationMonthPay_add")
 	public String addDonationMonthPay(Model model) {
 		
-		List<DonationCode> donationCode = donationService.getdonationCode();
+		List<Donation> donationCode = donationService.getdonationCode();
 		
 		model.addAttribute("title", "정기기부 월별 결제 합계 등록");
 		model.addAttribute("donationCode", donationCode);
@@ -396,7 +408,7 @@ public class DonationController {
 	
 	donationService.addDonationRefund(donationRefund);
 	
-	return "redirect:/admin/donation/donationdonationRefund_list";
+	return "redirect:/admin/donation/donationRefund_list";
 	
 		}
 	
@@ -426,9 +438,11 @@ public class DonationController {
 	public String modifyDonationRefund(Model model, @RequestParam(name="donationRefundCode") String donationRefundCode){
 		
 		DonationRefund donationRefundInfo = donationService.getDonationRefundInfoByCode(donationRefundCode);
+		List<DonationPayDetail> donationPayDetailCode = donationService.getdonationPayDetailCode();
 		
 		model.addAttribute("title", "정기기부 월별 결제 합계 수정");
 		model.addAttribute("donationRefundInfo", donationRefundInfo);
+		model.addAttribute("donationPayDetailCode", donationPayDetailCode);
 		
 		return "admin/donation/donationRefund_modify";
 	}

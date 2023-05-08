@@ -23,14 +23,9 @@
 							width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th>코드</th>
-									<td><input type="text" id="donationSubCode"
-										name="donationSubCode" style="width: 400px;" placeholder="자동증가코드 ! !"/></td>
-								</tr>
-								<tr>
 									<th>회원 아이디</th>
-									<td><input type="text" id="donationSubUserId"
-										name="donationSubUserId" style="width: 400px;" placeholder="회원 아이디를 입력해주세요."/></td>
+									<td><input type="text" id="donationSubUserId" 
+										name="donationSubUserId" style="width: 400px;" placeholder="로그인아이디 가져옴."/></td>
 								</tr>
 								<tr>
 									<th>콘텐츠 코드</th>
@@ -47,7 +42,7 @@
 									</td>
 								</tr>
 								<tr>
-									<th>회원 결제수단</th>
+									<th>회원 결제수단 코드</th>
 									<td>
 										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
 											<th:block th:unless="${donationPayMethodCode == null}"

@@ -4,7 +4,7 @@ public class DonationPayMethod {
 
 	private String donationPayMethodCode;
 	private String donationPayMethodUserId;
-	private String donationPayCode;
+	private String paymentCode;
 	private String donationPayMethodBank;
 	private String donationPayMethodAccount;
 	private String donationPayMethodRegDate;
@@ -22,11 +22,11 @@ public class DonationPayMethod {
 	public void setDonationPayMethodUserId(String donationPayMethodUserId) {
 		this.donationPayMethodUserId = donationPayMethodUserId;
 	}
-	public String getDonationPayCode() {
-		return donationPayCode;
+	public String getPaymentCode() {
+		return paymentCode;
 	}
-	public void setDonationPayCode(String donationPayCode) {
-		this.donationPayCode = donationPayCode;
+	public void setPaymentCode(String paymentCode) {
+		this.paymentCode = paymentCode;
 	}
 	public String getDonationPayMethodBank() {
 		return donationPayMethodBank;
@@ -56,9 +56,13 @@ public class DonationPayMethod {
 	@Override
 	public String toString() {
 		return "DonationPayMethod [donationPayMethodCode=" + donationPayMethodCode + ", donationPayMethodUserId="
-				+ donationPayMethodUserId + ", donationPayCode=" + donationPayCode + ", donationPayMethodBank="
+				+ donationPayMethodUserId + ", paymentCode=" + paymentCode + ", donationPayMethodBank="
 				+ donationPayMethodBank + ", donationPayMethodAccount=" + donationPayMethodAccount
 				+ ", donationPayMethodRegDate=" + donationPayMethodRegDate + ", donationPayMethodUpdateDate="
 				+ donationPayMethodUpdateDate + "]";
+	}
+	public void setDonationId(String donationId) {
+		// TODO Auto-generated method stub
+		
 	}
 }

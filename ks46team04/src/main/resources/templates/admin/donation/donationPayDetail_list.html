@@ -54,7 +54,7 @@
 									<th>회원 아이디</th>
 									<th>구독 신청</th>
 									<th>콘텐츠</th>
-									<th>결제수단</th>
+									<th>회원 결제수단</th>
 									<th>결제금액</th>
 									<th>수수료</th>
 									<th>매입예산</th>
@@ -80,7 +80,7 @@
 									<td th:if="${l.donationPayRefundRequest == '1'}">환불 요청O</td>
 									<td th:unless="${l.donationPayRefundRequest == '1'}">환불 요청X</td>
 									<td th:text="${l.donationPaySalesGroup}"></td>
-									<td th:text="${l.donationPayDeadlineCheck}"></td>
+									<td th:text="${l.donationPayDeadlineCheck}"></td>	
 									<td>
 										<a th:href="@{/admin/donation/donationPayDetail_modify(donationPayDetailCode=${l.donationPayDetailCode})}">수정</a>
 									</td>
