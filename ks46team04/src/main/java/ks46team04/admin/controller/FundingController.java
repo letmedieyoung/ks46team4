@@ -119,8 +119,8 @@ public class FundingController {
 	}			
 	
 	@PostMapping("/getSearchFundingList")
-	@ResponseBody //http요청 body를 자바 객체로 전달받을 수 있다.
-	public List<Funding> getSearchFundingList(@RequestBody Map<String, Object> searchMap){ //HTTP 요청 body를 Map객체로 전달받는다. 배열 Map에 검색 조건과 값들을 담는다. (key:String, value: 최상위 클래스 Object)
+	@ResponseBody 
+	public List<Funding> getSearchFundingList(@RequestBody Map<String, Object> searchMap){ 
 		Set<String> searchKey = searchMap.keySet(); 
 		List<Map<String, Object>> searchList = new ArrayList<>();
 		for(String key : searchKey) {
@@ -177,11 +177,13 @@ public class FundingController {
 		
 		int targetSum = fundingMapper.getTargetSum();
 		int currentSum = fundingMapper.sumOfCurrentAmount();
+		int accomplishmentRate = fundingMapper.accomplishmentRate();
 		
 		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
 		model.addAttribute("content", "펀딩 컨텐츠 별 진행현황");
 		model.addAttribute("targetSum", targetSum);
 		model.addAttribute("currentSum", currentSum);
+		model.addAttribute("accomplishmentRate", accomplishmentRate);
 	    
 	    return "admin/funding/current_amount";
 	}
@@ -271,33 +273,48 @@ public class FundingController {
 	 * 버튼으로 환불 처리
 	 * @param refundArr
 	 */
-	@PostMapping("/refund")
+	@PostMapping("/updateFundingRefundStatus")
 	@ResponseBody
-	public List<String> refundFunding(@RequestParam(value="refundArr[]") List<String> refundArr) {
+	public List<String> updateFundingRefundStatus(@RequestParam(value="refundArr[]") List<String> refundArr) {
 	    log.info("refundArr: {}", refundArr);
-	    fundingService.updateFundingRefundStatus(refundArr);
+	    String refundStatus = "환불완료";
+	    for(String fundingRefundCode : refundArr) {
+	        fundingService.updateFundingRefundStatus(fundingRefundCode, refundStatus);
+	    }
 	    return refundArr;
 	}
-
+	
 	/**
-	 * 펀딩 환불 관리
+	 * 펀딩 환불 목록 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/refund")
 	public String refund(Model model) {
-		List<FundingRefund> refundList = fundingService.getRefundList();		
-				
-		//log.info("refundList_Service: {}", refundList);
-		
+		List<FundingRefund> refundList = fundingService.getRefundList();
 		model.addAttribute("title", "펀딩 환불관리");
 		model.addAttribute("refundList", refundList);		
 		
 		return "admin/funding/refund";
 	}
-
-	
-	
-
-	
+	/**
+	 * 펀딩 환불 목록 검색
+	 * @param searchMap 검색 조건이 담긴 Map 객체
+	 * @return 검색된 결과를 담은 List 객체
+	 */
+	@PostMapping("/refund")
+	@ResponseBody
+	public List<FundingRefund> getSearchRefundList(@RequestBody Map<String, Object> searchMap){ 
+		Set<String> searchKey = searchMap.keySet(); 
+		List<Map<String, Object>> searchList = new ArrayList<>();
+		for(String key : searchKey) {
+			Map<String, Object> search = new HashMap<>();
+			search.put("key", "fr."+key);
+			search.put("value", searchMap.get(key));
+			searchList.add(search);			
+		}
+		
+		List<FundingRefund> getSearchRefundList = fundingMapper.getRefundList(searchList);		
+		return getSearchRefundList;
+	}
 }

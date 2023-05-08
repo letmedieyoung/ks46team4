@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingDetail;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.Goods;
+import ks46team04.admin.mapper.FundingDetailMapper;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -23,9 +25,11 @@ public class FundingService {
 	
 	@Autowired
 	private final FundingMapper fundingMapper;
+	private final FundingDetailMapper fundingDetailMapper;
 	
-	public FundingService(FundingMapper fundingMapper) {
-		this.fundingMapper = fundingMapper;		
+	public FundingService(FundingMapper fundingMapper, FundingDetailMapper fundingDetailMapper) {
+		this.fundingMapper = fundingMapper;
+		this.fundingDetailMapper = fundingDetailMapper;
 	}	
 	
 	/**
@@ -93,9 +97,9 @@ public class FundingService {
 	 * @param fundingCode
 	 * @return
 	 */	
-	 public List<Funding> getFundingList(){        
-		 return fundingMapper.getFundingList(null);
-	 }		
+	public List<Funding> getFundingList(){        
+		return fundingMapper.getFundingList(null);
+	}		
 
 	/**
 	 * 신규 펀딩 등록
@@ -108,7 +112,7 @@ public class FundingService {
 	}
 	
 	/**
-	 * 펀딩 진행상황 - 진행 중 펀딩 현재 모금액의 합계
+	 * 펀딩 진행상황 - 진행 펀딩 현재 모금 합계액
 	 * @param currentSum
 	 * @return
 	 */	
@@ -116,12 +120,20 @@ public class FundingService {
     	return fundingMapper.sumOfCurrentAmount();
     }
 	/**
-	 * 펀딩 진행상황 - 진행 중 펀딩 목표액의 합계
+	 * 펀딩 진행상황 - 진행 펀딩 총 목표 금액
 	 * @param targetSum
 	 * @return
 	 */	
     public int getTargetAmount() {
     	return fundingMapper.getTargetSum();
+    }
+    /**
+	 * 펀딩 진행상황 - 진행 펀딩 전체 달성률
+	 * @param accomplishmentRate
+	 * @return
+	 */	
+    public int accomplishmentRate() {
+    	return fundingMapper.accomplishmentRate();
     }
 	
 
@@ -179,17 +191,16 @@ public class FundingService {
 	 * 버튼으로 환불 처리
 	 * @param refundArr
 	 */
-	public void updateFundingRefundStatus(List<String> refundArr) {
-	    for (String value : refundArr) {
-	        fundingMapper.updateFundingRefundStatus(value, "환불완료");
-	    }
+	public void updateFundingRefundStatus(String fundingRefundCode, String refundStatus) {
+	    fundingMapper.updateFundingRefundStatus(fundingRefundCode, refundStatus);
 	}
-
-	//펀딩 환불내역 조회
-	public List<FundingRefund> getRefundList(){
-		List<FundingRefund> refundList = fundingMapper.getRefundList();		
-		return refundList;
-	}
+	
+	
+	// 펀딩 환불내역 조회 서비스 (검색 기능 추가)
+	public List<FundingRefund> getRefundList() {
+		return fundingMapper.getRefundList(null);
+	}	    
+	
 	
 	
 	//펀딩 진행현황 - 목표 금액 합계 조회
@@ -197,7 +208,29 @@ public class FundingService {
 	//       return fundingMapper.getFundingGoalAmountSum();
 	//}
 
+	public void createFunding(Funding funding) {
+    	fundingMapper.registFunding(funding);
+        createFundingDetailFromFunding(funding);
+    }
 	
+	 public FundingDetail getFundingDetailByFundingCode(String fundingCode) {
+	        return fundingDetailMapper.getFundingDetailInfoByCode(fundingCode);
+	 }
+	 
+	// Funding과 FundingDetail 정보를 이용하여 FundingDetail 객체 생성 및 저장
+    public void createFundingDetailFromFunding(Funding funding) {
+        FundingDetail fundingDetail = new FundingDetail();
+        
+        fundingDetail.setFundingCode(funding.getFundingCode());
+        fundingDetail.setFundingName(funding.getFundingName());
+        fundingDetail.setFundingFoundation(funding.getFoundationName());
+        fundingDetail.setFundingGoalAmount(funding.getFundingGoalAmount());
+        fundingDetail.setFundingStartDate(funding.getFundingStartDate());
+        fundingDetail.setFundingEndDate(funding.getFundingEndDate());
+        fundingDetail.setFundingProgress(funding.getFundingProgress());
+        fundingDetailMapper.createFundingDetail(fundingDetail);
+    }
 	
+   
 	
 }

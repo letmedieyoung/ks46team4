@@ -88,7 +88,7 @@
 
 /* line 6, ../../Arafath/CL/january 2020/242. charity/HTML/scss/_theme-default.scss */
 body {
-  font-family: "Yeseva One", cursive;
+  font-family: "nanumsquare", "맑은 고딕";
   font-weight: normal;
   font-style: normal;
 }
@@ -139,7 +139,7 @@ button {
 
 /* line 39, ../../Arafath/CL/january 2020/242. charity/HTML/scss/_theme-default.scss */
 h1, h2, h3, h4, h5 {
-  font-family: 'GyeonggiTitleM', cursive;
+  font-family: "nanumsquare", "맑은 고딕";
   color: #191d34;
 }
 
@@ -2731,6 +2731,11 @@ h3 {
   color: #919191;
   border-radius: 5px;
   white-space: normal;
+}
+
+.funding_select {
+	float: none;
+	
 }
 
 /* line 126, ../../Arafath/CL/january 2020/242. charity/HTML/scss/_bradcam.scss */

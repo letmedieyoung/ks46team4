@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ks46team04.admin.mapper.FundingDetailMapper">
+	
+
+<!-- FundingDetail 등록 
+	<insert id="createFundingDetail" parameterType="FundingDetail">
+		INSERT INTO funding_detail
+		(funding_code, funding_name, funding_foundation, funding_goal_amount, funding_start_date, funding_end_date)
+		VALUES(#{fundingCode}, #{fundingName}, #{foundationName}, #{fundingGoalAmount}, #{fundingStartDate}, #{fundingEndDate})
+	</insert>
+
+	FundingDetail 조회
+	<select id="getFundingDetailInfoByCode" parameterType="String" resultMap="fundingDetailResultMap">
+		SELECT
+			*
+		FROM
+			funding_detail
+		WHERE funding_code = #{fundingCode}
+	</select> -->
+ 
+
+</mapper>
