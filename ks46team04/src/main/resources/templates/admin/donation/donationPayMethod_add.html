@@ -29,6 +29,20 @@
 										placeholder="회원 아이디를 입력해주세요." /></td>
 								</tr>
 								<tr>
+									<th>결제 방식</th>
+									<td>
+										<select id="paymentCode" name="paymentCode" style="width: 400px;">
+											<th:block th:unless="${paymentCode == null}"
+												th:each="l : ${paymentCode}">
+												<option th:value="${l.paymentCode}">[[${l.paymentCode}]]</option>
+											</th:block>
+											<th:block th:if="${paymentCode == null}">
+												<option>등록된 결제 방식 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
 									<th>은행명</th>
 									<td><input type="text" id="donationPayMethodBank"
 										name="donationPayMethodBank" style="width: 400px;"
@@ -36,7 +50,7 @@
 								</tr>
 								<tr>
 									<th>계좌번호</th>
-									<td><input type="text" id="donationPayMethodAccount"
+									<td><input type="number" id="donationPayMethodAccount"
 										name="donationPayMethodAccount" style="width: 400px;"
 										placeholder="결제 계좌번호를 입력해주세요." /></td>
 								</tr>

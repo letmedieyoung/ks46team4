@@ -4,7 +4,7 @@ public class DonationRefund {
 	
 	private String donationRefundCode;
 	private String donationRefundUserId;
-	private String donationPayCode;
+	private String donationPayDetailCode;
 	private String donationRefundRequestDate;
 	private String donationRefundRequestAmount;
 	private String donationRefundRequestReason;
@@ -30,11 +30,11 @@ public class DonationRefund {
 	public void setDonationRefundUserId(String donationRefundUserId) {
 		this.donationRefundUserId = donationRefundUserId;
 	}
-	public String getDonationPayCode() {
-		return donationPayCode;
+	public String getDonationPayDetailCode() {
+		return donationPayDetailCode;
 	}
-	public void setDonationPayCode(String donationPayCode) {
-		this.donationPayCode = donationPayCode;
+	public void setDonationPayDetailCode(String donationPayDetailCode) {
+		this.donationPayDetailCode = donationPayDetailCode;
 	}
 	public String getDonationRefundRequestDate() {
 		return donationRefundRequestDate;
@@ -112,13 +112,14 @@ public class DonationRefund {
 	@Override
 	public String toString() {
 		return "DonationRefund [donationRefundCode=" + donationRefundCode + ", donationRefundUserId="
-				+ donationRefundUserId + ", donationPayCode=" + donationPayCode + ", donationRefundRequestDate="
-				+ donationRefundRequestDate + ", donationRefundRequestAmount=" + donationRefundRequestAmount
-				+ ", donationRefundRequestReason=" + donationRefundRequestReason + ", donationRefundBank="
-				+ donationRefundBank + ", donationRefundAccount=" + donationRefundAccount + ", donationRefundStatus="
-				+ donationRefundStatus + ", donationRefundApprovalDate=" + donationRefundApprovalDate
-				+ ", donationRefundRejectionDate=" + donationRefundRejectionDate + ", donationRefundRegId="
-				+ donationRefundRegId + ", donationRefundRegDate=" + donationRefundRegDate + ", donationRefundUpdateId="
-				+ donationRefundUpdateId + ", donationRefundUpdateDate=" + donationRefundUpdateDate + "]";
+				+ donationRefundUserId + ", donationPayDetailCode=" + donationPayDetailCode
+				+ ", donationRefundRequestDate=" + donationRefundRequestDate + ", donationRefundRequestAmount="
+				+ donationRefundRequestAmount + ", donationRefundRequestReason=" + donationRefundRequestReason
+				+ ", donationRefundBank=" + donationRefundBank + ", donationRefundAccount=" + donationRefundAccount
+				+ ", donationRefundStatus=" + donationRefundStatus + ", donationRefundApprovalDate="
+				+ donationRefundApprovalDate + ", donationRefundRejectionDate=" + donationRefundRejectionDate
+				+ ", donationRefundRegId=" + donationRefundRegId + ", donationRefundRegDate=" + donationRefundRegDate
+				+ ", donationRefundUpdateId=" + donationRefundUpdateId + ", donationRefundUpdateDate="
+				+ donationRefundUpdateDate + "]";
 	}
 }

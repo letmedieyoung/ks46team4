@@ -30,13 +30,21 @@
 									<td><input type="text" id="donationPayMethodUserId"
 										th:value="*{donationPayMethodUserId}" name="donationPayMethodUserId"
 										style="width: 400px;" readonly="readonly" /></td>
-								</tr>							
-								<tr>
-									<th>결제수단 코드</th>
-									<td><input type="text" id="donationPayCode"
-										th:value="*{donationPayCode}" name="donationPayCode"
-										style="width: 400px;" placeholder="결제수단 option으로 수정할 수 있게" /></td>
 								</tr>
+								<tr>
+									<th>결제방식 코드</th>
+									<td>
+										<select id="paymentCode" name="paymentCode" style="width: 400px;">
+											<th:block th:unless="${paymentCode == null}"
+												th:each="l : ${paymentCode}">
+												<option th:value="${l.paymentCode}">[[${l.paymentCode}]]</option>
+											</th:block>
+											<th:block th:if="${paymentCode == null}">
+												<option>등록된 결제 방식 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>							
 								<tr>
 									<th>은행명</th>
 									<td><input type="text" id="donationPayMethodBank"

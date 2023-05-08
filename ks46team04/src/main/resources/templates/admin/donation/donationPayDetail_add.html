@@ -23,12 +23,6 @@
 							width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th>코드</th>
-									<td><input type="text" id="donationPayDetailCode"
-										name="donationPayDetailCode" style="width: 400px;"
-										placeholder="자동증가코드 ! !" /></td>
-								</tr>
-								<tr>
 									<th>회원 아이디</th>
 									<td><input type="text" id="donationPayUserId"
 										name="donationPayUserId" style="width: 400px;"
@@ -63,7 +57,7 @@
 									</td>
 								</tr>
 								<tr>
-									<th>결제수단 코드</th>
+									<th>회원 결제수단 코드</th>
 									<td>
 										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
 											<th:block th:unless="${donationPayMethodCode == null}"
@@ -106,7 +100,6 @@
 								<tr>
 									<th>환불 요청 여부</th>
 									<td><select name="donationPayRefundRequest" id="donationPayRefundRequest">
-											<option value="option">:: 환불 요청 ::</option>
 											<option value="1">요청 O</option>
 											<option value="0">요청 X</option>
 									</select></td>
@@ -120,7 +113,6 @@
 								<tr>
 									<th>마감 유무</th>
 									<td><select name="donationPayDeadlineCheck" id="donationPayDeadlineCheck">
-											<option value="option">:: 마감 ::</option>
 											<option value="마감전">마감전</option>
 											<option value="마감완료">마감완료</option>
 									</select></td>

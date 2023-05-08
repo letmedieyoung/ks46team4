@@ -5,15 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks46team04.admin.dto.Donation;
-import ks46team04.admin.dto.DonationCode;
 import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
-import ks46team04.admin.dto.DonationPayMethodCode;
 import ks46team04.admin.dto.DonationRefund;
 import ks46team04.admin.dto.DonationSub;
-import ks46team04.admin.dto.DonationSubCode;
-import ks46team04.admin.dto.PaymentCode;
+import ks46team04.admin.dto.Payment;
 
 @Mapper
 public interface DonationMapper {
@@ -109,16 +106,16 @@ public interface DonationMapper {
 	public int removeDonationRefund(DonationRefund donationRefund);
 	
 	/* DonationCode 값 가져오기 */
-	public List<DonationCode> getdonationCode();
+	public List<Donation> getdonationCode();
 	
 	/* DonationPayMethodCode 값 가져오기 */
-	public List<DonationPayMethodCode> getdonationPayMethodCode();
+	public List<DonationPayMethod> getdonationPayMethodCode();
 	
 	/* DonationSubCode 값 가져오기 */
-	public List<DonationSubCode> getdonationSubCode();
+	public List<DonationSub> getdonationSubCode();
 	
 	/* PaymentCode 값 가져오기 */
-	public List<PaymentCode> getpaymentCode();
+	public List<Payment> getpaymentCode();
 	
 	/* DonationPayDetailCode 값 가져오기 */
 	public List<DonationPayDetail> getdonationPayDetailCode();

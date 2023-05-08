@@ -34,21 +34,45 @@
 								</tr>
 								<tr>
 									<th>구독 신청 코드</th>
-									<td><input type="text" id="donationSubCode"
-										th:value="*{donationSubCode}" name="donationSubCode"
-										style="width: 400px;" readonly="readonly" /></td>
+									<td>
+										<select id="donationSubCode" name="donationSubCode" style="width: 400px;">
+											<th:block th:unless="${donationSubCode == null}"
+												th:each="l : ${donationSubCode}">
+												<option th:value="${l.donationSubCode}">[[${l.donationSubCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationSubCode == null}">
+												<option>등록된 구독 신청 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>콘텐츠 코드</th>
-									<td><input type="text" id="donationCode"
-										th:value="*{donationCode}" name="donationCode"
-										style="width: 400px;" readonly="readonly" /></td>
+									<td>
+										<select id="donationCode" name="donationCode" style="width: 400px;">
+											<th:block th:unless="${donationCode == null}"
+												th:each="l : ${donationCode}">
+												<option th:value="${l.donationCode}">[[${l.donationCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationCode == null}">
+												<option>등록된 콘텐츠 코드 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
-									<th>결제수단 코드</th>
-									<td><input type="text" id="donationPayMethodCode"
-										th:value="*{donationPayMethodCode}" name="donationPayMethodCode"
-										style="width: 400px;" readonly="readonly" /></td>
+									<th>회원 결제수단 코드</th>
+									<td>
+										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
+											<th:block th:unless="${donationPayMethodCode == null}"
+												th:each="l : ${donationPayMethodCode}">
+												<option th:value="${l.donationPayMethodCode}">[[${l.donationPayMethodCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayMethodCode == null}">
+												<option>등록된 회원 결제수단 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>결제금액</th>
@@ -77,7 +101,6 @@
 								<tr>
 									<th>환불 요청 여부</th>
 									<td><select name="donationPayRefundRequest" id="donationPayRefundRequest">
-											<option value="option1">:: 환불 요청 ::</option>
 											<option value="1">요청 O</option>
 											<option value="0">요청 X</option>
 									</select></td>
@@ -91,7 +114,6 @@
 								<tr>
 									<th>마감 유무</th>
 									<td><select name="donationPayDeadlineCheck" id="donationPayDeadlineCheck">
-											<option value="option1">:: 마감 ::</option>
 											<option value="마감전">마감전</option>
 											<option value="마감완료">마감완료</option>
 									</select></td>
