@@ -170,6 +170,35 @@
 			o.foundation_code = f.foundation_code;
 	</select>
 	
+	<delete id="removeInOutcoming" parameterType="String">
+		/* 상품 입출고 삭제 */
+		DELETE 
+		FROM 
+			incoming_outcoming_history
+		WHERE 
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</delete>
+	
+	<update id="modifyInOutcoming" parameterType="InOutcoming">
+		/* 상품 입출고 수정 */
+		UPDATE incoming_outcoming_history
+		<set>
+			<if test="inOutcomingQuantity != null and inOutcomingQuantity !=''">
+				incoming_outcoming_quantity = #{inOutcomingQuantity}
+			</if>
+			<if test="inOutcomingType != null and inOutcomingType !=''">
+				, incoming_outcoming_type = #{inOutcomingType}
+			</if>
+			<if test="inOutcomingDate != null and inOutcomingDate !=''">
+				, incoming_outcoming_date = #{inOutcomingDate}
+			</if>
+			, incoming_outcoming_update_id = #{inOutcomingUpdId}
+			, incoming_outcoming_update_date = NOW()
+		</set>
+		WHERE
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</update>
+	
 	<select id="getInOutcomingInfoByCode" resultMap="inOutcomingResultMap">
 		/* 특정 상품 입출고 조회 */
 		SELECT 
@@ -192,8 +221,17 @@
 		ON
 			h.goods_code = i.goods_code
 		WHERE
-			h.incoming_outcoming_history_code = #{inOutcomingCode};
+			incoming_outcoming_history_code = #{inOutcomingCode};
 	</select>
+	
+	<insert id="addInOutcoming" parameterType="InOutcoming" >
+		/* 상품 입출고 등록 */
+		INSERT INTO incoming_outcoming_history
+			(incoming_outcoming_history_code, goods_code, goods_lot_number, incoming_outcoming_quantity,
+			 incoming_outcoming_type, incoming_outcoming_date, incoming_outcoming_reg_id, incoming_outcoming_reg_date)
+		VALUES
+			(sf_new_incoming_outcoming_code(), sf_return_goods_code(#{goodsName}), #{goodsLotNumber}, #{inOutcomingQuantity}, #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW())
+	</insert>
 	
 	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
 		/* 상품 입출고 조회 */

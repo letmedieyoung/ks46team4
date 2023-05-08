@@ -80,7 +80,11 @@ public class StockController {
 	@GetMapping("/modify_unusual_stock_detail")
 	public String modifyUnusualStock(Model model, @RequestParam(name="unusualStockCode") String unusualStockCode) {
 		
+		
 		UnusualStock unusualStockInfo = stockService.getUnusualStockInfoByCode(unusualStockCode);
+		String goodsCode = unusualStockInfo.getGoodsCode();
+		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
+		unusualStockInfo.setGoodsInfo(goodsInfo);
 		log.info("unusualStockInfo: {}", unusualStockInfo);
 		
 		model.addAttribute("title", "상품 비정상재고 수정");
