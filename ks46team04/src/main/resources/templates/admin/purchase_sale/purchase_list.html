@@ -190,7 +190,7 @@
 								<td th:text="${l.purchaseUpdateId}"></td>
 								<td th:text="${l.purchaseUpdateDate}"></td>
 								<td>
-									<a th:href=@{/admin/purchase_sale/purchase_update}>	
+									<a th:href=@{/admin/purchase_sale/purchase_update(purchaseCode=${l.purchaseCode})}>	
 										<button class="btn btn-secondary btn-sm">
 											<span class="text text-gray-100">수정</span>
 										</button>

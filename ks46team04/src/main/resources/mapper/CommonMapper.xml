@@ -20,4 +20,17 @@
 				
  	</select>
  	
+ 	<select id="getGroupCode" parameterType="String" resultType="String">
+	 	SELECT 
+			(
+			  CASE
+			    WHEN COUNT(*) = 0 THEN CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_',1) 
+			    ELSE
+			      CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_', max(cast(SUBSTRING_INDEX(${columnName}, '_', -1) AS UNSIGNED))+1)
+			  END
+			  ) as newGroupCode
+		FROM
+			${tableName}
+		WHERE `purchase_group_code` LIKE CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_%');
+ 	</select>
  </mapper>
