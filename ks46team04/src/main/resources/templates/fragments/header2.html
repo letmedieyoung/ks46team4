@@ -24,7 +24,7 @@
 								th:unless="${session.SLEVEL == null or session.SLEVEL != '1'}"
 								th:href="@{/admin/admin_index(userLevel=${session.SLEVEL == 1 ? '1' : ''})}">
 								<span class="top-sign">관리페이지</span>
-							</a> <a th:href="@{/}"> <span class="top-sign">문의하기</span>
+							</a> <a th:href="@{/common/user_inquiry}"> <span class="top-sign">문의하기</span>
 							</a>
 						</div>
 					</div>
@@ -47,7 +47,8 @@
 								<ul id="navigation">
 									<li><a th:href="@{/common/funding/list}" class="nav-font">펀딩</a></li>
 									<li><a href="#">정기기부</a></li>
-									<li><a href="#">공지사항</a></li>
+									<li><a th:href="@{/common/user_notice_board/notice_board_list}">공지사항</a></li>
+									<li><a th:href="@{/common/user_faq/faq_list}">FAQ</a></li>
 								</ul>
 							</nav>
 							<div class="Appointment">

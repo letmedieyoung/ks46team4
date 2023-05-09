@@ -27,119 +27,6 @@
 
 		<!-- Begin Page Content -->
 
-		<!-- Page Heading -->
-		<div class="card shadow mb-4">
-			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">상품 입/출고 조회</h6>
-			</div>
-			<div class="card-body">
-				<div class="table-responsive">
-					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
-						<tbody>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">상품명</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
-										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">상품명 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">제조사</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">제조사 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">제조번호</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="제조번호를 입력해주세요." />
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">입/출고일</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
-											<option value="option1">:: 입/출고 ::</option>
-											<option value="option1">입고</option>
-											<option value="option2">출고</option>
-											<option value="option2">교환</option>
-											<option value="option2">폐기</option>
-										</select>
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-											&nbsp;
-										</div>
-										<div class="col-auto">
-											<label for="start-date" class="sr-only">시작일</label>
-											<input type="date" id="start-date" class="form-control"
-												placeholder="시작일">
-										</div>
-										~
-										<div class="col-auto">
-											<label for="end-date" class="sr-only">종료일</label>
-											<input type="date" id="end-date" class="form-control" placeholder="종료일">
-										</div>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<div align="center">
-						<button type="submit" id="searchBtn" class="btn btn-primary btn-icon-split">
-							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">검색</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
@@ -170,7 +57,8 @@
 						</thead>
 						<tbody>
 							<th:block th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
-								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
+								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl, status : ${l.goodsInfo}">
+									<th:block th:each="fl, status : ${l.foundationInfo}">
 										<tr>	
 											<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
 											<th th:text="${lStat.count}"></th>
@@ -183,10 +71,8 @@
 											<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
 											<td th:text="${l.inOutcomingQuantity}"></td>
 											<td th:text="${l.inOutcomingDate}"></td>
-											<th:block>
-												<td th:if="${l.foundationInfo == null}">해당없음</td>
-												<td th:unless="${l.foundationInfo == null}" th:each="fl : ${l.foundationInfo}" th:text="${fl.foundationName}"></td>
-											</th:block>
+											<td th:if="${fl == null}">해당없음</td>
+											<td th:unless="${fl == null}" th:text="${fl.foundationName}"></td>
 											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
 											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
 											<td>
@@ -199,6 +85,7 @@
 										<tr th:if="${inOutcomingList == null}">
 											<td colspan="10">등록된 상품 재고 정보가 없습니다.</td>
 										</tr>
+									</th:block>
 								</th:block>
 							</th:block>
 						</tbody>

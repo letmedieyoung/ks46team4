@@ -19,12 +19,6 @@
 			<id		column="goods_code"				property="goodsCode"/>
 			<result column="goods_name"				property="goodsName"/>
 			<result column="goods_company"			property="goodsCompany"/>
-			<result column="goods_category"			property="goodsCategory"/>
-			<result column="goods_price"			property="goodsPrice"/>
-			<result column="goods_reg_id"			property="goodsRegId"/>
-			<result column="goods_reg_date"			property="goodsRegDate"/>
-			<result column="goods_update_id"		property="goodsUpdId"/>
-			<result column="goods_update_date"		property="goodsUpdDate"/>
 		</association>
 	</resultMap>
 	
@@ -43,12 +37,15 @@
 			<id		column="goods_code"				property="goodsCode"/>
 			<result column="goods_name"				property="goodsName"/>
 			<result column="goods_company"			property="goodsCompany"/>
-			<result column="goods_category"			property="goodsCategory"/>
-			<result column="goods_price"			property="goodsPrice"/>
-			<result column="goods_reg_id"			property="goodsRegId"/>
-			<result column="goods_reg_date"			property="goodsRegDate"/>
-			<result column="goods_update_id"		property="goodsUpdId"/>
-			<result column="goods_update_date"		property="goodsUpdDate"/>
+		</association>
+		<association property="OutcomingDetailInfo" javaType="OutcomingDetail">
+			<id		column="outcoming_detail_code"						property="outcomingDetailCode"/>
+			<result column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
+			<result column="foundation_code"							property="foundationCode"/>
+		</association>
+		<association property="foundationInfo" javaType="Foundation">
+			<id		column="foundation_code"				property="foundationCode"/>
+			<result column="foundation_name"				property="foundationName"/>
 		</association>
 	</resultMap>
 	
@@ -64,34 +61,8 @@
 		<result column="outcoming_reg_date"							property="outcomingDetailRegDate"/>
 		<result column="outcoming_update_id"						property="outcomingDetailUpdId"/>
 		<result column="outcoming_update_date"						property="outcomingDetailUpdDate"/>
-		<association property="foundationRequestInfo" javaType="FoundationRequest">
-			<id		column="foundation_request_code"			property="foundationRequestCode"/>
-			<result column="foundation_code"					property="foundationCode"/>
-			<result column="foundation_name"					property="foundationName"/>
-			<result column="content_category"					property="contentCategory"/>
-			<result column="request_goods_name"					property="requestGoodsName"/>
-			<result column="initial_goods_amount"				property="initialGoodsAmount"/>
-			<result column="final_goods_amount"					property="finalGoodsAmount"/>
-			<result column="delivery_request_date"				property="deliveryRequestDate"/>
-			<result column="request_reg_id"						property="requestRegId"/>
-			<result column="request_reg_date"					property="requestRegDate"/>
-			<result column="request_update_id"					property="requestUpdId"/>
-			<result column="request_update_date"				property="requestUpdDate"/>
-			<result column="request_progress_status"			property="requestProgressStatus"/>
-		</association>
-		<association property="goodsInfo" javaType="Goods">
-			<id		column="goods_code"				property="goodsCode"/>
-			<result column="goods_name"				property="goodsName"/>
-			<result column="goods_company"			property="goodsCompany"/>
-			<result column="goods_category"			property="goodsCategory"/>
-			<result column="goods_price"			property="goodsPrice"/>
-			<result column="goods_reg_id"			property="goodsRegId"/>
-			<result column="goods_reg_date"			property="goodsRegDate"/>
-			<result column="goods_update_id"		property="goodsUpdId"/>
-			<result column="goods_update_date"		property="goodsUpdDate"/>
-		</association>
 	</resultMap>
-		
+	
 	<resultMap type="UnusualStock" id="unusualStockResultMap">
 		<id		column="unusual_stock_detail_code"					property="unusualStockCode"/>
 		<result column="goods_code"									property="goodsCode"/>
@@ -106,13 +77,6 @@
 		<association property="goodsInfo" javaType="Goods">
 			<id		column="goods_code"				property="goodsCode"/>
 			<result column="goods_name"				property="goodsName"/>
-			<result column="goods_company"			property="goodsCompany"/>
-			<result column="goods_category"			property="goodsCategory"/>
-			<result column="goods_price"			property="goodsPrice"/>
-			<result column="goods_reg_id"			property="goodsRegId"/>
-			<result column="goods_reg_date"			property="goodsRegDate"/>
-			<result column="goods_update_id"		property="goodsUpdId"/>
-			<result column="goods_update_date"		property="goodsUpdDate"/>
 		</association>
 	</resultMap>	
 	
@@ -199,6 +163,17 @@
 			incoming_outcoming_history_code = #{inOutcomingCode};
 	</update>
 	
+	<select id="getOutcomingDetailInfoByCode" resultMap="outcomingDetailResultMap">
+		/* 특정 상품 출고 상세정보 조회 */
+		SELECT
+			outcoming_detail_code
+			, foundation_code
+		FROM 
+			outcoming_detail
+		WHERE
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</select>
+	
 	<select id="getInOutcomingInfoByCode" resultMap="inOutcomingResultMap">
 		/* 특정 상품 입출고 조회 */
 		SELECT 
@@ -210,6 +185,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
+			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
 			, h.incoming_outcoming_update_id
@@ -220,8 +196,16 @@
 			goods_reg_info AS i
 		ON
 			h.goods_code = i.goods_code
+		LEFT JOIN
+			outcoming_detail AS o
+		ON 
+			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
+		LEFT JOIN
+			foundation_request AS f
+		ON
+			o.foundation_code = f.foundation_code
 		WHERE
-			incoming_outcoming_history_code = #{inOutcomingCode};
+			h.incoming_outcoming_history_code = #{inOutcomingCode};
 	</select>
 	
 	<insert id="addInOutcoming" parameterType="InOutcoming" >
@@ -244,6 +228,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
+			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
 			, h.incoming_outcoming_update_id
@@ -253,7 +238,15 @@
 		INNER JOIN 
 			goods_reg_info AS i
 		ON
-			h.goods_code = i.goods_code;
+			h.goods_code = i.goods_code
+		LEFT JOIN
+			outcoming_detail AS o
+		ON 
+			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
+		LEFT JOIN
+			foundation_list AS f
+		ON
+			o.foundation_code = f.foundation_code;
 	</select>
 	
 	<update id="modifyStock" parameterType="Stock">

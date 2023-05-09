@@ -12,13 +12,28 @@ public class InOutcoming {
 	private String inOutcomingUpdId;
 	private String inOutcomingUpdDate;
 	
+	private OutcomingDetail OutcomingDetailInfo;
 	private Goods goodsInfo;
+	private Foundation foundationInfo;
 	
+	
+	public OutcomingDetail getOutcomingDetailInfo() {
+		return OutcomingDetailInfo;
+	}
+	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
+		OutcomingDetailInfo = outcomingDetailInfo;
+	}
 	public Goods getGoodsInfo() {
 		return goodsInfo;
 	}
 	public void setGoodsInfo(Goods goodsInfo) {
 		this.goodsInfo = goodsInfo;
+	}
+	public Foundation getFoundationInfo() {
+		return foundationInfo;
+	}
+	public void setFoundationInfo(Foundation foundationInfo) {
+		this.foundationInfo = foundationInfo;
 	}
 	public String getInOutcomingCode() {
 		return inOutcomingCode;
@@ -87,6 +102,7 @@ public class InOutcoming {
 				+ goodsLotNumber + ", inOutcomingQuantity=" + inOutcomingQuantity + ", inOutcomingType="
 				+ inOutcomingType + ", inOutcomingDate=" + inOutcomingDate + ", inOutcomingRegId=" + inOutcomingRegId
 				+ ", inOutcomingRegDate=" + inOutcomingRegDate + ", inOutcomingUpdId=" + inOutcomingUpdId
-				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", goodsInfo=" + goodsInfo + "]";
+				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", OutcomingDetailInfo=" + OutcomingDetailInfo
+				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + "]";
 	}
 }

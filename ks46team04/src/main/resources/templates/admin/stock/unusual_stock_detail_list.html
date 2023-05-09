@@ -171,7 +171,7 @@
 						</thead>
 						<tbody>
 							<th:block th:unless="${unusualStockList == null}" th:each=" l : ${unusualStockList}">
-								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl, status : ${l.goodsInfo}">
+								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
 									<tr>
 										<td><input class="checks" type="checkbox" th:value="${l.unusualStockCode}"></td>
 										<th th:text="${lStat.count}"></th>	

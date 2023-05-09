@@ -13,21 +13,6 @@ public class OutcomingDetail {
 	private String outcomingDetailUpdId;
 	private String outcomingDetailUpdDate;
 	
-	private FoundationRequest foundationRequestInfo;
-	private Goods goodsInfo;
-	
-	public Goods getGoodsInfo() {
-		return goodsInfo;
-	}
-	public void setGoodsInfo(Goods goodsInfo) {
-		this.goodsInfo = goodsInfo;
-	}
-	public FoundationRequest getFoundationRequestInfo() {
-		return foundationRequestInfo;
-	}
-	public void setFoundationRequestInfo(FoundationRequest foundationRequestInfo) {
-		this.foundationRequestInfo = foundationRequestInfo;
-	}
 	public String getOutcomingDetailCode() {
 		return outcomingDetailCode;
 	}
@@ -101,8 +86,7 @@ public class OutcomingDetail {
 				+ outcomingDate + ", outcomingId=" + outcomingId + ", foundationCode=" + foundationCode
 				+ ", outcomingDetailRegId=" + outcomingDetailRegId + ", outcomingDetailRegDate="
 				+ outcomingDetailRegDate + ", outcomingDetailUpdId=" + outcomingDetailUpdId
-				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + ", foundationRequestInfo="
-				+ foundationRequestInfo + ", goodsInfo=" + goodsInfo + "]";
+				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
 	}
 	
 }

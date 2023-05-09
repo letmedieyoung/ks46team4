@@ -56,12 +56,12 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 										     	&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
-													<option value="option1">:: 입/출고 ::</option>
-													<option value="option1">입고</option>
-													<option value="option2">출고</option>
-													<option value="option2">교환</option>
-													<option value="option2">폐기</option>
+												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutcomingType(this.value)">
+													<option value="">:: 입/출고 ::</option>
+													<option th:selected="*{inOutcomingType} == 'incoming'">입고</option>
+													<option th:selected="*{inOutcomingType} == 'outcoming'">출고</option>
+													<option th:selected="*{inOutcomingType} == 'exchange'">교환</option>
+													<option th:selected="*{inOutcomingType} == 'disposal'">폐기</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
@@ -111,7 +111,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{inOutcomingCode}" placeholder="재단명을 입력해주세요."/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
 												&nbsp;
 												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
 													<span class="text">재단명 검색</span>
@@ -157,32 +157,19 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		/*
-		* 재고조사 현황 select box value 값 -> input value로 넣기
+		* 입/출고 분류 select box value 값 -> input value로 넣기
 		*/
-		function stocktaking(category) {
-			const selectInput = document.querySelector('#stocktakingCheck');
-			selectInput.value = category;
-		};
-		
-		/**
-		 * 비정상재고 select box value 값 -> input value로 넣기
-		 */
-		function unusualStock(category) {
-			const selectInput = document.querySelector('#unusualStockCheck');
+		function inOutcomingType(category) {
+			const selectInput = document.querySelector('#inOutcomingType');
 			selectInput.value = category;
 		};
 		
 		/**
 		 * 재고조사 현황 select box selected 값 -> input text로 넣기
 		 */
-		var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		var selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 		
-		/**
-		 * 비정상재고 select box selected 값 -> input text로 넣기
-		 */
-		var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 	</script>
 </th:block>
 
