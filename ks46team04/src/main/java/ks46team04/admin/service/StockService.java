@@ -1,6 +1,7 @@
 package ks46team04.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,12 +75,12 @@ public class StockService {
 	}
 	
 	/**
-	 * 상품 출고 상세정보 조회
+	 * 특정 상품 출고 상세정보 조회
 	 * @return
 	 */
-	public List<OutcomingDetail> getOutcomingDetailList(){
-		List<OutcomingDetail> outcomingDetailList = stockMapper.getOutcomingDetailList();
-		return outcomingDetailList;
+	public OutcomingDetail getOutcomingDetailInfoByCode(String outcomingDetailCode){
+		OutcomingDetail outcomingDetailInfo = stockMapper.getOutcomingDetailInfoByCode(outcomingDetailCode);
+		return outcomingDetailInfo;
 	}
 	
 	/**

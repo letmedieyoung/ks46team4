@@ -1,6 +1,8 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.InOutcoming;
 import ks46team04.admin.dto.OutcomingDetail;
 import ks46team04.admin.dto.Stock;
 import ks46team04.admin.dto.UnusualStock;
+import ks46team04.admin.service.FoundationService;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
 
@@ -30,10 +34,12 @@ public class StockController {
 
 	private final StockService stockService;
 	private final GoodsService goodsService;
+	private final FoundationService foundationService;
 	
-	public StockController(StockService stockService, GoodsService goodsService) {
+	public StockController(StockService stockService, GoodsService goodsService, FoundationService foundationService) {
 		this.stockService = stockService;
 		this.goodsService = goodsService;
+		this.foundationService = foundationService;
 	}
 	
 	
@@ -145,22 +151,6 @@ public class StockController {
 	}
 
 	/**
-	 * 상품 출고 상세정보 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/outcoming_detail_list")
-	public String getOutcomingDetailList(Model model) {
-		
-		List<OutcomingDetail> outcomingDetailList = stockService.getOutcomingDetailList();
-		
-		model.addAttribute("title", "상품 출고 상세정보 조회");
-		model.addAttribute("outcomingDetailList", outcomingDetailList);
-		
-		return "admin/stock/outcoming_detail_list";
-	}
-	
-	/**
 	 * 상품 입출고 삭제
 	 * @param model
 	 * @return
@@ -202,18 +192,31 @@ public class StockController {
 	 */
 	@GetMapping("/modify_in_outcoming")
 	public String modifyInOutcoming(Model model, @RequestParam(name="inOutcomingCode") String inOutcomingCode) {
-		
-		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-		String goodsCode = inOutcomingInfo.getGoodsCode();
-		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
-		inOutcomingInfo.setGoodsInfo(goodsInfo);
-		log.info("inOutcomingInfo: {}", inOutcomingInfo);
-		
-		model.addAttribute("title", "상품 입출고 수정");
-		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
-		
-		return "admin/stock/modify_in_outcoming";
+	    
+	    InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
+	    OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
+	    log.info("outcomingDetailInfo: {}", outcomingDetailInfo);
+	    
+	    String goodsCode = inOutcomingInfo.getGoodsCode();
+	    Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
+	    log.info("goodsInfo: {}", goodsInfo);
+	    
+	    String foundationCode = outcomingDetailInfo.getFoundationCode();
+	    Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
+	    log.info("foundationInfo: {}", foundationInfo);
+
+	    Map<String, Object> inOutcomingMap = new HashMap<String, Object>();
+	    inOutcomingMap.put("inOutcomingInfo", inOutcomingInfo);
+	    inOutcomingMap.put("goodsInfo", goodsInfo);
+	    inOutcomingMap.put("foundationInfo", foundationInfo);
+	    log.info("inOutcomingMap: {}", inOutcomingMap);
+	    
+	    model.addAttribute("title", "상품 입출고 수정");
+	    model.addAttribute("inOutcomingMap", inOutcomingMap);
+	    
+	    return "admin/stock/modify_in_outcoming";
 	}
+
 	
 	/**
 	 * 상품 입출고 등록 @PostMapping
