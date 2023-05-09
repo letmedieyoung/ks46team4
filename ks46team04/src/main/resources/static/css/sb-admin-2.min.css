@@ -2160,7 +2160,7 @@ textarea.form-control.is-invalid {
 .btn {
   display: inline-block;
   font-weight: 400;
-  color: #858796;
+ 
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
@@ -2180,14 +2180,12 @@ textarea.form-control.is-invalid {
       transition: none
   }
 }
-.btn:hover {
-  color: #858796;
+.btn:hover {  
   text-decoration: none
 }
 .btn.focus,
 .btn:focus {
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, .25)
 }
 .btn.disabled,
 .btn:disabled {
@@ -2245,13 +2243,7 @@ fieldset:disabled a.btn {
   background-color: #717384;
   border-color: #6b6d7d
 }
-.btn-secondary.focus,
-.btn-secondary:focus {
-  color: #fff;
-  background-color: #717384;
-  border-color: #6b6d7d;
-  box-shadow: 0 0 0 0.2rem rgba(151, 153, 166, .5)
-}
+
 .btn-secondary.disabled,
 .btn-secondary:disabled {
   color: #fff;
@@ -2272,21 +2264,21 @@ fieldset:disabled a.btn {
 }
 .btn-success {
   color: #fff;
-  background-color: #1cc88a;
-  border-color: #1cc88a
-}
+  background-color:#2653d4;
+  border-color: #244ec9;
+  }
 .btn-success:hover {
   color: #fff;
-  background-color: #17a673;
-  border-color: #169b6b
+  background-color: #2653d4;
+  border-color: #244ec9
 }
 .btn-success.focus,
 .btn-success:focus {
   color: #fff;
-  background-color: #17a673;
-  border-color: #169b6b;
-  box-shadow: 0 0 0 0.2rem rgba(62, 208, 156, .5)
+  background-color: #2653d4;
+  border-color:#244ec9;
 }
+
 .btn-success.disabled,
 .btn-success:disabled {
   color: #fff;

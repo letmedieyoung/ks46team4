@@ -17,4 +17,7 @@ public interface FundingProductMapper {
 	@Select("SELECT * FROM funding WHERE funding_code = #{fundingCode}")
     FundingProduct detailFunding(@Param("fundingCode") String fundingCode);
 
+	@Select("SELECT * FROM each_funding_info WHERE id = #{id}")
+    FundingProduct fundingCode(@Param("fundingCode") String fundingCode);
+	
 }

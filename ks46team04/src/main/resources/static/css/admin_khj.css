@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+#current_amount_select {
+	width: 120px;
+	
+}
+
+select:focus {
+	outline: none;
+}
 
 #goodsCode{
 	width: 140px;
@@ -20,8 +28,10 @@ table a{
 	color: #858796;
 }
 
+
 th {
 	vertical-align: middle;
+	text-align: center;
 }
 
 .list-table {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingCurrentAmount;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.Goods;
@@ -173,24 +174,29 @@ public class FundingController {
 	 * @return
 	 */
 	@GetMapping("/current_amount")
-	public String currentProgress(Model model) {	
+	public String currentProgress(Model model,
+								 @RequestParam(name="searchKey", required = false) String searchKey,
+								 @RequestParam(name="searchValue", required = false) String searchValue) {	
+		
+		List<FundingCurrentAmount> fundingCurrentAmountList = fundingService.getFundingProgressStatus(searchKey, searchValue);
 		
 		int targetSum = fundingMapper.getTargetSum();
 		int currentSum = fundingMapper.sumOfCurrentAmount();
-		int accomplishmentRate = fundingMapper.accomplishmentRate();
+		String accomplishmentRate = fundingMapper.accomplishmentRate();
+		int allAccomplishmentRate = fundingMapper.allAccomplishmentRate();
 		
 		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
 		model.addAttribute("content", "펀딩 컨텐츠 별 진행현황");
 		model.addAttribute("targetSum", targetSum);
 		model.addAttribute("currentSum", currentSum);
+		model.addAttribute("allAccomplishmentRate", allAccomplishmentRate);
 		model.addAttribute("accomplishmentRate", accomplishmentRate);
+		model.addAttribute("fundingCurrentAmountList", fundingCurrentAmountList);
 	    
 	    return "admin/funding/current_amount";
 	}
 	
 
-
-	
 	
 	/**
 	 * 펀딩 결제내역 상세 확인 처리
