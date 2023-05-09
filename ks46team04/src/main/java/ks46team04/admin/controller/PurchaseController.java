@@ -70,10 +70,12 @@ public class PurchaseController {
 	
 	@GetMapping("/purchase_update")
 	public String ModifyPurchase(Model model,
-								@RequestParam(name="purchaseCode") String purchaseCode) {		
+								@RequestParam(name="purchaseCode") String purchaseCode,
+								@RequestParam(name="goodsCode") String goodsCode) {		
 	
 		log.info("purchaseCode: {}", purchaseCode);
-		Purchase purchaseInfo = purchaseService.getPurchaseByCode(purchaseCode);
+		log.info("goodsCode: {}", goodsCode);
+		Purchase purchaseInfo = purchaseService.getPurchaseByCode(purchaseCode, goodsCode);
 	
 		log.info("purchaseInfo: {}", purchaseInfo);
 		model.addAttribute("title", "Pilling Good - 관리 - 매입 수정");
@@ -82,16 +84,14 @@ public class PurchaseController {
 	}
 	
 	@PostMapping("/purchase_update")
-	public String ModifyPurchase(Model model,
-								@RequestParam(name="purchaseCode") String purchaseCode,
+	public String ModifyPurchase(Purchase purchase,
 								HttpSession session) {
 		String updateRegId = (String) session.getAttribute("SID");
 		String regLevel = (String) session.getAttribute("SLEVEL");
 		if(regLevel.equals("1")) {
-			purchaseService.modifyPurchase(purchaseCode, updateRegId);
+			log.info("purchaseC: {}", purchase);
+			purchaseService.modifyPurchase(purchase, updateRegId);
 		}
-		model.addAttribute("title", "Pilling Good - 관리 - 매입 수정");
-		
 		return "redirect:/admin/purchase_sale/purchase_list";
 	}
 	

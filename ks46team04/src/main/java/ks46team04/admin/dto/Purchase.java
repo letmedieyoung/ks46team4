@@ -15,6 +15,7 @@ public class Purchase {
 	private String purchaseUpdateDate;		
 	private String purchaseGroupCode;		
 	private String userPurchseDeadlindeCheck;
+	private boolean goodsIsDel;
 	
 	
 	public String getPurchaseCode() {
@@ -101,6 +102,14 @@ public class Purchase {
 	public void setUserPurchseDeadlindeCheck(String userPurchseDeadlindeCheck) {
 		this.userPurchseDeadlindeCheck = userPurchseDeadlindeCheck;
 	}
+	public boolean isGoodsIsDel() {
+		return goodsIsDel;
+	}
+	public void setGoodsIsDel(boolean goodsIsDel) {
+		this.goodsIsDel = goodsIsDel;
+	}
+	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -132,6 +141,8 @@ public class Purchase {
 		builder.append(purchaseGroupCode);
 		builder.append(", userPurchseDeadlindeCheck=");
 		builder.append(userPurchseDeadlindeCheck);
+		builder.append(", goodsIsDel=");
+		builder.append(goodsIsDel);
 		builder.append("]");
 		return builder.toString();
 	}

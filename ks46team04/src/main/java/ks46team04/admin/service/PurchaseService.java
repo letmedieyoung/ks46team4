@@ -32,6 +32,16 @@ public class PurchaseService {
 	
 	public List<Purchase> getTotalPurchaseList() {
 		List<Purchase> totalPurchaseList = purchaseMapper.getTotalPurchaseList();
+		for(Purchase item : totalPurchaseList) {
+			//goodsIsDel 삭제 여부 확인
+			boolean isGoodsDel = item.isGoodsIsDel();
+			if(isGoodsDel == true) {
+				String goodsName = item.getGoodsName();
+				goodsName = goodsName + " (현재 삭제된 상품)";
+				item.setGoodsName(goodsName);
+			}
+		}
+			
 		log.info("totalPurchaseList: {}", totalPurchaseList);
 		return totalPurchaseList;
 	}
@@ -48,13 +58,13 @@ public class PurchaseService {
 			purchase.setPurchaseStatus("매입 입금 완료");
 			
 			//그룹 코드
-			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_history_code", "purchase");
+			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey,"purchase");
 			purchase.setPurchaseGroupCode(purchaseGroup);
 			//DeadlindeCheck
 			purchase.setUserPurchseDeadlindeCheck("마감전");
 					
 		}else if(purchaseStatus.equals("expected")){
-			purchase.setPurchaseStatus("매입 입금 완료");	
+			purchase.setPurchaseStatus("매입 예정");	
 		}
 		
 		Goods goodsInfo = goodsMapper.getGoodsInfoByCode(purchase.getGoodsCode());
@@ -64,8 +74,8 @@ public class PurchaseService {
 		return result;
 	}
 	
-	public Purchase getPurchaseByCode(String purchaseCode) {
-		Purchase purchaseInfo = purchaseMapper.getPurchaseByCode(purchaseCode);
+	public Purchase getPurchaseByCode(String purchaseCode, String goodsCode) {
+		Purchase purchaseInfo = purchaseMapper.getPurchaseByCode(purchaseCode, goodsCode);
 		log.info("purchaseInfo: {}", purchaseInfo);
 		String status = purchaseInfo.getPurchaseStatus();
 		if(status.equals("매입 예정")) {
@@ -74,11 +84,38 @@ public class PurchaseService {
 			status = "complete";
 		}
 		purchaseInfo.setPurchaseStatus(status);
+		
+		//goodsIsDel 삭제 여부 확인
+		boolean isGoodsDel = purchaseInfo.isGoodsIsDel();
+		if(isGoodsDel == true) {
+			String goodsName = purchaseInfo.getGoodsName();
+			goodsName = goodsName + " (현재 삭제된 상품)";
+			purchaseInfo.setGoodsName(goodsName);
+		}
+		
 		return purchaseInfo;
 	}
 	
-	public int modifyPurchase(String purchaseCode, String updateRegId) {
-		int modifyResult = purchaseMapper.modifyPurchase(purchaseCode, updateRegId);
+	public int modifyPurchase(Purchase purchase, String updateRegId) {
+		purchase.setPurchaseUpdateId(updateRegId);
+		
+		//매입 현황에 따라 그룹 코드와 마감상태 변경
+		String purchaseStatus = purchase.getPurchaseStatus();
+		if(purchaseStatus.equals("expected")) {	//예정이면 그룹 코드와 마감 상태 그대로 null update
+			purchase.setPurchaseStatus("매입 예정");
+		}else if(purchaseStatus.equals("complete")) {
+			purchase.setPurchaseStatus("매입 입금 완료");
+			
+			String PKkey = purchase.getPurchaseCode();
+			//그룹 코드
+			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey, "purchase");
+			purchase.setPurchaseGroupCode(purchaseGroup);
+			//DeadlindeCheck
+			purchase.setUserPurchseDeadlindeCheck("마감전");
+		}
+		
+		log.info("purchaseS: {}", purchase);
+		int modifyResult = purchaseMapper.modifyPurchase(purchase);
 		return modifyResult;
 	}
 }
