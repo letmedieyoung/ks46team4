@@ -27,12 +27,6 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>회원 아이디</th>
-									<td><input type="text" id="donationPayUserId"
-										th:value="*{donationPayUserId}" name="donationPayUserId"
-										style="width: 400px;"  readonly="readonly" /></td>
-								</tr>
-								<tr>
 									<th>구독 신청 코드</th>
 									<td>
 										<select id="donationSubCode" name="donationSubCode" style="width: 400px;">
@@ -96,8 +90,8 @@
 								<tr>
 									<th>결제일</th>
 									<td><input type="text" id="donationPayDate"
-										th:value="*{donationPayDate}"
-										name="donationPayDate" style="width: 400px;" readonly="readonly" /></td>
+										th:value="*{donationPayDate}" name="donationPayDate" 
+										style="width: 400px;" readonly="readonly" /></td>
 								<tr>
 									<th>환불 요청 여부</th>
 									<td><select name="donationPayRefundRequest" id="donationPayRefundRequest">

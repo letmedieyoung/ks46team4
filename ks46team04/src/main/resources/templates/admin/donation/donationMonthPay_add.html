@@ -19,8 +19,7 @@
 				<div class="table-responsive">
 					<form th:action="@{/admin/donation/donationMonthPay_add}" method="POST"
 						id="addDonationMonthPayForm" name="addDonationMonthPayForm">
-						<table th:object="${donationMonthPayInfo}" class="table table-bordered freg" id="addDonationMonthPay"
-							width="100%" cellspacing="0">
+						<table class="table table-bordered freg" id="addDonationMonthPay" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th>콘텐츠 코드</th>
@@ -38,23 +37,23 @@
 								</tr>
 								<tr>
 									<th>연도</th>
-									<td><input type="number" id="donationMonthPayYear"
-										name="donationMonthPayYear" style="width: 400px;" placeholder="연도를 입력해주세요."/></td>
+									<td><input type="number" id="donationMonthPayYear" name="donationMonthPayYear"
+										style="width: 400px;" placeholder="연도를 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>월</th>
-									<td><input type="number" id="donationMonthPayMonth"
-										name="donationMonthPayMonth" style="width: 400px;" placeholder="월을 입력해주세요."/></td>
+									<td><input type="number" id="donationMonthPayMonth" name="donationMonthPayMonth" 
+										style="width: 400px;" placeholder="월을 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>총 결제금액</th>
-									<td><input type="number" id="donationMonthPayAmount"
-										name="donationMonthPayAmount" style="width: 400px;" placeholder="총 결제금액을 입력해주세요."/><span>원</span></td>
+									<td><input type="number" id="donationMonthPayAmount" name="donationMonthPayAmount" 
+										style="width: 400px;" placeholder="총 결제금액을 입력해주세요." /><span>원</span></td>
 								</tr>
 								<tr>
 									<th>월 마감 그룹코드</th>
-									<td><input type="text" id="donationMonthPayDeadlineGroup"
-												name="donationMonthPayDeadlineGroup" style="width: 400px;" placeholder="자동증가코드 ! !"/></td>
+									<td><input type="text" id="donationMonthPayDeadlineGroup" name="donationMonthPayDeadlineGroup" 
+										style="width: 400px;" placeholder="자동증가코드 ! !" /></td>
 								</tr>
 								<tr>
 									<td colspan="3"> <div style="display: flex; justify-content: center;">

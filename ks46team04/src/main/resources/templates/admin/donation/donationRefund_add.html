@@ -11,7 +11,7 @@
 <th:block layout:fragment="customContents">
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-<p> **회원이 신청하면 그 폼 가져와서 등록자 이름 적으면 등록자, 등록일자 포함된 리스트로 조회</p>
+<p> **회원이 신청하면 그 폼 가져와서 처리상태 등록하면 등록자, 등록일자 포함된 리스트로 조회</p>
 		<!-- Page Heading -->
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
@@ -22,14 +22,12 @@
 					<form th:action="@{/admin/donation/donationRefund_add}"
 						method="POST" id="addDonationRefundForm"
 						name="addDonationRefundForm">
-						<table class="table table-bordered freg" id="addDonationRefund"
-							width="100%" cellspacing="0">
+						<table class="table table-bordered freg" id="addDonationRefund" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th>회원 아이디</th>
-									<td><input type="text" id="donationRefundUserId"
-										name="donationRefundUserId" style="width: 400px;"
-										placeholder="값 가져오기 리드온리" /></td>
+									<td><input type="text" id="donationRefundUserId" name="donationRefundUserId" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
 									<th>결제 상세 코드</th>
@@ -46,32 +44,27 @@
 								</tr>
 								<tr>
 									<th>요청일자</th>
-									<td><input type="datetime-local" id="donationRefundRequestDate"
-										name="donationRefundRequestDate" style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리"/></td>
+									<td><input type="datetime-local" id="donationRefundRequestDate" name="donationRefundRequestDate" style="width: 400px;" /></td>
 								</tr>
 								<tr>
 									<th>요청금액</th>
-									<td><input type="number" id="donationRefundRequestAmount"
-										name="donationRefundRequestAmount" style="width: 400px;"
-										 placeholder="유저 신청에서 값 가져오기 리드온리"/><span>원</span></td>
+									<td><input type="number" id="donationRefundRequestAmount" name="donationRefundRequestAmount" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /><span>원</span></td>
 								</tr>
 								<tr>
 									<th>요청사유</th>
-									<td><input type="text" id="donationRefundRequestReason"
-										name="donationRefundRequestReason" style="width: 400px; height: 200px;"
-										 placeholder="유저 신청에서 값 가져오기 리드온리"/></td>
+									<td><input type="text" id="donationRefundRequestReason" name="donationRefundRequestReason" 
+										style="width: 400px; height: 200px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
 									<th>은행명</th>
-									<td><input type="text" id="donationRefundBank"
-										name="donationRefundBank" style="width: 400px;"
-										 placeholder="유저 신청에서 값 가져오기 리드온리"/></td>
+									<td><input type="text" id="donationRefundBank" name="donationRefundBank" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
 									<th>계좌번호</th>
-									<td><input type="text" id="donationRefundAccount"
-										name="donationRefundAccount" style="width: 400px;"
-										 placeholder="유저 신청에서 값 가져오기 리드온리"/></td>
+									<td><input type="text" id="donationRefundAccount" name="donationRefundAccount" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
 									<th>요청처리</th>
@@ -79,12 +72,6 @@
 											<option value="환불 전">환불 전</option>
 											<option value="환불 완료">환불 완료</option>
 									</select></td>
-								</tr>
-								<tr>
-									<th>등록자</th>
-									<td><input type="text" id="donationRefundRegId"
-										name="donationRefundRegId" style="width: 400px;"
-										placeholder="등록자 아이디를 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<td colspan="3"> <div style="display: flex; justify-content: center;">

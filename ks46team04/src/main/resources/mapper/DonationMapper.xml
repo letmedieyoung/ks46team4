@@ -59,8 +59,7 @@
 	<insert id="addDonation" parameterType="Donation" >
 		/* 정기기부 단가 등록 */
 		INSERT INTO regular_donation_unit_price
-		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description,
-		regular_donation_reg_id, regular_donationr_reg_date)
+		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description, regular_donation_reg_id, regular_donationr_reg_date)
 		VALUES
 		(sf_new_donation_code(), #{donationName}, #{donationPrice}, #{donationDescription}, #{donationRegId}, SYSDATE());		
 	</insert>
@@ -165,6 +164,7 @@
 			<if test="donationPayMethodAccount != null and donationPayMethodAccount !=''">
 				,regular_donation_payment_account = #{donationPayMethodAccount}
 			</if>
+				,user_id = #{donationPayMethodUserId}
 				,regular_donation_payment_update_date = SYSDATE()
 		</set>
 		WHERE
@@ -232,6 +232,7 @@
 			<if test="donationSubEndDate != null and donationSubEndDate !=''">
 				,user_regular_donation_subscription_end_date = #{donationSubEndDate}
 			</if>
+				,user_id = #{donationSubUserId}
 		</set>
 		WHERE
 			user_regular_donation_subscription_code = #{donationSubCode};
@@ -321,6 +322,7 @@
 			<if test="donationPayDeadlineCheck != null and donationPayDeadlineCheck !=''">
 				,user_regular_donation_deadline_check = #{donationPayDeadlineCheck}
 			</if>
+				,user_id = #{donationPayUserId}
 		</set>
 		WHERE
 			regular_donation_payment_code = #{donationPayDetailCode};
