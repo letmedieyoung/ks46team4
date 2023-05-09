@@ -10267,20 +10267,21 @@ form.user .form-control-user-search {
   padding: 1.13rem 1rem
 }
 
+#purchase-search
+{
+width: 15rem;
+height: calc(1em + 0.5rem + 2px);
+display: inline-block;
+margin-right: 0.2rem;
+padding: 1.13rem 1rem
+}
+
 .purchase-search{
 	width: 15rem;
 	height: calc(1em + 0.5rem + 2px);
 	display: inline-block;
 	margin-right: 0.2rem;
 	padding: 1.13rem 1rem
-}
-
-.purchase-insert {
-  width: 45rem;
-  height: calc(1em + 0.5rem + 2px);
-  display: inline-block;
-  margin-right: 0.2rem;
-  padding: 1.13rem 1rem
 }
 
 /* 펀딩 등록 */

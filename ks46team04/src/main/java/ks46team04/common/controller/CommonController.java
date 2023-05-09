@@ -19,9 +19,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.ActivityStatus;
+import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.User;
 import ks46team04.admin.dto.UserLevel;
 import ks46team04.admin.mapper.UserMapper;
+import ks46team04.admin.service.FundingService;
 import ks46team04.admin.service.UserService;
 
 @Controller
@@ -30,37 +32,34 @@ public class CommonController {
 	
 	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
+	private final FundingService fundingService;
 	private final UserService userService;
 	private final UserMapper userMapper;
 
-	public CommonController(UserService userService, UserMapper userMapper) {
+	public CommonController(UserService userService, UserMapper userMapper,
+							FundingService fundingService) {
 		this.userService = userService;
 		this.userMapper = userMapper;
+		this.fundingService = fundingService;	
 	}
 
 		@GetMapping("/funding_index")
 		public String MainHome(Model model) {
 			
 			return "common/funding_index";
+		}		
+		
+		@GetMapping("/list")
+		public String getFundingList(Model model) {
+			
+			List<Funding> fundingList = fundingService.getFundingList();
+			
+			model.addAttribute("title", "펀딩 관리");
+			model.addAttribute("fundingList", fundingList);
+			
+			return "common/funding/list";
 		}
 		
-		@GetMapping("/funding1")
-		public String nowFunding1(Model model) {
-			
-			return "common/funding1";
-		}
-		
-		@GetMapping("/funding_detail2")
-		public String nowFunding2(Model model) {
-			
-			return "common/funding_detail2";
-		}
-		
-		@GetMapping("/funding_detail3")
-		public String nowFunding3(Model model) {
-			
-			return "common/funding_detail3";
-		}
 		
 		@PostMapping("/register")
 		public String register(User user) {
