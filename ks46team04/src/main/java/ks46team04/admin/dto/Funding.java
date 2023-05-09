@@ -19,9 +19,7 @@ public class Funding {
 	private String fundingUpdateId;
 	private String fundingUpdateDate;
 	private String goodsName;
-
-	private int targetSum;
-	private int currentSum;
+	private int accomplishmentRate;
 	
 	private List<Funding> fundingList;
 }

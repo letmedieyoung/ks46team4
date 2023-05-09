@@ -18,8 +18,7 @@ public class FundingProduct {
     private String fundingUpdateId;
     private String fundingUpdateDate;
     private String goodsName;
-    private int targetSum;
-    private int currentSum;
+    private int achievedAmount;
     
    
 }

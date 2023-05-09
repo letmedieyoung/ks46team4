@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingDetail;
+import ks46team04.admin.dto.FundingCurrentAmount;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.Goods;
-import ks46team04.admin.mapper.FundingDetailMapper;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -25,11 +24,9 @@ public class FundingService {
 	
 	@Autowired
 	private final FundingMapper fundingMapper;
-	private final FundingDetailMapper fundingDetailMapper;
 	
-	public FundingService(FundingMapper fundingMapper, FundingDetailMapper fundingDetailMapper) {
-		this.fundingMapper = fundingMapper;
-		this.fundingDetailMapper = fundingDetailMapper;
+	public FundingService(FundingMapper fundingMapper) {
+		this.fundingMapper = fundingMapper;	
 	}	
 	
 	/**
@@ -129,12 +126,36 @@ public class FundingService {
     }
     /**
 	 * 펀딩 진행상황 - 진행 펀딩 전체 달성률
+	 * @param allAccomplishmentRate
+	 * @return
+	 */	
+    public int allAccomplishmentRate() {
+    	return fundingMapper.allAccomplishmentRate();
+    }
+    /**
+	 * 펀딩 진행상황 - 개별 펀딩 달성률
 	 * @param accomplishmentRate
 	 * @return
 	 */	
-    public int accomplishmentRate() {
+    public String accomplishmentRate() {
     	return fundingMapper.accomplishmentRate();
     }
+    
+    
+	public List<FundingCurrentAmount> getFundingProgressStatus(String searchKey, String searchValue){
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "fundingCode":
+				searchKey = "funding_code";
+				break;
+			default:
+				searchKey = "funding_name";
+				break;
+			}
+		}
+		List<FundingCurrentAmount> fundingProgressStatusList = fundingMapper.getFundingProgressStatus(searchKey, searchValue);
+		return fundingProgressStatusList;
+	}
 	
 
 	
@@ -170,7 +191,7 @@ public class FundingService {
 		fundingMapper.modifyFundingRefund(fundingRefund);
 	}	
 	/**
-	 * 펀딩 수정화면 - 진행상태 불러오기
+	 * 환불내역 수정화면 - 진행상태 불러오기
 	 * @return List<RefundStatus>
 	 */
 	public List<FundingRefund> getRefundStatusList(){
@@ -202,35 +223,5 @@ public class FundingService {
 	}	    
 	
 	
-	
-	//펀딩 진행현황 - 목표 금액 합계 조회
-	//public int getFundingGoalAmountSum() {
-	//       return fundingMapper.getFundingGoalAmountSum();
-	//}
-
-	public void createFunding(Funding funding) {
-    	fundingMapper.registFunding(funding);
-        createFundingDetailFromFunding(funding);
-    }
-	
-	 public FundingDetail getFundingDetailByFundingCode(String fundingCode) {
-	        return fundingDetailMapper.getFundingDetailInfoByCode(fundingCode);
-	 }
-	 
-	// Funding과 FundingDetail 정보를 이용하여 FundingDetail 객체 생성 및 저장
-    public void createFundingDetailFromFunding(Funding funding) {
-        FundingDetail fundingDetail = new FundingDetail();
-        
-        fundingDetail.setFundingCode(funding.getFundingCode());
-        fundingDetail.setFundingName(funding.getFundingName());
-        fundingDetail.setFundingFoundation(funding.getFoundationName());
-        fundingDetail.setFundingGoalAmount(funding.getFundingGoalAmount());
-        fundingDetail.setFundingStartDate(funding.getFundingStartDate());
-        fundingDetail.setFundingEndDate(funding.getFundingEndDate());
-        fundingDetail.setFundingProgress(funding.getFundingProgress());
-        fundingDetailMapper.createFundingDetail(fundingDetail);
-    }
-	
-   
 	
 }

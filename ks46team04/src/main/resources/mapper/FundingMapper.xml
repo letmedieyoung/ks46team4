@@ -13,7 +13,7 @@
 		<result column="funding_end_date"		property="fundingEndDate"/>
 		<result column="funding_progress"		property="fundingProgress"/>
 		<result column="funding_reg_Date"		property="fundingRegDate"/>
-		<result column="funding_update_Date"	property="fundingUpdateDate"/>		
+		<result column="funding_update_Date"	property="fundingUpdateDate"/>	
 	</resultMap>
 	
 	<resultMap type="FundingRefund" id="fundingRefundResultMap">
@@ -96,8 +96,7 @@
 		<set>
 			funding_code = #{fundingCode},		
 			funding_name = #{fundingName},
-			funding_foundation = #{foundationName},
-			goods_name = #{goodsName},		
+			funding_foundation = #{foundationName},					
 			goods_code = #{goodsCode},
 			funding_goal_amount = #{fundingGoalAmount},
 			funding_start_date = #{fundingStartDate},			
@@ -294,12 +293,12 @@
 			pm.pm_name 							AS pmName
 		FROM
 			funding_payment_refund AS fr
-			JOIN
+		JOIN
 			funding_payments AS fp
-				ON fp.funding_payment_code = fr.funding_payment_code
-			JOIN
+			ON fp.funding_payment_code = fr.funding_payment_code
+		JOIN
 			payment_method AS pm
-				ON pm.pm_code = fp.pm_code	
+			ON pm.pm_code = fp.pm_code	
 		<where>
 			<if test="searchList != null">			
 				<foreach collection="searchList" item="item">
@@ -317,7 +316,7 @@
 	<select id="getTargetSum" resultType="Integer">
 		/* 진행 펀딩 총 목표 금액 */
 	    SELECT
-	    	SUM(funding_goal_amount) as targetSum
+	    	SUM(funding_goal_amount) AS targetSum
 	    FROM
 	    	funding_current_amount
 	    WHERE funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
@@ -326,21 +325,54 @@
 	<select id="sumOfCurrentAmount" resultType="Integer">
 		/* 진행 펀딩 현재 모금 합계액 */ 
 	    SELECT
-	    	SUM(funding_current_achieved_amount) as currentSum
+	    	SUM(funding_current_achieved_amount) AS currentSum
 	    FROM
 	    	funding_current_amount
 	    WHERE funding_progress = '진행중' AND funding_goal_amount IS NOT NULL AND funding_goal_amount != ''
 	</select>
 
-	<select id="accomplishmentRate" resultType="Integer">
+	<select id="allAccomplishmentRate" resultType="Integer">
 		/* 진행 펀딩 전체 달성률 */
 		SELECT
-			(SUM(funding_current_achieved_amount) / SUM(funding_goal_amount)) * 100 AS progress_percentage
+			(SUM(funding_current_achieved_amount) / SUM(funding_goal_amount)) * 100 AS allAccomplishmentRate
 		FROM
 			funding_current_amount
 		WHERE funding_progress = '진행중';
-
-		
+	</select>
+	
+	<select id="accomplishmentRate" resultType="String">
+		/* 개별 펀딩 달성률 */ 
+		SELECT			
+			TRUNCATE((SUM(funding_current_achieved_amount) / SUM(funding_goal_amount)) * 100, 0) AS accomplishmentRate
+		FROM
+			funding_current_amount
+		WHERE
+			funding_current_amount_code = #{fundingCurrentAmountCode}
+		GROUP BY
+			funding_current_amount_code;		
+	</select>
+	
+	<select id="getFundingProgressStatus" resultType="FundingCurrentAmount">
+		/* 펀딩 모금 진행현황 조회 */	
+		SELECT		
+			fc.funding_code 					AS fundingCode,
+			ef.funding_name 					AS fundingName,
+			ef.funding_foundation 				AS foundationName,			
+			fc.funding_goal_amount 				AS fundingGoalAmount,
+			fc.funding_current_achieved_amount 	AS currentAchievedAmount
+		FROM
+			funding_current_amount AS fc
+		LEFT JOIN
+			each_funding_info AS ef
+		ON
+			fc.funding_code = ef.funding_code 		 		
+		<where>			
+			<if test="searchKey != null and searchKey != ''">			
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+			fc.funding_progress = '진행중';
+		</where>
+			
 	</select>
 	
 	

@@ -23,4 +23,7 @@ public class FundingProductService {
 		return fundingProductMapper.detailFunding(fundingCode);
 	}
 
+	public FundingProduct FundingCode(String fundingCode) {
+        return fundingProductMapper.fundingCode(fundingCode);
+    }
 }

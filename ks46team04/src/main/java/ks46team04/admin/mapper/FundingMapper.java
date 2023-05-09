@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingCurrentAmount;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.Goods;
@@ -58,6 +59,9 @@ public interface FundingMapper {
 	// 펀딩 진행상황 - 진행 펀딩 총 목표 금액
 	public int getTargetSum();
 	// 펀딩 진행상황 - 진행 펀딩 전체 달성률
-	public int accomplishmentRate();
+	public int allAccomplishmentRate();
+	// 펀딩 진행상황 - 개별 펀딩 달성률
+	public String accomplishmentRate();
+	public List<FundingCurrentAmount> getFundingProgressStatus(String searchKey, String searchValue);
 	
 }

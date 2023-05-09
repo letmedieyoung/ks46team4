@@ -51,21 +51,17 @@
 												<option value="funding_start_date">펀딩시작일</option>									
 												<option value="funding_end_date">펀딩종료일</option>
 											</select>	
-										</div>										
-										<div class="align-items-center search-schedule">
-											<button type="button" id="todayBtn" class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
 										</div>
-										<div class="align-items-center search-schedule">
-											<button type="button" id="monthBtn" class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="align-items-center search-schedule">
-											<button type="button" id="threeMonthBtn" class="btn btn-secondary">
-												<span class="text text-gray-100">3개월</span>
-											</button>
+										<div class="dateBtns">							
+											<div class="align-items-center search-schedule">
+												<button type="button" id="todayBtn" class="agenda btn btn-secondary">오늘</button>
+											</div>
+											<div class="align-items-center search-schedule">
+												<button type="button" id="monthBtn" class="agenda btn btn-secondary">1개월</button>
+											</div>
+											<div class="align-items-center search-schedule">
+												<button type="button" id="threeMonthBtn" class="agenda btn btn-secondary">3개월</button>
+											</div>
 										</div>																			
 										<div class="align-items-center search-schedule">											
 											<input id="startDateInput" name="funding_start_date" class="dateSelect form-control form-control-user-search search-input" type="date"></input>
@@ -117,7 +113,7 @@
 						<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
 							<span class="text">삭제</span>
 						</button>
-						<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+						<button type="submit" id="doneBtn" class="btn btn-secondary btn-icon-split">
 							<span class="text">진행완료</span>
 						</button>
 						<table class="targets fmtable table table-bordered table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
@@ -176,6 +172,11 @@
 	
 	
 	<script th:inline="javascript">
+	
+		
+	/**
+	* 체크박스 전체 선택
+	*/
 	$('#allCheck').click(function () {
 		$('.chk').prop('checked', $(this).prop('checked'));
 	});
@@ -188,6 +189,7 @@
 			$('#allCheck').prop('checked', false);
 		}
 	});
+	
 	/**
 	 * 체크박스 선택 후 deleteBtn 버튼
 	 */

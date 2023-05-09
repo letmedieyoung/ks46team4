@@ -173,3 +173,32 @@ const threeMonthBtn = document.getElementById('threeMonthBtn');
 todayBtn.addEventListener('click', handleClick);
 monthBtn.addEventListener('click', handleClick);
 threeMonthBtn.addEventListener('click', handleClick);
+
+
+
+/**
+*클릭 버튼 컬러 변경
+*/
+const agendaButtons = document.querySelectorAll('.agenda');
+
+function handleClick(event) {
+  console.log(event.target);
+  console.log(event.target.classList);
+
+  const clickedClass = 'btn-success';
+
+  if (event.target.classList.contains(clickedClass)) {
+    event.target.classList.remove(clickedClass);
+  } else {
+    for (let i = 0; i < agendaButtons.length; i++) {
+      agendaButtons[i].classList.remove(clickedClass);
+    }
+    event.target.classList.add(clickedClass);
+  }
+}
+function init() {
+  for (let i = 0; i < agendaButtons.length; i++) {
+    agendaButtons[i].addEventListener('click', handleClick);
+  }
+}
+init();
