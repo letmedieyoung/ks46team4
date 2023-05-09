@@ -6,7 +6,7 @@
  <mapper namespace="ks46team04.admin.mapper.CommonMapper">
  	
  	<select id="getPrimaryKey" parameterType="string" resultType="string">
- 		/* 자동증가 코드 */
+ 		/* PK 자동증가 코드 */
  		SELECT 
 			(
 			  CASE
@@ -21,6 +21,7 @@
  	</select>
  	
  	<select id="getGroupCode" parameterType="String" resultType="String">
+	 	/*그룹 자동증가 코드*/
 	 	SELECT 
 			(
 			  CASE
@@ -31,6 +32,9 @@
 			  ) as newGroupCode
 		FROM
 			${tableName}
-		WHERE `purchase_group_code` LIKE CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_%');
+		WHERE
+			${columnName} LIKE CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_%')
+			and
+			NOT (purchase_history_code = #{PKkey});
  	</select>
  </mapper>

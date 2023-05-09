@@ -48,6 +48,8 @@
 										</div>
 									</td>
 								</tr>
+								
+							
 								<tr>
 									<!-- 상품명은 드롭박스로 고른다. goods_reg_info 테이블에서 상품명을 가져온다 -->
 									<th class="bg-gray-100">
@@ -61,7 +63,7 @@
 											<select class="dropdown btn btn-primary required-form" id="goodsName" name="goodsCode">
 													<option>:: 상품명 ::</option>
 													<th:block th:unless="${goodsList == null}" th:each="l: ${goodsList}">
-														<option th:value="${l.goodsCode}" th:text="${l.goodsName}"></option>
+														<option th:value="${l.goodsCode}" th:with="goodsPriceVal=${l.goodsPrice}" th:text="${l.goodsName}"></option>
 													</th:block>
 											</select>
 										</div>
@@ -77,6 +79,7 @@
 										<span class="required-text"></span>
 									</td>
 								</tr>
+								
 								<tr>
 									<th class="bg-gray-100">
 										<label for="purchaseQuantity">매입 수량</label>
@@ -209,10 +212,12 @@
 			}
 		});
 		
+		
 		$('#purchaseQuantity').on('click', function(){
 			const $purchaseQuantityEle = $('#purchaseQuantity');
 			$purchaseQuantityEle.val(removeComma($purchaseQuantityEle));
 		});
+		
 		
 		//단가*수량 => 총합-------------------------
 		function updateTotal(){
@@ -226,6 +231,15 @@
 			let formattedPrice = totalPurchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 			$('#totalPurchasePrice').val(formattedPrice);
 		} 
+		
+		
+		//select 상품명 옵션을 선택하면 해당 상품의 가격이 단가 폼에 반영-------------------------
+		$('#goodsName').change(function(){
+			let selectPrice = $('#selectPrice').val();
+			console.log(selectPrice);
+			$('#purchasePrice').val(selectPrice);
+		});
+		
 		
 		//submit-------------------------
 		$('#submitBtn').click(function(){

@@ -7,6 +7,6 @@ public interface CommonMapper {
 
 	public String getPrimaryKey(String tableName, String columnName);
 	
-	public String getGroupCode(String tableName, String columnName, String codeName);
+	public String getGroupCode(String tableName, String columnName, String PKkey, String codeName);
 	
 }
