@@ -35,8 +35,30 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<div
-							th:include="~{admin/search/donation_search :: donationPayDetailSearch}"></div>
+						<table class="table table-bordered search-table" id="searchdataTable" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100">통합 검색</th>
+									<td><div
+											th:include="~{admin/search/donation_search :: donationPayDetailSearch}"></div></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">결제일</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<input type="date" class="form-control" id="startDate">
+											</div>
+											~
+											<div class="col-auto">
+												<input type="date" class="form-control" id="endDate">
+											</div>
+											&nbsp;
+											<button type="button" class="btn btn-primary" id="dateBtn">검색</button>
+										</div>
+									</td>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -47,9 +69,9 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+						<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 							<thead>
-								<tr>
+								<tr class="bg-gray-100">
 									<th>코드</th>
 									<th>회원 아이디</th>
 									<th>구독 신청</th>

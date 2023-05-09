@@ -47,9 +47,12 @@ public class DonationController {
 	 * 정기기부 단가 등록
 	*/
 	@PostMapping("/donation_add")
-	public String addDonation(Donation donation) {
-	
-	donationService.addDonation(donation);
+	public String addDonation(Donation donation, HttpSession session) {
+		
+		String donationRegId = (String) session.getAttribute("SID");
+		donation.setDonationRegId(donationRegId);
+		
+		donationService.addDonation(donation);
 	
 	return "redirect:/admin/donation/donation_list";
 	
@@ -67,7 +70,10 @@ public class DonationController {
 	 * 정기기부 단가 수정
 	 */
 	@PostMapping("/donation_modify")
-	public String modifyDonation(Donation donation) {
+	public String modifyDonation(Donation donation, HttpSession session) {
+		
+		String donationUpdateId = (String) session.getAttribute("SID");
+		donation.setDonationUpdateId(donationUpdateId);
 		
 		donationService.modifyDonation(donation);
 		
@@ -114,9 +120,12 @@ public class DonationController {
 	 * 등록된 회원 결제수단 등록
 	 */
 	@PostMapping("/donationPayMethod_add")
-	public String addDonationPayMethod(DonationPayMethod donationPayMethod) {
+	public String addDonationPayMethod(DonationPayMethod donationPayMethod, HttpSession session) {
 	
-	donationService.addDonationPayMethod(donationPayMethod);
+		String donationPayMethodUserId = (String) session.getAttribute("SID");
+		donationPayMethod.setDonationPayMethodUserId(donationPayMethodUserId);
+		
+		donationService.addDonationPayMethod(donationPayMethod);
 	
 	return "redirect:/admin/donation/donationPayMethod_list";
 	
@@ -137,7 +146,10 @@ public class DonationController {
 	 * 등록된 회원 결제수단 수정
 	 */
 	@PostMapping("/donationPayMethod_modify")
-	public String modifyDonationPayMethod(DonationPayMethod donationPayMethod) {
+	public String modifyDonationPayMethod(DonationPayMethod donationPayMethod, HttpSession session) {
+		
+		String donationPayMethodUserId = (String) session.getAttribute("SID");
+		donationPayMethod.setDonationPayMethodUserId(donationPayMethodUserId);
 		
 		donationService.modifyDonationPayMethod(donationPayMethod);
 		
@@ -184,9 +196,12 @@ public class DonationController {
 	 * 정기기부 구독 신청 등록
 	 */
 	@PostMapping("/donationSub_add")
-	public String addDonationSub(DonationSub donationSub) {
+	public String addDonationSub(DonationSub donationSub, HttpSession session) {
+		
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
 	
-	donationService.addDonationSub(donationSub);
+		donationService.addDonationSub(donationSub);
 	
 	return "redirect:/admin/donation/donationSub_list";
 	
@@ -209,9 +224,13 @@ public class DonationController {
 	 * 정기기부 구독 신청 수정
 	 */
 	@PostMapping("/donationSub_modify")
-	public String modifyDonationSub(DonationSub donationSub) {
+	public String modifyDonationSub(DonationSub donationSub, HttpSession session) {
+		
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
 		
 		donationService.modifyDonationSub(donationSub);
+		
 		
 		return "redirect:/admin/donation/donationSub_list";
 	}
@@ -259,8 +278,8 @@ public class DonationController {
 	 */
 	@PostMapping("/donationPayDetail_add")
 	public String addDonationPayDetail(DonationPayDetail donationPayDetail) {
-	
-	donationService.addDonationPayDetail(donationPayDetail);
+
+		donationService.addDonationPayDetail(donationPayDetail);
 	
 	return "redirect:/admin/donation/donationPayDetail_list";
 	
@@ -404,9 +423,13 @@ public class DonationController {
 	 * 정기기부 환불 등록
 	 */
 	@PostMapping("/donationRefund_add")
-	public String addDonationRefund(DonationRefund donationRefund) {
+	public String addDonationRefund(DonationRefund donationRefund, HttpSession session) {
 	
-	donationService.addDonationRefund(donationRefund);
+		String donationRefundRegId = (String) session.getAttribute("SID");
+		donationRefund.setDonationRefundRegId(donationRefundRegId);
+
+		
+		donationService.addDonationRefund(donationRefund);
 	
 	return "redirect:/admin/donation/donationRefund_list";
 	
@@ -427,7 +450,10 @@ public class DonationController {
 	 * 정기기부 환불 수정
 	 */
 	@PostMapping("/donationRefund_modify")
-	public String modifyDonationRefund(DonationRefund donationRefund) {
+	public String modifyDonationRefund(DonationRefund donationRefund, HttpSession session) {
+		
+		String donationRefundUpdateId = (String) session.getAttribute("SID");
+		donationRefund.setDonationRefundUpdateId(donationRefundUpdateId);
 		
 		donationService.modifyDonationRefund(donationRefund);
 		
