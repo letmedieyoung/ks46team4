@@ -7,7 +7,6 @@
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-
 		<!-- Page Heading -->
 
 		<!-- DataTales Example -->
@@ -27,23 +26,24 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>회원 아이디</th>
-									<td><input type="text" id="donationPayMethodUserId"
-										th:value="*{donationPayMethodUserId}" name="donationPayMethodUserId"
-										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
-								</tr>
-								<tr>
-									<th>결제수단 코드</th>
-									<td><input type="text" id="donationPayCode"
-										th:value="*{donationPayCode}" name="donationPayCode"
-										style="width: 400px;" readonly="readonly" /></td>
-								</tr>
+									<th>결제방식 코드</th>
+									<td>
+										<select id="paymentCode" name="paymentCode" style="width: 400px;">
+											<th:block th:unless="${paymentCode == null}"
+												th:each="l : ${paymentCode}">
+												<option th:value="${l.paymentCode}">[[${l.paymentCode}]]</option>
+											</th:block>
+											<th:block th:if="${paymentCode == null}">
+												<option>등록된 결제 방식 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>							
 								<tr>
 									<th>은행명</th>
 									<td><input type="text" id="donationPayMethodBank"
 										th:value="*{donationPayMethodBank}" name="donationPayMethodBank"
-										style="width: 400px;"
-										placeholder="결제 은행명을 입력해주세요." /></td>
+										style="width: 400px;" placeholder="결제 은행명을 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>계좌번호</th>
@@ -58,16 +58,9 @@
 										style="width: 400px;" readonly="readonly" /></td>
 								</tr>
 								<tr>
-									<th>수정일자</th>
-									<td><input type="text" id="donationPayMethodUpdateDate"
-										th:value="*{donationPayMethodUpdateDate}" name="donationPayMethodUpdateDate"
-										style="width: 400px;" readonly="readonly" /></td>
-								</tr>
-								<tr>
 									<td colspan="2"> <div style="display: flex; justify-content: center;">
 										<button type="submit" class="btn btn-primary" id="modifyBtn">수정</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationPayMethod_list'">입력취소</button></div>
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
 									</td>
 								</tr>
 							</tbody>
@@ -99,5 +92,10 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationPayMethod_list';
+		});
+	</script>
 </th:block>
 </html>

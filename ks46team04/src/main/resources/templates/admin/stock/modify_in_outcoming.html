@@ -1,51 +1,176 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/default}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">modify_incoming_stock</h1>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
 
-	</div>
-	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">상품 입/출고 수정</h6>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="modifyInOutcomingForm" th:action="@{/admin/stock/modify_stock}" method="post">
+							<table th:object="${inOutcomingInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr class="hidden">
+											<th class="bg-gray-100">
+												<label for="inOutcomingCode">상품입출고코드</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search middle-input" id="inOutcomingCode" name="inOutcomingCode" th:value="*{inOutcomingCode}"/>
+												</div>
+											</td>
+										</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingType">입/출고분류</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+										     	&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutcomingType(this.value)">
+													<option value="">:: 입/출고 ::</option>
+													<option th:selected="*{inOutcomingType} == 'incoming'">입고</option>
+													<option th:selected="*{inOutcomingType} == 'outcoming'">출고</option>
+													<option th:selected="*{inOutcomingType} == 'exchange'">교환</option>
+													<option th:selected="*{inOutcomingType} == 'disposal'">폐기</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="text" class="form-control form-control-user-search short-input"
+													id="inOutcomingType" name="inOutcomingType" th:value="*{inOutcomingType}" placeholder="입/출고분류를 선택해주세요." />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" placeholder="상품명을 입력해주세요."/>
+												&nbsp;
+												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">상품명 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingDate">입/출고일자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search" id="inOutcomingDate" name="inOutcomingDate" th:value="*{inOutcomingDate}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingQuantity">입/출고수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control form-control-user-search" id="inOutcomingQuantity" name="inOutcomingQuantity" th:value="*{inOutcomingQuantity}" placeholder="입/출고 수량을 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsPrice">출고 상세정보</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
+												&nbsp;
+												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">재단명 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">수정하기</span>
+								</button>
+								<button type="reset" id="returnBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">돌아가기</span>
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /.container-fluid -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
 </th:block>
+
 <th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		/*
+		* 입/출고 분류 select box value 값 -> input value로 넣기
+		*/
+		function inOutcomingType(category) {
+			const selectInput = document.querySelector('#inOutcomingType');
+			selectInput.value = category;
+		};
+		
+		/**
+		 * 재고조사 현황 select box selected 값 -> input text로 넣기
+		 */
+		var selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		
+	</script>
 </th:block>
+
 </html>

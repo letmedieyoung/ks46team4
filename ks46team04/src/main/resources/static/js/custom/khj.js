@@ -58,7 +58,7 @@ function doSearchFunding(){
 				const searchList = data;
 				for(const searchInfo of searchList){
 					html += '<tr>';
-					html += `	<td><input type="checkbox" name="chk" class="chk" onclick="chkClicked()" ></td>`;
+					html += `	<td><input type="radio" name="chk" class="chk"></td>`;
 					html += '	<td><a href="/funding/modifyFunding?fundingCode=' + searchInfo.fundingCode + '">' + searchInfo.fundingCode + '</a></td>';
 					html += `	<td>${searchInfo.fundingName}</td>`;
 					html += `	<td>${searchInfo.fundingFoundation}</td>`;
@@ -82,76 +82,23 @@ function doSearchFunding(){
 }
    	
   	
-/* 체크박스 전체 선택 클릭 이벤트 */
-function allChecked(target){
-    //전체 체크박스 버튼
-    const checkbox = document.getElementById('allCheckBox');
-    //전체 체크박스 버튼 체크 여부
-    const is_checked = checkbox.checked;
-    //전체 체크박스 제외한 모든 체크박스
-    if(is_checked){
-    	//체크박스 전체 체크
-        chkAllChecked()
-    } else {
-	     //체크박스 전체 해제
-	    chkAllUnChecked()
-    }
-}
-    
-      
-//자식 체크박스 클릭 이벤트
-function chkClicked(){
-
-    //체크박스 전체개수
-    const allCount = document.querySelectorAll(".chk").length;
-
-    //체크된 체크박스 전체개수
-    const query = 'input[name="chk"]:checked'
-    const selectedElements = document.querySelectorAll(query)
-    const selectedElementsCnt = selectedElements.length;
-
-    //체크박스 전체개수와 체크된 체크박스 전체개수가 같으면 전체 체크박스 체크
-    if(allCount == selectedElementsCnt){
-         document.getElementById('allCheckBox').checked = true;
-    }
-
-    //같지않으면 전체 체크박스 해제
-    else{
-        document.getElementById('allCheckBox').checked = false;
-    }
-}
+/**
+ * 체크박스 전체 선택
+ */
+$('#allCheck').click(function () {
+	$('.chk').prop('checked', $(this).prop('checked'));
+});
+$('.chk').click(function () {
+	let length = $('.chk').length;
+	let checkedLength = $('.chk:checked').length;
+	if (length == checkedLength) {
+		$('#allCheck').prop('checked', true);
+	} else {
+		$('#allCheck').prop('checked', false);
+	}
+});
 
 
-//체크박스 전체 체크
-function chkAllChecked(){
-    document.querySelectorAll(".chk").forEach(function(v, i) {
-        v.checked = true;
-    });
-}
-
-//체크박스 전체 체크 해제
-function chkAllUnChecked(){
-    document.querySelectorAll(".chk").forEach(function(v, i) {
-        v.checked = false;
-    });
-}
-
-
-/* 펀딩 삭제 */
-function fDeleteBtn() {
-  // 체크된 체크박스 가져오기
-  var checkboxes = document.getElementsByClassName("chk");
-  var checkedRows = [];
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) {
-      checkedRows.push(checkboxes[i].parentNode.parentNode);
-    }
-  }
-  // 체크된 행 삭제하기
-  for (var i = 0; i < checkedRows.length; i++) {
-    checkedRows[i].parentNode.removeChild(checkedRows[i]);
-  }
-}
 
 
 /* 펀딩 등록 */		
@@ -210,11 +157,11 @@ function handleClick(event) {
 }
 
 function setActiveBtn(btn) {
-  const activeBtn = document.querySelector('.btn.active');
-  if (activeBtn) {
-    activeBtn.classList.remove('active');
-  }
-  btn.classList.add('active');
+	const activeBtn = document.querySelector('.btn.active');
+	if (activeBtn) {
+		activeBtn.classList.remove('active');
+	}
+	btn.classList.add('active');
 }
 
 addDateListeners();
@@ -222,9 +169,36 @@ addDateListeners();
 const todayBtn = document.getElementById('todayBtn');
 const monthBtn = document.getElementById('monthBtn');
 const threeMonthBtn = document.getElementById('threeMonthBtn');
-const wholePeriodBtn = document.getElementById('wholePeriodBtn');
 
 todayBtn.addEventListener('click', handleClick);
 monthBtn.addEventListener('click', handleClick);
 threeMonthBtn.addEventListener('click', handleClick);
-wholePeriodBtn.addEventListener('click', handleClick);
+
+
+
+/**
+*클릭 버튼 컬러 변경
+*/
+const agendaButtons = document.querySelectorAll('.agenda');
+
+function handleClick(event) {
+  console.log(event.target);
+  console.log(event.target.classList);
+
+  const clickedClass = 'btn-success';
+
+  if (event.target.classList.contains(clickedClass)) {
+    event.target.classList.remove(clickedClass);
+  } else {
+    for (let i = 0; i < agendaButtons.length; i++) {
+      agendaButtons[i].classList.remove(clickedClass);
+    }
+    event.target.classList.add(clickedClass);
+  }
+}
+function init() {
+  for (let i = 0; i < agendaButtons.length; i++) {
+    agendaButtons[i].addEventListener('click', handleClick);
+  }
+}
+init();

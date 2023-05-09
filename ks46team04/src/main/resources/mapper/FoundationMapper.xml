@@ -13,7 +13,7 @@
 		<result column="foundation_reg_id"				property="foundationRegId"/>
 		<result column="foundation_reg_date"			property="foundationRegDate"/>
 		<result column="foundation_update_id"			property="foundationUpdId"/>
-		<result column="foundation_update_date"			property="foundationUpdDate"/>
+		<result column="foundation_is_delete"			property="foundationIsDelete"/>
 	</resultMap>
 	
 	<resultMap type="FoundationRequest" id="foundationRequestResultMap">
@@ -45,22 +45,23 @@
 		/* 재단 요청사항 수정 */
 		UPDATE foundation_request
 		<set>
-		/*
-			<if test="foundationName != null and foundationName !=''">
-				foundation_name = #{foundationName}
+			<if test="contentCategory != null and contentCategory !=''">
+				content_category = #{contentCategory}
 			</if>
-			<if test="foundationManager != null and foundationManager !=''">
-				, foundation_manager = #{foundationManager}
+			<if test="requestGoodsName != null and requestGoodsName !=''">
+				, request_goods_name = #{requestGoodsName}
 			</if>
-			<if test="foundationPhone != null and foundationPhone !=''">
-				, foundation_phone = #{foundationPhone}
+			<if test="initialGoodsAmount != null and initialGoodsAmount !=''">
+				, initial_goods_amount = #{initialGoodsAmount}
 			</if>
-			<if test="foundationAddr != null and foundationAddr !=''">
-				, foundation_addr = #{foundationAddr}
+			<if test="finalGoodsAmount != null and finalGoodsAmount !=''">
+				, final_goods_amount = #{finalGoodsAmount}
 			</if>
-			, foundation_update_id = '세션아이디'
-			, foundation_update_date = NOW()
-		*/
+			<if test="deliveryRequestDate != null and deliveryRequestDate !=''">
+				, delivery_request_date = #{deliveryRequestDate}
+			</if>
+			, request_update_id = #{requestUpdId}
+			, request_update_date = NOW()
 		</set>
 		WHERE
 			foundation_request_code = #{foundationRequestCode};
@@ -68,22 +69,24 @@
 	
 	<select id="getFoundationRequestInfoByCode" resultMap="foundationRequestResultMap">
 		/* 특정 재단 요청사항 조회 */
-		/*
 		SELECT
-			foundation_code
+			foundation_request_code
+			, foundation_code
 			, foundation_name
-			, foundation_manager
-			, foundation_phone
-			, foundation_addr
-			, foundation_reg_id
-			, foundation_reg_date
-			, foundation_update_id
-			, foundation_update_date
-		FROM 
-			foundation_list
+			, content_category
+			, request_goods_name
+			, initial_goods_amount
+			, final_goods_amount
+			, delivery_request_date
+			, request_reg_id
+			, request_reg_date
+			, request_update_id
+			, request_update_date
+			, request_progress_status
+		FROM
+			foundation_request
 		WHERE
 			foundation_request_code = #{foundationRequestCode};
-			*/
 	</select>
 	
 	<insert id="addFoundationRequest" parameterType="FoundationRequest">
@@ -92,15 +95,14 @@
 			(foundation_request_code, foundation_code, foundation_name, content_category, request_goods_name, initial_goods_amount,
 				delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
 		VALUES 
-			('자동증가함수쓸거임', #{foundationCode}, #{foundationName}, #{contentCategory}, #{requestGoodsName}, #{finalGoodsAmount}, #{deliveryRequestDate}, 
-				'세션아이디', NOW(), #{requestProgressStatus});
+			(sf_new_foundation_request_code(), sf_return_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName}, #{initialGoodsAmount}, #{deliveryRequestDate}, 
+				#{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
 	<select id="getFoundationRequestList" resultMap="foundationRequestResultMap">
 		/* 재단 요청사항 조회 */
 		SELECT 
-			ROW_NUMBER() OVER(ORDER BY foundation_request_code DESC) AS listNo
-			, foundation_request_code
+			foundation_request_code
 			, foundation_code
 			, foundation_name
 			, content_category
@@ -119,14 +121,14 @@
 			CAST(SUBSTRING_INDEX(foundation_request_code, 'foundation_request', -1) AS UNSIGNED) DESC;
 	</select>
 	
-	<delete id="removeFoundation" parameterType="String">
-		/* 재단 삭제 */
-		DELETE 
-		FROM 
-			foundation_list
-		WHERE 
+	<update id="removeFoundation" parameterType="Foundation">
+		/* 재단 삭제 - 삭제 여부 컬럼 수정 */
+		UPDATE foundation_list
+		SET
+			foundation_is_delete = '1'
+		WHERE
 			foundation_code = #{foundationCode};
-	</delete>
+	</update>
 	
 	<update id="modifyFoundation" parameterType="Foundation">
 		/* 재단 수정 */
@@ -144,7 +146,7 @@
 			<if test="foundationAddr != null and foundationAddr !=''">
 				, foundation_addr = #{foundationAddr}
 			</if>
-			, foundation_update_id = '세션아이디'
+			, foundation_update_id = #{foundationUpdId}
 			, foundation_update_date = NOW()
 		</set>
 		WHERE
@@ -175,15 +177,14 @@
 			(foundation_code, foundation_name, foundation_manager, foundation_phone, foundation_addr,
 				 foundation_reg_id, foundation_reg_date)
 		VALUES 
-			('자동증가함수쓸거임', #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationAddr}, 
-				'세션아이디', NOW());
+			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationAddr}, 
+				#{foundationRegId}, NOW());
 	</insert>
 	
 	<select id="getFoundationList" resultMap="foundationResultMap">
 		/* 재단 목록 조회 */
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY foundation_code DESC) AS listNo
-			, foundation_code
+			foundation_code
 			, foundation_name
 			, foundation_manager
 			, foundation_phone
@@ -194,6 +195,8 @@
 			, foundation_update_date
 		FROM 
 			foundation_list
+		WHERE
+			foundation_is_delete = '0'
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(foundation_code, 'foundation', -1) AS UNSIGNED) DESC;
 	</select>

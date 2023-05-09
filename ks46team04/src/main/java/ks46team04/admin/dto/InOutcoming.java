@@ -1,9 +1,9 @@
 package ks46team04.admin.dto;
 
 public class InOutcoming {
-	
 	private String inOutcomingCode;
 	private String goodsCode;
+	private String goodsLotNumber;
 	private String inOutcomingQuantity;
 	private String inOutcomingType;
 	private String inOutcomingDate;
@@ -11,6 +11,30 @@ public class InOutcoming {
 	private String inOutcomingRegDate;
 	private String inOutcomingUpdId;
 	private String inOutcomingUpdDate;
+	
+	private OutcomingDetail OutcomingDetailInfo;
+	private Goods goodsInfo;
+	private Foundation foundationInfo;
+	
+	
+	public OutcomingDetail getOutcomingDetailInfo() {
+		return OutcomingDetailInfo;
+	}
+	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
+		OutcomingDetailInfo = outcomingDetailInfo;
+	}
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
+	public Foundation getFoundationInfo() {
+		return foundationInfo;
+	}
+	public void setFoundationInfo(Foundation foundationInfo) {
+		this.foundationInfo = foundationInfo;
+	}
 	public String getInOutcomingCode() {
 		return inOutcomingCode;
 	}
@@ -22,6 +46,13 @@ public class InOutcoming {
 	}
 	public void setGoodsCode(String goodsCode) {
 		this.goodsCode = goodsCode;
+	}
+	
+	public String getGoodsLotNumber() {
+		return goodsLotNumber;
+	}
+	public void setGoodsLotNumber(String goodsLotNumber) {
+		this.goodsLotNumber = goodsLotNumber;
 	}
 	public String getInOutcomingQuantity() {
 		return inOutcomingQuantity;
@@ -67,9 +98,11 @@ public class InOutcoming {
 	}
 	@Override
 	public String toString() {
-		return "InOutcoming [inOutcomingCode=" + inOutcomingCode + ", goodsCode=" + goodsCode + ", inOutcomingQuantity="
-				+ inOutcomingQuantity + ", inOutcomingType=" + inOutcomingType + ", inOutcomingDate=" + inOutcomingDate
-				+ ", inOutcomingRegId=" + inOutcomingRegId + ", inOutcomingRegDate=" + inOutcomingRegDate
-				+ ", inOutcomingUpdId=" + inOutcomingUpdId + ", inOutcomingUpdDate=" + inOutcomingUpdDate + "]";
+		return "InOutcoming [inOutcomingCode=" + inOutcomingCode + ", goodsCode=" + goodsCode + ", goodsLotNumber="
+				+ goodsLotNumber + ", inOutcomingQuantity=" + inOutcomingQuantity + ", inOutcomingType="
+				+ inOutcomingType + ", inOutcomingDate=" + inOutcomingDate + ", inOutcomingRegId=" + inOutcomingRegId
+				+ ", inOutcomingRegDate=" + inOutcomingRegDate + ", inOutcomingUpdId=" + inOutcomingUpdId
+				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", OutcomingDetailInfo=" + OutcomingDetailInfo
+				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + "]";
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.FoundationRequest;
 import ks46team04.admin.service.FoundationService;
@@ -51,11 +52,15 @@ public class FoundationController {
 	 * @return
 	 */
 	@PostMapping("/modify_foundation_request")
-	public String modifyFoundationRequest(FoundationRequest foundationRequest) {
+	public String modifyFoundationRequest(FoundationRequest foundationRequest, HttpSession session) {
 		
+		String requestUpdId = (String) session.getAttribute("SID");
+		log.info("requestUpdId: {}", requestUpdId);
+		
+		foundationRequest.setRequestUpdId(requestUpdId);
 		log.info("foundationRequest: {}", foundationRequest);
 		
-		foundationService.modifyFoundationRequest(foundationRequest);;
+		foundationService.modifyFoundationRequest(foundationRequest);
 		
 		return "redirect:/admin/foundation/foundation_request_list";
 	}
@@ -67,7 +72,7 @@ public class FoundationController {
 	 */
 	@GetMapping("/modify_foundation_request")
 	public String modifyFoundationRequest(Model model, @RequestParam(name="foundationRequestCode") String foundationRequestCode){
-		
+
 		FoundationRequest foundationRequestInfo = foundationService.getFoundationRequestInfoByCode(foundationRequestCode);
 		log.info("foundationRequestInfo: {}", foundationRequestInfo);
 		
@@ -83,9 +88,14 @@ public class FoundationController {
 	 * @return
 	 */
 	@PostMapping("/add_foundation_request")
-	public String addFoundationRequest(FoundationRequest foundationRequest) {
+	public String addFoundationRequest(FoundationRequest foundationRequest, HttpSession session) {
 		
+		String requestRegId = (String) session.getAttribute("SID");
+	    log.info("requestRegId: {}", requestRegId);
+	    
+	    foundationRequest.setRequestRegId(requestRegId);
 		log.info("foundationRequest: {}", foundationRequest);
+		
 		foundationService.addFoundationRequest(foundationRequest);
 		
 		return "redirect:/admin/foundation/foundation_request_list";
@@ -145,8 +155,12 @@ public class FoundationController {
 	 * @return
 	 */
 	@PostMapping("/modify_foundation")
-	public String modifyFoundation(Foundation foundation) {
+	public String modifyFoundation(Foundation foundation, HttpSession session) {
 		
+		String foundationUpdId = (String) session.getAttribute("SID");
+	    log.info("foundationUpdId: {}", foundationUpdId);
+	    
+	    foundation.setFoundationUpdId(foundationUpdId);
 		log.info("foundation: {}", foundation);
 		
 		foundationService.modifyFoundation(foundation);;
@@ -163,7 +177,6 @@ public class FoundationController {
 	public String modifyFoundation(Model model, @RequestParam(name="foundationCode") String foundationCode) {
 		
 		Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
-		
 		log.info("foundationInfo: {}", foundationInfo);
 		
 		model.addAttribute("title", "재단 수정");
@@ -178,9 +191,14 @@ public class FoundationController {
 	 * @return
 	 */
 	@PostMapping("/add_foundation")
-	public String addFoundation(Foundation foundation) {
+	public String addFoundation(Foundation foundation, HttpSession session) {
 		
+		String foundationRegId = (String) session.getAttribute("SID");
+	    log.info("foundationRegId: {}", foundationRegId);
+	    
+	    foundation.setFoundationRegId(foundationRegId);
 		log.info("foundation: {}", foundation);
+		
 		foundationService.addFoundation(foundation);
 		
 		return "redirect:/admin/foundation/foundation_list";

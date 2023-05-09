@@ -46,10 +46,12 @@ public class UserMainController {
 			 ,@RequestParam(name="keyword", required=false) String keyword
 			 ,@RequestParam(name="searchValue", required=false) String searchValue) {
 		
-		List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword, searchValue);
-		log.info("getDonationPayMethod: {}", refundList);
-		model.addAttribute("title", "마이페이지결제내역");
-		model.addAttribute("refundList", refundList);
+		/*
+		 * List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword,
+		 * searchValue); log.info("getDonationPayMethod: {}", refundList);
+		 * model.addAttribute("title", "마이페이지결제내역"); model.addAttribute("refundList",
+		 * refundList);
+		 */
 		
 		return "/user/myPage_myPayment";
 	}
@@ -58,9 +60,10 @@ public class UserMainController {
 	
 	
 	@GetMapping("/myPage_myAutoPm")
-	public String getDonationPayMethod(Model model) {
+	public String getDonationPayMethod(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+			, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod();
+		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod(searchKey, searchValue);
 		log.info("getDonationPayMethod: {}", getDonationPayMethod);
 		model.addAttribute("title", "마이페이지결제수단");
 		model.addAttribute("getDonationPayMethod", getDonationPayMethod);
@@ -98,8 +101,9 @@ public class UserMainController {
 	}
 	
 	@GetMapping("/myPage_myDonation")
-	public String mypageDonation(Model model) {
-		List<DonationSub> getDonationSub = donationService.getDonationSub();
+	public String mypageDonation(Model model,  @RequestParam(name="searchKey", required = false) String searchKey
+			, @RequestParam(name="searchValue", required = false) String searchValue) {
+		List<DonationSub> getDonationSub = donationService.getDonationSub(searchKey, searchValue);
 		
 		model.addAttribute("title", "마이페이지정기후원내역");
 		model.addAttribute("getDonationSub", getDonationSub);

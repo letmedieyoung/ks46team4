@@ -13,44 +13,33 @@
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
         	 <div class="card-header py-3">
-             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 단가 등록</h5>
+             	<h5 class="m-0 font-weight-bold text-gray-800">콘텐츠 등록</h5>
         	 </div>
          <div class="card-body">
 				<div class="table-responsive">
-					<form action="/admin/donation/donation_add" method="POST"
+					<form th:action="@{/admin/donation/donation_add}" method="POST"
 						id="addDonationForm" name="addDonationForm">
-						<table class="table table-bordered freg" id="addDonation"
-							width="100%" cellspacing="0">
+						<table class="table table-bordered freg" id="addDonation" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th>콘텐츠명</th>
-									<td><input type="text" id="donationName"
-										name="donationName" style="width: 400px;"
-										placeholder="콘텐츠명을 입력해주세요." /></td>
+									<td><input type="text" id="donationName" name="donationName"
+										style="width: 400px;" placeholder="콘텐츠명을 입력해주세요." /></td>
 								</tr>
 								<tr>
 									<th>콘텐츠 금액</th>
-									<td><input type="number" id="donationPrice"
-										name="donationPrice" style="width: 400px;"
-										placeholder="콘텐츠 금액을 입력해주세요." /> <span>원</span></td>
+									<td><input type="number" id="donationPrice" name="donationPrice" 
+										style="width: 400px;" placeholder="콘텐츠 금액을 입력해주세요." /><span>원</span></td>
 								</tr>
 								<tr>
 									<th>콘텐츠 상세내용</th>
-									<td>
-										<div>
-											<input type="text" id="donationDescription"
-												name="donationDescription"
-												style="width: 400px; height: 200px;"
-												placeholder="콘텐츠 상세설명을 입력해주세요." />
-										</div>
-									</td>
-								</tr>
+									<td><input type="text" id="donationDescription" name="donationDescription"
+										style="width: 400px; height: 200px;" placeholder="콘텐츠 상세설명을 입력해주세요." /></td>
+								</tr>				
 								<tr>
 									<td colspan="3"> <div style="display: flex; justify-content: center;">
-										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button> &nbsp; 
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donation_list'">입력취소</button> </div>
+										<button type="button" class="btn btn-primary" id="addBtn">등록</button>  &nbsp; 
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>
@@ -60,7 +49,7 @@
 			</div>
     	</div>
 	</div>
-	
+
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
@@ -81,5 +70,26 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$(document).on('click','#addBtn', function(){
+			const addDonationForm = $('#addDonationForm');
+			const addDonationFormInputs = addDonationForm.find('input');
+			let isSubmit = true;
+			$(addDonationFormInputs).each((idx, item) => {
+				let validationCheck = $(item).parents('tr').children().eq(0).text();
+				let validationValue = $(item).val();
+				if(typeof validationValue == 'undefined' || validationValue == null || validationValue == ''){
+					alert(`${validationCheck} 필수 입력 항목입니다.`);
+					$(item).focus();
+					isSubmit = false;
+					return false;
+				}
+			});
+			if(isSubmit) addDonationForm.submit();
+		})
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donation_list';
+		});
+	</script>
 </th:block>
 </html>

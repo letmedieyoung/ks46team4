@@ -15,11 +15,17 @@
 		<result column="final_stock_amount"				property="finalStockAmount"/>
 		<result column="unusual_stock_amount"			property="unusualStockAmount"/>
 		<result column="unusual_stock_check"			property="unusualStockCheck"/>
+		<association property="goodsInfo" javaType="Goods">
+			<id		column="goods_code"				property="goodsCode"/>
+			<result column="goods_name"				property="goodsName"/>
+			<result column="goods_company"			property="goodsCompany"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="InOutcoming" id="inOutcomingResultMap">
 		<id		column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
 		<result column="goods_code"									property="goodsCode"/>
+		<result column="goods_lot_number"							property="goodsLotNumber"/>
 		<result column="incoming_outcoming_quantity"				property="inOutcomingQuantity"/>
 		<result column="incoming_outcoming_type"					property="inOutcomingType"/>
 		<result column="incoming_outcoming_date"					property="inOutcomingDate"/>
@@ -27,6 +33,20 @@
 		<result column="incoming_outcoming_reg_date"				property="inOutcomingRegDate"/>
 		<result column="incoming_outcoming_update_id"				property="inOutcomingUpdId"/>
 		<result column="incoming_outcoming_update_date"				property="inOutcomingUpdDate"/>
+		<association property="goodsInfo" javaType="Goods">
+			<id		column="goods_code"				property="goodsCode"/>
+			<result column="goods_name"				property="goodsName"/>
+			<result column="goods_company"			property="goodsCompany"/>
+		</association>
+		<association property="OutcomingDetailInfo" javaType="OutcomingDetail">
+			<id		column="outcoming_detail_code"						property="outcomingDetailCode"/>
+			<result column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
+			<result column="foundation_code"							property="foundationCode"/>
+		</association>
+		<association property="foundationInfo" javaType="Foundation">
+			<id		column="foundation_code"				property="foundationCode"/>
+			<result column="foundation_name"				property="foundationName"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="OutcomingDetail" id="outcomingDetailResultMap">
@@ -42,7 +62,7 @@
 		<result column="outcoming_update_id"						property="outcomingDetailUpdId"/>
 		<result column="outcoming_update_date"						property="outcomingDetailUpdDate"/>
 	</resultMap>
-		
+	
 	<resultMap type="UnusualStock" id="unusualStockResultMap">
 		<id		column="unusual_stock_detail_code"					property="unusualStockCode"/>
 		<result column="goods_code"									property="goodsCode"/>
@@ -54,6 +74,10 @@
 		<result column="unusual_stock_reg_date"						property="unusualStockRegDate"/>
 		<result column="unusual_stock_update_id"					property="unusualStockUpdId"/>
 		<result column="unusual_stock_update_date"					property="unusualStockUpdDate"/>
+		<association property="goodsInfo" javaType="Goods">
+			<id		column="goods_code"				property="goodsCode"/>
+			<result column="goods_name"				property="goodsName"/>
+		</association>
 	</resultMap>	
 	
 	
@@ -63,69 +87,238 @@
 	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
 		/* 비정상 재고 조회 */
 		SELECT
-			unusual_stock_detail_code
-			, goods_code
-			, goods_stock_code
-			, unusual_stock_quantity
-			, unusual_stock_date
-			, unusual_stock_reason
-			, unusual_stock_reg_id
-			, unusual_stock_reg_date
-			, unusual_stock_update_id
-			, unusual_stock_update_date
+			u.unusual_stock_detail_code
+			, u.goods_code
+			, i.goods_name
+			, u.goods_stock_code
+			, u.unusual_stock_quantity
+			, u.unusual_stock_date
+			, u.unusual_stock_reason
+			, u.unusual_stock_reg_id
+			, u.unusual_stock_reg_date
+			, u.unusual_stock_update_id
+			, u.unusual_stock_update_date
 		FROM
-			unusual_stock_detail;
+			unusual_stock_detail AS u
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			u.goods_code = i.goods_code;
 	</select>
 	
 	<select id="getOutcomingDetailList" resultMap="outcomingDetailResultMap">
 		/* 상품 출고 상세정보 조회 */
 		SELECT
-			outcoming_detail_code
-			, incoming_outcoming_history_code
-			, outcoming_goods
-			, outcoming_quantity
-			, outcoming_date
-			, outcoming_id
-			, foundation_code
-			, outcoming_reg_id
-			, outcoming_reg_date
-			, outcoming_update_id
-			, outcoming_update_date
+			o.outcoming_detail_code
+			, o.incoming_outcoming_history_code
+			, o.outcoming_goods
+			, i.goods_name
+			, o.outcoming_quantity
+			, o.outcoming_date
+			, o.outcoming_id
+			, o.foundation_code
+			, f.foundation_name
+			, o.outcoming_reg_id
+			, o.outcoming_reg_date
+			, o.outcoming_update_id
+			, o.outcoming_update_date
 		FROM 
-			outcoming_detail;
+			outcoming_detail as o
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			o.outcoming_goods = i.goods_code
+		INNER JOIN 
+			foundation_request AS f
+		ON
+			o.foundation_code = f.foundation_code;
 	</select>
+	
+	<delete id="removeInOutcoming" parameterType="String">
+		/* 상품 입출고 삭제 */
+		DELETE 
+		FROM 
+			incoming_outcoming_history
+		WHERE 
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</delete>
+	
+	<update id="modifyInOutcoming" parameterType="InOutcoming">
+		/* 상품 입출고 수정 */
+		UPDATE incoming_outcoming_history
+		<set>
+			<if test="inOutcomingQuantity != null and inOutcomingQuantity !=''">
+				incoming_outcoming_quantity = #{inOutcomingQuantity}
+			</if>
+			<if test="inOutcomingType != null and inOutcomingType !=''">
+				, incoming_outcoming_type = #{inOutcomingType}
+			</if>
+			<if test="inOutcomingDate != null and inOutcomingDate !=''">
+				, incoming_outcoming_date = #{inOutcomingDate}
+			</if>
+			, incoming_outcoming_update_id = #{inOutcomingUpdId}
+			, incoming_outcoming_update_date = NOW()
+		</set>
+		WHERE
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</update>
+	
+	<select id="getOutcomingDetailInfoByCode" resultMap="outcomingDetailResultMap">
+		/* 특정 상품 출고 상세정보 조회 */
+		SELECT
+			outcoming_detail_code
+			, foundation_code
+		FROM 
+			outcoming_detail
+		WHERE
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</select>
+	
+	<select id="getInOutcomingInfoByCode" resultMap="inOutcomingResultMap">
+		/* 특정 상품 입출고 조회 */
+		SELECT 
+			h.incoming_outcoming_history_code
+			, h.goods_code
+			, i.goods_name
+			, h.goods_lot_number
+			, i.goods_company
+			, h.incoming_outcoming_quantity
+			, h.incoming_outcoming_type
+			, h.incoming_outcoming_date
+			, f.foundation_name
+			, h.incoming_outcoming_reg_id
+			, h.incoming_outcoming_reg_date
+			, h.incoming_outcoming_update_id
+			, h.incoming_outcoming_update_date
+		FROM
+			incoming_outcoming_history as h
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			h.goods_code = i.goods_code
+		LEFT JOIN
+			outcoming_detail AS o
+		ON 
+			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
+		LEFT JOIN
+			foundation_request AS f
+		ON
+			o.foundation_code = f.foundation_code
+		WHERE
+			h.incoming_outcoming_history_code = #{inOutcomingCode};
+	</select>
+	
+	<insert id="addInOutcoming" parameterType="InOutcoming" >
+		/* 상품 입출고 등록 */
+		INSERT INTO incoming_outcoming_history
+			(incoming_outcoming_history_code, goods_code, goods_lot_number, incoming_outcoming_quantity,
+			 incoming_outcoming_type, incoming_outcoming_date, incoming_outcoming_reg_id, incoming_outcoming_reg_date)
+		VALUES
+			(sf_new_incoming_outcoming_code(), sf_return_goods_code(#{goodsName}), #{goodsLotNumber}, #{inOutcomingQuantity}, #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW())
+	</insert>
 	
 	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
 		/* 상품 입출고 조회 */
 		SELECT 
-			incoming_outcoming_history_code
-			, goods_code
-			, incoming_outcoming_quantity
-			, incoming_outcoming_type
-			, incoming_outcoming_date
-			, incoming_outcoming_reg_id
-			, incoming_outcoming_reg_date
-			, incoming_outcoming_update_id
-			, incoming_outcoming_update_date
+			h.incoming_outcoming_history_code
+			, h.goods_code
+			, i.goods_name
+			, h.goods_lot_number
+			, i.goods_company
+			, h.incoming_outcoming_quantity
+			, h.incoming_outcoming_type
+			, h.incoming_outcoming_date
+			, f.foundation_name
+			, h.incoming_outcoming_reg_id
+			, h.incoming_outcoming_reg_date
+			, h.incoming_outcoming_update_id
+			, h.incoming_outcoming_update_date
 		FROM
-			incoming_outcoming_history;
+			incoming_outcoming_history as h
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			h.goods_code = i.goods_code
+		LEFT JOIN
+			outcoming_detail AS o
+		ON 
+			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
+		LEFT JOIN
+			foundation_list AS f
+		ON
+			o.foundation_code = f.foundation_code;
+	</select>
+	
+	<update id="modifyStock" parameterType="Stock">
+		/* 상품 재고 수정 - 재고조사, 비정상재고 등록 */
+		UPDATE goods_stock
+		<set>
+			<if test="stocktakingCheck != null and stocktakingCheck !=''">
+				stocktaking_check = #{stocktakingCheck}
+			</if>
+			<if test="stocktakingDate != null and stocktakingDate !=''">
+				, stocktaking_date = #{stocktakingDate}
+			</if>
+			<if test="unusualStockCheck != null and unusualStockCheck !=''">
+				, unusual_stock_check = #{unusualStockCheck}
+			</if>
+			<if test="unusualStockAmount != null and unusualStockAmount !=''">
+				, unusual_stock_amount = #{unusualStockAmount}
+			</if>
+			<if test="finalStockAmount != null and finalStockAmount !=''">
+				, final_stock_amount = #{finalStockAmount}
+			</if>
+		</set>
+		WHERE
+			goods_stock_code = #{goodsStockCode};
+	</update>
+	
+	<select id="getStockInfoByCode" resultMap="stockResultMap">
+		/* 특정 상품 재고 조회 */
+		SELECT
+			s.goods_stock_code
+			, i.goods_name
+			, i.goods_company
+			, s.goods_code
+			, s.goods_lot_number
+			, s.current_stock_amount
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.goods_expiry_date
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
+		FROM
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code
+		WHERE
+			goods_stock_code = #{goodsStockCode};
 	</select>
 	
 	<select id="getStockList" resultMap="stockResultMap">
 		/* 상품 재고 조회 */
 		SELECT
-			goods_stock_code
-			, goods_code
-			, goods_lot_number
-			, current_stock_amount
-			, stocktaking_check
-			, stocktaking_date
-			, goods_expiry_date
-			, final_stock_amount
-			, unusual_stock_amount
-			, unusual_stock_check
+			s.goods_stock_code
+			, s.goods_code
+			, i.goods_name
+			, s.goods_lot_number
+			, i.goods_company
+			, s.goods_expiry_date
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.current_stock_amount
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
 		FROM
-			goods_stock;
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code;
 	</select>
 	
 </mapper>

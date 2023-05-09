@@ -57,25 +57,33 @@ public class UserService {
 	}
 	
 	
-	public void removeUser(String userId) {
+
+	public void removeUser(String userId, String userPw) {
 		User userInfo = userMapper.getUserInfoById(userId);
 		if(userInfo != null) {
-			String userLevel = userInfo.getUserLevel();
-			switch (userLevel) {
-			case "2":
-				
-				// 회원 탈퇴
+			String checkPw = userInfo.getUserPw();
+			if (checkPw.equals(userPw)) {
 				userMapper.removeUserById(userId);
-				
 			}
 		}
 		
 	}
 	
-	public void modifyUser(User user) {
-		userMapper.modifyUser(user);
-	}
+	public boolean pwCheck(String userId, String userPw) {
+        User user = userMapper.getUserInfoById(userId);
+        if (user != null) {
+            String checkPw = user.getUserPw();
+            if (checkPw.equals(userPw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	
+	public boolean modifyUser(User user) {
+	    return userMapper.modifyUser(user) > 0;
+	} 
 	
 	public User getUserInfoById(String userId) {
 		User userInfo = userMapper.getUserInfoById(userId);
@@ -83,21 +91,20 @@ public class UserService {
 		return userInfo;
 	}
 	
-public int addUser(User user) {	
-	int result = userMapper.addUser(user);
-		
-	return result;
-}
+	public int addUser(User user) {	
+		int result = userMapper.addUser(user);
+			
+		return result;
+	}
 	
-public List<UserDrop> getUserDropList(){
-		
+	public List<UserDrop> getUserDropList(){	
 		List<UserDrop> userDropList = userMapper.getUserDropList();
 		
 		return userDropList;
 	}
 	
 	
-public List<UserSleep> getUserSleepList(){
+	public List<UserSleep> getUserSleepList(){
 		
 		List<UserSleep> userSleepList = userMapper.getUserSleepList();
 		
@@ -105,23 +112,20 @@ public List<UserSleep> getUserSleepList(){
 	}
 	
 	
-public List<LoginLog> getLoginLogList(){
-		
+	public List<LoginLog> getLoginLogList(){		
 		List<LoginLog> loginLogList = userMapper.getLoginLogList();
 		
 		return loginLogList;
 	}	
 	
-public List<ActivityStatus> getActivityStatusList(){
-		
+	public List<ActivityStatus> getActivityStatusList(){	
 		List<ActivityStatus> activityStatusList = userMapper.getActivityStatusList();
 		
 		return activityStatusList;
 	}
 	
 
-	public List<UserLevel> getUserLevelList(){
-		
+	public List<UserLevel> getUserLevelList(){	
 		List<UserLevel> userLevelList = userMapper.getUserLevelList();
 		
 		return userLevelList;

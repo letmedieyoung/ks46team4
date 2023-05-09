@@ -1,10 +1,17 @@
 @charset "UTF-8";
 
+#current_amount_select {
+	width: 120px;
+	
+}
 
+select:focus {
+	outline: none;
+}
 
-table a{
-	text-decoration: underline;
-	color: #858796;
+#goodsCode{
+	width: 140px;
+	text-align: center;
 }
 
 label {
@@ -16,8 +23,15 @@ ul {
 	padding-left: 0;
 }
 
+table a{
+	text-decoration: underline;
+	color: #858796;
+}
+
+
 th {
 	vertical-align: middle;
+	text-align: center;
 }
 
 .list-table {
@@ -59,10 +73,6 @@ th {
 	margin-right: 5px;
 }
 
-.manageBtn {
-	margin-bottom: 15px;
-	border: 1px solid #999;
-}
 
 .manage-s-table label {
 	margin-left: 8px;

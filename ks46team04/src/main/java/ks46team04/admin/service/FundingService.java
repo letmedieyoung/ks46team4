@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingFoundation;
+import ks46team04.admin.dto.FundingCurrentAmount;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
-import ks46team04.admin.dto.FundingProgress;
-import ks46team04.admin.dto.GoodsCode;
+import ks46team04.admin.dto.Goods;
 import ks46team04.admin.mapper.FundingMapper;
 
 @Service
@@ -23,12 +23,21 @@ public class FundingService {
 	private static final Logger log = LoggerFactory.getLogger(FundingService.class);
 	
 	@Autowired
-	private final FundingMapper fundingMapper;	
+	private final FundingMapper fundingMapper;
 	
 	public FundingService(FundingMapper fundingMapper) {
-		this.fundingMapper = fundingMapper;		
+		this.fundingMapper = fundingMapper;	
 	}	
 	
+	/**
+	 * 펀딩 삭제
+	 * @param valueArr
+	 */
+	public void deleteFunding(List<String> valueArr) {
+		for(int i=0; i<valueArr.size(); i++) {
+			fundingMapper.deleteFunding(valueArr.get(i));
+		}
+	  }
 	
 	/**
 	 * 펀딩 수정 처리
@@ -39,26 +48,34 @@ public class FundingService {
 	}
 	/**
 	 * 펀딩 수정화면 - 진행상태 불러오기
-	 * @return List<FudingProgress>
+	 * @return List<Fuding>
 	 */
-	public List<FundingProgress> getFundingProgressList(){
-		List<FundingProgress> fundingProgressList = fundingMapper.getFundingProgressList();
+	public List<Funding> getFundingProgressList(){
+		List<Funding> fundingProgressList = fundingMapper.getFundingProgressList();
 		return fundingProgressList;
 	}	
 	/**
-	 * 펀딩 수정화면 - 상품코드 불러오기
-	 * @return List<FudingFoundation>
+	 * 펀딩 수정화면 - 상품명 불러오기
+	 * @return List<GoodsName>
 	 */
-	public List<GoodsCode> getGoodsCodeList(){
-		List<GoodsCode> goodsCodeList = fundingMapper.getGoodsCodeList();
+	public List<Goods> getGoodsNameList(){
+		List<Goods> goodsNameList = fundingMapper.getGoodsNameList();
+		return goodsNameList;
+	}
+	/**
+	 * 펀딩 수정화면 - 상품코드 불러오기
+	 * @return List<GoodsName>
+	 */
+	public List<Goods> getGoodsCodeList(){
+		List<Goods> goodsCodeList = fundingMapper.getGoodsCodeList();
 		return goodsCodeList;
 	}	
 	/**
 	 * 펀딩 수정화면 - 재단명 불러오기
-	 * @return List<FudingFoundation>
+	 * @return List<Foundation>
 	 */
-	public List<FundingFoundation> getFoundationNameList(){
-		List<FundingFoundation> foundationNameList = fundingMapper.getFoundationNameList();
+	public List<Foundation> getFoundationNameList(){
+		List<Foundation> foundationNameList = fundingMapper.getFoundationNameList();
 		return foundationNameList;
 	}	
 	/**
@@ -72,23 +89,77 @@ public class FundingService {
 		return fundingInfo;
 	}
 	
-	//펀딩 목록 조회	
-	 public List<Funding> getFundingList(){        
-		 return fundingMapper.getFundingList(null);
-	 }	
-	
-	//펀딩 정보 삭제
-	public void deleteFunding(Funding funding) {
-		fundingMapper.deleteFunding(funding);
-	}
+	/**
+	 * 펀딩 전체 목록 조회
+	 * @param fundingCode
+	 * @return
+	 */	
+	public List<Funding> getFundingList(){        
+		return fundingMapper.getFundingList(null);
+	}		
 
-	//펀딩 신규 등록
+	/**
+	 * 신규 펀딩 등록
+	 * @param funding
+	 * @return
+	 */
 	public int registFunding(Funding funding) {
 		int result = fundingMapper.registFunding(funding);
 		return result;
 	}
 	
-		
+	/**
+	 * 펀딩 진행상황 - 진행 펀딩 현재 모금 합계액
+	 * @param currentSum
+	 * @return
+	 */	
+    public int currentSum() {
+    	return fundingMapper.sumOfCurrentAmount();
+    }
+	/**
+	 * 펀딩 진행상황 - 진행 펀딩 총 목표 금액
+	 * @param targetSum
+	 * @return
+	 */	
+    public int getTargetAmount() {
+    	return fundingMapper.getTargetSum();
+    }
+    /**
+	 * 펀딩 진행상황 - 진행 펀딩 전체 달성률
+	 * @param allAccomplishmentRate
+	 * @return
+	 */	
+    public int allAccomplishmentRate() {
+    	return fundingMapper.allAccomplishmentRate();
+    }
+    /**
+	 * 펀딩 진행상황 - 개별 펀딩 달성률
+	 * @param accomplishmentRate
+	 * @return
+	 */	
+    public String accomplishmentRate() {
+    	return fundingMapper.accomplishmentRate();
+    }
+    
+    
+	public List<FundingCurrentAmount> getFundingProgressStatus(String searchKey, String searchValue){
+		if(searchKey != null) {
+			switch (searchKey) {
+			case "fundingCode":
+				searchKey = "funding_code";
+				break;
+			default:
+				searchKey = "funding_name";
+				break;
+			}
+		}
+		List<FundingCurrentAmount> fundingProgressStatusList = fundingMapper.getFundingProgressStatus(searchKey, searchValue);
+		return fundingProgressStatusList;
+	}
+	
+
+	
+	
 	/**
 	 * 펀딩 결제내역 상세 정보
 	 * @param fundingPay
@@ -118,7 +189,15 @@ public class FundingService {
 	 */
 	public void modifyFundingRefund(FundingRefund fundingRefund) {
 		fundingMapper.modifyFundingRefund(fundingRefund);
-	}		
+	}	
+	/**
+	 * 환불내역 수정화면 - 진행상태 불러오기
+	 * @return List<RefundStatus>
+	 */
+	public List<FundingRefund> getRefundStatusList(){
+		List<FundingRefund> refundStatusList = fundingMapper.getRefundStatusList();
+		return refundStatusList;
+	}	
 	/**
 	 * 특정 펀딩 환불내역 조회
 	 * @param fundingRefundCode
@@ -129,10 +208,20 @@ public class FundingService {
 		log.info("fundingRefundInfo: {}", fundingRefundCode);
 		return fundingRefundInfo;
 	}
-	//펀딩 환불내역 조회
-	public List<FundingRefund> getFundingRefundList(String keyword, String searchValue){
-		List<FundingRefund> refundList = fundingMapper.getRefundList(keyword, searchValue);
-		//log.info("fundingRefundList_Service: {}", refundList);
-		return refundList;
+	/**
+	 * 버튼으로 환불 처리
+	 * @param refundArr
+	 */
+	public void updateFundingRefundStatus(String fundingRefundCode, String refundStatus) {
+	    fundingMapper.updateFundingRefundStatus(fundingRefundCode, refundStatus);
 	}
+	
+	
+	// 펀딩 환불내역 조회 서비스 (검색 기능 추가)
+	public List<FundingRefund> getRefundList() {
+		return fundingMapper.getRefundList(null);
+	}	    
+	
+	
+	
 }

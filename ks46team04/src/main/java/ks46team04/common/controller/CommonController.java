@@ -1,5 +1,6 @@
 package ks46team04.common.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,14 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import ks46team04.admin.controller.UserController;
+import ks46team04.admin.dto.ActivityStatus;
+import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.User;
+import ks46team04.admin.dto.UserLevel;
 import ks46team04.admin.mapper.UserMapper;
+import ks46team04.admin.service.FundingService;
 import ks46team04.admin.service.UserService;
 
 @Controller
@@ -27,43 +32,64 @@ public class CommonController {
 	
 	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
+	private final FundingService fundingService;
 	private final UserService userService;
 	private final UserMapper userMapper;
 
-	public CommonController(UserService userService, UserMapper userMapper) {
+	public CommonController(UserService userService, UserMapper userMapper,
+							FundingService fundingService) {
 		this.userService = userService;
 		this.userMapper = userMapper;
+		this.fundingService = fundingService;	
 	}
 
 		@GetMapping("/funding_index")
 		public String MainHome(Model model) {
 			
 			return "common/funding_index";
+		}		
+		
+		@GetMapping("/list")
+		public String getFundingList(Model model) {
+			
+			List<Funding> fundingList = fundingService.getFundingList();
+			
+			model.addAttribute("title", "펀딩 관리");
+			model.addAttribute("fundingList", fundingList);
+			
+			return "common/funding/list";
 		}
 		
-		@GetMapping("/funding_detail")
-		public String nowFunding1(Model model) {
-			
-			return "common/funding_detail";
+		
+		@PostMapping("/register")
+		public String register(User user) {
+			log.info("화면에서 전달받은 데이터 : {}", user);
+			userService.addUser(user);
+			return "redirect:/";
 		}
 		
-		@GetMapping("/funding_detail2")
-		public String nowFunding2(Model model) {
-			
-			return "common/funding_detail2";
-		}
-		
-		@GetMapping("/funding_detail3")
-		public String nowFunding3(Model model) {
-			
-			return "common/funding_detail3";
+		@PostMapping("/idCheck")
+		@ResponseBody
+		public boolean idCheck(@RequestParam(name = "userId") String userId) {
+			boolean checked = true;
+			// 아이디 중복체크
+			checked = userMapper.idCheck(userId); // 중복된 값이 없고 사용가능하면 true
+
+			return checked;
 		}
 		
 		@GetMapping("/register")
 		public String register(Model model) {
+			List<UserLevel> userLevelList = userService.getUserLevelList();
+			List<ActivityStatus> activityStatusList = userService.getActivityStatusList();
+			
+			model.addAttribute("title", "Pilling Good - 회원 가입");
+			model.addAttribute("userLevelList", userLevelList);
+			model.addAttribute("activityStatusList", activityStatusList);
 			
 			return "common/register";
 		}
+		
 		
 		@GetMapping("/logout")
 	    public String logout(HttpSession session
@@ -75,13 +101,15 @@ public class CommonController {
 	            response.addCookie(cookie);
 	        }
 	        session.invalidate();
-	        return "redirect:/common/login";
+	        return "redirect:/";
+	        //return "redirect:/common/login";
 	    }
 		
 		
 		@PostMapping("/login")
 		public String login(@RequestParam(name = "userId") String userId
-				  			,@RequestParam(name = "userPw") String userPw
+							,@RequestParam(name = "userPw") String userPw
+				  			,@RequestParam(name = "autoLogin", defaultValue = "false") boolean autoLogin
 				  			,HttpSession session
 				  			,RedirectAttributes reAttr
 				  			,HttpServletResponse response) {
@@ -97,11 +125,13 @@ public class CommonController {
 				session.setAttribute("SLEVEL", 	userLevel);
 				session.setAttribute("SNAME", 	userName);
 				
+				// 체크박스가 선택된 경우 쿠키 생성
+		        if (autoLogin) {
 				Cookie cookie = new Cookie("autoLogin", "true");
 	            cookie.setPath("/");
-	            cookie.setMaxAge(60*60*24); //60초 * 60분 * 24시간 하루
+	            cookie.setMaxAge(60*60*24*7); //60초 * 60분 * 24시간 * 7일
 	            response.addCookie(cookie);
-
+		    }
 				redirect = "redirect:/";
 			}else {
 				// 로그인 실패한 경우
@@ -112,6 +142,7 @@ public class CommonController {
 			
 			return redirect;
 		}
+		
 		
 		@GetMapping("/login")
 		public String login( Model model

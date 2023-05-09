@@ -1,8 +1,6 @@
 package ks46team04.admin.dto;
 
 public class Goods {
-
-	private String listNo;
 	private String goodsCode;
 	private String goodsName;
 	private String goodsCompany;
@@ -12,13 +10,8 @@ public class Goods {
 	private String goodsRegDate;
 	private String goodsUpdId;
 	private String goodsUpdDate;
+	private String goodsIsDelete;
 	
-	public String getListNo() {
-		return listNo;
-	}
-	public void setListNo(String listNo) {
-		this.listNo = listNo;
-	}
 	public String getGoodsCode() {
 		return goodsCode;
 	}
@@ -73,12 +66,19 @@ public class Goods {
 	public void setGoodsUpdDate(String goodsUpdDate) {
 		this.goodsUpdDate = goodsUpdDate;
 	}
+	
+	public String getGoodsIsDelete() {
+		return goodsIsDelete;
+	}
+	public void setGoodsIsDelete(String goodsIsDelete) {
+		this.goodsIsDelete = goodsIsDelete;
+	}
 	@Override
 	public String toString() {
-		return "Goods [listNo=" + listNo + ", goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany="
-				+ goodsCompany + ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId="
-				+ goodsRegId + ", goodsRegDate=" + goodsRegDate + ", goodsUpdId=" + goodsUpdId + ", goodsUpdDate="
-				+ goodsUpdDate + "]";
+		return "Goods [goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany=" + goodsCompany
+				+ ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId=" + goodsRegId
+				+ ", goodsRegDate=" + goodsRegDate + ", goodsUpdId=" + goodsUpdId + ", goodsUpdDate=" + goodsUpdDate
+				+ ", goodsIsDelete=" + goodsIsDelete + "]";
 	}
 	
 }

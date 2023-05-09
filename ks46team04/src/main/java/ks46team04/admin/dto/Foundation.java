@@ -1,7 +1,6 @@
 package ks46team04.admin.dto;
 
 public class Foundation {
-	private String listNo;
 	private String foundationCode;
 	private String foundationName;
 	private String foundationManager;
@@ -11,13 +10,8 @@ public class Foundation {
 	private String foundationRegDate;
 	private String foundationUpdId;
 	private String foundationUpdDate;
+	private String foundationIsDelete;
 	
-	public String getListNo() {
-		return listNo;
-	}
-	public void setListNo(String listNo) {
-		this.listNo = listNo;
-	}
 	public String getFoundationCode() {
 		return foundationCode;
 	}
@@ -72,12 +66,19 @@ public class Foundation {
 	public void setFoundationUpdDate(String foundationUpdDate) {
 		this.foundationUpdDate = foundationUpdDate;
 	}
+	
+	public String getFoundationIsDelete() {
+		return foundationIsDelete;
+	}
+	public void setFoundationIsDelete(String foundationIsDelete) {
+		this.foundationIsDelete = foundationIsDelete;
+	}
 	@Override
 	public String toString() {
-		return "Foundation [listNo=" + listNo + ", foundationCode=" + foundationCode + ", foundationName="
-				+ foundationName + ", foundationManager=" + foundationManager + ", foundationPhone=" + foundationPhone
+		return "Foundation [foundationCode=" + foundationCode + ", foundationName=" + foundationName
+				+ ", foundationManager=" + foundationManager + ", foundationPhone=" + foundationPhone
 				+ ", foundationAddr=" + foundationAddr + ", foundationRegId=" + foundationRegId + ", foundationRegDate="
 				+ foundationRegDate + ", foundationUpdId=" + foundationUpdId + ", foundationUpdDate="
-				+ foundationUpdDate + "]";
+				+ foundationUpdDate + ", foundationIsDelete=" + foundationIsDelete + "]";
 	}
 }

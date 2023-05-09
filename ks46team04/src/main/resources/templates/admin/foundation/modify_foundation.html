@@ -34,80 +34,101 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-					<form id="modifyGoodsForm" th:action="@{/admin/foundation/modify_foundation}" method="post">
-						<table th:object="${foundationInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
-							<tbody>
-								<tr class="hidden">
+						<form id="modifyFoundationForm" th:action="@{/admin/foundation/modify_foundation}" method="post">
+							<table th:object="${foundationInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr class="hidden">
+											<th class="bg-gray-100">
+												<label for="foundationCode">재단코드</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search middle-input" id="foundationCode" name="foundationCode" th:value="*{foundationCode}"/>
+												</div>
+											</td>
+										</tr>
+									<tr>
 										<th class="bg-gray-100">
-											<label for="foundationCode">상품코드</label>
+											<label for="foundationName">재단명</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationCode" name="foundationCode" th:value="*{foundationCode}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
+												&nbsp;
+												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">중복확인</span>
+												</button>
 											</div>
 										</td>
 									</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="foundationCode">재단명</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
-											&nbsp;
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">중복확인</span>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="foundationManager">재단 담당자</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control" id="foundationManager" name="foundationManager" th:value="*{foundationManager}" placeholder="담당자를 입력해주세요."/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="foundationPhone">담당자 연락처</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control" maxlength="13" th:value="*{foundationPhone}" placeholder="010-0000-0000">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="foundationAddr">주소</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="foundationAddr" name="foundationAddr" th:value="*{foundationAddr}" placeholder="주소를 검색해주세요."/>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">주소 검색</span>
-											</button>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div align="center">
-							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-								<span class="text">등록하기</span>
-							</button>
-							<button type="reset" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">입력취소</span>
-							</button>
-						</div>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationManager">재단 담당자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control" id="foundationManager" name="foundationManager" th:value="*{foundationManager}" placeholder="담당자를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationPhone">담당자 연락처</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control" maxlength="13" id="foundationPhone" name="foundationPhone" th:value="*{foundationPhone}" placeholder="010-0000-0000">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationAddr">주소</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search long-input" id="foundationAddr" name="foundationAddr" th:value="*{foundationAddr}" placeholder="주소를 검색해주세요."/>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<button type="button" id="addrSearchBtn" class="btn btn-primary btn-icon-split">
+													<span class="text">주소 검색</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationRegDate">등록일자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="foundationRegDate" name="foundationRegDate" th:value="*{foundationRegDate}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationUpdDate">수정일자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="foundationUpdDate" name="foundationUpdDate" th:value="*{foundationUpdDate}" placeholder="수정 전" readonly/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">수정하기</span>
+								</button>
+								<button type="button" id="returnBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">돌아가기</span>
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>

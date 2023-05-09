@@ -4,26 +4,26 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks46team04.admin.mapper.UserMapper">
 
-<resultMap type="User" id="userResultMap">
-		<id column="user_id" property="userId" />
-		<result column="user_level" property="userLevel" />
-		<result column="user_pw" property="userPw" />
-		<result column="user_name" property="userName" />
-		<result column="user_birth" property="userBirth" />
-		<result column="user_phone" property="userPhone" />
-		<result column="user_email_agree" property="userEmailAgree" />
-		<result column="user_email" property="userEmail" />
-		<result column="user_addr" property="userAddr" />
-		<result column="user_join_date" property="userJoinDate" />
-		<result column="login_log_code" property="loginLogCode" />
-		<result column="log_date_calcul" property="logDateCalcul" />
-		<result column="user_update_date" property="userUpdateDate" />
-		<result column="activity_status_standard_code" property="activityStatusStandardCode" />
-</resultMap>
+	<resultMap type="User" id="userResultMap">
+			<id column="user_id" property="userId" />
+			<result column="user_level" property="userLevel" />
+			<result column="user_pw" property="userPw" />
+			<result column="user_name" property="userName" />
+			<result column="user_birth" property="userBirth" />
+			<result column="user_phone" property="userPhone" />
+			<result column="user_email_agree" property="userEmailAgree" />
+			<result column="user_email" property="userEmail" />
+			<result column="user_addr" property="userAddr" />
+			<result column="user_join_date" property="userJoinDate" />
+			<result column="login_log_code" property="loginLogCode" />
+			<result column="log_date_calcul" property="logDateCalcul" />
+			<result column="user_update_date" property="userUpdateDate" />
+			<result column="activity_status_standard_code" property="activityStatusStandardCode" />
+	</resultMap>
 
 
 
-<select id="getUserDropList" resultType="userDrop">
+	<select id="getUserDropList" resultType="userDrop">
 		/* 탈퇴 회원 목록 조회 */
 		SELECT
 			 user_id				AS userId
@@ -33,7 +33,7 @@
 			user_drop;
 	</select>
 	
-<select id="getUserSleepList" resultType="userSleep">
+	<select id="getUserSleepList" resultType="userSleep">
 		/* 휴면 회원 목록 조회 */
 		SELECT
 			 user_id			AS userId
@@ -53,7 +53,7 @@
 			user_sleep;
 	</select>
 
-<select id="getLoginLogList" resultType="LoginLog">
+	<select id="getLoginLogList" resultType="LoginLog">
 		/* 회원 로그인 정보 조회 */
 		SELECT
 			 login_log_code	AS loginLogCode
@@ -66,7 +66,7 @@
 	</select>
 
 
-<select id="getActivityStatusList" resultType="ActivityStatus">
+	<select id="getActivityStatusList" resultType="ActivityStatus">
 		/* 회원 활동 상태 기준 조회 */
 		SELECT
 			 activity_status_standard_code	AS activityStatusStandardCode
@@ -80,7 +80,7 @@
 			activity_status_standard;
 	</select>
 
-<delete id="removeUserById" parameterType="String">
+	<delete id="removeUserById" parameterType="String">
 		/* 회원 탈퇴 */
 		DELETE
 		FROM
@@ -99,9 +99,6 @@
 			<if test="userPw != null and userPw != ''">
 				user_pw = #{userPw},
 			</if>
-			<if test="userName != null and userName != ''">
-				user_name = #{userName},
-			</if>
 			<if test="userBirth != null and userBirth != ''">
 				user_birth = #{userBirth},
 			</if>
@@ -117,9 +114,10 @@
 			<if test="userAddr != null and userAddr != ''">
 				user_addr = #{userAddr},
 			</if>
+			user_update_date = now()
 		</trim>
 		WHERE 
-			user_id = #{userId};
+			user_id = #{userId} AND user_name = #{userName};
 	</update>
 	
 	<select id="getUserDetailList" parameterType="String" resultMap="userResultMap">
@@ -145,7 +143,7 @@
 			u.user_id = #{userId};
 	</select>
 
-	<select id="getUserInfoById" parameterType="String" resultMap="userResultMap">
+	<select id="getUserInfoById" parameterType="String" resultType="User">
 		/* 특정회원 조회 */
 		SELECT
 		 	u.user_id				AS userId
@@ -161,7 +159,7 @@
 			,u.login_log_code		AS loginLogCode
 			,u.log_date_calcul		AS logDateCalcul
 			,u.user_update_date		AS userUpdateDate
-			,u.activity_status_standard_code		AS activityStatusStandardCode
+			,u.activity_status_standard_code	AS activityStatusStandardCode
 		FROM
 			user_info AS u
 		WHERE 
@@ -176,6 +174,17 @@
 		(#{userId}, #{userLevel}, #{userPw}, #{userName}, #{userBirth}, #{userPhone}, #{userEmailAgree},
 		 #{userEmail}, #{userAddr}, NOW(), 'status_active');		
 	</insert>
+	
+	<select id="pwCheck" parameterType="String" resultType="boolean">
+		/* 비밀번호 확인 */
+		SELECT
+			COUNT(*) > 0
+		FROM
+			user_info as u
+		WHERE 
+			u.user_id = #{userId} AND u.user_pw = #{userPw};
+	</select>
+	
 
 	<select id="idCheck" parameterType="String" resultType="boolean">
 		/* 아이디 중복체크 */

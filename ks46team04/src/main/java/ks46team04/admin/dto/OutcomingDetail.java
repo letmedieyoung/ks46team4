@@ -1,7 +1,6 @@
 package ks46team04.admin.dto;
 
 public class OutcomingDetail {
-	
 	private String outcomingDetailCode;
 	private String inOutcomingCode;
 	private String outcomingGoods;
@@ -13,6 +12,7 @@ public class OutcomingDetail {
 	private String outcomingDetailRegDate;
 	private String outcomingDetailUpdId;
 	private String outcomingDetailUpdDate;
+	
 	public String getOutcomingDetailCode() {
 		return outcomingDetailCode;
 	}

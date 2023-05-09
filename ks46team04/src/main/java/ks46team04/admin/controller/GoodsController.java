@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
@@ -33,19 +34,19 @@ public class GoodsController {
 	}
 	
 	/**
-	 * 상품 삭제
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/remove_goods")
-	@ResponseBody
-	public List<String> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		goodsService.removeGoods(valueArr);
-		
-		return valueArr;
-	}
+     * 상품 삭제
+     * @param model
+     * @return
+     */
+    @PostMapping("/remove_goods")
+    @ResponseBody
+    public List<String> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
+
+        log.info("valueArr: {}", valueArr);
+        goodsService.removeGoods(valueArr);
+
+        return valueArr;
+    }
 	
 	/**
 	 * 상품수정 @PostMapping
@@ -53,10 +54,14 @@ public class GoodsController {
 	 * @return
 	 */
 	@PostMapping("/modify_goods")
-	public String modifyGoods(Goods goods) {
+	public String modifyGoods(Goods goods, HttpSession session) {
 		
-		log.info("goods: {}", goods);
+		String goodsUpdId = (String) session.getAttribute("SID");
+	    log.info("goodsUpdId: {}", goodsUpdId);
 		
+	    goods.setGoodsUpdId(goodsUpdId);
+	    log.info("goodsInfo: {}", goods);
+	    
 		goodsService.modifyGoods(goods);
 		
 		return "redirect:/admin/goods/goods_list";
@@ -65,15 +70,16 @@ public class GoodsController {
 	/**
 	 * 상품 수정 @GetMapping
 	 * @param model
+	 * @param goodsCode
 	 * @return
 	 */
 	@GetMapping("/modify_goods")
 	public String modifyGoods(Model model, @RequestParam(name="goodsCode") String goodsCode) {
-		
+	    
 		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
-
 		log.info("goodsInfo: {}", goodsInfo);
+		
+		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 수정");
@@ -104,14 +110,19 @@ public class GoodsController {
 	 * @return
 	 */
 	@PostMapping("/add_goods")
-	public String addGoods(Goods goods) {
+	public String addGoods(Goods goods, HttpSession session) {
 		
-		log.info("goods: {}", goods);
-		goodsService.addGoods(goods);
-		
-		return "redirect:/admin/goods/goods_list";
+		String goodsRegId = (String) session.getAttribute("SID");
+	    log.info("goodsRegId: {}", goodsRegId);
+
+	    goods.setGoodsRegId(goodsRegId); // 등록자 아이디 필드에 goodsRegId 설정
+	    log.info("goods: {}", goods);
+	    
+	    goodsService.addGoods(goods);
+
+	    return "redirect:/admin/goods/goods_list";
 	}
-	
+
 	/**
 	 * 상품 등록 @GetMapping
 	 * @param model

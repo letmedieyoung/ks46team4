@@ -2,60 +2,117 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
-	
+
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
 <!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- Custom styles for this page -->
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
 
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- Custom styles for this page -->
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
 
 </head>
 <th:block layout:fragment="customJs">
 	<script th:src="@{/js/jquery-3.6.4.js}"></script>
 
-		<script>
-		$('#submitBtn').click(function(){
-			const userPwEle = $('#userPw');
-			let userPw =	userPwEle.val();
-			if(typeof userPw == 'undefined' || userPw == null || userPw == ''){
-				alert('회원비밀번호를 입력해주세요');
-				userPwEle.focus();
-				return false;
-			}
-			$('#modifyUserForm').submit();
+	<script>
+		$('#modifysubmitBtn').click(
+				function() {
+					const userPwEle = $('#modifyuserPw');
+					let userPw = userPwEle.val();
+					if (typeof userPw == 'undefined' || userPw == null
+							|| userPw == '') {
+						alert('회원비밀번호를 입력해주세요');
+						userPwEle.focus();
+						return false;
+					}
+					
+					const userBirthEle = $('#modifyuserBirth');
+					const userBirth = userBirthEle.val();
+					if (typeof userBirth == 'undefined' || userBirth == null || userBirth == '') {
+						alert('회원생년월일을 입력해주세요');
+						userBirthEle.focus();
+						return false;
+					}
+
+					const userPhoneEle = $('#modifyuserPhone');
+					const userPhone = userPhoneEle.val();
+					if (typeof userPhone == 'undefined' || userPhone == null || userPhone == '') {
+						alert('회원연락처를 입력해주세요');
+						userPhoneEle.focus();
+						return false;
+					}
+
+					const userEmailEle = $('#modifyuserEmail');
+					const userEmail = userEmailEle.val();
+					if (typeof userEmail == 'undefined' || userEmail == null || userEmail == '') {
+						alert('회원이메일을 입력해주세요');
+						userEmailEle.focus();
+						return false;
+					}
+					
+					 // 주소 필드의 값을 체크하여, 값이 없으면 null로 설정
+				    const userAddrEle = $('#modifyuserAddr');
+				    const userAddr = userAddrEle.val();
+				    if (typeof userAddr == 'undefined' || userAddr == null || userAddr == '') {
+				        userAddrEle.val(null);
+				    }
+				    
+				    // Ajax 요청 보내기
+				    $.ajax({
+				        type: 'POST',
+				        url: `/modifyUser?userId=${userInfo.userId}`, // 수정 처리를 담당하는 URL
+				        data: $('#modifyUserForm').serialize(), // 폼 데이터 전송
+				        success: function(result) {
+				            // 서버에서 전송한 응답을 처리하는 코드 작성
+				            if (result.success) {
+				                alert('회원 정보가 수정되었습니다.');
+				            } else {
+				                alert('회원 정보 수정에 실패하였습니다.');
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            console.error(error);
+				            alert('회원 정보 수정 중 오류가 발생하였습니다.');
+				        }
+				    });
+				});
+
+
+		$('#modifyresetBtn').click(function() {
+			$('#modifyUserForm')[0].reset(); // 폼 필드 초기화
+			//location.href = '/user/userList';
+			//history.go(-1);
 		});
-			$('#resetBtn').click(function() {
-				location.href = '/user/userList';
-				//history.go(-1);
-			});
-		</script>
-		</th:block>
-		<th:block layout:fragment="customContents">
-	
+	</script>
+</th:block>
+<th:block layout:fragment="customContents">
+
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
 		<!-- Page Heading -->
 		<h1 class="h3 mb-4 text-gray-800">회원 정보 수정 관리</h1>
-			<p></p>
+		<p></p>
 </th:block>
 
 <th:block layout:fragment="customContents">
 
-		<div class="card shadow mb-4">
-			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">회원 정보 수정</h6>
-			</div>
-	<form id="modifyUserForm" th:action="@{/admin/user/modifyUser}" method="post">
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">회원 정보 수정</h6>
+		</div>
+		<form id="modifyUserForm" th:action="@{/admin/user/modifyUser}"
+			method="post">
 			<div class="card-body">
 				<div class="table-responsive">
 
@@ -65,102 +122,104 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100"><label for="userId">아이디</label></th>
-								<td><input
-									type="text"
-									class="form-control form-control-user-search search-input-gr"
-									id="userId" th:value="${userId}" name="userId"
-									 readonly="readonly" /></td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userLevel">등급</label>
-								</th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="userLevel" th:value="${userLevel}" name="userLevel"
-									placeholder="관리자:1 회원:2" /></td>
+									id="modifyuserId" th:value="${userInfo.userId}" name="userId"
+									readonly="readonly" /></td>
 							</tr>
 							<tr>
+								<th class="bg-gray-100"><label for="userLevel">등급</label></th>
+								<td><select class="dropdown btn btn-primary required-form"
+									id="modifyuserLevel" th:value="${userInfo.userLevel}" name="userLevel">
+										<option value="1" th:selected="${userInfo.userLevel == '1'}">관리자</option>
+           								<option value="2" th:selected="${userInfo.userLevel == '2'}">회원</option>
+								</select></td>
+							</tr>
+							
+
 							<tr>
-								<th class="bg-gray-100"><label for="userPw">비밀번호</label>
-								</th>
+								<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
 								<td><input type="password"
 									class="form-control form-control-user-search search-input-gr"
-									id="userPw" th:value="${userPw}" name="userPw"
+									id="modifyuserPw" th:value="${userInfo.userPw}" name="userPw"
 									placeholder="영문+숫자 8~20자 이내" /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userName">이름</label>
-								</th>
+								<th class="bg-gray-100"><label for="userName">이름</label></th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="userName" th:value="${userName}" name="userName"
-									placeholder="이름을 입력해주세요." /></td>
+									id="modifyuserName" th:value="${userInfo.userName}"
+									name="userName" readonly="readonly" /></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
 								</th>
 								<td><input type="date"
 									class="form-control form-control-user-search search-input-gr"
-									id="userBirth" th:value="${userBirth}" name="userBirth"
-									placeholder="생년월일을 선택해주세요." /></td>
+									id="modifyuserBirth" th:value="${userInfo.userBirth}"
+									name="userBirth" placeholder="생년월일을 선택해주세요." /></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userPhone">연락처</label>
 								</th>
 								<td><input type="tel"
 									class="form-control form-control-user-search search-input-gr"
-									id="userPhone" th:value="${userPhone}" name="userPhone"
-									placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
+									id="modifyuserPhone" th:value="${userInfo.userPhone}"
+									name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userEmailAgree">이메일
+									<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label></th>
-								<td><select id="userEmailAgree" name="userEmailAgree"
-									th:value="${userEmailAgree}">
-										<option value="Y" th:selected="${userEmailAgree == 'Y'}">수신동의</option>
-										
-										<option value="N" th:selected="${userEmailAgree == 'N'}">수신거부</option>
+								<td><select class="dropdown btn btn-primary required-form"
+									id="modifyuserEmailAgree" name="userEmailAgree"
+									th:value="${userInfo.userEmailAgree}">
+										<option value="1" th:selected="${userInfo.userEmailAgree == '1'}">수신동의</option>
+
+										<option value="0" th:selected="${userInfo.userEmailAgree == '0'}">수신거부</option>
 								</select></td>
 
 							</tr>
 							<tr>
-									<th class="bg-gray-100"><label for="userEmail">이메일</label>
+								<th class="bg-gray-100"><label for="userEmail">이메일</label>
 								</th>
 								<td><input type="email"
 									class="form-control form-control-user-search search-input-gr"
-									id="userEmail" th:value="${userEmail}" name="userEmail"
-									placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
+									id="modifyuserEmail" th:value="${userInfo.userEmail}"
+									name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userAddr">주소</label>
-								</th>
+								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="userAddr" th:value="${userAddr}" name="userAddr"
-									placeholder="주소를 입력해주세요." /></td>
+									id="modifyuserAddr" th:value="${userInfo.userAddr}"
+									name="userAddr" placeholder="주소를 입력해주세요." /></td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-check" aria-hidden="true"></i></span>
-								<span class="text">정보수정</span>
-							</button>
+									<button type="button" id="modifysubmitBtn"
+										class="btn btn-primary btn-icon-split">
+										<span class="icon text-white-50"><i
+											class="fas fa-check" aria-hidden="true"></i></span> <span
+											class="text">정보수정</span>
+									</button>
 
-									<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash" aria-hidden="true"></i></span>
-								<span class="text">입력취소</span>
-							</button>
+									<button type="reset" id="modifyresetBtn"
+										class="btn btn-secondary btn-icon-split">
+										<span class="icon text-white-50"><i
+											class="fas fa-trash" aria-hidden="true"></i></span> <span
+											class="text">입력취소</span>
+									</button>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-	</form>
-<!-- /.container-fluid -->
+		</form>
+		<!-- /.container-fluid -->
 
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top"> <i
+			class="fas fa-angle-up"></i>
+		</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
@@ -168,7 +227,7 @@
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
-	<script th:src="@{/js/demo/datatables-demo.js}"></script>          
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 
 </th:block>
 

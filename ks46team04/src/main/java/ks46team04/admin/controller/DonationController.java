@@ -2,8 +2,6 @@ package ks46team04.admin.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
 import ks46team04.admin.dto.DonationPayDetail;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.dto.DonationRefund;
+import ks46team04.admin.dto.Payment;
 import ks46team04.admin.service.DonationService;
 import lombok.AllArgsConstructor;
 
@@ -24,20 +25,17 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/admin/donation")
 @AllArgsConstructor
 public class DonationController {
-	
-	
-	private static final Logger log = LoggerFactory.getLogger(DonationController.class);
-
-	
+		
 	private final DonationService donationService;
 	
 	/*
 	 * 정기기부 단가 조회
 	 */
 	@GetMapping("/donation_list")
-	public String getDonation(Model model) {
+	public String getDonation(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+										, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<Donation> getDonation = donationService.getDonation();
+		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue);
 				
 		model.addAttribute("title", "정기기부 단가 목록");
 		model.addAttribute("getDonation", getDonation);
@@ -49,11 +47,12 @@ public class DonationController {
 	 * 정기기부 단가 등록
 	*/
 	@PostMapping("/donation_add")
-	public String addDonation(Donation donation) {
+	public String addDonation(Donation donation, HttpSession session) {
 		
-	log.info("화면에서 전달받은 데이터 : {}", donation);
-	
-	donationService.addDonation(donation);
+		String donationRegId = (String) session.getAttribute("SID");
+		donation.setDonationRegId(donationRegId);
+		
+		donationService.addDonation(donation);
 	
 	return "redirect:/admin/donation/donation_list";
 	
@@ -71,7 +70,10 @@ public class DonationController {
 	 * 정기기부 단가 수정
 	 */
 	@PostMapping("/donation_modify")
-	public String modifyDonation(Donation donation) {
+	public String modifyDonation(Donation donation, HttpSession session) {
+		
+		String donationUpdateId = (String) session.getAttribute("SID");
+		donation.setDonationUpdateId(donationUpdateId);
 		
 		donationService.modifyDonation(donation);
 		
@@ -103,10 +105,11 @@ public class DonationController {
 	 * 등록된 회원 결제수단 조회
 	 */
 	@GetMapping("/donationPayMethod_list")
-	public String getDonationPayMethod(Model model) {
+	public String getDonationPayMethod(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+												, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod();
-		log.info("getDonationPayMethod: {}", getDonationPayMethod);
+		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod(searchKey, searchValue);
+		
 		model.addAttribute("title", "등록된 회원 결제수단 목록");
 		model.addAttribute("getDonationPayMethod", getDonationPayMethod);
 		
@@ -117,11 +120,12 @@ public class DonationController {
 	 * 등록된 회원 결제수단 등록
 	 */
 	@PostMapping("/donationPayMethod_add")
-	public String addDonationPayMethod(DonationPayMethod donationPayMethod) {
-		
-	log.info("화면에서 전달받은 데이터 : {}", donationPayMethod);
+	public String addDonationPayMethod(DonationPayMethod donationPayMethod, HttpSession session) {
 	
-	donationService.addDonationPayMethod(donationPayMethod);
+		String donationPayMethodUserId = (String) session.getAttribute("SID");
+		donationPayMethod.setDonationPayMethodUserId(donationPayMethodUserId);
+		
+		donationService.addDonationPayMethod(donationPayMethod);
 	
 	return "redirect:/admin/donation/donationPayMethod_list";
 	
@@ -130,7 +134,10 @@ public class DonationController {
 	@GetMapping("/donationPayMethod_add")
 	public String addDonationPayMethod(Model model) {
 		
+		List<Payment> paymentCode = donationService.getpaymentCode();
+		
 		model.addAttribute("title", "등록된 회원 결제수단 등록");
+		model.addAttribute("paymentCode", paymentCode);
 		
 		return "/admin/donation/donationPayMethod_add";
 	}
@@ -139,7 +146,10 @@ public class DonationController {
 	 * 등록된 회원 결제수단 수정
 	 */
 	@PostMapping("/donationPayMethod_modify")
-	public String modifyDonationPayMethod(DonationPayMethod donationPayMethod) {
+	public String modifyDonationPayMethod(DonationPayMethod donationPayMethod, HttpSession session) {
+		
+		String donationPayMethodUserId = (String) session.getAttribute("SID");
+		donationPayMethod.setDonationPayMethodUserId(donationPayMethodUserId);
 		
 		donationService.modifyDonationPayMethod(donationPayMethod);
 		
@@ -149,9 +159,11 @@ public class DonationController {
 	public String modifyDonationPayMethod(Model model, @RequestParam(name="donationPayMethodCode") String donationPayMethodCode){
 		
 		DonationPayMethod donationPayMethodInfo = donationService.getDonationPayMethodInfoByCode(donationPayMethodCode);
-		log.info("donationPayMethodInfo: {}", donationPayMethodInfo);
+		List<Payment> paymentCode = donationService.getpaymentCode();
+
 		model.addAttribute("title", "등록된 회원 결제수단 수정");
 		model.addAttribute("donationPayMethodInfo", donationPayMethodInfo);
+		model.addAttribute("paymentCode", paymentCode);
 		
 		return "admin/donation/donationPayMethod_modify";
 	}
@@ -169,25 +181,27 @@ public class DonationController {
 	 * 
 	 */
 	@GetMapping("/donationSub_list")
-	public String getDonationSub(Model model) {
+	public String getDonationSub(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+											, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationSub> getDonationSub = donationService.getDonationSub();
+		List<DonationSub> getDonationSub = donationService.getDonationSub(searchKey, searchValue);
 		
 		model.addAttribute("title", "정기기부 구독 신청 목록");
 		model.addAttribute("getDonationSub", getDonationSub);
 		
 		return "admin/donation/donationSub_list";
 	}
-	
+
 	/*
 	 * 정기기부 구독 신청 등록
 	 */
 	@PostMapping("/donationSub_add")
-	public String addDonationSub(DonationSub donationSub) {
+	public String addDonationSub(DonationSub donationSub, HttpSession session) {
 		
-	log.info("화면에서 전달받은 데이터 : {}", donationSub);
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
 	
-	donationService.addDonationSub(donationSub);
+		donationService.addDonationSub(donationSub);
 	
 	return "redirect:/admin/donation/donationSub_list";
 	
@@ -196,7 +210,12 @@ public class DonationController {
 	@GetMapping("/donationSub_add")
 	public String addDonationSub(Model model) {
 		
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		
 		model.addAttribute("title", "정기기부 구독 신청 등록");
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
 		return "/admin/donation/donationSub_add";
 	}
@@ -205,9 +224,13 @@ public class DonationController {
 	 * 정기기부 구독 신청 수정
 	 */
 	@PostMapping("/donationSub_modify")
-	public String modifyDonationSub(DonationSub donationSub) {
+	public String modifyDonationSub(DonationSub donationSub, HttpSession session) {
+		
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
 		
 		donationService.modifyDonationSub(donationSub);
+		
 		
 		return "redirect:/admin/donation/donationSub_list";
 	}
@@ -215,9 +238,13 @@ public class DonationController {
 	public String modifyDonationSub(Model model, @RequestParam(name="donationSubCode") String donationSubCode){
 		
 		DonationSub donationSubInfo = donationService.getDonationSubInfoByCode(donationSubCode);
-		log.info("donationPayMethodInfo: {}", donationSubInfo);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+
 		model.addAttribute("title", "정기기부 구독 신청 수정");
 		model.addAttribute("donationSubInfo", donationSubInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
 		return "admin/donation/donationSub_modify";
 	}
@@ -235,9 +262,10 @@ public class DonationController {
 	 * 정기기부 구독 결제 상세 조회
 	 */
 	@GetMapping("/donationPayDetail_list")
-	public String getDonationPayDetail(Model model) {
+	public String getDonationPayDetail(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+												, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationPayDetail> getDonationPayDetail = donationService.getDonationPayDetail();
+		List<DonationPayDetail> getDonationPayDetail = donationService.getDonationPayDetail(searchKey, searchValue);
 		
 		model.addAttribute("title", "정기기부 구독 결제 상세 목록");
 		model.addAttribute("getDonationPayDetail", getDonationPayDetail);
@@ -250,10 +278,8 @@ public class DonationController {
 	 */
 	@PostMapping("/donationPayDetail_add")
 	public String addDonationPayDetail(DonationPayDetail donationPayDetail) {
-		
-	log.info("화면에서 전달받은 데이터 : {}", donationPayDetail);
-	
-	donationService.addDonationPayDetail(donationPayDetail);
+
+		donationService.addDonationPayDetail(donationPayDetail);
 	
 	return "redirect:/admin/donation/donationPayDetail_list";
 	
@@ -262,7 +288,14 @@ public class DonationController {
 	@GetMapping("/donationPayDetail_add")
 	public String addDonationPayDetail(Model model) {
 		
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		List<DonationSub> donationSubCode = donationService.getdonationSubCode();
+		
 		model.addAttribute("title", "정기기부 구독 결제 상세 등록");
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
+		model.addAttribute("donationSubCode", donationSubCode);
 		
 		return "/admin/donation/donationPayDetail_add";
 	}
@@ -281,9 +314,15 @@ public class DonationController {
 	public String modifyDonationPayDetail(Model model, @RequestParam(name="donationPayDetailCode") String donationPayDetailCode){
 		
 		DonationPayDetail donationPayDetailInfo = donationService.getDonationPayDetailInfoByCode(donationPayDetailCode);
-		log.info("donationPayDetailInfo: {}", donationPayDetailInfo);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+		List<DonationSub> donationSubCode = donationService.getdonationSubCode();
+
 		model.addAttribute("title", "정기기부 구독 결제 상세 수정");
 		model.addAttribute("donationPayDetailInfo", donationPayDetailInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
+		model.addAttribute("donationSubCode", donationSubCode);
 		
 		return "admin/donation/donationPayDetail_modify";
 	}
@@ -301,9 +340,10 @@ public class DonationController {
 	 * 정기기부 월별 결제 합계 조회
 	 */
 	@GetMapping("/donationMonthPay_list")
-	public String getDonationMonthPay(Model model) {
+	public String getDonationMonthPay(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+												, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationMonthPay> getDonationMonthPay = donationService.getDonationMonthPay();
+		List<DonationMonthPay> getDonationMonthPay = donationService.getDonationMonthPay(searchKey, searchValue);
 		
 		model.addAttribute("title", "정기기부 월별 결제 합계 목록");
 		model.addAttribute("getDonationMonthPay", getDonationMonthPay);
@@ -316,8 +356,6 @@ public class DonationController {
 	 */
 	@PostMapping("/donationMonthPay_add")
 	public String addDonationMonthPay(DonationMonthPay donationMonthPay) {
-		
-	log.info("화면에서 전달받은 데이터 : {}", donationMonthPay);
 	
 	donationService.addDonationMonthPay(donationMonthPay);
 	
@@ -328,7 +366,10 @@ public class DonationController {
 	@GetMapping("/donationMonthPay_add")
 	public String addDonationMonthPay(Model model) {
 		
+		List<Donation> donationCode = donationService.getdonationCode();
+		
 		model.addAttribute("title", "정기기부 월별 결제 합계 등록");
+		model.addAttribute("donationCode", donationCode);
 		
 		return "/admin/donation/donationMonthPay_add";
 	}
@@ -347,7 +388,7 @@ public class DonationController {
 	public String modifyDonationMonthPay(Model model, @RequestParam(name="donationMonthPayCode") String donationMonthPayCode){
 		
 		DonationMonthPay donationMonthPayInfo = donationService.getDonationMonthPayInfoByCode(donationMonthPayCode);
-		log.info("donationMonthPayInfo: {}", donationMonthPayInfo);
+
 		model.addAttribute("title", "정기기부 월별 결제 합계 수정");
 		model.addAttribute("donationMonthPayInfo", donationMonthPayInfo);
 		
@@ -367,9 +408,10 @@ public class DonationController {
 	 * 정기기부 환불 조회
 	 */
 	@GetMapping("/donationRefund_list")
-	public String getDonationRefund(Model model) {
+	public String getDonationRefund(Model model, @RequestParam(name="searchKey", required = false) String searchKey
+												, @RequestParam(name="searchValue", required = false) String searchValue) {
 		
-		List<DonationRefund> getDonationRefund = donationService.getDonationRefund();
+		List<DonationRefund> getDonationRefund = donationService.getDonationRefund(searchKey, searchValue);
 		
 		model.addAttribute("title", "정기기부 환불 목록");
 		model.addAttribute("getDonationRefund", getDonationRefund);
@@ -381,20 +423,25 @@ public class DonationController {
 	 * 정기기부 환불 등록
 	 */
 	@PostMapping("/donationRefund_add")
-	public String addDonationRefund(DonationRefund donationRefund) {
+	public String addDonationRefund(DonationRefund donationRefund, HttpSession session) {
+	
+		String donationRefundRegId = (String) session.getAttribute("SID");
+		donationRefund.setDonationRefundRegId(donationRefundRegId);
+
 		
-	log.info("화면에서 전달받은 데이터 : {}", donationRefund);
+		donationService.addDonationRefund(donationRefund);
 	
-	donationService.addDonationRefund(donationRefund);
-	
-	return "redirect:/admin/donation/donationdonationRefund_list";
+	return "redirect:/admin/donation/donationRefund_list";
 	
 		}
 	
 	@GetMapping("/donationRefund_add")
 	public String addDonationRefund(Model model) {
 		
+		List<DonationPayDetail> donationPayDetailCode = donationService.getdonationPayDetailCode();
+		
 		model.addAttribute("title", "정기기부 환불 등록");
+		model.addAttribute("donationPayDetailCode", donationPayDetailCode);
 		
 		return "/admin/donation/donationRefund_add";
 	}
@@ -403,7 +450,10 @@ public class DonationController {
 	 * 정기기부 환불 수정
 	 */
 	@PostMapping("/donationRefund_modify")
-	public String modifyDonationRefund(DonationRefund donationRefund) {
+	public String modifyDonationRefund(DonationRefund donationRefund, HttpSession session) {
+		
+		String donationRefundUpdateId = (String) session.getAttribute("SID");
+		donationRefund.setDonationRefundUpdateId(donationRefundUpdateId);
 		
 		donationService.modifyDonationRefund(donationRefund);
 		
@@ -414,11 +464,11 @@ public class DonationController {
 	public String modifyDonationRefund(Model model, @RequestParam(name="donationRefundCode") String donationRefundCode){
 		
 		DonationRefund donationRefundInfo = donationService.getDonationRefundInfoByCode(donationRefundCode);
-		
-		log.info("donationRefundInfo: {}", donationRefundInfo);
+		List<DonationPayDetail> donationPayDetailCode = donationService.getdonationPayDetailCode();
 		
 		model.addAttribute("title", "정기기부 월별 결제 합계 수정");
 		model.addAttribute("donationRefundInfo", donationRefundInfo);
+		model.addAttribute("donationPayDetailCode", donationPayDetailCode);
 		
 		return "admin/donation/donationRefund_modify";
 	}

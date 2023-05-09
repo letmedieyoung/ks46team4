@@ -86,11 +86,12 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
 											<option value="option1">:: 입/출고 ::</option>
 											<option value="option1">입고</option>
 											<option value="option2">출고</option>
+											<option value="option2">교환</option>
+											<option value="option2">폐기</option>
 										</select>
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
@@ -130,16 +131,10 @@
 						</tbody>
 					</table>
 					<div align="center">
-						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+						<button type="submit" id="searchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-							<span class="text">상세검색</span>
+							<span class="text">검색</span>
 						</button>
-						<a href="/admin/stock/add_in_outcoming">
-							<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-								<span class="text">입/출고등록</span>
-							</button>
-						</a>
 					</div>
 				</div>
 			</div>
@@ -149,46 +144,63 @@
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<div class="table-responsive overflow-x">
+					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+						<span class="text">선택삭제</span>
+					</button>
+					<a href="/admin/goods/add_goods" class="btn btn-secondary btn-icon-split">
+						<span class="text">입/출고등록</span>
+					</a>
+					<br><br>
 					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
 						cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
-								<th>상품입출고코드</th>
-								<th>상품코드</th>
-								<th>입고/출고수량</th>
+								<th><input type="checkbox" id="allCheck"></th>
+								<th>No</th>
+								<th>상품명</th>
+								<th>제조번호</th>
+								<th>제조사</th>
 								<th>입/출고 분류</th>
-								<th>입고/출고일자</th>
+								<th>입/출고수량</th>
+								<th>입/출고일</th>
+								<th>출고 재단명</th>
 								<th>등록/수정일</th>
 								<th>수정</th>
-								<th>삭제</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
-								<td th:text="${l.inOutcomingCode}"></td>
-								<td th:text="${l.goodsCode}"></td>
-								<td th:text="${l.inOutcomingQuantity}"></td>
-								<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
-								<td th:unless="${l.inOutcomingType == 'incoming'}">출고</td>
-								<td th:text="${l.inOutcomingDate}"></td>
-								<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
-								<td th:unless="|${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingUpdDate}(수정)|"></td>
-								<td>
-									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
-										<span class="text">수정</span>
-									</a>
-								</td>
-								<td>
-									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/stock/remove_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
-										<span class="text">삭제</span>
-									</a>
-								</td>
-							</tr>
-							<tr th:if="${inOutcomingList == null}">
-								<td colspan="8">등록된 상품 재고 정보가 없습니다.</td>
-							</tr>
+							<th:block th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
+								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
+										<tr>	
+											<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
+											<th th:text="${lStat.count}"></th>
+											<td th:text="${gl.goodsName}"></td>
+											<td th:text="${l.goodsLotNumber}"></td>
+											<td th:text="${gl.goodsCompany}"></td>
+											<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
+											<td th:if="${l.inOutcomingType == 'outcoming'}">출고</td>
+											<td th:if="${l.inOutcomingType == 'exchange'}">교환</td>
+											<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
+											<td th:text="${l.inOutcomingQuantity}"></td>
+											<td th:text="${l.inOutcomingDate}"></td>
+											<th:block>
+												<td th:if="${l.foundationInfo == null}">해당없음</td>
+												<td th:unless="${l.foundationInfo == null}" th:each="fl : ${l.foundationInfo}" th:text="${fl.foundationName}"></td>
+											</th:block>
+											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
+											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
+											<td>
+												<a class="btn btn-secondary btn-icon-split btn-sm"
+													th:href="@{/admin/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+													<span class="text">수정</span>
+												</a>
+											</td>
+										</tr>
+										<tr th:if="${inOutcomingList == null}">
+											<td colspan="10">등록된 상품 재고 정보가 없습니다.</td>
+										</tr>
+								</th:block>
+							</th:block>
 						</tbody>
 					</table>
 				</div>
@@ -213,10 +225,74 @@
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		/**
+		* 전체 선택
+		*/
+		$('#allCheck').click(function () {
+			$('.checks').prop('checked', $(this).prop('checked'));
+		});
+		$('.checks').click(function () {
+			let length = $('.checks').length;
+			let checkedLength = $('.checks:checked').length;
+			if (length == checkedLength) {
+				$('#allCheck').prop('checked', true);
+			} else {
+				$('#allCheck').prop('checked', false);
+			}
+		});
+		/**
+		 * 체크박스 선택 후 deleteBtn 버튼
+		 */
+		$('#delCheckBtn').click(function () {
+			
+			const checkedArr = $('.checks:checked');
+			console.log(checkedArr);
+			
+			let length = checkedArr.length;
+			
+			const valueArr = [];
+			let msg = '삭제하시겠습니까?';
+			
+			if (length == 0) {
+				alert("선택된 항목이 없습니다.");
+			}
+			else {
+				let result = confirm(msg);
+				
+				if(result == true){
+					
+					$(checkedArr).each(function() {
+						valueArr.push($(this).attr('value'));
+			        });
+					console.log(valueArr);
+					
+					let request = $.ajax({
+						url: '/admin/goods/remove_goods',
+						method: 'POST',
+						data: { valueArr : valueArr },
+						dataType: 'json'
+					});
+					
+					request.done(function(result){
+						if(result){
+							alert('삭제되었습니다.');
+							location.reload();
+						}
+					});
+					
+					request.fail(function(jqXHR, textStatus){
+						alert(`Request failed: ${textStatus}`);
+					});
+				}else{
+					location.reload();
+				}
+			}
+		});
+	</script>
 </th:block>
 
 </html>

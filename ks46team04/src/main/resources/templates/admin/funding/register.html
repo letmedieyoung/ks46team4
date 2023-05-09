@@ -26,7 +26,17 @@
 	        	<div class="card-body">         
 	            	<div class="table-responsive">	            
 		            	<table class="table table-bordered search-table freg" id="dataTable" width="100%" cellspacing="0">
-		                	<tbody>				         		
+		                	<tbody>	
+		                		<tr>
+									<th class="bg-gray-100">
+										<label for="fundingCode">펀딩코드</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">																			
+											<input type="text" class="form-control form-control-user-search search-input" placeholder="자동생성" disabled="disabled" />
+										</div>
+									</td>
+								</tr>			         		
 				             	<tr>
 				                 	<th class="bg-gray-100">
 										<label for="fundingName">펀딩명</label>
@@ -67,7 +77,7 @@
 									</th>
 			                       	<td>									
 										<div class="form-row align-items-center search-schedule">
-											<select id="fundingFoundation" name="fundingFoundation" class="dropdown btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<select id="foundationName" name="foundationName" class="dropdown btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<th:block th:unless="${foundationNameList == null}" th:each="l : ${foundationNameList}">
 													<option th:value="${l.foundationName}" th:selected="${l.foundationName} == *{fundingFoundation}">[[${l.foundationName}]]</option>
 												</th:block>

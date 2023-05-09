@@ -15,7 +15,17 @@
 		<h1 class="h3 mb-4 text-gray-800">매입 수정</h1>
 		<p class="mb-4">
 			매입 기록을 수정합니다. 등록된 값을 불러옵니다<br> 상품명은 파라미터로 들어옵니다.<br> 매입가
-			합계는 js로 계산합니다.<br> 매입 현황, 단가, 수량을 수정할 수 있습니다.
+			합계는 js로 계산합니다.<br> 매입 현황, 단가, 수량을 수정할 수 있습니다.<br>
+			<br>
+			매입 현황이 매입 예정이면 그룹코드와 마감 코드를 공백처리 한다.<br>
+			매입 현황이 매입 입금 완료이면 그룹코드와 마감 코드가 생성된다.<br>
+			<br>
+			마감된 건에 대해서는 수정할 수 없다. → 마감된 건은 수정, 삭제 버튼이 마감으로 변하여 누를 수 없게 된다.<br><br>
+			
+			보완할 점 - 정확히 마감 시간(매월 4일 00:00:00)에 수정 처리가 일어날 경우를 상정하지 않았다. 이럴 경우 오류가 발생할 수도 있다. 
+			<br><br>
+			상품을 선택했을 때 상품 단가가 나오도록 한다. 수정 가능하다.(상품 가격 변동이 있을 수 있음)
+			매입 입금 완료 이며, 가격이 바뀌었을때 경고 메시지 "가격이 바뀌었습니다. [매입 입금 완료]한 것이 맞습니까?"
 		</p>
 
 		<div class="card shadow mb-4">
@@ -28,67 +38,76 @@
 				<!-- 폼으로 구성 -->
 
 				<!-- 수정 테이블 -->
-				<form>
+				<form id="addPurchaseTable" th:action="@{/admin/purchase_sale/purchase_update}" method="POST">
 					<div class="table-responsive">
-						<table class="table table-bordered search-table"
-							id="searchdataTable" width="100%" cellspacing="0">
+						<table th:object="${purchaseInfo}" class="table table-bordered search-table" id="updatePurchaseTable" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th class="bg-gray-100">매입 현황</th>
-									<td><select
-										class="dropdown btn btn-primary dropdown-toggle"
-										id="dropdownMenuButton" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 매입 현황 ::</option>
-											<option value="option2">매입 예정</option>
-											<option value="option2">매입 입금 완료</option>
+									<td><select th:field="*{purchaseStatus}" 
+												class="dropdown btn btn-primary dropdown-toggle" id="purchaseStatus" name="purchaseStatus"
+												data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<option value="expected" th:selected="${purchaseStatus == 'expected'}">매입 예정</option>
+											<option value="complete" th:selected="${purchaseStatus == 'complete'}">매입 입금 완료</option>
 									</select></td>
 								</tr>
 								<tr>
 									<th class="bg-gray-100">상품명</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-insert" readonly="readonly"></td>
+									<td><input type="text" th:value="*{goodsName}"
+										class="form-control form-control-user-search purchase-insert" id="goodsName" name="goodsName"
+										readonly="readonly"></td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">매입 단가</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">매입 수량</th>
-									<td><input type="number"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">총 매입가<br>(자동 계산)
+									<th class="bg-gray-100">
+										<label for="purchasePrice">매입 단가</label>
 									</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
+									<td>
+										<input type="text" th:value="*{purchasePrice}" class="form-control form-control-user-search purchase-search required-form"
+											   id="purchasePrice" name="purchasePrice">원								
+										<span class="required-text"></span>
+									</td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">매입 날짜</th>
+									<th class="bg-gray-100">
+										<label for="purchaseQuantity">매입 수량</label>
+									</th>
+									<td>
+										<input type="text" th:value="*{purchaseQuantity}" class="form-control form-control-user-search purchase-search required-form"
+											   id="purchaseQuantity" name="purchaseQuantity">
+										<span class="required-text"></span>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="purchaseTotalPrice">총 매입가<br>(자동 계산)</label>
+									</th>
+									<td>
+										<input type="text" th:value="*{totalPurchasePrice}" class="form-control form-control-user-search purchase-search required-form"
+											   id="totalPurchasePrice" name="totalPurchasePrice" readonly>원
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="purchaseDate">매입 날짜</label>	
+									</th>
 									<td>
 										<form>
-											<div class="form-row align-items-center search-schedule">
+											<div class="form-row align-items-center">
 												<div class="col-auto">
-													<label for="purchase-date" class="sr-only">시작일</label> <input
-														type="date" id="purchase-date" class="form-control"
-														placeholder="시작일">
+													<input type="date" th:value="*{purchaseDate}" id="purchaseDate" name="purchaseDate" class="form-control required-form" placeholder="매입날짜">
 												</div>
 											</div>
 										</form>
 									</td>
 								</tr>
 							</tbody>
+							<input type="hidden" name="purchaseCode" th:value="*{purchaseCode}">
+							<input type="hidden" name="goodsCode" th:value="*{goodsCode}">
 						</table>
 					</div>
 				</form>
 				<div class="mx-auto" style="width: 230px;">
-					<button type="submit" class="btn btn-primary">
+					<button type="button" class="btn btn-primary" id="submitBtn">
 						<span class="text text-gray-100">매입 등록</span>
 					</button>
 					<button type="reset" class="btn btn-primary"
@@ -104,6 +123,143 @@
 
 <!-- 사용자정의 Js 페이지 -->
 <th:block layout:fragment="customJs">
+	<script>
+		function validationCheck(ele){
+			let data = $(ele).val();
+			let isValid = true;
+			if(typeof data == 'undefined' || data == null ||
+					data == '' || /\s{1,}/.test(data)){
+			isValid = false;
+			}
+			return isValid;
+		}
+		
+		function removeComma(ele){
+			value = ele.val();
+			let result = value.replace(/,/g, '');
+			return result;
+		}
+	
+		function isNumber(numStr){
+			let isNum = false;
+			if(/^\d+$/.test(numStr)) isNum = true;
+			return isNum; 
+		} 
+		
+		const $purchasePriceEle = $('#purchasePrice');
+		let purchasePrice = $purchasePriceEle.val();
+		const $purchaseQuantityEle = $('#purchaseQuantity');
+		let purchaseQuantity = $purchaseQuantityEle.val();
+		const $totalPurchasePriceEle = $('#totalPurchasePrice');
+		let totalPurchasePrice = $totalPurchasePriceEle.val();
+		
+		let formattedPrice = purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$purchasePriceEle.val(formattedPrice);
+		formattedPrice = purchaseQuantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$purchaseQuantityEle.val(formattedPrice);
+		formattedPrice = totalPurchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$totalPurchasePriceEle.val(formattedPrice);
+		
+		
+		//단가 유효성 검사-------------------------
+		$('#purchasePrice').on('blur', function(){
+			const $purchasePriceEle = $('#purchasePrice');
+			let purchasePrice = removeComma($purchasePriceEle);
+			//let purchasePrice = $purchasePriceEle.val();
+			const $rqTextPrice = $purchasePriceEle.siblings('.required-text');
+			
+			console.log(purchasePrice + " purchasePrice");
+			if(typeof purchasePrice != 'undefined' && purchasePrice != null &&
+					purchasePrice != ''){
+				let isNum = isNumber(purchasePrice);
 
+				if(isNum == false){
+					$rqTextPrice.text(`*숫자만 입력하세요`);
+					$purchasePriceEle.val('');
+					$purchasePriceEle.focus();
+					return false;
+				}else{
+					$rqTextPrice.text('');
+					let formattedPrice = purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+					$purchasePriceEle.val(formattedPrice);
+					updateTotal();
+				}
+			}
+		});
+		
+		$('#purchasePrice').on('click', function(){
+			const $purchasePriceEle = $('#purchasePrice');
+			$purchasePriceEle.val(removeComma($purchasePriceEle));
+		});
+
+		//수량 유효성 검사-------------------------
+		$('#purchaseQuantity').on('blur', function(){
+			const $purchaseQuantityEle = $('#purchaseQuantity');
+			let purchaseQuantity = removeComma($purchaseQuantityEle);
+			const $rqTextQuantity = $purchaseQuantityEle.siblings('.required-text');
+			
+			if(typeof purchaseQuantity != 'undefined' && purchaseQuantity != null &&
+					purchaseQuantity != ''){
+				let isNum = isNumber(purchaseQuantity);
+				//console.log(isNum);
+				if(isNum == false){
+					$rqTextQuantity.text(`*숫자만 입력하세요`);
+					$purchaseQuantityEle.val('');
+					$purchaseQuantityEle.focus();
+					return false;
+				}else{
+					$rqTextQuantity.text('');
+					let formattedPrice = purchaseQuantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+					$purchaseQuantityEle.val(formattedPrice);
+					updateTotal();
+				}
+			}
+		});
+		
+		$('#purchaseQuantity').on('click', function(){
+			const $purchaseQuantityEle = $('#purchaseQuantity');
+			$purchaseQuantityEle.val(removeComma($purchaseQuantityEle));
+		});
+		
+		//단가*수량 => 총합-------------------------
+		function updateTotal(){
+			const $purchasePriceEle = $('#purchasePrice');
+			const $purchaseQuantityEle = $('#purchaseQuantity');
+			let purchasePrice = removeComma($purchasePriceEle);
+			let purchaseQuantity = removeComma($purchaseQuantityEle);
+			console.log(purchasePrice);
+			console.log(purchaseQuantity);
+			let totalPurchasePrice = purchasePrice * purchaseQuantity;
+			let formattedPrice = totalPurchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			$('#totalPurchasePrice').val(formattedPrice);
+		} 
+		
+		//submit-------------------------
+		$('#submitBtn').click(function(){
+			const $addPurchaseTable = $('#addPurchaseTable');
+			const $requiredForm = $('#addPurchaseTable .required-form');
+			let isSubmit = false;
+			$requiredForm.each(function(idx, item){
+				isSubmit = validationCheck(item);
+				
+				if(!isSubmit){
+					let msg = $(item).parents('tr').find('label').text();
+					alert(msg + '은(는) 필수항목입니다');
+					$(item).val('');
+					$(item).focus();
+					return false;
+				}
+			});
+			if(isSubmit){
+				const $purchasePriceEle = $('#purchasePrice');
+				const $purchaseQuantityEle = $('#purchaseQuantity');
+				const $totalPurchasePrice = $('#totalPurchasePrice');
+				$purchasePriceEle.val(removeComma($purchasePriceEle));
+				$purchaseQuantityEle.val(removeComma($purchaseQuantityEle));
+				$totalPurchasePrice.val(removeComma($totalPurchasePrice));
+				$('#addPurchaseTable').submit();
+			}
+		}); 
+	</script>
 </th:block>
 </html>

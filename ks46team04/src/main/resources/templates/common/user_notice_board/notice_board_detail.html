@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default2}">
+
+<th:block layout:fragment="customContents2">
+	<!-- 펀딩상세페이지 헤더 시작 -->
+	<div
+		class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="bradcam_text text-center">
+						<h3>면역력이 떨어진 아이들에게 힘을 보태주세요</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 펀딩상세페이지 헤더 끝 -->
+	<div class="progress-table-wrap">
+		<table class="progress-table">
+			<thead class="table-head">
+				<tr class="table-row">
+					<th>No</th>
+					<th>제목</th>
+					<th>작성일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="table-row">
+					<td></td>
+					<td>
+						<a th:href="@{/common/user_notice_board/notice_board_detail}" th:text=""></a>
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</html>

@@ -13,73 +13,107 @@
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
         	 <div class="card-header py-3">
-             	<h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 결제 상세 등록</h5>
+             	<h5 class="m-0 font-weight-bold text-gray-800">구독 결제 상세 등록</h5>
         	 </div>
          <div class="card-body">
 				<div class="table-responsive">
-					<form action="/admin/donation/donationPayDetail_add" method="POST"
+					<form th:action="@{/admin/donation/donationPayDetail_add}" method="POST"
 						id="addDonationPayDetailForm" name="addDonationPayDetailForm">
-						<table class="table table-bordered freg" id="addDonationPayDetail"
-							width="100%" cellspacing="0">
+						<table class="table table-bordered freg" id="addDonationPayDetail" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
 									<th>회원 아이디</th>
-									<td><input type="text" id="donationPayUserId"
-										name="donationPayUserId" style="width: 400px;"
-										placeholder="회원 아이디을를 입력해주세요." /></td>
+									<td><input type="text" id="donationPayUserId" name="donationPayUserId" 
+										style="width: 400px;" placeholder="회원 아이디를 입력해주세요." /></td>
+								</tr>
+								<tr>
+									<th>구독 신청 코드</th>
+									<td>
+										<select id="donationSubCode" name="donationSubCode" style="width: 400px;">
+											<th:block th:unless="${donationSubCode == null}"
+												th:each="l : ${donationSubCode}">
+												<option th:value="${l.donationSubCode}">[[${l.donationSubCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationSubCode == null}">
+												<option>등록된 구독 신청 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>콘텐츠 코드</th>
+									<td>
+										<select id="donationCode" name="donationCode" style="width: 400px;">
+											<th:block th:unless="${donationCode == null}"
+												th:each="l : ${donationCode}">
+												<option th:value="${l.donationCode}">[[${l.donationCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationCode == null}">
+												<option>등록된 콘텐츠 코드 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>회원 결제수단 코드</th>
+									<td>
+										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
+											<th:block th:unless="${donationPayMethodCode == null}"
+												th:each="l : ${donationPayMethodCode}">
+												<option th:value="${l.donationPayMethodCode}">[[${l.donationPayMethodCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayMethodCode == null}">
+												<option>등록된 회원 결제수단 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>결제금액</th>
-									<td><input type="number" id="donationPayAmount"
-										name="donationPayAmount" style="width: 400px;"
-										placeholder="결제금액을 입력해주세요." /> <span>원</span></td>
+									<td><input type="number" id="donationPayAmount" name="donationPayAmount" 
+										style="width: 400px;" placeholder="결제금액을 입력해주세요." /> <span>원</span></td>
 								</tr>
 								<tr>
 									<th>수수료</th>
-									<td><input type="number" id="donationPaySalesCommission"
-										name="donationPaySalesCommission" style="width: 400px;"
-										placeholder="수수료를 입력해주세요." /> <span>원</span></td>
+									<td><input type="number" id="donationPaySalesCommission" name="donationPaySalesCommission" 
+										style="width: 400px;" placeholder="수수료를 입력해주세요." /> <span>원</span></td>
 								</tr>
 								<tr>
 									<th>매입예산</th>
-									<td><input type="number" id="donationPayPurchaseBudget"
-										name="donationPayPurchaseBudget" style="width: 400px;"
-										placeholder="매입예산을 입력해주세요." /> <span>원</span></td>
+									<td><input type="number" id="donationPayPurchaseBudget" name="donationPayPurchaseBudget" 
+										style="width: 400px;" placeholder="매입예산을 입력해주세요." /> <span>원</span></td>
 								</tr>
 								<tr>
 									<th>결제일</th>
 									<td>
 										<div>
-											<input type="date" id="donationPayDate"
-												name="donationPayDate"
-												style="width: 400px;"/>
+											<input type="datetime-local" id="donationPayDate" name="donationPayDate" style="width: 400px;"/>
 										</div>
 									</td>
 								</tr>
 								<tr>
 									<th>환불 요청 여부</th>
-									<td>
-										<div>
-										 <input type='radio' name='refund' value='O' /> 환불요청O &nbsp; &nbsp;
- 										 <input type='radio' name='refund' value='X' /> 환불요청X
-										</div>
-									</td>
+									<td><select name="donationPayRefundRequest" id="donationPayRefundRequest">
+											<option value="1">요청 O</option>
+											<option value="0">요청 X</option>
+									</select></td>
 								</tr>
 								<tr>
-									<th>정기기부 마감 여부</th>
-									<td>
-										<div>
-										<input type='radio' name='end' value='O' /> 마감O &nbsp; &nbsp;
- 										<input type='radio' name='end' value='X' /> 마감X
-										</div>
-									</td>
+									<th>매출 그룹 코드</th>
+									<td><input type="text" id="donationPaySalesGroup" name="donationPaySalesGroup" 
+										style="width: 400px;" placeholder="자동증가코드 ! !" /></td>
+								</tr>
+								<tr>
+									<th>마감 유무</th>
+									<td><select name="donationPayDeadlineCheck" id="donationPayDeadlineCheck">
+											<option value="마감전">마감전</option>
+											<option value="마감완료">마감완료</option>
+									</select></td>
 								</tr>
 								<tr>
 									<td colspan="3"> <div style="display: flex; justify-content: center;">
-										<button type="button" class="btn btn-primary" id="addBtn"
-											onclick="addBtn()">등록</button> &nbsp;
-										<button type="button" class="btn btn-primary" id="resetBtn"
-											onclick="location.href='/admin/donation/donationPayDetail_list'">입력취소</button> </div>
+										<button type="button" class="btn btn-primary" id="addBtn">등록</button> &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button> </div>
 									</td>
 								</tr>
 							</tbody>
@@ -110,5 +144,26 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$(document).on('click','#addBtn', function(){
+			const addDonationPayDetailForm = $('#addDonationPayDetailForm');
+			const addDonationFormInputs = addDonationPayDetailForm.find('input');
+			let isSubmit = true;
+			$(addDonationFormInputs).each((idx, item) => {
+				let validationCheck = $(item).parents('tr').children().eq(0).text();
+				let validationValue = $(item).val();
+				if(typeof validationValue == 'undefined' || validationValue == null || validationValue == ''){
+					alert(`${validationCheck} 필수 입력 항목입니다.`);
+					$(item).focus();
+					isSubmit = false;
+					return false;
+				}
+			});
+			if(isSubmit) addDonationPayDetailForm.submit();
+		})
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationPayDetail_list';
+		});
+	</script>
 </th:block>
 </html>

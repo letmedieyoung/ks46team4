@@ -18,14 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletRequest;
+import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
-import ks46team04.admin.dto.FundingFoundation;
+import ks46team04.admin.dto.FundingCurrentAmount;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
-import ks46team04.admin.dto.FundingProgress;
-import ks46team04.admin.dto.GoodsCode;
+import ks46team04.admin.dto.Goods;
 import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingService;
+
 
 @Controller
 @RequestMapping("/admin/funding")
@@ -43,17 +45,33 @@ public class FundingController {
 	
 	
 	/**
-	 * 펀딩 수정 처리
+	 * 펀딩 삭제
+	 * @param model
+	 * @return
+	 */	
+	@PostMapping("/deleteFunding")	
+	@ResponseBody
+	public List<String> deleteFunding(@RequestParam(value="valueArr[]") List<String> valueArr) {
+
+		log.info("valueArr: {}", valueArr);
+		fundingService.deleteFunding(valueArr);
+		
+		return valueArr;
+	}
+		
+	/**
+	 * 펀딩 수정 처리 
 	 * @param funding
 	 * @return
 	 */
 	@PostMapping("/modifyFunding")
 	public String modifyFunding(Funding funding) {
 		log.info("funding: {}", funding);
-		fundingMapper.modifyFunding(funding);
+		fundingService.modifyFunding(funding);
 		
 		return "redirect:/admin/funding/manage";
-	}		
+	}
+	
 	
 	/**
 	 * 펀딩 수정 화면
@@ -62,24 +80,28 @@ public class FundingController {
 	 * @return
 	 */
 	@GetMapping("/modifyFunding")
-	public String modifyFunding(@RequestParam(name="fundingCode") String fundingCode, Model model) {
+	public String modifyFunding(Model model,
+								@RequestParam(name="fundingCode") String fundingCode) {
 		
 		Funding fundingInfo = fundingService.getFundingInfoByCode(fundingCode);
 		 
 		log.info("fundingModify: {}", fundingInfo);
-		
-		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
-		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
-		List<FundingProgress> fundingProgressList = fundingService.getFundingProgressList();
-		
+
+		List<Foundation> foundationNameList = fundingService.getFoundationNameList();
+		List<Goods> goodsNameList = fundingService.getGoodsNameList();
+		List<Goods> goodsCodeList = fundingService.getGoodsCodeList();
+		List<Funding> fundingProgressList = fundingService.getFundingProgressList();
+	
 		model.addAttribute("title", "펀딩 정보 수정");	
 		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsNameList", goodsNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		model.addAttribute("fundingProgressList", fundingProgressList);
-		model.addAttribute("fundingInfo", fundingInfo);
-		
+		model.addAttribute("fundingInfo", fundingInfo);	
+
 		return "admin/funding/modifyFunding";
 	}
+
 	
 	/**
 	 * 펀딩 목록 조회
@@ -98,8 +120,8 @@ public class FundingController {
 	}			
 	
 	@PostMapping("/getSearchFundingList")
-	@ResponseBody //http요청 body를 자바 객체로 전달받을 수 있다.
-	public List<Funding> getSearchFundingList(@RequestBody Map<String, Object> searchMap){ //HTTP 요청 body를 Map객체로 전달받는다. 배열 Map에 검색 조건과 값들을 담는다. (key:String, value: 최상위 클래스 Object)
+	@ResponseBody 
+	public List<Funding> getSearchFundingList(@RequestBody Map<String, Object> searchMap){ 
 		Set<String> searchKey = searchMap.keySet(); 
 		List<Map<String, Object>> searchList = new ArrayList<>();
 		for(String key : searchKey) {
@@ -113,20 +135,6 @@ public class FundingController {
 		
 		return searchFundingList;
 	}
-	
-	
-	/**
-	 * 펀딩 삭제
-	 * @param fundingCode
-	 * @return
-	 */	
-	@GetMapping("/deleteFunding")	
-	public String deleteFunding(Funding funding) {
-		
-		fundingService.deleteFunding(funding);
-		
-		return "redirect:/admin/funding/manage";
-	}	
 		
 	
 	/**
@@ -135,24 +143,30 @@ public class FundingController {
 	 * @return
 	 */
 	@PostMapping("/register") 
-	public String registFunding(Funding funding) { 
-		log.info("화면에서 전달받은 데이터 : {}", funding);
+	public String registFunding(Funding funding,
+								HttpServletRequest request) { 
+		log.info("화면에서 전달받은 데이터 : {}", funding);	
+		
 		fundingService.registFunding(funding);
 		return "redirect:/admin/funding/manage"; 
 	}		
 	
 	@GetMapping("/register")
 	public String registFunding(Model model){
-		List<FundingFoundation> foundationNameList = fundingService.getFoundationNameList();
-		List<GoodsCode> goodsCodeList = fundingService.getGoodsCodeList();
+		List<Foundation> foundationNameList = fundingService.getFoundationNameList();
+		List<Goods> goodsNameList = fundingService.getGoodsNameList();
+		List<Goods> goodsCodeList = fundingService.getGoodsCodeList();
 	
 		model.addAttribute("title", "신규펀딩등록");
 		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("goodsNameList", goodsNameList);
 		model.addAttribute("goodsCodeList", goodsCodeList);
 		
 		return "admin/funding/register";
 	}
 
+	
+	
 	
 	/**
 	 * 펀딩 컨텐츠 별 진행현황
@@ -160,15 +174,29 @@ public class FundingController {
 	 * @return
 	 */
 	@GetMapping("/current_amount")
-	public String exam2(Model model){
-	
-		model.addAttribute("title", "펀딩 별 진행현황");
-		model.addAttribute("content", "컨텐츠 별 진행 현황");
+	public String currentProgress(Model model,
+								 @RequestParam(name="searchKey", required = false) String searchKey,
+								 @RequestParam(name="searchValue", required = false) String searchValue) {	
 		
-		return "admin/funding/current_amount";
+		List<FundingCurrentAmount> fundingCurrentAmountList = fundingService.getFundingProgressStatus(searchKey, searchValue);
+		
+		int targetSum = fundingMapper.getTargetSum();
+		int currentSum = fundingMapper.sumOfCurrentAmount();
+		String accomplishmentRate = fundingMapper.accomplishmentRate();
+		int allAccomplishmentRate = fundingMapper.allAccomplishmentRate();
+		
+		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
+		model.addAttribute("content", "펀딩 컨텐츠 별 진행현황");
+		model.addAttribute("targetSum", targetSum);
+		model.addAttribute("currentSum", currentSum);
+		model.addAttribute("allAccomplishmentRate", allAccomplishmentRate);
+		model.addAttribute("accomplishmentRate", accomplishmentRate);
+		model.addAttribute("fundingCurrentAmountList", fundingCurrentAmountList);
+	    
+	    return "admin/funding/current_amount";
 	}
 	
-	
+
 	
 	/**
 	 * 펀딩 결제내역 상세 확인 처리
@@ -213,6 +241,8 @@ public class FundingController {
 		return "admin/funding/payments";
 	}
 	
+	
+	
 	/**
 	 * 환불내역 수정 처리
 	 * @param fundingRefund
@@ -225,7 +255,8 @@ public class FundingController {
 		fundingMapper.modifyFundingRefund(FundingRefund);		
 		
 		return "redirect:/admin/funding/refund";
-	}	
+	}
+	
 	/**
 	 * 펀딩 환불내역 수정화면
 	 * @param fundingRefundCode
@@ -235,32 +266,61 @@ public class FundingController {
 	@GetMapping("/modifyFundingRefund")
 	public String modifyFundingRefund(@RequestParam(name="fundingRefundCode") String fundingRefundCode, Model model) {
 						
-		FundingRefund fundingRefundInfo = fundingService.getFundingRefundInfoByCode(fundingRefundCode);		
+		FundingRefund fundingRefundInfo = fundingService.getFundingRefundInfoByCode(fundingRefundCode);	
+		List<FundingRefund> refundStatusList = fundingService.getRefundStatusList();
 		
-		model.addAttribute("title", "펀딩 환불내역 수정");		
-		model.addAttribute("fundingRefundInfo", fundingRefundInfo);		
+		model.addAttribute("title", "펀딩 환불내역 수정");
+		model.addAttribute("refundStatusList", refundStatusList);
+		model.addAttribute("fundingRefundInfo", fundingRefundInfo);
 		
 		return "admin/funding/modifyFundingRefund";
 	}
 	/**
-	 * 펀딩 환불 관리
+	 * 버튼으로 환불 처리
+	 * @param refundArr
+	 */
+	@PostMapping("/updateFundingRefundStatus")
+	@ResponseBody
+	public List<String> updateFundingRefundStatus(@RequestParam(value="refundArr[]") List<String> refundArr) {
+	    log.info("refundArr: {}", refundArr);
+	    String refundStatus = "환불완료";
+	    for(String fundingRefundCode : refundArr) {
+	        fundingService.updateFundingRefundStatus(fundingRefundCode, refundStatus);
+	    }
+	    return refundArr;
+	}
+	
+	/**
+	 * 펀딩 환불 목록 조회
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("/refund")
-	public String refund(Model model,
-						 @RequestParam(name="keyword", required=false) String keyword,
-						 @RequestParam(name="searchValue", required=false) String searchValue) {
-		List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword, searchValue);	
-				
-		//log.info("refundList_Service: {}", refundList);
-		
+	public String refund(Model model) {
+		List<FundingRefund> refundList = fundingService.getRefundList();
 		model.addAttribute("title", "펀딩 환불관리");
-		model.addAttribute("refundList", refundList);
+		model.addAttribute("refundList", refundList);		
 		
 		return "admin/funding/refund";
 	}
-	
-	
-	
+	/**
+	 * 펀딩 환불 목록 검색
+	 * @param searchMap 검색 조건이 담긴 Map 객체
+	 * @return 검색된 결과를 담은 List 객체
+	 */
+	@PostMapping("/refund")
+	@ResponseBody
+	public List<FundingRefund> getSearchRefundList(@RequestBody Map<String, Object> searchMap){ 
+		Set<String> searchKey = searchMap.keySet(); 
+		List<Map<String, Object>> searchList = new ArrayList<>();
+		for(String key : searchKey) {
+			Map<String, Object> search = new HashMap<>();
+			search.put("key", "fr."+key);
+			search.put("value", searchMap.get(key));
+			searchList.add(search);			
+		}
+		
+		List<FundingRefund> getSearchRefundList = fundingMapper.getRefundList(searchList);		
+		return getSearchRefundList;
+	}
 }

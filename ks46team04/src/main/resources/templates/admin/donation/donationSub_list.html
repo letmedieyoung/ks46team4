@@ -31,17 +31,50 @@
 			<!-- DataTales Example -->
 			<div class="card mb-4">
 				<div class="card-header py-3">
-					 <h5 class="m-0 font-weight-bold text-gray-800">정기기부 구독 신청 조회</h5>
+					<h5 class="m-0 font-weight-bold text-gray-800">구독 신청 내역 검색</h5>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
-							<thead>
+						<table class="table table-bordered search-table" id="searchdataTable" width="100%" cellspacing="0">
+							<tbody>
 								<tr>
+									<th class="bg-gray-100">통합 검색</th>
+									<td><div th:include="~{admin/search/donation_search :: donationSubSearch}"></div></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">구독 시작일</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<div class="col-auto">
+												<input type="date" class="form-control" id="startDate">
+											</div>
+											~
+											<div class="col-auto">
+												<input type="date" class="form-control" id="endDate">
+											</div>
+											&nbsp;
+											<button type="button" class="btn btn-primary" id="dateBtn">검색</button>
+										</div>
+									</td>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header py-3">
+					 <h5 class="m-0 font-weight-bold text-gray-800">구독 신청 내역 조회</h5>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+							<thead>
+								<tr class="bg-gray-100">
 									<th>코드</th>
 									<th>회원 아이디</th>
-									<th>정기기부 콘텐츠</th>
-									<th>회원 결제 수단</th>
+									<th>콘텐츠</th>
+									<th>회원 결제수단</th>
 									<th>구독 시작일</th>
 									<th>구독 종료일</th>
 									<th>수정</th>
@@ -50,7 +83,7 @@
 							</thead>
 							<tbody>
 								<tr th:unless="${getDonationSub == null}" th:each=" l : ${getDonationSub}">
-									<td th:text="${l.donationSubCode}"></td>
+									<td th:text="${l.donationSubCode}" th:href="@{/admin/donation/donationPayDetail_list}"></td>
 									<td th:text="${l.donationSubUserId}"></td>
 									<td th:text="${l.donationCode}"></td>
 									<td th:text="${l.donationPayMethodCode}"></td>
@@ -70,8 +103,7 @@
 						</table>
 					</div>
 						<div style="display: flex; justify-content: center;">
-						<button type="button" class="btn btn-primary" id="addBtn"
-								onclick="location.href='/admin/donation/donationSub_add'">등록하기</button></div>
+						<button type="submit" class="btn btn-primary" id="addBtn">등록하기</button></div>
 				</div>
 			</div>
 
@@ -101,5 +133,13 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#dataTable').DataTable({
+			"ordering" : false 
+		});
+		$('#addBtn').click(function(){
+			location.href='/admin/donation/donationSub_add';
+		});
+	</script>
 </th:block>
 </html>

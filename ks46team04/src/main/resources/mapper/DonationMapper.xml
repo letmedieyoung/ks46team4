@@ -14,6 +14,26 @@
 		<result column="regular_donation_update_id"			property="donationUpdateId"/>
 		<result column="regular_donation_update_date"		property="donationUpdateDate"/>
 	</resultMap>
+	
+	<resultMap type="Donation" id="DonationCodeResultMap">
+		<result column="regular_donation_code"		property="donationCode"/>
+	</resultMap>
+	
+	<resultMap type="DonationPayMethod" id="DonationPayMethodCodeResultMap">
+		<result column="regular_donation_auto_pm_code"		property="donationPayMethodCode"/>
+	</resultMap>
+	
+	<resultMap type="DonationSub" id="DonationSubCodeResultMap">
+		<result column="user_regular_donation_subscription_code"		property="donationSubCode"/>
+	</resultMap>
+	
+	<resultMap type="Payment" id="PaymentCodeResultMap">
+		<result column="pm_code"		property="paymentCode"/>
+	</resultMap>
+	
+	<resultMap type="DonationPayDetail" id="DonationPayDetailCodeResultMap">
+		<result column="regular_donation_payment_code"		property="donationPayDetailCode"/>
+	</resultMap>
 		
 	<select id="getDonation" resultMap="donationResultMap">
 		/*정기기부 단가 조회*/
@@ -27,17 +47,21 @@
 			, regular_donation_update_id
 			, regular_donation_update_date
 		FROM
-			regular_donation_unit_price;
+			regular_donation_unit_price
+		<where>
+			<if test="searchKey != null and searchKey != ''">
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>
+			ORDER BY CAST(SUBSTRING_INDEX(regular_donation_code, 'regular_donation', -1) AS unsigned) ASC;
 	</select>
 	
-	<insert id="addDonation" parameterType="Donation">
+	<insert id="addDonation" parameterType="Donation" >
 		/* 정기기부 단가 등록 */
 		INSERT INTO regular_donation_unit_price
-		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description,
-		regular_donation_reg_id, regular_donationr_reg_date, regular_donation_update_id, regular_donation_update_date)
+		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description, regular_donation_reg_id, regular_donationr_reg_date)
 		VALUES
-		(#{donationCode}, #{donationName}, #{donationPrice}, #{donationDescription},
-		 #{donationRegId}, #{donationRegDate}, #{donationUpdateId}, #{donationUpdateDate});		
+		(sf_new_donation_code(), #{donationName}, #{donationPrice}, #{donationDescription}, #{donationRegId}, SYSDATE());		
 	</insert>
 	
 	<select id="getDonationInfoByCode" parameterType="String" resultMap="donationResultMap">
@@ -70,11 +94,8 @@
 			<if test="donationDescription != null and donationDescription !=''">
 				,regular_donation_description = #{donationDescription}
 			</if>
-			<if test="donationDescription != null and donationDescription !=''">
-				,regular_donation_description = #{donationDescription}
-			</if>
 			, regular_donation_update_id = #{donationUpdateId}
-			, regular_donation_update_date = NOW()
+			, regular_donation_update_date = SYSDATE()
 		</set>
 		WHERE
 			regular_donation_code = #{donationCode};
@@ -94,23 +115,27 @@
 		SELECT 
 			regular_donation_auto_pm_code AS donationPayMethodCode
 			, user_id AS donationPayMethodUserId
-			, pm_code AS donationPayCode
+			, pm_code AS paymentCode
 			, regular_donation_payment_bank AS donationPayMethodBank
 			, regular_donation_payment_account AS donationPayMethodAccount
 			, regular_donation_payment_reg_date AS donationPayMethodRegDate
 			, regular_donation_payment_update_date AS donationPayMethodUpdateDate
 		FROM
-			donation_auto_pay_method;
+			donation_auto_pay_method
+		<where>
+			<if test="searchKey != null and searchKey != ''">
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>
+			ORDER BY CAST(SUBSTRING_INDEX(donationPayMethodCode, 'auto_payment', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationPayMethod" parameterType="DonationPayMethod">
 		/* 등록된 회원 결제수단 등록 */
 		INSERT INTO donation_auto_pay_method
-		(regular_donation_auto_pm_code, user_id, pm_code, regular_donation_payment_bank,
-		regular_donation_payment_account, regular_donation_payment_reg_date, regular_donation_payment_update_date)
+		(regular_donation_auto_pm_code, user_id, pm_code, regular_donation_payment_bank, regular_donation_payment_account, regular_donation_payment_reg_date)
 		VALUES
-		(#{donationPayMethodCode}, #{donationPayMethodUserId}, #{donationPayCode}, #{donationPayMethodBank},
-		 #{donationPayMethodAccount}, #{donationPayMethodRegDate}, #{donationPayMethodUpdateDate});		
+		(sf_new_donationPayMethod_code(), #{donationPayMethodUserId}, #{paymentCode}, #{donationPayMethodBank}, #{donationPayMethodAccount}, SYSDATE());		
 	</insert>
 	
 	<select id="getDonationPayMethodInfoByCode" resultType="DonationPayMethod" parameterType="String">
@@ -118,7 +143,7 @@
 		SELECT
 			regular_donation_auto_pm_code AS donationPayMethodCode
 			, user_id AS donationPayMethodUserId
-			, pm_code AS donationPayCode
+			, pm_code AS paymentCode
 			, regular_donation_payment_bank AS donationPayMethodBank
 			, regular_donation_payment_account AS donationPayMethodAccount
 			, regular_donation_payment_reg_date AS donationPayMethodRegDate
@@ -133,16 +158,14 @@
 		/* 등록된 회원 결제수단 수정 */
 		UPDATE donation_auto_pay_method
 		<set>
-			<if test="donationPayMethodUserId != null and donationPayMethodUserId !=''">
-				user_id = #{donationPayMethodUserId}
-			</if>
 			<if test="donationPayMethodBank != null and donationPayMethodBank !=''">
 				,regular_donation_payment_bank = #{donationPayMethodBank}
 			</if>
 			<if test="donationPayMethodAccount != null and donationPayMethodAccount !=''">
 				,regular_donation_payment_account = #{donationPayMethodAccount}
 			</if>
-				,regular_donation_payment_update_date = NOW()
+				,user_id = #{donationPayMethodUserId}
+				,regular_donation_payment_update_date = SYSDATE()
 		</set>
 		WHERE
 			regular_donation_auto_pm_code = #{donationPayMethodCode};
@@ -167,17 +190,21 @@
 			, user_regular_donation_subscription_start_date AS `donationSubStartDate`
 			, user_regular_donation_subscription_end_date AS `donationSubEndDate`
 		FROM
-			user_regular_donation_subscription;
+			user_regular_donation_subscription
+		<where>
+			<if test="searchKey != null and searchKey != ''">
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>
+			ORDER BY CAST(SUBSTRING_INDEX(donationSubCode, 'donation_subscription', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationSub" parameterType="DonationSub">
 		/* 정기기부 구독 신청 등록 */
 		INSERT INTO user_regular_donation_subscription
-		(user_regular_donation_subscription_code, user_id, regular_donation_code, regular_donation_auto_pm_code,
-		user_regular_donation_subscription_start_date, user_regular_donation_subscription_end_date)
+		(user_regular_donation_subscription_code, user_id, regular_donation_code, regular_donation_auto_pm_code, user_regular_donation_subscription_start_date)
 		VALUES
-		(#{donationSubCode}, #{donationSubUserId}, #{donationCode}, #{donationPayMethodCode},
-		 #{donationSubStartDate}, #{donationSubEndDate});		
+		(sf_new_donationSub_code(), #{donationSubUserId}, #{donationCode}, #{donationPayMethodCode}, #{donationSubStartDate});
 	</insert>
 	
 	<select id="getDonationSubInfoByCode" resultType="DonationSub" parameterType="String">
@@ -199,15 +226,13 @@
 		/* 정기기부 구독 신청 수정 */
 		UPDATE user_regular_donation_subscription
 		<set>
-			<if test="donationSubUserId != null and donationSubUserId !=''">
-				user_id = #{donationSubUserId}
-			</if>
 			<if test="donationSubStartDate != null and donationSubStartDate !=''">
 				,user_regular_donation_subscription_start_date = #{donationSubStartDate}
 			</if>
 			<if test="donationSubEndDate != null and donationSubEndDate !=''">
 				,user_regular_donation_subscription_end_date = #{donationSubEndDate}
 			</if>
+				,user_id = #{donationSubUserId}
 		</set>
 		WHERE
 			user_regular_donation_subscription_code = #{donationSubCode};
@@ -238,17 +263,23 @@
 			, regular_donation_sales_group AS `donationPaySalesGroup`
 			, user_regular_donation_deadline_check AS `donationPayDeadlineCheck`
 		FROM
-			user_regular_donation_payment;
+			user_regular_donation_payment
+		<where>
+			<if test="searchKey != null and searchKey != ''">
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>
+			ORDER BY CAST(SUBSTRING_INDEX(donationPayDetailCode, 'donation_payment', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationPayDetail" parameterType="DonationPayDetail">
 		/* 정기기부 구독 결제 상세 등록 */
 		INSERT INTO user_regular_donation_payment
-		(user_id, payment_amount, sales_commission, purchase_budget,user_regular_donation_payment_date
-		user_regular_donation_payment_refund_requested, user_regular_donation_deadline_check)
+		(regular_donation_payment_code, user_id, user_regular_donation_subscription_code, regular_donation_code, regular_donation_auto_pm_code, payment_amount, sales_commission, purchase_budget,
+		user_regular_donation_payment_date, user_regular_donation_payment_refund_requested, regular_donation_sales_group, user_regular_donation_deadline_check)
 		VALUES
-		(#{donationPayUserId}, #{donationPayAmount}, #{donationPaySalesCommission}, #{donationPayPurchaseBudget},
-		 #{donationPayDate}, #{donationPayRefundRequest},#{donationPayDeadlineCheck});		
+		(sf_new_donationPayDetail_code(), #{donationPayUserId}, #{donationSubCode}, #{donationCode}, #{donationPayMethodCode}, #{donationPayAmount}, #{donationPaySalesCommission}, #{donationPayPurchaseBudget},
+		#{donationPayDate}, #{donationPayRefundRequest}, #{donationPaySalesGroup}, #{donationPayDeadlineCheck});		
 	</insert>
 	
 	<select id="getDonationPayDetailInfoByCode" resultType="DonationPayDetail" parameterType="String">
@@ -276,9 +307,6 @@
 		/* 정기기부 구독 결제 상세 수정 */
 		UPDATE user_regular_donation_payment
 		<set>
-			<if test="donationPayUserId != null and donationPayUserId !=''">
-				user_id = #{donationPayUserId}
-			</if>
 			<if test="donationPayAmount != null and donationPayAmount !=''">
 				,payment_amount = #{donationPayAmount}
 			</if>
@@ -288,15 +316,13 @@
 			<if test="donationPayPurchaseBudget != null and donationPayPurchaseBudget !=''">
 				,purchase_budget = #{donationPayPurchaseBudget}
 			</if>
-			<if test="donationPayDate != null and donationPayDate !=''">
-				,user_regular_donation_payment_date = #{donationPayDate}
-			</if>
 			<if test="donationPayRefundRequest != null and donationPayRefundRequest !=''">
 				,user_regular_donation_payment_refund_requested = #{donationPayRefundRequest}
 			</if>
 			<if test="donationPayDeadlineCheck != null and donationPayDeadlineCheck !=''">
 				,user_regular_donation_deadline_check = #{donationPayDeadlineCheck}
 			</if>
+				,user_id = #{donationPayUserId}
 		</set>
 		WHERE
 			regular_donation_payment_code = #{donationPayDetailCode};
@@ -321,17 +347,21 @@
 			, total_payment_amount AS `donationMonthPayAmount`
 			, donation_monthly_deadline_group AS `donationMonthPayDeadlineGroup`
 		FROM
-			month_regular_donation_payment;
+			month_regular_donation_payment
+		<where>
+			<if test="searchKey != null and searchKey != ''">
+				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+			</if>		
+		</where>
+			ORDER BY CAST(SUBSTRING_INDEX(donationMonthPayCode, 'month_donation_payment', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationMonthPay" parameterType="DonationMonthPay">
 		/* 정기기부 월별 결제 합계 등록 */
 		INSERT INTO month_regular_donation_payment
-		(month_regular_donation_payment_code, regular_donation_code, payment_year, payment_month,
-		total_payment_amount, donation_monthly_deadline_group)
+		(month_regular_donation_payment_code, regular_donation_code, payment_year, payment_month, total_payment_amount, donation_monthly_deadline_group)
 		VALUES
-		(#{donationMonthPayCode}, #{donationCode}, #{donationMonthPayYear}, #{donationMonthPayMonth},
-		 #{donationMonthPayAmount}, #{donationMonthPayDeadlineGroup});		
+		(sf_new_donationMonthPay_code(), #{donationCode}, #{donationMonthPayYear}, #{donationMonthPayMonth}, #{donationMonthPayAmount}, #{donationMonthPayDeadlineGroup});		
 	</insert>
 	
 	<select id="getDonationMonthPayInfoByCode" resultType="DonationMonthPay" parameterType="String">
@@ -381,7 +411,7 @@
 	SELECT
 		regular_donation_payment_refund_code AS `donationRefundCode`
 		, user_id AS `donationRefundUserId`
-		, user_regular_donation_payment_code AS `donationPayCode`
+		, regular_donation_payment_code AS `donationPayDetailCode`
 		, regular_donation_refund_request_date AS `donationRefundRequestDate`
 		, regular_donation_refund_request_amount AS `donationRefundRequestAmount`
 		, regular_donation_refund_request_reason AS `donationRefundRequestReason`
@@ -395,28 +425,32 @@
 		, regular_donation_refund_update_id AS `donationRefundUpdateId`
 		, regular_donation_refund_update_date AS `donationRefundUpdateDate`
 	FROM
-		regular_donation_payment_refund;
+		regular_donation_payment_refund
+	<where>
+		<if test="searchKey != null and searchKey != ''">
+			${searchKey} LIKE CONCAT('%', #{searchValue},'%')
+		</if>		
+	</where>
+		ORDER BY CAST(SUBSTRING_INDEX(donationRefundCode, 'donation_payment_refund', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationRefund" parameterType="DonationRefund">
 		/* 정기기부 환불 등록 */
 		INSERT INTO regular_donation_payment_refund
-		(regular_donation_payment_refund_code, user_id, user_regular_donation_payment_code, regular_donation_refund_request_date,
+		(regular_donation_payment_refund_code, user_id, regular_donation_payment_code, regular_donation_refund_request_date,
 		regular_donation_refund_request_amount, regular_donation_refund_request_reason, regular_donation_refund_bank_name,
-		regular_donation_refund_account, regular_donation_refund_status, regular_donation_refund_approval_date, regular_donation_refund_rejection_date,
-		regular_donation_refund_reg_id, regular_donation_refund_reg_date, regular_donation_refund_update_id, regular_donation_refund_update_date)
+		regular_donation_refund_account, regular_donation_refund_status, regular_donation_refund_reg_id, regular_donation_refund_reg_date)
 		VALUES
-		(#{donationRefundCode}, #{donationRefundUserId}, #{donationPayCode}, #{donationRefundRequestDate},
-		 #{donationRefundRequestAmount}, #{donationRefundRequestReason}, #{donationRefundBank}, #{donationRefundAccount}, #{donationRefundStatus},
-		 #{donationRefundApprovalDate}, #{donationRefundRejectionDate}, #{donationRefundRegId}, #{donationRefundRegDate}, #{donationRefundUpdateId}, #{donationRefundUpdateDate});		
+		(sf_new_donationRefund_code(), #{donationRefundUserId}, #{donationPayDetailCode}, #{donationRefundRequestDate}, #{donationRefundRequestAmount},
+		#{donationRefundRequestReason}, #{donationRefundBank}, #{donationRefundAccount}, #{donationRefundStatus}, #{donationRefundRegId}, SYSDATE());		
 	</insert>
 	
 	<select id="getDonationRefundInfoByCode" resultType="DonationRefund" parameterType="String">
 		/* 특정 정기기부 환불 조회*/
 		SELECT
-			regular_donation_payment_refund_code AS `donationRefundCode`
+		regular_donation_payment_refund_code AS `donationRefundCode`
 		, user_id AS `donationRefundUserId`
-		, user_regular_donation_payment_code AS `donationPayCode`
+		, regular_donation_payment_code AS `donationPayDetailCode`
 		, regular_donation_refund_request_date AS `donationRefundRequestDate`
 		, regular_donation_refund_request_amount AS `donationRefundRequestAmount`
 		, regular_donation_refund_request_reason AS `donationRefundRequestReason`
@@ -460,14 +494,8 @@
 			<if test="donationRefundRejectionDate != null and donationRefundRejectionDate !=''">
 				,regular_donation_refund_rejection_date  = #{donationRefundRejectionDate}
 			</if>
-			<if test="donationRefundRegId != null and donationRefundRegId !=''">
-				,regular_donation_refund_reg_id  = #{donationRefundRegId}
-			</if>
-			<if test="donationRefundRegDate != null and donationRefundRegDate !=''">
-				,regular_donation_refund_reg_date  = #{donationRefundRegDate}
-			</if>
 				,regular_donation_refund_update_id  = #{donationRefundUpdateId}
-				,regular_donation_refund_update_date  = NOW()
+				,regular_donation_refund_update_date  = SYSDATE()
 		</set>
 		WHERE
 			regular_donation_payment_refund_code = #{donationRefundCode};
@@ -481,4 +509,48 @@
 		WHERE 
 			regular_donation_payment_refund_code = #{donationRefundCode};		
 	</delete>
+	
+	<select id="getdonationCode" resultMap="DonationCodeResultMap">
+		/*  DonationCode 값 가져오기 */
+		SELECT 
+			regular_donation_code
+		FROM
+			regular_donation_unit_price
+		ORDER BY CAST(SUBSTRING_INDEX(regular_donation_code, 'regular_donation', -1) AS unsigned) ASC;
+	</select>
+	
+	<select id="getdonationPayMethodCode" resultMap="DonationPayMethodCodeResultMap">
+		/*  DonationPayMethodCode 값 가져오기 */
+		SELECT 
+			regular_donation_auto_pm_code
+		FROM
+			donation_auto_pay_method
+		ORDER BY CAST(SUBSTRING_INDEX(regular_donation_auto_pm_code, 'auto_payment', -1) AS unsigned) ASC;
+	</select>
+	
+	<select id="getdonationSubCode" resultMap="DonationSubCodeResultMap">
+		/*  DonationSubCode 값 가져오기 */
+		SELECT 
+			user_regular_donation_subscription_code
+		FROM
+			user_regular_donation_subscription
+		ORDER BY CAST(SUBSTRING_INDEX(user_regular_donation_subscription_code, 'donation_subscription', -1) AS unsigned) ASC;
+	</select>
+	
+	<select id="getpaymentCode" resultMap="PaymentCodeResultMap">
+		/*  PaymentCode 값 가져오기 */
+		SELECT 
+			pm_code
+		FROM
+			payment_method;
+	</select>
+
+	<select id="getdonationPayDetailCode" resultMap="DonationPayDetailCodeResultMap">
+		/*  DonationPayDetailCode 값 가져오기 */
+		SELECT 
+			regular_donation_payment_code
+		FROM
+			user_regular_donation_payment
+		ORDER BY CAST(SUBSTRING_INDEX(regular_donation_payment_code, 'donation_payment', -1) AS unsigned) ASC;
+	</select>
 </mapper>

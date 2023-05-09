@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	
+</head>
+
+	<div th:fragment="modalFragment">
+		<form th:action="@{/detail/funding2}" method="get">
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-bs-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			    <div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">펀딩 참여 전 확인하세요!</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						결제가 진행된 이후에는 단순 변심으로 인한 취소나 환불이 어려울 수 있습니다.
+					</div>
+					<div class="modal-footer">						
+						<button type="button" class="btn btn-primary">결제하기</button>						        
+					</div>
+			    </div>
+			</div>					
+		</div>
+		</form>
+	</div>
+	
+</html>

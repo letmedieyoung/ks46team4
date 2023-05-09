@@ -1,5 +1,6 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,12 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.ActivityStatus;
 import ks46team04.admin.dto.LoginLog;
@@ -103,63 +107,64 @@ public class UserController {
 
 		return "admin/user/userLevel";
 	}
-
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/admin/user/login";
-	}
-
-	@PostMapping("/login")
-	public String login(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
-			HttpSession session, RedirectAttributes reAttr) {
-		String redirect = "redirect:/view/user/login";
-		Map<String, Object> loginResultMap = userService.loginCheck(userId, userPw);
-		boolean loginCheck = (boolean) loginResultMap.get("loginCheck");
-		if (loginCheck) {
-			User userInfo = (User) loginResultMap.get("userInfo");
-			String userName = userInfo.getUserName();
-			String userLevel = userInfo.getUserLevel();
-			session.setAttribute("SID", userId);
-			session.setAttribute("SLEVEL", userLevel);
-			session.setAttribute("SNAME", userName);
-			redirect = "redirect:/";
-		} else {
-			reAttr.addAttribute("result", "일치하는 회원의 정보가 없습니다.");
-		}
-
-		return redirect;
-	}
-
-	@GetMapping("/login")
-	public String login(Model model, @RequestParam(name = "result", required = false) String result) {
-
-		model.addAttribute("title", "로그인");
-		if (result != null)
-			model.addAttribute("result", result);
-
-		return "admin/user/login";
-	}
+	/*
+	 * @GetMapping("/logout") public String logout(HttpSession session) {
+	 * session.invalidate(); return "redirect:/admin/user/login"; }
+	 * 
+	 * @PostMapping("/login") public String login(@RequestParam(name = "userId")
+	 * String userId, @RequestParam(name = "userPw") String userPw, HttpSession
+	 * session, RedirectAttributes reAttr) { String redirect =
+	 * "redirect:/view/user/login"; Map<String, Object> loginResultMap =
+	 * userService.loginCheck(userId, userPw); boolean loginCheck = (boolean)
+	 * loginResultMap.get("loginCheck"); if (loginCheck) { User userInfo = (User)
+	 * loginResultMap.get("userInfo"); String userName = userInfo.getUserName();
+	 * String userLevel = userInfo.getUserLevel(); session.setAttribute("SID",
+	 * userId); session.setAttribute("SLEVEL", userLevel);
+	 * session.setAttribute("SNAME", userName); redirect = "redirect:/"; } else {
+	 * reAttr.addAttribute("result", "일치하는 회원의 정보가 없습니다."); }
+	 * 
+	 * return redirect; }
+	 * 
+	 * @GetMapping("/login") public String login(Model model, @RequestParam(name =
+	 * "result", required = false) String result) {
+	 * 
+	 * model.addAttribute("title", "로그인"); if (result != null)
+	 * model.addAttribute("result", result);
+	 * 
+	 * return "admin/user/login"; }
+	 */
 
 	@PostMapping("/removeUser")
-	public String removeUser(@RequestParam(name = "userId") String userId,
-			@RequestParam(name = "userPw") String userPw) {
-
-		String redirectURI = "redirect:/user/removeUser?userId=" + userId;
-		// 비밀번호 확인
-		User user = userService.getUserInfoById(userId);
-		if (user != null) {
-			String checkPw = user.getUserPw();
-
-			if (checkPw.equals(userPw)) {
-				// 서비스 호출
-				userService.removeUser(userId);
-				redirectURI = "redirect:/admin/user/userList";
-			}
-		}
-
-		return redirectURI;
+	public String removeUser(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
+			RedirectAttributes redirectAttributes) {
+		
+		 // 비밀번호 검사
+	    if (userService.pwCheck(userId, userPw)) {
+	        // 삭제 작업
+	        userService.removeUser(userId, userPw);
+	        redirectAttributes.addFlashAttribute("message", "삭제 성공");
+	        return "redirect:/admin/user/userList";
+	    } else {
+	        redirectAttributes.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+	        redirectAttributes.addFlashAttribute("removeFailure", true); // 삭제 실패 여부 추가
+	        return "redirect:/admin/user/removeUser?userId=" + userId;
+	    }
 	}
+	
+	@PostMapping("/pwCheck")
+	@ResponseBody
+	public boolean pwCheck(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw) {
+
+	    User user = userMapper.getUserInfoById(userId);
+	    if (user != null) {
+	        String checkPw = user.getUserPw();
+	        if (checkPw.equals(userPw)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
 
 	@GetMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId, Model model) {
@@ -169,13 +174,17 @@ public class UserController {
 
 		return "admin/user/removeUser";
 	}
-
+	
+	
 	@PostMapping("/modifyUser")
-	public String modifyUser(User user) {
-
-		userMapper.modifyUser(user);
-
-		return "redirect:/user/userList";
+	@ResponseBody
+	public Map<String, Object> modifyUser(@ModelAttribute User user) {
+	    // 회원 정보 수정 처리 코드
+	    boolean success = userService.modifyUser(user);
+	    // 처리 결과 반환
+	    Map<String, Object> modifyResultMap = new HashMap<>();
+	    modifyResultMap.put("success", success);
+	    return modifyResultMap;
 	}
 
 	@GetMapping("/modifyUser")

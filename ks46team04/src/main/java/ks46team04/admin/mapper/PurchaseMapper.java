@@ -11,4 +11,9 @@ public interface PurchaseMapper {
 	
 	public List<Purchase> getTotalPurchaseList();
 
+	public int addPurchase(Purchase purchase);
+	
+	public Purchase getPurchaseByCode(String purchaseCode, String goodsCode);
+
+	public int modifyPurchase(Purchase purchase);
 }

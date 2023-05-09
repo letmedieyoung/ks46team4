@@ -11,112 +11,113 @@
 <th:block layout:fragment="customContents">
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-
+<p> **회원이 신청하면 그 폼 가져와서 처리상태 등록하면 등록자, 등록일자 포함된 리스트로 조회</p>
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">정기기부 환불 등록</h1>
-		<p class="mb-4">
-			회원이 작성한 환불 문의폼에서 곧장
-			승인/반려 버튼을 통하여 해당 페이지로 이동<br> 아이디는 환불폼 작성자 아이디가 자동으로 끌려옴<br>
-			하나의 결제 건에 해당하여 환불 가능. 부분 환불 불가능.<br>
-			회원 결제 조회 -> 하나의 결제 옆 환불 신청 버튼 -> 회원 환불폼 -> 환불폼 조회 -> 환불 처리 등록 -> 전체 환불 조회
-		</p>
-
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">정기기부 환불 등록</h6>
+				<h5 class="m-0 font-weight-bold text-gray-800">환불 요청 확인</h5>
 			</div>
 			<div class="card-body">
-				<br>
-
-				<!-- 등록 테이블 -->
-				<form>
-					<div class="table-responsive">
-						<table class="table table-bordered search-table"
-							id="searchdataTable" width="100%" cellspacing="0">
+				<div class="table-responsive">
+					<form th:action="@{/admin/donation/donationRefund_add}"
+						method="POST" id="addDonationRefundForm"
+						name="addDonationRefundForm">
+						<table class="table table-bordered freg" id="addDonationRefund" width="100%" cellspacing="0">
 							<tbody>
 								<tr>
-									<th class="bg-gray-100">회원 아이디</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
+									<th>회원 아이디</th>
+									<td><input type="text" id="donationRefundUserId" name="donationRefundUserId" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">요청 일자</th>
-									<td><input type="date"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
+									<th>결제 상세 코드</th>
+									<td>
+									<select id="donationPayDetailCode" name="donationPayDetailCode" style="width: 400px;">
+											<th:block th:unless="${donationPayDetailCode == null}" th:each="l : ${donationPayDetailCode}">
+												<option th:value="${l.donationPayDetailCode}">[[${l.donationPayDetailCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayDetailCode == null}">
+												<option>등록된 결제 상세 코드 정보가 없습니다.</option>
+											</th:block>
+									</select>
+									</td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">해당<br>결제 건
-									</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
+									<th>요청일자</th>
+									<td><input type="datetime-local" id="donationRefundRequestDate" name="donationRefundRequestDate" style="width: 400px;" /></td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">금액</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search" readonly="readonly"></td>
-								</tr>
-
-								<tr>
-									<th class="bg-gray-100">은행명</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
+									<th>요청금액</th>
+									<td><input type="number" id="donationRefundRequestAmount" name="donationRefundRequestAmount" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /><span>원</span></td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">환불 계좌</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-search"></td>
-								</tr>
-
-								<tr>
-									<th class="bg-gray-100">요청 사유</th>
-									<td><input type="text"
-										class="form-control form-control-user-search"
-										id="purchase-insert"></td>
+									<th>요청사유</th>
+									<td><input type="text" id="donationRefundRequestReason" name="donationRefundRequestReason" 
+										style="width: 400px; height: 200px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100">요청 처리</th>
-									<td><select
-										class="dropdown btn btn-primary dropdown-toggle"
-										id="dropdownMenuButton" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="false">
-											<option value="option1">:: 요청 처리 분류 ::</option>
-											<option value="option2">승인</option>
-											<option value="option2">반려</option>
+									<th>은행명</th>
+									<td><input type="text" id="donationRefundBank" name="donationRefundBank" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
+								</tr>
+								<tr>
+									<th>계좌번호</th>
+									<td><input type="text" id="donationRefundAccount" name="donationRefundAccount" 
+										style="width: 400px;" placeholder="유저 신청에서 값 가져오기 리드온리" /></td>
+								</tr>
+								<tr>
+									<th>요청처리</th>
+									<td><select id="donationRefundStatus" name="donationRefundStatus">
+											<option value="환불 전">환불 전</option>
+											<option value="환불 완료">환불 완료</option>
 									</select></td>
+								</tr>
+								<tr>
+									<td colspan="3"> <div style="display: flex; justify-content: center;">
+										<button type="button" class="btn btn-primary" id="addBtn">신청</button> &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button> </div>
+									</td>
 								</tr>
 							</tbody>
 						</table>
-					</div>
-				</form>
-				<div class="mx-auto" style="width: 230px;">
-					<button type="submit" class="btn btn-primary">
-						<span class="text text-gray-100">요청 처리</span>
-					</button>
-					<button type="reset" class="btn btn-primary"
-						style="margin-left: 10px;">
-						<span class="text text-gray-100">취소</span>
-					</button>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- container-fluid -->
+		<!-- container-fluid -->
 </th:block>
 
 <!-- 사용자정의 Js 페이지 -->
 <th:block layout:fragment="customJs">
 	<!-- Page level plugins -->
-	<script th:src="@{../../vendor/datatables/jquery.dataTables.min.js}"></script>
-	<script
-		th:src="@{../../vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
 
 	<!-- Page level custom scripts -->
-	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$(document).on('click','#addBtn', function(){
+			const addDonationRefundForm = $('#addDonationRefundForm');
+			const addDonationFormInputs = addDonationRefundForm.find('input');
+			let isSubmit = true;
+			$(addDonationFormInputs).each((idx, item) => {
+				let validationCheck = $(item).parents('tr').children().eq(0).text();
+				let validationValue = $(item).val();
+				if(typeof validationValue == 'undefined' || validationValue == null || validationValue == ''){
+					alert(`${validationCheck} 필수 입력 항목입니다.`);
+					$(item).focus();
+					isSubmit = false;
+					return false;
+				}
+			});
+			if(isSubmit) addDonationRefundForm.submit();
+		})
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationRefund_list';
+		});
+	</script>
 </th:block>
 </html>
