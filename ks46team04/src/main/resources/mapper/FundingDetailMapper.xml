@@ -2,25 +2,67 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="ks46team04.admin.mapper.FundingDetailMapper">
-	
-
-<!-- FundingDetail 등록 
-	<insert id="createFundingDetail" parameterType="FundingDetail">
-		INSERT INTO funding_detail
-		(funding_code, funding_name, funding_foundation, funding_goal_amount, funding_start_date, funding_end_date)
-		VALUES(#{fundingCode}, #{fundingName}, #{foundationName}, #{fundingGoalAmount}, #{fundingStartDate}, #{fundingEndDate})
-	</insert>
-
-	FundingDetail 조회
-	<select id="getFundingDetailInfoByCode" parameterType="String" resultMap="fundingDetailResultMap">
+  <mapper namespace="ks46team04.admin.mapper.FundingDetailMapper">
+  
+  
+  
+  
+  
+	<select id="getFundingDetailList" resultType="FundingDetail">
+		/* 펀딩 진열 */
 		SELECT
-			*
+			f.funding_code		  				AS fundingCode,
+			f.funding_name		  				AS fundingName,
+			f.funding_foundation 				AS foundationName,			
+			f.funding_goal_amount 				AS fundingGoalAmount,	
+			f.funding_start_date  				AS fundingStartDate,			
+			f.funding_end_date	  				AS fundingEndDate,
+			f.funding_progress 	  				AS fundingProgress,
+			g.goods_name		  				AS goodsName,
+			fc.funding_current_achieved_amount 	AS achievedAmount
 		FROM
-			funding_detail
-		WHERE funding_code = #{fundingCode}
-	</select> -->
- 
-
-</mapper>
+			each_funding_info AS f
+			LEFT JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code
+			LEFT JOIN
+			funding_current_amount AS fc ON f.funding_code = fc.funding_code;	
+	</select>
+	
+	
+	<select id="getFundingDetailByCode" resultType="FundingDetail">
+		/* 펀딩 상세페이지 */
+		SELECT
+		    f.funding_code AS fundingCode,
+		    f.funding_name AS fundingName,
+		    f.funding_description AS fundingDescription,
+		    f.funding_foundation AS foundationName,
+		    f.funding_goal_amount AS fundingGoalAmount,
+		    f.funding_start_date AS fundingStartDate,
+		    f.funding_end_date AS fundingEndDate,
+		    f.funding_progress AS fundingProgress,
+		    g.goods_name AS goodsName,
+		    fc.funding_current_achieved_amount AS achievedAmount
+	 	FROM
+		    each_funding_info AS f
+		    LEFT JOIN goods_reg_info AS g ON f.goods_code = g.goods_code
+		    LEFT JOIN funding_current_amount AS fc ON f.funding_code = fc.funding_code
+	  	WHERE
+	    	f.funding_code = #{fundingCode}
+	</select>
+  
+	<select id="accomplishmentRate" resultType="String">
+		/* 펀딩 달성률 */ 
+		SELECT			
+			TRUNCATE((SUM(fc.funding_current_achieved_amount) / SUM(fc.funding_goal_amount)) * 100, 0) AS accomplishmentRate
+		FROM
+			funding_current_amount AS fc
+			JOIN
+			each_funding_info AS ef
+		WHERE
+			fc.funding_code = ef.funding_code
+   			AND fc.funding_code = #{fundingCode}
+		GROUP BY
+			funding_current_amount_code;	
+	</select>
+  </mapper>
+  

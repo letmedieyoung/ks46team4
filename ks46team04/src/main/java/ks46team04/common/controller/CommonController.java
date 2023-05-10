@@ -22,6 +22,7 @@ import ks46team04.admin.dto.ActivityStatus;
 import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.User;
 import ks46team04.admin.dto.UserLevel;
+import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.mapper.UserMapper;
 import ks46team04.admin.service.FundingService;
 import ks46team04.admin.service.UserService;
@@ -33,14 +34,16 @@ public class CommonController {
 	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
 	private final FundingService fundingService;
+	private final FundingMapper fundingMapper;
 	private final UserService userService;
 	private final UserMapper userMapper;
 
 	public CommonController(UserService userService, UserMapper userMapper,
-							FundingService fundingService) {
+							FundingService fundingService, FundingMapper fundingMapper) {
 		this.userService = userService;
 		this.userMapper = userMapper;
-		this.fundingService = fundingService;	
+		this.fundingService = fundingService;
+		this.fundingMapper = fundingMapper;
 	}
 
 		@GetMapping("/funding_index")
@@ -53,9 +56,11 @@ public class CommonController {
 		public String getFundingList(Model model) {
 			
 			List<Funding> fundingList = fundingService.getFundingList();
+			String accomplishmentRate = fundingMapper.accomplishmentRate();
 			
-			model.addAttribute("title", "펀딩 관리");
+			model.addAttribute("title", "펀딩");
 			model.addAttribute("fundingList", fundingList);
+			model.addAttribute("accomplishmentRate", accomplishmentRate);
 			
 			return "common/funding/list";
 		}

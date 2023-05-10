@@ -29,7 +29,9 @@
 								</li>
 								<li>
 									최종수정일 :
-									<input type="text" id="fundingUpdateDate" th:value="*{fundingUpdateDate}" name="fundingUpdateDate" style="border:none;" disabled="disabled"></input>			
+									<input type="text" id="fundingUpdateDate" th:value="*{fundingUpdateDate}" name="fundingUpdateDate" style="border:none;" disabled="disabled"></input>
+									수정자 아이디 :
+									<input type="text" id="fundingUpdateId" th:value="*{fundingUpdateId}" name="fundingUpdateId" style="border:none;" disabled="disabled"></input>		
 								</li>										
 							</ul>										
 						</div>						
@@ -62,7 +64,7 @@
 									</th>
 				                	<td>
 				                        <div class="fundingDescription form-row align-items-center search-schedule">
-				                        	<textarea class="form-control" id="fundingDescription" th:value="*{fundingDescription}"name="fundingDescription"></textarea>
+				                        	<textarea id="fundingDescription" th:text="*{fundingDescription}" name="fundingDescription"></textarea>
 				                    	</div>
 				                	</td>
 			            		</tr>				  
@@ -153,7 +155,7 @@
 									</th>
 		                        	<td>														
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId" class="form-control form-control-user-search search-input" />					
+											<input type="text" id="fundingRegId" th:value="*{fundingUpdateId}" name="fundingRegId" class="form-control form-control-user-search search-input" readonly="readonly"/>					
 										</div>								
 									</td>
 		                        </tr>								
