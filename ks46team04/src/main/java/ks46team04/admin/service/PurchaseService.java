@@ -37,7 +37,7 @@ public class PurchaseService {
 			boolean isGoodsDel = item.isGoodsIsDel();
 			if(isGoodsDel == true) {
 				String goodsName = item.getGoodsName();
-				goodsName = goodsName + " (현재 삭제된 상품)";
+				goodsName = goodsName + " (삭제 상품)";
 				item.setGoodsName(goodsName);
 			}
 		}

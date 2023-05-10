@@ -63,7 +63,7 @@
 											<select class="dropdown btn btn-primary required-form" id="goodsName" name="goodsCode">
 													<option>:: 상품명 ::</option>
 													<th:block th:unless="${goodsList == null}" th:each="l: ${goodsList}">
-														<option th:value="${l.goodsCode}" th:with="goodsPriceVal=${l.goodsPrice}" th:text="${l.goodsName}"></option>
+														<option th:value="${l.goodsCode}" th:text="${l.goodsName}"></option>
 													</th:block>
 											</select>
 										</div>
@@ -157,6 +157,7 @@
 		} 
 			
 		
+		
 		//단가 유효성 검사-------------------------
 		$('#purchasePrice').on('blur', function(){
 			const $purchasePriceEle = $('#purchasePrice');
@@ -235,9 +236,19 @@
 		
 		//select 상품명 옵션을 선택하면 해당 상품의 가격이 단가 폼에 반영-------------------------
 		$('#goodsName').change(function(){
-			let selectPrice = $('#selectPrice').val();
-			console.log(selectPrice);
-			$('#purchasePrice').val(selectPrice);
+			let goodsCode = $('#goodsName').val();
+			console.log(goodsCode);
+			
+			$.ajax({
+				url: '/admin/purchase_sale/purchase_price',
+				method: 'GET',
+				data:{'goodsCode': goodsCode},
+				dataType: 'text',
+				success: function(data){
+					let formattedPrice = data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+					$('#purchasePrice').val(formattedPrice);	
+				}
+			});
 		});
 		
 		
