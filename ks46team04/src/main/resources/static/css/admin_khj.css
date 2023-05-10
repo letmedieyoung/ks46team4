@@ -9,6 +9,11 @@ select:focus {
 	outline: none;
 }
 
+.fundingDetailSummary_number {
+	font-size: 27px;
+    font-weight: 800;
+}
+
 #goodsCode{
 	width: 140px;
 	text-align: center;

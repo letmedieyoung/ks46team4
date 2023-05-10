@@ -3,26 +3,40 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default2}">
 <head>
-	<link rel="stylesheet" type="text/css" href="@{/resources/static/css/style.css}"></link>
-	<link rel="stylesheet" type="text/css" href="@{/resources/static/css/admin_khj.css}"></link>
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/static/css/style.css}"></link>
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/static/css/admin_khj.css}"></link>
  
 </head>
 
 <th:block layout:fragment="customContents2">
 
-<!-- open_funding_area_start  -->
-	<div class="popular_causes_area section_padding">
-		<div class="container">
-			<div class="row justify-content-center">
+	<!-- bradcam_area_start  -->
+    <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Causes</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bradcam_area_end  -->
+
+    <!-- popular_causes_area_start  -->
+    <div class="popular_causes_area pt-120">
+        <div class="container">
+        	<div class="row justify-content-center">
 				<div class="col-lg-6">
 					<div class="section_title text-center mb-55">
 						<h3>
-							<span></span>
+							<span>펀딩</span>
 						</h3>
 					</div>
 				</div>
 			</div>
-			<div id="funding_select">
+        	<div id="funding_select">
 				<select class="funding_select nice-select">
 					<option>전체</option>
 					<option>진행중</option>
@@ -30,37 +44,38 @@
 				</select>
 			</div>
 			<br>
-			<div class="row" >
-				<div class="col-lg-12">
-					<div class="causes_active owl-carousel">
-						<div class="single_cause" th:unless="${fundingList == null}" th:each="l : ${fundingList}" >
-						    <div class="thumb">
-						        <img th:src="@{https://images.unsplash.com/photo-1448301566816-a036b4240d58?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80}" alt="funding1_thumbnailImg">
-						    </div>
-						    <div class="causes_content">
-						        <div class="custom_progress_bar">
-						            <div class="progress">
-						                <div class="progress-bar" role="progressbar" style="width: 59%;" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100">
-						                    <span class="progres_count" th:text="${accomplishmentRate}"></span>
-						                </div>
-						            </div>
-						        </div>
-						        <div class="balance d-flex justify-content-between align-items-center">
-						            <span th:text="${acheivedAmount}+'원'"></span>
-						            <span th:text="|${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}원 목표|"></span> 
-						        </div>						       
-						        <p th:text="${l.fundingProgress}"></p>
-						        <h4 th:text="${l.fundingName}"></h4>
-						        <p th:text="${l.foundationName}"></p>
-						        <a class="read_more" th:href="@{/common/detail/(fundingCode=${l.fundingCode})}">더보기</a>
-						    </div>
-						</div>							
-					</div>
-				</div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6" th:unless="${fundingList == null}" th:each="l : ${fundingList}">
+                    <div class="single_cause">
+                        <div class="thumb">
+                            <img th:src="@{https://images.unsplash.com/photo-1448301566816-a036b4240d58?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80}" alt="funding1_thumbnailImg">
+                        </div>
+                        <div class="causes_content">
+                            <div class="custom_progress_bar">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                        <span class="progres_count">
+                                            [[${accomplishmentRate}]]
+                                        </span>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="balance d-flex justify-content-between align-items-center">
+					            <span>펀딩모금액</span>
+					            <span th:text="|${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}원|"></span> 
+						    </div>						       
+					        <p th:text="${l.fundingProgress}"></p>
+					        <h4 th:text="${l.fundingName}"></h4>
+					        <p th:text="${l.foundationName}"></p>
+					        <a class="read_more" th:href="@{/common/detail/fundingView(fundingCode=${l.fundingCode})}">더보기</a>	
+                        </div>
+                    </div>
+                </div>
+       
+  
 			</div>
 		</div>
 	</div>
-	<!-- open_funding_area_end  -->
-
+	
 </th:block>
 </html>
