@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
@@ -55,6 +56,17 @@ public class PurchaseController {
 		return "admin/purchase_sale/purchase_insert";
 	}
 	
+	@GetMapping("/purchase_price")
+	@ResponseBody
+	public String getGoodsPrice(@RequestParam(name="goodsCode") String goodsCode) {
+		log.info("goodsCode: {}", goodsCode);
+		Goods goodsInfo = goodsMapper.getGoodsInfoByCode(goodsCode);
+		log.info("goodsInfo: {}", goodsInfo);
+		String goodsPrice = goodsInfo.getGoodsPrice();
+		
+		return goodsPrice;
+	}
+	
 	@PostMapping("/purchase_insert")
 	public String addPurchase(Purchase purchase, HttpSession session) {
 		log.info("purchaseC1: {}", purchase);
@@ -98,7 +110,7 @@ public class PurchaseController {
 	@GetMapping("/purchase_delete")
 	public String DeletePuchase(Model model) {
 		
-		return "admin/purchase_sale/purchase_delete";
+		return "redirect:/admin/purchase_sale/purchase_list";
 	}
 	
 }
