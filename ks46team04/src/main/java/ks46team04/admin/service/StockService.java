@@ -75,15 +75,6 @@ public class StockService {
 	}
 	
 	/**
-	 * 특정 상품 출고 상세정보 조회
-	 * @return
-	 */
-	public OutcomingDetail getOutcomingDetailInfoByCode(String outcomingDetailCode){
-		OutcomingDetail outcomingDetailInfo = stockMapper.getOutcomingDetailInfoByCode(outcomingDetailCode);
-		return outcomingDetailInfo;
-	}
-	
-	/**
 	 * 상품 입출고 삭제
 	 * @param valueArr
 	 */
@@ -102,6 +93,15 @@ public class StockService {
 	}
 	
 	/**
+	 * 특정 상품 출고 상세정보 조회
+	 * @return
+	 */
+	public OutcomingDetail getOutcomingDetailInfoByCode(String outcomingDetailCode){
+		OutcomingDetail outcomingDetailInfo = stockMapper.getOutcomingDetailInfoByCode(outcomingDetailCode);
+		return outcomingDetailInfo;
+	}
+	
+	/**
 	 * 특정 상품 입출고 조회
 	 * @param inOutcomingCode
 	 * @return
@@ -109,6 +109,16 @@ public class StockService {
 	public InOutcoming getInOutcomingInfoByCode(String inOutcomingCode) {
 		InOutcoming inOutcomingInfo = stockMapper.getInOutcomingInfoByCode(inOutcomingCode);
 		return inOutcomingInfo;
+	}
+	
+	/**
+	 * 상품 출고 상세정보 등록
+	 * @param outcomingDetail
+	 * @return
+	 */
+	public int addOutcomingDetail(OutcomingDetail outcomingDetail) {
+		int result = stockMapper.addOutcomingDetail(outcomingDetail);
+		return result;
 	}
 	
 	/**

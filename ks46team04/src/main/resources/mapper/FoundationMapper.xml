@@ -92,11 +92,11 @@
 	<insert id="addFoundationRequest" parameterType="FoundationRequest">
 		/* 재단 요청사항 등록 */
 		INSERT INTO foundation_request
-			(foundation_request_code, foundation_code, foundation_name, content_category, request_goods_name, initial_goods_amount,
-				delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
+			(foundation_request_code, foundation_code, foundation_name, content_category, request_goods_name,
+			 initial_goods_amount, delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
 		VALUES 
-			(sf_new_foundation_request_code(), sf_return_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName}, #{initialGoodsAmount}, #{deliveryRequestDate}, 
-				#{requestRegId}, NOW(), #{requestProgressStatus});
+			(sf_new_foundation_request_code(), sf_get_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName},
+			 #{initialGoodsAmount}, #{deliveryRequestDate}, #{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
 	<select id="getFoundationRequestList" resultMap="foundationRequestResultMap">

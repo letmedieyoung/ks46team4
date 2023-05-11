@@ -147,7 +147,7 @@
 					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
 						<span class="text">선택삭제</span>
 					</button>
-					<a href="/admin/goods/add_goods" class="btn btn-secondary btn-icon-split">
+					<a href="/admin/stock/add_in_outcoming" class="btn btn-secondary btn-icon-split">
 						<span class="text">입/출고등록</span>
 					</a>
 					<br><br>
@@ -161,7 +161,7 @@
 								<th>제조번호</th>
 								<th>제조사</th>
 								<th>입/출고 분류</th>
-								<th>입/출고수량</th>
+								<th>입/출고 수량</th>
 								<th>입/출고일</th>
 								<th>출고 재단명</th>
 								<th>등록/수정일</th>
@@ -183,10 +183,7 @@
 											<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
 											<td th:text="${l.inOutcomingQuantity}"></td>
 											<td th:text="${l.inOutcomingDate}"></td>
-											<th:block>
-												<td th:if="${l.foundationInfo == null}">해당없음</td>
-												<td th:unless="${l.foundationInfo == null}" th:each="fl : ${l.foundationInfo}" th:text="${fl.foundationName}"></td>
-											</th:block>
+											<td th:text="${l.foundationInfo == null ? '해당없음' : l.foundationInfo.foundationName}"></td>
 											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
 											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
 											<td>

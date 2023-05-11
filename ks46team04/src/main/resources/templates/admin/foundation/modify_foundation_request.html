@@ -71,7 +71,7 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="content(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="contentCate(this.value)">
 													<option value="">:: 콘텐츠 분류 ::</option>
 													<option th:selected="*{contentCategory} == '펀딩'" >펀딩</option>
 													<option th:selected="*{contentCategory} == '정기 후원'" >정기 후원</option>
@@ -133,7 +133,7 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="status(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="requestStatus(this.value)">
 													<option value="">:: 진행현황 ::</option>
 														<option th:selected="*{requestProgressStatus} == '대기중'" >대기중</option>
 														<option th:selected="*{requestProgressStatus} == '진행중'" >진행중</option>
@@ -207,7 +207,7 @@
 		/*
 		* 콘텐츠 분류 select box value 값 -> input value로 넣기
 		*/
-		function content(category) {
+		function contentCate(category) {
 			const selectInput = document.querySelector('#contentCategory');
 			selectInput.value = category;
 		};
@@ -215,7 +215,7 @@
 		/**
 		 * 진행현황 select box value 값 -> input value로 넣기
 		 */
-		function status(category) {
+		function requestStatus(category) {
 			const selectInput = document.querySelector('#requestProgressStatus');
 			selectInput.value = category;
 		};

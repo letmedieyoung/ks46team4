@@ -86,6 +86,7 @@ public class StockController {
 	@GetMapping("/modify_unusual_stock_detail")
 	public String modifyUnusualStock(Model model, @RequestParam(name="unusualStockCode") String unusualStockCode) {
 		
+		log.info("unusualStockCode: {}", unusualStockCode);
 		
 		UnusualStock unusualStockInfo = stockService.getUnusualStockInfoByCode(unusualStockCode);
 		String goodsCode = unusualStockInfo.getGoodsCode();
@@ -193,30 +194,54 @@ public class StockController {
 	@GetMapping("/modify_in_outcoming")
 	public String modifyInOutcoming(Model model, @RequestParam(name="inOutcomingCode") String inOutcomingCode) {
 	    
-	    InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-	    OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
-	    log.info("outcomingDetailInfo: {}", outcomingDetailInfo);
-	    
-	    String goodsCode = inOutcomingInfo.getGoodsCode();
-	    Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
-	    log.info("goodsInfo: {}", goodsInfo);
-	    
-	    String foundationCode = outcomingDetailInfo.getFoundationCode();
-	    Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
-	    log.info("foundationInfo: {}", foundationInfo);
-
-	    Map<String, Object> inOutcomingMap = new HashMap<String, Object>();
-	    inOutcomingMap.put("inOutcomingInfo", inOutcomingInfo);
-	    inOutcomingMap.put("goodsInfo", goodsInfo);
-	    inOutcomingMap.put("foundationInfo", foundationInfo);
-	    log.info("inOutcomingMap: {}", inOutcomingMap);
-	    
-	    model.addAttribute("title", "상품 입출고 수정");
-	    model.addAttribute("inOutcomingMap", inOutcomingMap);
+		
+		log.info("inOutcomingCode: {}", inOutcomingCode);
+		
+		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
+		
+		String goodsCode = inOutcomingInfo.getGoodsCode();
+		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
+		log.info("goodsInfo: {}", goodsInfo);
+		inOutcomingInfo.setGoodsInfo(goodsInfo);
+		
+		if(inOutcomingInfo.getInOutcomingType().equals("outcoming")){
+			OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
+			String foundationCode = outcomingDetailInfo.getFoundationCode();
+			Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
+			log.info("foundationInfo: {}", foundationInfo);
+			inOutcomingInfo.setFoundationInfo(foundationInfo);
+		}
+		
+		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		
+		model.addAttribute("title", "상품 입출고 수정");
+		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
 	    
 	    return "admin/stock/modify_in_outcoming";
 	}
 
+	@PostMapping("/add_outcoming_detail")
+	public String addOutcomingDetail(Model model,
+									@RequestParam(name = "inOutcomingCode") String inOutcomingCode,
+									OutcomingDetail outcomingDetail, HttpSession session) {
+		
+		log.info("model: {}", model);
+		
+		String outcomingDetailRegId = (String) session.getAttribute("SID");
+		log.info("outcomingDetailRegId: {}", outcomingDetailRegId);
+		outcomingDetail.setOutcomingDetailRegId(outcomingDetailRegId);
+		log.info("outcomingDetail: {}", outcomingDetail);
+		
+		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
+		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		
+		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
+		
+		stockService.addOutcomingDetail(outcomingDetail);
+		
+		return "redirect:/admin/stock/in_outcoming_list";
+
+	}
 	
 	/**
 	 * 상품 입출고 등록 @PostMapping
@@ -225,17 +250,17 @@ public class StockController {
 	 * @return
 	 */
 	@PostMapping("/add_in_outcoming")
-	public String addInOutcoming(InOutcoming InOutcoming, HttpSession session) {
-		
+	public String addInOutcoming(InOutcoming inOutcoming, HttpSession session) {
+
 		String inOutcomingRegId = (String) session.getAttribute("SID");
 		log.info("inOutcomingRegId: {}", inOutcomingRegId);
 
-		InOutcoming.setInOutcomingRegId(inOutcomingRegId);
-	    log.info("InOutcoming: {}", InOutcoming);
+		inOutcoming.setInOutcomingRegId(inOutcomingRegId);
+	    log.info("inOutcoming: {}", inOutcoming);
 	    
-	    stockService.addInOutcoming(InOutcoming);
-		
-		return "redirect:/admin/stock/in_outcoming_list";
+	    stockService.addInOutcoming(inOutcoming);
+	    
+		return "redirect:/admin/stock/add_outgoing_detail?inOutcomingCode=" + inOutcoming.getInOutcomingCode();
 	}
 	
 	/**
@@ -293,6 +318,8 @@ public class StockController {
 	 */
 	@GetMapping("/modify_stock")
 	public String modifyStock(Model model, @RequestParam(name="goodsStockCode") String goodsStockCode) {
+		
+		log.info("goodsStockCode: {}", goodsStockCode);
 		
 		Stock stockInfo = stockService.getStockInfoByCode(goodsStockCode);
 		String goodsCode = stockInfo.getGoodsCode();

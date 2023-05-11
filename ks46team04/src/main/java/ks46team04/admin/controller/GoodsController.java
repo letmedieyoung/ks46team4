@@ -1,6 +1,8 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -90,6 +93,23 @@ public class GoodsController {
 	}
 	
 	/**
+	 * 상품 제조사 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modal_goods_company_search")
+	public String getGoodsCompanyList(Model model) {
+		
+		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
+		log.info("goodsCompanyList: {}", goodsCompanyList);
+		
+		model.addAttribute("title", "상품 제조사 조회");
+		model.addAttribute("goodsCompanyList", goodsCompanyList);
+		
+		return "admin/goods/modal_goods_company_search";
+	}
+	
+	/**
 	 * 상품명 중복체크
 	 * @param goodsName
 	 * @return
@@ -136,11 +156,67 @@ public class GoodsController {
 		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
+		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
+		log.info("goodsCompanyList: {}", goodsCompanyList);
 		
 		model.addAttribute("title", "상품 등록");
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
+		model.addAttribute("goodsCompanyList", goodsCompanyList);
 		
 		return "admin/goods/add_goods";
+	}
+	
+	/**
+	 * 상품 검색 결과 조회
+	 * @param model
+	 * @param searchKey
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/searchList")
+	@ResponseBody
+	public List<Goods> search(@RequestParam(value="searchKey", required = false) String searchKey 
+							, @RequestParam(value="searchValue", required = false) String searchValue
+							, @RequestParam(value="startDate", required = false) String startDate
+							, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("searchKey: {}", searchKey);
+		log.info("searchValue: {}", searchValue);
+		log.info("startDate: {}", startDate);
+		log.info("endDate: {}", endDate);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			
+			switch (searchKey) {
+			case "goodsName":
+				searchKey = "goods_name";
+				break;
+			case "goodsCategory":
+				searchKey = "goods_category";					
+				break;
+			case "goodsCompany":
+				searchKey = "goods_company";					
+				break;
+			}
+			
+			paramMap.put("searchKey", searchKey);
+			paramMap.put("searchValue", searchValue);
+		}
+		if(startDate != null && endDate != null) {
+			paramMap.put("startDate", startDate);
+			paramMap.put("endDate", endDate);
+			
+		}
+		log.info("paramMap: {}", paramMap);
+		
+		List<Goods> goodsList = goodsService.getGoodsListBySearch(paramMap);
+		log.info("goodsList: {}", goodsList);
+		
+		return goodsList;
 	}
 	
 	/**

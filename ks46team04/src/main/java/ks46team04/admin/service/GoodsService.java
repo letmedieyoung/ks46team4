@@ -1,6 +1,8 @@
 package ks46team04.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +65,15 @@ public class GoodsService {
 	}
 	
 	/**
+	 * 상품 제조사 조회
+	 * @return
+	 */
+	public List<String> getGoodsCompanyList(){
+		List<String> goodsCompanyList = goodsMapper.getGoodsCompanyList();
+		return goodsCompanyList;
+	}
+	
+	/**
 	 * 상품 분류 조회
 	 * @return
 	 */
@@ -70,6 +81,17 @@ public class GoodsService {
 		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
 		return goodsCategory;
 	}
+	
+	/**
+	 * 상품 검색 결과 조회
+	 * @param paramMap
+	 * @return
+	 */
+	public List<Goods> getGoodsListBySearch(Map<String, Object> paramMap){
+		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(paramMap);
+		return goodsList;
+	}
+	
 	/**
 	 * 상품 조회
 	 * @return List<Goods>
