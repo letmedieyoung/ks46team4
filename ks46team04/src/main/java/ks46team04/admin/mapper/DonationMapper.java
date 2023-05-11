@@ -15,24 +15,24 @@ import ks46team04.admin.dto.Payment;
 @Mapper
 public interface DonationMapper {
 	
-	/*정기기부 단가 조회*/
+	/*정기기부 콘텐츠 조회*/
 	public List<Donation> getDonation(String searchKey, String searchValue);
 	
-	/*정기기부 단가 등록*/
+	/*정기기부 콘텐츠 등록*/
 	public int addDonation(Donation donation);
 	
-	/* 특정 정기기부 단가 조회 */
+	/* 특정 정기기부 콘텐츠 조회 */
  	public Donation getDonationInfoByCode(String donationCode);
  	
-	/* 정기기부 단가 수정 */
+	/* 정기기부 콘텐츠 수정 */
 	public int modifyDonation(Donation donation);
 	
-	/* 정기기부 단가 삭제 */
+	/* 정기기부 콘텐츠 삭제 */
 	public int removeDonation(Donation donation);
 	
 	/* 등록된 회원 결제수단 조회 */
 	public List<DonationPayMethod> getDonationPayMethod(String searchKey, String searchValue);
-	
+
 	/* 등록된 회원 결제수단 등록 */
 	public int addDonationPayMethod(DonationPayMethod donationPayMethod);
 	
@@ -50,9 +50,12 @@ public interface DonationMapper {
 	
 	/* 정기기부 구독 신청 등록 */
 	public int addDonationSub(DonationSub donationSub);
-	
+ 	
 	/* 특정 정기기부 구독 신청 조회 */
  	public DonationSub getDonationSubInfoByCode(String donationSubCode);
+ 	
+ 	/* 정기기부 구독 해지 등록 */
+	public int cancelDonationSub(DonationSub donationSub);
  	
 	/* 정기기부 구독 신청 수정 */
 	public int modifyDonationSub(DonationSub donationSub);

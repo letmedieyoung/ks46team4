@@ -78,6 +78,7 @@
 									<th>구독 시작일</th>
 									<th>구독 종료일</th>
 									<th>수정</th>
+									<th>해지</th>
 									<th>삭제</th>
 								</tr>
 							</thead>
@@ -91,6 +92,9 @@
 									<td th:text="${l.donationSubEndDate}"></td>
 									<td>
 										<a th:href="@{/admin/donation/donationSub_modify(donationSubCode=${l.donationSubCode})}">수정</a>
+									</td>
+									<td>
+										<a th:href="@{/admin/donation/donationSub_cancel(donationSubCode=${l.donationSubCode})}">해지</a>
 									</td>
 									<td>
 										<a th:href="@{/admin/donation/donationSub_remove(donationSubCode=${l.donationSubCode})}" onclick="if(!confirm('삭제 시 복구할 수 없습니다. 삭제하시겠습니까?')){return false;}">삭제</a>

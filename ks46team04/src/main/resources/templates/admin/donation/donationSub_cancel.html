@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+
+		<!-- DataTales Example -->
+		<div class="card mb-4">
+			<div class="card-header py-3">
+				<h5 class="m-0 font-weight-bold text-gray-800">구독 해지(유저)</h5>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<form id="cancelDonationSubForm" th:action="@{/admin/donation/donationSub_cancel}" method="post">
+						<table th:object="${donationSubInfo}" class="table table-bordered freg" id="cancelDonationSub" width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>코드</th>
+									<td><input type="text" id="donationSubCode"
+										th:value="*{donationSubCode}" name="donationSubCode"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>회원 아이디</th>
+									<td><input type="text" id="donationSubUserId"
+										th:value="*{donationSubUserId}" name="donationSubUserId"
+										style="width: 400px;" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th>콘텐츠 코드</th>
+									<td>
+										<select id="donationCode" name="donationCode" style="width: 400px;">
+											<th:block th:unless="${donationCode == null}"
+												th:each="l : ${donationCode}">
+												<option th:value="${l.donationCode}">[[${l.donationCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationCode == null}">
+												<option>등록된 콘텐츠 코드 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>회원 결제수단 코드</th>
+									<td>
+										<select id="donationPayMethodCode" name="donationPayMethodCode" style="width: 400px;">
+											<th:block th:unless="${donationPayMethodCode == null}"
+												th:each="l : ${donationPayMethodCode}">
+												<option th:value="${l.donationPayMethodCode}">[[${l.donationPayMethodCode}]]</option>
+											</th:block>
+											<th:block th:if="${donationPayMethodCode == null}">
+												<option>등록된 회원 결제수단 정보가 없습니다.</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>구독 시작일</th>
+									<td><input type="text" id="donationSubStartDate"
+										th:value="*{donationSubStartDate}" name="donationSubStartDate" 
+										style="width: 400px;" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<td colspan="2"> <div style="display: flex; justify-content: center;">
+										<button type="submit" class="btn btn-primary" id="modifyBtn">해지</button> &nbsp;
+										<button type="button" class="btn btn-primary" id="resetBtn">입력취소</button></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- /.container-fluid -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+</th:block>
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript">
+		$('#resetBtn').click(function(){
+			location.href='/admin/donation/donationSub_list';
+		});
+	</script>
+</th:block>
+</html>
