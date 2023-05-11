@@ -17,7 +17,7 @@ public class FundingDetail {
     private String fundingProgress;
     private String goodsName;
     private int achievedAmount;
-    private int accomplishmentRate;
+    private int achievedRate;
     
     private List<FundingDetail> fundingDetailList;
 }

@@ -132,14 +132,7 @@ public class FundingService {
     public int allAccomplishmentRate() {
     	return fundingMapper.allAccomplishmentRate();
     }
-    /**
-	 * 펀딩 진행상황 - 개별 펀딩 달성률
-	 * @param accomplishmentRate
-	 * @return
-	 */	
-    public String accomplishmentRate() {
-    	return fundingMapper.accomplishmentRate();
-    }
+
     
     
 	public List<FundingCurrentAmount> getFundingProgressStatus(String searchKey, String searchValue){

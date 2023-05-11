@@ -1,7 +1,6 @@
 package ks46team04.common.controller;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +22,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.ActivityStatus;
 import ks46team04.admin.dto.Funding;
+import ks46team04.admin.dto.FundingDetail;
 import ks46team04.admin.dto.LoginLog;
 import ks46team04.admin.dto.User;
 import ks46team04.admin.dto.UserLevel;
-import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.mapper.UserMapper;
+import ks46team04.admin.service.FundingDetailService;
 import ks46team04.admin.service.FundingService;
 import ks46team04.admin.service.UserService;
 
@@ -38,20 +38,24 @@ public class CommonController {
 	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
 	private final FundingService fundingService;
-	private final FundingMapper fundingMapper;
 	private final UserService userService;
 	private final UserMapper userMapper;
+	private final FundingDetailService fundingDetailService;
 
 	public CommonController(UserService userService, UserMapper userMapper,
-							FundingService fundingService, FundingMapper fundingMapper) {
+							FundingService fundingService, FundingDetailService fundingDetailService) {
 		this.userService = userService;
 		this.userMapper = userMapper;
 		this.fundingService = fundingService;
-		this.fundingMapper = fundingMapper;
+		this.fundingDetailService = fundingDetailService;
 	}
 
 		@GetMapping("/funding_index")
 		public String MainHome(Model model) {
+			
+			List<Funding> fundingList = fundingService.getFundingList();
+			
+			model.addAttribute("fundingList", fundingList);
 			
 			return "common/funding_index";
 		}		
@@ -59,12 +63,10 @@ public class CommonController {
 		@GetMapping("/list")
 		public String getFundingList(Model model) {
 			
-			List<Funding> fundingList = fundingService.getFundingList();
-			String accomplishmentRate = fundingMapper.accomplishmentRate();
-			
+			List<FundingDetail> fundingDetailList = fundingDetailService.getFundingDetailList();
+				
 			model.addAttribute("title", "펀딩");
-			model.addAttribute("fundingList", fundingList);
-			model.addAttribute("accomplishmentRate", accomplishmentRate);
+			model.addAttribute("fundingDetailList", fundingDetailList);
 			
 			return "common/funding/list";
 		}
@@ -198,3 +200,4 @@ public class CommonController {
 			return "common/password-reset";
 		}
 }
+

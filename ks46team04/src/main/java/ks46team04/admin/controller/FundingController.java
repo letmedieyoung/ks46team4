@@ -188,7 +188,6 @@ public class FundingController {
 		
 		int targetSum = fundingMapper.getTargetSum();
 		int currentSum = fundingMapper.sumOfCurrentAmount();
-		String accomplishmentRate = fundingMapper.accomplishmentRate();
 		int allAccomplishmentRate = fundingMapper.allAccomplishmentRate();
 		
 		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
@@ -196,7 +195,6 @@ public class FundingController {
 		model.addAttribute("targetSum", targetSum);
 		model.addAttribute("currentSum", currentSum);
 		model.addAttribute("allAccomplishmentRate", allAccomplishmentRate);
-		model.addAttribute("accomplishmentRate", accomplishmentRate);
 		model.addAttribute("fundingCurrentAmountList", fundingCurrentAmountList);
 	    
 	    return "admin/funding/current_amount";

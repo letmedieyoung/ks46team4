@@ -8,21 +8,34 @@ import org.springframework.stereotype.Service;
 
 import ks46team04.admin.dto.FundingDetail;
 import ks46team04.admin.mapper.FundingDetailMapper;
-import ks46team04.admin.mapper.FundingMapper;
 
 @Service
 public class FundingDetailService {
 	
 	@Autowired
 	private FundingDetailMapper fundingDetailMapper;
-	private FundingMapper fundingMapper;
 	
-	public FundingDetailService(FundingDetailMapper fundingDetailMapper, FundingMapper fundingMapper) {
+	public FundingDetailService(FundingDetailMapper fundingDetailMapper) {
 		this.fundingDetailMapper = fundingDetailMapper;
-		this.fundingMapper = fundingMapper;
 	}
 	
+	/**
+	 * 메인페이지 진행중 펀딩 진열
+	 * @return
+	 */
+	public List<FundingDetail> getFundingMainList() {
+		List<FundingDetail> fundingMainList = fundingDetailMapper.getFundingMainList();
+		return fundingMainList;
+	}
 	
+	/**
+	 * 메인페이지 완료 펀딩 진열
+	 * @return
+	 */
+	public List<FundingDetail> getFundingCompleteList() {
+		List<FundingDetail> fundingCompleteList = fundingDetailMapper.getFundingCompleteList();
+		return fundingCompleteList;
+	}
 	/**
 	 * 펀딩 진열
 	 * @return
@@ -42,14 +55,6 @@ public class FundingDetailService {
 		return fundingDetail;
 	}
 
-	/**
-	 * 펀딩 달성률
-	 * @param accomplishmentRate
-	 * @return
-	 */	
-    public String accomplishmentRate() {
-    	return fundingMapper.accomplishmentRate();
-    }
 //	public FundingProduct FundingCode(String fundingCode) {
 //        return fundingProductMapper.fundingCode(fundingCode);
 //    }
