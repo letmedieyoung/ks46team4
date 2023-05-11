@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.Purchase;
+import ks46team04.admin.dto.User;
 import ks46team04.admin.mapper.GoodsMapper;
-import ks46team04.admin.mapper.PurchaseMapper;
 import ks46team04.admin.service.PurchaseService;
+import ks46team04.admin.service.UserService;
 
 @Controller
 @RequestMapping("/admin/purchase_sale")
@@ -28,9 +29,11 @@ public class PurchaseController {
 
 	private final PurchaseService purchaseService;
 	private final GoodsMapper goodsMapper;
-	public PurchaseController(PurchaseService purchaseService, GoodsMapper goodsMapper) {
+	private final UserService userService;
+	public PurchaseController(PurchaseService purchaseService, GoodsMapper goodsMapper, UserService userService) {
 		this.purchaseService = purchaseService;
 		this.goodsMapper = goodsMapper;
+		this.userService = userService;
 	}
 	
 	@GetMapping("/purchase_list")
@@ -107,10 +110,38 @@ public class PurchaseController {
 		return "redirect:/admin/purchase_sale/purchase_list";
 	}
 	
+	
 	@GetMapping("/purchase_delete")
 	public String DeletePuchase(Model model) {
 		
 		return "redirect:/admin/purchase_sale/purchase_list";
+	}
+	
+	@PostMapping("/request_remove")
+	@ResponseBody
+	public boolean DeletePuchase(@RequestParam(name="masterPw") String masterPw,
+								@RequestParam(name="delPkValues[]") List<String> delPkValues,
+								HttpSession session) {
+		boolean isDel = false;
+		String userId = (String) session.getAttribute("SID");
+		String userLevel = (String) session.getAttribute("SLEVEL");
+		
+		log.info("관리자 비번 masterPw: {}", masterPw);
+		log.info("삭제 선택된 요소들 deleteEles: {}", delPkValues);
+		/*
+		if(userLevel.equals("1")) {
+			User userInfo = userService.getUserInfoById(userId);
+			if(masterPw.equals(userInfo.getUserPw())){
+				//비밀번호 일치, 지우는 로직 추가
+				purchaseService.deletePurchase();//요소 코드들을 가져와야한다. 지우려는 요소 정보 배열을 파라미터
+				
+				isDel = true;
+			}
+		}
+		*/
+	
+		//제대로 지워지면 true
+		return isDel;
 	}
 	
 }
