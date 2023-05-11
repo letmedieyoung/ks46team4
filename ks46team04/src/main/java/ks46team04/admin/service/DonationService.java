@@ -25,7 +25,7 @@ public class DonationService {
 	}
 	
 	/*
-	 * 정기기부 단가 조회
+	 * 정기기부 콘텐츠 조회
 	 * */
 	public List<Donation> getDonation(String searchKey, String searchValue){
 		
@@ -49,7 +49,7 @@ public class DonationService {
 	}
 	
 	/*
-	 * 정기기부 단가 등록
+	 * 정기기부 콘텐츠 등록
 	 */
 	public int addDonation(Donation donation) {
 		
@@ -59,7 +59,7 @@ public class DonationService {
 	}
 	
 	/*
-	 * 특정 정기기부 단가 조회
+	 * 특정 정기기부 콘텐츠 조회
 	 * */
 	public Donation getDonationInfoByCode(String donationCode) {
 		Donation donationInfo = donationMapper.getDonationInfoByCode(donationCode);
@@ -67,14 +67,14 @@ public class DonationService {
 	}
 	
 	/*
-	 * 정기기부 단가 수정
+	 * 정기기부 콘텐츠 수정
 	 * */
 	public void modifyDonation(Donation donation) {
 		donationMapper.modifyDonation(donation);
 	}
 	
 	/*
-	 * 정기기부 단가 삭제
+	 * 정기기부 콘텐츠 삭제
 	 * */
 	public void removeDonation(Donation donation) {
 		donationMapper.removeDonation(donation);
@@ -188,6 +188,13 @@ public class DonationService {
 		DonationSub donationSubInfo = donationMapper.getDonationSubInfoByCode(donationSubCode);
 
 		return donationSubInfo;
+	}
+	
+	/*
+	 * 정기기부 구독 해지 등록
+	 * */
+	public void cancelDonationSub(DonationSub donationSub) {
+		donationMapper.cancelDonationSub(donationSub);
 	}
 	
 	/*

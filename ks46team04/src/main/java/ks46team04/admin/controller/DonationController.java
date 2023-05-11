@@ -29,11 +29,11 @@ public class DonationController {
 	private final DonationService donationService;
 	
 	/*
-	 * 정기기부 단가 조회
+	 * 정기기부 콘텐츠 조회
 	 */
 	@GetMapping("/donation_list")
 	public String getDonation(Model model, @RequestParam(name="searchKey", required = false) String searchKey
-										, @RequestParam(name="searchValue", required = false) String searchValue) {
+										, @RequestParam(name="searchValue", required = false) String searchValue){
 		
 		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue);
 				
@@ -44,7 +44,7 @@ public class DonationController {
 	}
 
 	/*
-	 * 정기기부 단가 등록
+	 * 정기기부 콘텐츠 등록
 	*/
 	@PostMapping("/donation_add")
 	public String addDonation(Donation donation, HttpSession session) {
@@ -67,7 +67,7 @@ public class DonationController {
 	}
 	
 	/*
-	 * 정기기부 단가 수정
+	 * 정기기부 콘텐츠 수정
 	 */
 	@PostMapping("/donation_modify")
 	public String modifyDonation(Donation donation, HttpSession session) {
@@ -93,7 +93,7 @@ public class DonationController {
 	}
 	
 	/*
-	 * 정기기부 단가 삭제
+	 * 정기기부 콘텐츠 삭제
 	 * */
 	@GetMapping("/donation_remove")
 	public String removeDonation(Donation donation) {
@@ -218,6 +218,35 @@ public class DonationController {
 		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
 		return "/admin/donation/donationSub_add";
+	}
+	
+	/*
+	 * 정기기부 구독 해지 등록
+	 */
+	@PostMapping("/donationSub_cancel")
+	public String cancelDonationSub(DonationSub donationSub, HttpSession session) {
+		
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
+		
+		donationService.cancelDonationSub(donationSub);
+		
+		
+		return "redirect:/admin/donation/donationSub_list";
+	}
+	@GetMapping("/donationSub_cancel")
+	public String cancelDonationSub(Model model, String donationSubCode){
+		
+		DonationSub donationSubInfo = donationService.getDonationSubInfoByCode(donationSubCode);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+
+		model.addAttribute("title", "정기기부 구독 해지 등록");
+		model.addAttribute("donationSubInfo", donationSubInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
+		
+		return "admin/donation/donationSub_cancel";
 	}
 	
 	/*

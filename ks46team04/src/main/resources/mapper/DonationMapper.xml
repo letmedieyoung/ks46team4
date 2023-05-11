@@ -34,9 +34,9 @@
 	<resultMap type="DonationPayDetail" id="DonationPayDetailCodeResultMap">
 		<result column="regular_donation_payment_code"		property="donationPayDetailCode"/>
 	</resultMap>
-		
+	
 	<select id="getDonation" resultMap="donationResultMap">
-		/*정기기부 단가 조회*/
+		/*정기기부 콘텐츠 조회*/
 		SELECT 
 			regular_donation_code
 			, regular_donation_name
@@ -51,13 +51,13 @@
 		<where>
 			<if test="searchKey != null and searchKey != ''">
 				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
-			</if>		
+			</if>
 		</where>
 			ORDER BY CAST(SUBSTRING_INDEX(regular_donation_code, 'regular_donation', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonation" parameterType="Donation" >
-		/* 정기기부 단가 등록 */
+		/* 정기기부 콘텐츠 등록 */
 		INSERT INTO regular_donation_unit_price
 		(regular_donation_code, regular_donation_name, regular_donation_price, regular_donation_description, regular_donation_reg_id, regular_donationr_reg_date)
 		VALUES
@@ -65,7 +65,7 @@
 	</insert>
 	
 	<select id="getDonationInfoByCode" parameterType="String" resultMap="donationResultMap">
-		/* 특정 정기기부 단가 조회*/
+		/* 특정 정기기부 콘텐츠 조회*/
 		SELECT
 			regular_donation_code
 			, regular_donation_name
@@ -82,7 +82,7 @@
 	</select>
 	
 	<update id="modifyDonation" parameterType="Donation">
-		/* 정기기부 단가 수정 */
+		/* 정기기부 콘텐츠 수정 */
 		UPDATE regular_donation_unit_price
 		<set>
 			<if test="donationName != null and donationName !=''">
@@ -102,7 +102,7 @@
 	</update>
 	
 	<delete id="removeDonation" parameterType="Donation">
-		/* 정기기부 단가 삭제 */
+		/* 정기기부 콘텐츠 삭제 */
 		DELETE
 		FROM
 		 	regular_donation_unit_price 
@@ -164,7 +164,6 @@
 			<if test="donationPayMethodAccount != null and donationPayMethodAccount !=''">
 				,regular_donation_payment_account = #{donationPayMethodAccount}
 			</if>
-				,user_id = #{donationPayMethodUserId}
 				,regular_donation_payment_update_date = SYSDATE()
 		</set>
 		WHERE
@@ -222,6 +221,15 @@
 			user_regular_donation_subscription_code = #{donationSubCode};
 	</select>
 	
+	<update id="cancelDonationSub" parameterType="DonationSub">
+		/* 정기기부 구독 해지 등록 */
+		UPDATE user_regular_donation_subscription
+		SET
+			user_regular_donation_subscription_end_date = SYSDATE()
+		WHERE
+			user_regular_donation_subscription_code = #{donationSubCode};
+	</update>
+	
 	<update id="modifyDonationSub" parameterType="DonationSub">
 		/* 정기기부 구독 신청 수정 */
 		UPDATE user_regular_donation_subscription
@@ -232,7 +240,6 @@
 			<if test="donationSubEndDate != null and donationSubEndDate !=''">
 				,user_regular_donation_subscription_end_date = #{donationSubEndDate}
 			</if>
-				,user_id = #{donationSubUserId}
 		</set>
 		WHERE
 			user_regular_donation_subscription_code = #{donationSubCode};
@@ -322,7 +329,6 @@
 			<if test="donationPayDeadlineCheck != null and donationPayDeadlineCheck !=''">
 				,user_regular_donation_deadline_check = #{donationPayDeadlineCheck}
 			</if>
-				,user_id = #{donationPayUserId}
 		</set>
 		WHERE
 			regular_donation_payment_code = #{donationPayDetailCode};
