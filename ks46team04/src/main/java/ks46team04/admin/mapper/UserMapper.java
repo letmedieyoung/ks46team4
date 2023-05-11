@@ -30,7 +30,7 @@ public interface UserMapper {
 	// 회원비밀번호 체크
 	public boolean pwCheck(String userId, String userPw);
 	// 회원의 목록 조회
-	public List<User> getUserList(String searchKey, String searchValue);
+	//public List<User> getUserList(String searchKey, String searchValue);
 	// 회원의 목록 상세 조회
 	public List<User> getUserDetailList(String userId);
 	// 회원 등급 조회
@@ -41,6 +41,14 @@ public interface UserMapper {
 	public List<LoginLog> getLoginLogList(String userId);
 	void insertLoginLog(LoginLog loginlog);
 	void updateLogoutLog(LoginLog loginlog);
+	// 회원 미접속일수 업데이트
+	//public void updateLogDateCalcul(String userId);
+	// 회원 미접속일수 조회
+	//Integer selectLogDateCalcul(String userId);
+	// 회원 조회 + 미접속일수 조회
+	public List<User> getUserListWithLogDateCalcul(String searchKey, String searchValue);
+	// 휴면 회원 관리
+	void userSleep();
 	// 휴면 회원 목록 조회
 	public List<UserSleep> getUserSleepList();
 	// 탈퇴 회원 목록 조회

@@ -54,7 +54,6 @@
 								<th>이메일</th>
 								<th>주소</th>
 								<th>가입일</th>
-								<th>로그인코드</th>
 								<th>미접속일수</th>
 								<th>활동상태</th>
 								<th>수정</th>
@@ -83,7 +82,6 @@
 								<td th:text="${l.userEmail}"></td>
 								<td th:text="${l.userAddr}"></td>
 								<td th:text="${l.userJoinDate}"></td>
-								<td th:text="${l.loginLogCode}"></td>
 								<td th:text="${l.logDateCalcul}"></td>
 								<td>
 									<div th:if="${l.activityStatusStandardCode == 'status_active'}">활동</div>

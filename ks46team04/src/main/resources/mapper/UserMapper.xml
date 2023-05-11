@@ -22,62 +22,83 @@
 
 
 
-	<select id="getLastLogoutTime" resultType="userSleep">
-		/* 회원별 마지막 로그아웃 시간 조회
-		*/
-		SELECT
-		ui.user_id,
-		ll.login_log_code,
-		MAX(ll.logout_time) AS
-		lastLogoutTime
-		FROM
-		user_info ui
-		INNER JOIN
-		login_log ll ON
-		ui.login_log_code = ll.login_log_code
-		GROUP BY
-		ui.user_id,
-		ll.login_log_code
+
+	<select id="getUserListWithLogDateCalcul" parameterType="map"
+		resultMap="userResultMap">
+		/* 회원 목록 조회 */
+		select
+			 ui.user_id
+			,ui.user_level
+			,ui.user_pw
+			,ui.user_name
+			,ui.user_birth
+			,ui.user_phone
+			,ui.user_email_agree
+			,ui.user_email
+			,ui.user_addr
+			,ui.user_join_date
+			,ui.login_log_code
+			,ui.user_update_date
+			,ui.activity_status_standard_code
+			,DATEDIFF(NOW(), ll.last_login_time) AS log_date_calcul
+		FROM 
+			user_info ui
+			LEFT JOIN 
+			(
+				SELECT 
+					user_id,
+					MAX(login_time) AS last_login_time
+				FROM login_log
+				GROUP BY user_id
+			) as ll 
+			ON ui.user_id = ll.user_id
+		<if test="searchKey != null and searchValue != null">
+			WHERE ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+		</if>
 	</select>
-
+	
 	<update id="updateUserSleep" parameterType="String">
-		/* 휴면회원 전환 */
-		UPDATE
-		user_info
-		SET
-		activity_status_standard_code = 'status_dormant'
-		WHERE
-		user_id IN (
-		SELECT
-		ui.user_id
-		FROM
-		user_info ui
-		INNER JOIN
-		login_log ll ON
-		ui.login_log_code = ll.login_log_code
-		WHERE
-		DATEDIFF(NOW(),
-		ll.logout_time) >= 91
-		);
+		/* 활동 상태 'status_dormant'로 업데이트 */
+			UPDATE user_info
+			SET activity_status_standard_code = 'status_dormant'
+			WHERE user_id IN (
+			  SELECT ui.user_id
+			  FROM user_info ui
+			  INNER JOIN login_log ll ON ui.user_id = ll.user_id
+			  WHERE log_date_calcul >= 91
+			);
 	</update>
-
+	
+	<insert id="insertUserSleep" parameterType="String">
+		/* 활동 상태 'status_dormant'인 회원 user_sleep에 삽입 */
+			INSERT INTO user_sleep (user_id, user_level, user_pw, user_name, user_birth, user_phone, user_email_agree, user_email
+									,user_addr, user_join_date, log_date_calcul, status_standard_code)
+			SELECT user_id, user_level, user_pw, user_name, user_birth, user_phone, user_email_agree, user_email
+									,user_addr, user_join_date, log_date_calcul, status_standard_code
+			FROM user_info
+			WHERE activity_status_standard_code = 'status_dormant';
+	</insert>
+	
+	<delete id="deleteUserInfo" parameterType="String">		
+		/* 활동 상태 'status_dormant'인 회원 user_info에서 삭제 */
+			DELETE FROM user_info
+			WHERE activity_status_standard_code = 'status_dormant';
+	</delete>	
+	
+	
 	<select id="getUserSleepList" resultType="userSleep">
 		/* 휴면회원 조회 */
 		SELECT
 		user_id AS userId,
 		user_level AS userLevel,
 		user_pw AS userPw,
-		user_name
-		AS userName,
+		user_name AS userName,
 		user_birth AS userBirth,
 		user_phone AS userPhone,
 		user_email_agree AS userEmailAgree,
 		user_email AS userEmail,
-		user_addr
-		AS userAddr,
+		user_addr AS userAddr,
 		user_join_date AS userJoinDate,
-		login_log_code AS
-		loginLogCode,
 		log_date_calcul AS logDateCalcul,
 		activity_status_standard_code AS activityStatusStandardCode
 		FROM
@@ -105,21 +126,22 @@
 	</insert>
 
 	<update id="updateLogoutLog" parameterType="LoginLog">
-		UPDATE login_log as t,
-			  ( SELECT 
-					login_log_code 
-				FROM 
-					login_log
-				WHERE
-					user_id = #{userId}
-					AND 
-					login_ip = #{loginIp}
-				ORDER BY login_time DESC
-				LIMIT 1	) as l
-		SET
-			t.logout_time = now()
+		UPDATE login_log as
+		t,
+		( SELECT
+		login_log_code
+		FROM
+		login_log
 		WHERE
-			t.login_log_code = l.login_log_code;
+		user_id = #{userId}
+		AND
+		login_ip = #{loginIp}
+		ORDER BY login_time DESC
+		LIMIT 1 ) as l
+		SET
+		t.logout_time = now()
+		WHERE
+		t.login_log_code = l.login_log_code;
 	</update>
 
 
@@ -134,7 +156,9 @@
 		,login_ip AS loginIp
 		FROM
 		login_log
-		ORDER BY login_time DESC;
+		ORDER BY
+		CAST(SUBSTRING_INDEX(login_log_code, 'login_log', -1) AS
+		UNSIGNED) DESC;
 	</select>
 
 
@@ -235,7 +259,6 @@
 		,u.user_email AS userEmail
 		,u.user_addr AS userAddr
 		,u.user_join_date AS userJoinDate
-		,u.login_log_code AS loginLogCode
 		,u.log_date_calcul AS logDateCalcul
 		,u.user_update_date AS
 		userUpdateDate
@@ -265,7 +288,6 @@
 		,u.user_email AS userEmail
 		,u.user_addr AS userAddr
 		,u.user_join_date AS userJoinDate
-		,u.login_log_code AS loginLogCode
 		,u.log_date_calcul AS logDateCalcul
 		,u.user_update_date AS
 		userUpdateDate
@@ -327,30 +349,5 @@
 		user_level_standard;
 	</select>
 
-	<select id="getUserList" parameterType="String"
-		resultType="User">
-		/* 회원 목록
-		조회 */ SELECT u.user_id AS userId ,u.user_level AS userLevel
-		,u.user_pw
-		AS userPw ,u.user_name AS userName ,u.user_birth AS
-		userBirth
-		,u.user_phone AS userPhone ,u.user_email_agree AS
-		userEmailAgree
-		,u.user_email AS userEmail ,u.user_addr AS userAddr
-		,u.user_join_date AS
-		userJoinDate ,u.login_log_code AS loginLogCode
-		,u.log_date_calcul AS
-		logDateCalcul ,u.user_update_date AS
-		userUpdateDate
-		,u.activity_status_standard_code AS
-		activityStatusStandardCode FROM
-		user_info AS u
-		<where>
-			<if test="searchKey != null and searchKey != ''">
-				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
-			</if>
-		</where>
-		ORDER BY userJoinDate DESC;
-	</select>
 
 </mapper>
