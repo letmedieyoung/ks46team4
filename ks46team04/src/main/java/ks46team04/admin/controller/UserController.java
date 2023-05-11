@@ -107,33 +107,7 @@ public class UserController {
 
 		return "admin/user/userLevel";
 	}
-	/*
-	 * @GetMapping("/logout") public String logout(HttpSession session) {
-	 * session.invalidate(); return "redirect:/admin/user/login"; }
-	 * 
-	 * @PostMapping("/login") public String login(@RequestParam(name = "userId")
-	 * String userId, @RequestParam(name = "userPw") String userPw, HttpSession
-	 * session, RedirectAttributes reAttr) { String redirect =
-	 * "redirect:/view/user/login"; Map<String, Object> loginResultMap =
-	 * userService.loginCheck(userId, userPw); boolean loginCheck = (boolean)
-	 * loginResultMap.get("loginCheck"); if (loginCheck) { User userInfo = (User)
-	 * loginResultMap.get("userInfo"); String userName = userInfo.getUserName();
-	 * String userLevel = userInfo.getUserLevel(); session.setAttribute("SID",
-	 * userId); session.setAttribute("SLEVEL", userLevel);
-	 * session.setAttribute("SNAME", userName); redirect = "redirect:/"; } else {
-	 * reAttr.addAttribute("result", "일치하는 회원의 정보가 없습니다."); }
-	 * 
-	 * return redirect; }
-	 * 
-	 * @GetMapping("/login") public String login(Model model, @RequestParam(name =
-	 * "result", required = false) String result) {
-	 * 
-	 * model.addAttribute("title", "로그인"); if (result != null)
-	 * model.addAttribute("result", result);
-	 * 
-	 * return "admin/user/login"; }
-	 */
-
+	
 	/*
 	 * @PostMapping("/removeUser") public String removeUser(@RequestParam(name =
 	 * "userId") String userId, @RequestParam(name = "userPw") String userPw,
@@ -260,17 +234,19 @@ public class UserController {
 		userService.addUser(user);
 		return "redirect:/admin/user/userList";
 	}
-
+	
 	@GetMapping("/userList")
 	public String getUserList(Model model, @RequestParam(name = "searchKey", required = false) String searchKey,
-			@RequestParam(name = "searchValue", required = false) String searchValue) {
+	        @RequestParam(name = "searchValue", required = false) String searchValue) {
 
-		List<User> userList = userService.getUserList(searchKey, searchValue);
+	    List<User> userList = userService.getUserListWithLogDateCalcul(searchKey, searchValue);
 
-		model.addAttribute("title", "회원목록조회");
-		model.addAttribute("userList", userList);
+	    model.addAttribute("title", "회원목록조회");
+	    model.addAttribute("userList", userList);
 
-		return "admin/user/userList";
+	    return "admin/user/userList";
 	}
+	
+
 
 }
