@@ -38,7 +38,9 @@ public interface UserMapper {
 	// 회원 활동상태 조회
 	public List<ActivityStatus> getActivityStatusList();
 	// 회원 로그인 기록 조회
-	public List<LoginLog> getLoginLogList();
+	public List<LoginLog> getLoginLogList(String userId);
+	void insertLoginLog(LoginLog loginlog);
+	void updateLogoutLog(LoginLog loginlog);
 	// 휴면 회원 목록 조회
 	public List<UserSleep> getUserSleepList();
 	// 탈퇴 회원 목록 조회

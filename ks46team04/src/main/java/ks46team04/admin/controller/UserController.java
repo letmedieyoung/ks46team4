@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.ActivityStatus;
 import ks46team04.admin.dto.LoginLog;
@@ -76,9 +75,10 @@ public class UserController {
 	}
 
 	@GetMapping("/loginLog")
-	public String getLoginLogList(Model model) {
+	public String getLoginLogList(Model model, HttpSession session, HttpServletRequest request) {
+		String userId = (String) session.getAttribute("SID");
 
-		List<LoginLog> loginLogList = userService.getLoginLogList();
+		List<LoginLog> loginLogList = userService.getLoginLogList(userId);
 
 		model.addAttribute("title", "로그인기록");
 		model.addAttribute("loginLogList", loginLogList);
@@ -134,14 +134,45 @@ public class UserController {
 	 * return "admin/user/login"; }
 	 */
 
+	/*
+	 * @PostMapping("/removeUser") public String removeUser(@RequestParam(name =
+	 * "userId") String userId, @RequestParam(name = "userPw") String userPw,
+	 * RedirectAttributes redirectAttributes) {
+	 * 
+	 * // 비밀번호 검사 if (userService.pwCheck(userId, userPw)) { // 삭제 작업
+	 * userService.removeUser(userId, userPw);
+	 * redirectAttributes.addFlashAttribute("message", "삭제 성공"); return
+	 * "redirect:/admin/user/userList"; }else
+	 * 
+	 * { redirectAttributes.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+	 * redirectAttributes.addFlashAttribute("removeFailure", true); // 삭제 실패 여부 추가
+	 * return "redirect:/admin/user/removeUser?userId=" + userId; } }
+	 */
+	
+	/*
+	 * @PostMapping("/removeUser") public String removeUser(@RequestParam(name =
+	 * "userId") String userId, @RequestParam(name = "userPw") String userPw,
+	 * RedirectAttributes redirectAttributes) { if (userService.pwCheck(userId,
+	 * userPw)) { userService.removeUser(userId);
+	 * redirectAttributes.addFlashAttribute("message", "삭제 성공"); return
+	 * "redirect:/admin/user/userList"; } else {
+	 * redirectAttributes.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+	 * redirectAttributes.addFlashAttribute("removeFailure", true); // 삭제 실패 여부 추가
+	 * return "redirect:/admin/user/removeUser?userId=" + userId; } }
+	 */
+	
+	/*
+	 * @PostMapping("/removeUser") public String removeUser(@RequestParam(name =
+	 * "userId") String userId, @RequestParam(name = "userPw") String userPw,
+	 * RedirectAttributes redirectAttributes) { userService.removeUser(userId,
+	 * userPw); redirectAttributes.addFlashAttribute("message", "삭제 성공"); return
+	 * "redirect:/admin/user/userList"; }
+	 */
+	
 	@PostMapping("/removeUser")
-	public String removeUser(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
-			RedirectAttributes redirectAttributes) {
-		
-		 // 비밀번호 검사
+	public String removeUser(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw, RedirectAttributes redirectAttributes) {
 	    if (userService.pwCheck(userId, userPw)) {
-	        // 삭제 작업
-	        userService.removeUser(userId, userPw);
+	        userService.removeUser(userId);
 	        redirectAttributes.addFlashAttribute("message", "삭제 성공");
 	        return "redirect:/admin/user/userList";
 	    } else {
@@ -151,40 +182,42 @@ public class UserController {
 	    }
 	}
 	
+	/*
+	 * @PostMapping("/removeUser") public String removeUser(@RequestParam(name =
+	 * "userId") String userId, RedirectAttributes redirectAttributes) { // 삭제 작업
+	 * userService.removeUser(userId);
+	 * 
+	 * redirectAttributes.addFlashAttribute("message", "삭제 성공"); return
+	 * "redirect:/admin/user/userList"; }
+	 */
+
 	@PostMapping("/pwCheck")
+
 	@ResponseBody
 	public boolean pwCheck(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw) {
 
-	    User user = userMapper.getUserInfoById(userId);
-	    if (user != null) {
-	        String checkPw = user.getUserPw();
-	        if (checkPw.equals(userPw)) {
-	            return true;
-	        }
-	    }
-	    return false;
+		return userService.pwCheck(userId, userPw);
 	}
-	
 
 	@GetMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId, Model model) {
 
 		model.addAttribute("title", "회원탈퇴");
 		model.addAttribute("userId", userId);
+	
 
 		return "admin/user/removeUser";
 	}
-	
-	
+
 	@PostMapping("/modifyUser")
 	@ResponseBody
 	public Map<String, Object> modifyUser(@ModelAttribute User user) {
-	    // 회원 정보 수정 처리 코드
-	    boolean success = userService.modifyUser(user);
-	    // 처리 결과 반환
-	    Map<String, Object> modifyResultMap = new HashMap<>();
-	    modifyResultMap.put("success", success);
-	    return modifyResultMap;
+		// 회원 정보 수정 처리 코드
+		boolean success = userService.modifyUser(user);
+		// 처리 결과 반환
+		Map<String, Object> modifyResultMap = new HashMap<>();
+		modifyResultMap.put("success", success);
+		return modifyResultMap;
 	}
 
 	@GetMapping("/modifyUser")

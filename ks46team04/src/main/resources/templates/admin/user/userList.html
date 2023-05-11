@@ -100,8 +100,12 @@
 								</td>
 								<td><a
 									th:href="@{/admin/user/modifyUser(userId=${l.userId})}">수정</a></td>
-								<td><a
-									th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td>
+								 <td><a
+									th:href="@{/admin/user/removeUser(userId=${l.userId})}">삭제</a></td> 
+									<!-- <td>
+  <a href="#" onclick="showConfirmPopup(/*[[${l.userId}]]*/)">삭제</a>
+  <button type="button" class="delete-user-btn" data-user-id="${l.userId}" style="display:none;">삭제</button>
+</td> -->
 								<td><a
 									th:href="@{/admin/user/userDetailList(userId=${l.userId})}">조회</a></td>
 							</tr>
@@ -115,18 +119,21 @@
 				<!-- /.container-fluid -->
 </th:block>
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
-	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+  <script th:src="@{/js/jquery-3.6.4.js}"></script>
+  <script>
+ 
+  </script>
 
+  <!-- Page level plugins -->
+  <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+  <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
-	<!-- Page level custom scripts -->
-	<script th:src="@{/js/demo/datatables-demo.js}"></script>
-	<script type="text/javascript">
-		$('#userDataTable').DataTable({
-			'ordering': false
-		});
-		
-	</script>
+  <!-- Page level custom scripts -->
+  <script th:src="@{/js/demo/datatables-demo.js}"></script>
+  <script type="text/javascript">
+    $('#userDataTable').DataTable({
+      'ordering': false
+    });
+  </script>
 </th:block>
 </html>
