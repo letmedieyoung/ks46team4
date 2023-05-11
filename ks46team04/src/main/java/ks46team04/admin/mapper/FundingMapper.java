@@ -60,8 +60,7 @@ public interface FundingMapper {
 	public int getTargetSum();
 	// 펀딩 진행상황 - 진행 펀딩 전체 달성률
 	public int allAccomplishmentRate();
-	// 펀딩 진행상황 - 개별 펀딩 달성률
-	public String accomplishmentRate();
+	
 	public List<FundingCurrentAmount> getFundingProgressStatus(String searchKey, String searchValue);
 	
 }

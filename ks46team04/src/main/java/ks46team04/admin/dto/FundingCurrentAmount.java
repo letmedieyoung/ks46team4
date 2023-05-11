@@ -16,7 +16,7 @@ public class FundingCurrentAmount {
 	private String fundingProgress;
 	private int targetSum;
 	private int currentSum;
-	private int accomplishmentRate;
+	private int achievedRate;
 	
 	private List<FundingCurrentAmount> fundingCurrentAmountList;
 }

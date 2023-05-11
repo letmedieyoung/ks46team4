@@ -37,14 +37,18 @@
 		<id 	column="goods_code"	property="goodsCode"/>
 		<result column="goods_name"	property="goodsName"/>
 	</resultMap>
+	
+	<resultMap type="FundingCurrentAmount" id="FundingCurrentAmountResultMap">
+		<id 	column="funding_current_amount_code"	property="fundingCurrentAmountCode"/>
+	</resultMap>
 
 	<insert id="registFunding" parameterType="Funding">
 		/* 펀딩 등록 */
 		INSERT INTO each_funding_info
-		(funding_code, funding_name, funding_description, funding_foundation, goods_code, funding_goal_amount,
+		(funding_code, funding_name, funding_description, funding_foundation, goods_name, goods_code, funding_goal_amount,
 		 funding_start_date, funding_end_date, funding_progress, funding_reg_id, funding_reg_date, funding_update_id, funding_update_date)
 		VALUES 
-		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{foundationName}, #{goodsCode}, #{fundingGoalAmount},
+		(sf_new_funding_code(), #{fundingName}, #{fundingDescription}, #{foundationName}, #{goodsName}, #{goodsCode}, #{fundingGoalAmount},
 		 #{fundingStartDate}, #{fundingEndDate}, #{fundingProgress}, #{fundingRegId}, CURDATE(), #{fundingUpdateId}, #{fundingUpdateDate});
 	</insert>
 	
@@ -79,9 +83,7 @@
 		SELECT
 			goods_code AS goodsCode
 		FROM
-			goods_reg_info
-		ORDER BY 
-			CAST(SUBSTRING_INDEX(goods_code, 'goods',-1) AS unsigned), goods_code;			
+			goods_reg_info;
 	</select>	
 	
 	<select id="getFoundationNameList" resultType="Funding">
@@ -340,17 +342,18 @@
 		WHERE funding_progress = '진행중';
 	</select>
 	
-	<select id="accomplishmentRate" resultType="String">
-		/* 개별 펀딩 달성률 */ 
-		SELECT			
-			TRUNCATE((SUM(funding_current_achieved_amount) / SUM(funding_goal_amount)) * 100, 0) AS accomplishmentRate
+	<!-- 
+	<select id="accomplishmentRate" parameterType="Integer" resultMap="FundingCurrentAmountResultMap">
+		/* 개별 펀딩 달성률 */ 			
+		SELECT
+			ROUND((funding_current_achieved_amount / funding_goal_amount) * 100) AS roundedValue
 		FROM
 			funding_current_amount
 		WHERE
-			funding_current_amount_code = #{fundingCurrentAmountCode}
-		GROUP BY
-			funding_current_amount_code;		
+			funding_current_amount_code = #{fundingCurrentAmountCode};
+			
 	</select>
+	 -->
 	
 	<select id="getFundingProgressStatus" resultType="FundingCurrentAmount">
 		/* 펀딩 모금 진행현황 조회 */	
@@ -359,7 +362,8 @@
 			ef.funding_name 					AS fundingName,
 			ef.funding_foundation 				AS foundationName,			
 			fc.funding_goal_amount 				AS fundingGoalAmount,
-			fc.funding_current_achieved_amount 	AS currentAchievedAmount
+			fc.funding_current_achieved_amount 	AS currentAchievedAmount,
+			fc.funding_achieved_rate 			AS achievedRate
 		FROM
 			funding_current_amount AS fc
 			LEFT JOIN

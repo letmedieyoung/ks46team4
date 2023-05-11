@@ -141,7 +141,7 @@
 									<td th:text="${l.foundationName}"></td>									
 									<td th:text="|${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}|"></td>
 									<td th:text="|${#numbers.formatInteger(l.currentAchievedAmount, 3, 'COMMA')}|"></td>
-									<td th:text="${l.accomplishmentRate}+'%'"></td>													
+									<td th:text="${l.achievedRate}+'%'"></td>													
 								</tr>
 								<tr th:if="${fundingCurrentAmountList == null}">
 									<td colspan="6">등록된 펀딩의 정보가 없습니다.</td>				

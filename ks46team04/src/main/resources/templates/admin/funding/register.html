@@ -90,19 +90,20 @@
 		                        </tr>                      	                      
 		                        <tr>
 		                        	<th class="bg-gray-100">
-										<label for="goodsCode">상품코드</label>
+										<label for="goodsName">펀딩상품</label>
 									</th>
 		                        	<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="goodsCode">
-												<th:block th:unless="${goodsCodeList == null}" th:each="l : ${goodsCodeList}">
-													<option th:value="${l.goodsCode}" th:selected="${l.goodsCode} == *{goodsCode}">[[${l.goodsCode}]]</option>												
+											<select class="dropdown btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="goodsName">
+												<th:block th:unless="${goodsNameList == null}" th:each="l : ${goodsNameList}">
+													<option th:value="${l.goodsName}" th:selected="${l.goodsName} == *{goodsName}">[[${l.goodsName}]]</option>												
 												</th:block>
 												<th:block th:if="${goodsCodeList == null}">
 													<option>등록된 상품 정보가 없습니다.</option>
 												</th:block>
 											</select>
-										</div>									
+											
+										</div>								
 									</td>
 		                        </tr>
 		                        <tr>

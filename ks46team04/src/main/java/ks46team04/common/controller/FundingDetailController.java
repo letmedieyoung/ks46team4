@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ks46team04.admin.dto.Funding;
+
 import ks46team04.admin.dto.FundingDetail;
-import ks46team04.admin.mapper.FundingMapper;
 import ks46team04.admin.service.FundingDetailService;
-import ks46team04.admin.service.FundingService;
 
 
 @Controller
@@ -21,15 +19,9 @@ import ks46team04.admin.service.FundingService;
 public class FundingDetailController {
 
 	private final FundingDetailService fundingDetailService; 
-	private final FundingService fundingService; 
-	private final FundingMapper fundingMapper;
 	
-	public FundingDetailController(FundingDetailService fundingDetailService,
-								   FundingService fundingService,
-								   FundingMapper fundingMapper) {
+	public FundingDetailController(FundingDetailService fundingDetailService) {
 		this.fundingDetailService = fundingDetailService;
-		this.fundingService = fundingService;
-		this.fundingMapper = fundingMapper;
 	}
 	
 	/**
@@ -44,24 +36,21 @@ public class FundingDetailController {
 		
 		List<FundingDetail> fundingDetailList = fundingDetailService.getFundingDetailList();
 		FundingDetail fundingDetail = fundingDetailService.getFundingDetailByCode(fundingCode);
-		String accomplishmentRate = fundingMapper.accomplishmentRate();
 		
 		model.addAttribute("fundingDetail", fundingDetail);
 		model.addAttribute("fundingDetailList", fundingDetailList);
 		model.addAttribute("fundingDetail", fundingDetail);
-		model.addAttribute("accomplishmentRate", accomplishmentRate);
+		
 		return "common/detail/fundingdetail";
 	}
 	
 	
 	@RequestMapping("/list")
 	public String fundingDetail(Model model) {
-		List<Funding> fundingList = fundingService.getFundingList();
-		String accomplishmentRate = fundingMapper.accomplishmentRate();
+		List<FundingDetail> fundingDetailList = fundingDetailService.getFundingDetailList();
 		
 		model.addAttribute("title", "펀딩");
-		model.addAttribute("fundingList", fundingList);
-		model.addAttribute("accomplishmentRate", accomplishmentRate);
+		model.addAttribute("fundingDetailList", fundingDetailList);
 		
 		return "common/funding/list";
 	}
