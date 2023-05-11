@@ -58,7 +58,7 @@ public class PurchaseService {
 			purchase.setPurchaseStatus("매입 입금 완료");
 			
 			//그룹 코드
-			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey,"purchase");
+			String purchaseGroup = commonMapper.getPurchaseGroupCode("purchase_history", "purchase_group_code", PKkey,"purchase");
 			purchase.setPurchaseGroupCode(purchaseGroup);
 			//DeadlindeCheck
 			purchase.setUserPurchseDeadlindeCheck("마감전");
@@ -108,7 +108,7 @@ public class PurchaseService {
 			
 			String PKkey = purchase.getPurchaseCode();
 			//그룹 코드
-			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey, "purchase");
+			String purchaseGroup = commonMapper.getPurchaseGroupCode("purchase_history", "purchase_group_code", PKkey, "purchase");
 			purchase.setPurchaseGroupCode(purchaseGroup);
 			//DeadlindeCheck
 			purchase.setUserPurchseDeadlindeCheck("마감전");
@@ -117,5 +117,11 @@ public class PurchaseService {
 		log.info("purchaseS: {}", purchase);
 		int modifyResult = purchaseMapper.modifyPurchase(purchase);
 		return modifyResult;
+	}
+	
+	public int deletePurchase() {
+		int result = purchaseMapper.deletePurchase();
+		
+		return result; 
 	}
 }

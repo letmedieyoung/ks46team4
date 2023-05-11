@@ -16,4 +16,6 @@ public interface PurchaseMapper {
 	public Purchase getPurchaseByCode(String purchaseCode, String goodsCode);
 
 	public int modifyPurchase(Purchase purchase);
+	
+	public int deletePurchase();
 }

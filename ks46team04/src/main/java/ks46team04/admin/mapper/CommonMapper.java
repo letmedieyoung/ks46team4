@@ -7,6 +7,7 @@ public interface CommonMapper {
 
 	public String getPrimaryKey(String tableName, String columnName);
 	
-	public String getGroupCode(String tableName, String columnName, String PKkey, String codeName);
+	public String getPurchaseGroupCode(String tableName, String columnName, String PKkey, String codeName);
 	
+	public String getSaleGroupCode(String codeName);
 }

@@ -175,8 +175,10 @@
 						</thead>
 						<tbody>
 							<tr th:unless="${totalPurchaseList == null}" th:each="l : ${totalPurchaseList}">
-								<td><input type="checkbox" class="update-delete deleteChecks"
-									name="DeleteCheck" value="false"></td>
+								<td>
+									<input type="checkbox" class="update-delete deleteChecks" name="DeleteCheck" value="false">
+									<input type="hidden" class="purchaseCode" name="purchaseCode" th:value="${l.purchaseCode}">	
+								</td>
 								<td th:text="${l.purchaseStatus}"></td>
 								<td class="goodsName" th:text="${l.goodsName}"></td>
 								<td class="price" th:text="${l.purchasePrice}"></td>
@@ -228,7 +230,7 @@
 							</div>						
 						</div>
 						<div class="modal-btns">
-								<button type="button" class="btn btn-secondary">						
+								<button type="button" id="deletePurchase" class="btn btn-secondary">						
 								<span class="text-gray-100">매입 삭제</span>							
 							</button>
 							<button type="button" class="close-area btn btn-secondary">취소</button>
@@ -260,6 +262,47 @@
 	</script>
 	
 	<script>
+		let isCheckDelBtn = false;
+		let isOnlyDelBtn = false;
+		
+		let $onlyRowSave = '';
+		const $checkRowsSave = [];
+		
+		//선택된 PK요소를 파라미터로 보낸다
+		/*function requestDelete(delPkValues){
+			let masterPw = $('#masterPw').val();
+			$.ajax({
+				  url: '/admin/purchase_sale/request_remove',
+				  method: 'POST',
+				  data: { 
+						  'masterPw': masterPw, 
+						  'delPkValues': delPkValues
+						}, 
+				  dataType: 'json',
+				  success: function(response) {
+				    // 요소 리무브
+				     $.each(deleteEles, function(idx, item){
+				    	$(item).remove();
+				    	
+						
+				    	modalOff();
+				    })
+				    
+				    $onlyRowSave = '';
+				    $checkRowsSave = [];
+				  },
+				  error: function(error) {
+				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
+				    // 에러 처리 로직을 추가할 수 있음
+				    //alert('삭제할 수 없습니다.');
+				    console.log('요청실패');
+				  }
+			});
+		}*/
+	
+	</script>
+	
+	<script>
 		const $modal = document.getElementById('modal');
 		let isModalOn = false;
 		
@@ -270,13 +313,19 @@
 		function modalOff() {
 		    $modal.style.display = 'none';
 		    isModalOn = false;
+		   	isCheckDelBtn = false;
+			isOnlyDelBtn = false;
 		}
+		
+		//개별 삭제 버튼
 		const $btnModal = document.querySelectorAll('.btn-modal');	
 		console.log($btnModal);
 		$btnModal.forEach(function(item, idx){
 			item.addEventListener('click', e => {
 				const $parentTr = item.parentNode.parentNode; // item의 부모 요소인 tr을 가져옴
 				console.log($parentTr);
+				$onlyRowSave = $parentTr;	//체크된 단일 행 요소 저장	
+				
 				const $goodsNameEle = $parentTr.querySelector('.goodsName'); // tr 안에서 클래스가 'goodsName'인 요소를 선택
 				console.log($goodsNameEle);
 				let goodsname = $goodsNameEle.textContent;
@@ -284,6 +333,7 @@
 				
 				const $modalContentName = document.querySelector('.content-goods-name')
 				$modalContentName.textContent = goodsname;
+				isOnlyDelBtn = true;
 			    modalOn();
 			});
 		});
@@ -310,26 +360,7 @@
 	</script>
 	
 	<script>
-		function requestDelete(){
-			let masterPw = $('#masterPw').val();
-			$.ajax({
-				  url: '/admin/purchase_sale/purchase_delete',
-				  type: 'POST',
-				  data: { 'masterPw': masterPw }, // 삭제할 데이터의 식별자 등, 필요한 데이터 전달
-				  success: function(response) {
-				    // 삭제 요청이 성공적으로 처리된 경우 실행되는 콜백 함수
-				    // 필요한 화면 업데이트 작업을 수행
-				    // 예: 삭제한 요소를 화면에서 제거하는 등
-				    // 요소 리무브
-				  },
-				  error: function(error) {
-				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
-				    // 에러 처리 로직을 추가할 수 있음
-				    //alert('삭제할 수 없습니다.');
-				  }
-			});
-		}
-	
+		//전체선택 체크박스
 		$('#allDeleteCheck').click(function(){
 			$('.deleteChecks').prop('checked', $(this).prop('checked'));
 		});
@@ -347,12 +378,20 @@
 		});
 		
 		
+		//체크된 항목 삭제 버튼
 		console.log($('.deleteAllChecks').length);
 		$.each($('.deleteAllChecks'), function(idx, item){
 			$(item).click(function(){
 				//삭제
 				const $checkRows = $('.deleteChecks[type="checkbox"]:checked').parents('tr');
 				console.log($checkRows.length);
+	
+				$.each($checkRows, function(idx, item){ //체크된 행 요소들 저장
+					$checkRowsSave[idx] = $(item);
+					console.log($checkRowsSave[idx]);
+				});
+				
+				
 				const $checkNames = $checkRows.last().find('.goodsName');
 				let nameStr = $checkNames.text();
 				
@@ -365,7 +404,58 @@
 	
 				console.log(nameStr);
 				$('.content-goods-name').html(nameStr);
+				isCheckDelBtn = true;
 				modalOn();
+			});
+		});
+		
+		
+		$('#deletePurchase').click(function(){
+			//세션 아이디가 관리자이며 아이디에 해당하는 비밀번호가 일치하는지 확인
+			//정보가 맞다면 디비에서 해당 row 지우기
+			//체크된 요소 배열 넘기기 or 삭제 누른 요소 하나만 넘기기
+			//체크가 되었을수도 있고 체크 되었어도 오른쪽 삭제를 눌렀을 수도 있음...
+			//두 경우를 구분할 값이 필요함
+			//모달창이 꺼질때 값을 리셋해
+			
+			const delPkValues = [];
+			//두 경우를 나누어서 PK값을 배열에 담는다
+				if(isCheckDelBtn){
+					for(idx in $checkRowsSave){
+						console.log($checkRowsSave[idx].find('.purchaseCode').val());
+						delPkValues[idx] = $checkRowsSave[idx].find('.purchaseCode').val();
+					}
+				} else if(isOnlyDelBtn){
+					console.log($onlyRowSave .find('.purchaseCode').val());			
+					delPkValues[0] = $onlyRowSave .find('.purchaseCode').val();
+				}
+			console.log(delPkValues);
+			//requestDelete(delPkValues)	// ajax 요청
+			let masterPw = $('#masterPw').val();
+			$.ajax({
+				  url: '/admin/purchase_sale/request_remove',
+				  method: 'POST',
+				  data: { 
+						  'masterPw': masterPw, 
+						  'delPkValues': delPkValues
+						}, 
+				  dataType: 'json',
+				  success: function(response) {
+				    // 요소 리무브
+				   /*  $.each(deleteEles, function(idx, item){
+				    	$(item).remove();
+				    	modalOff();
+				    }) */
+				    
+				    //$onlyRowSave = '';
+				   // $checkRowsSave = [];
+				  },
+				  error: function(error) {
+				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
+				    // 에러 처리 로직을 추가할 수 있음
+				    //alert('삭제할 수 없습니다.');
+				    console.log('요청실패');
+				  }
 			});
 		});
 	
