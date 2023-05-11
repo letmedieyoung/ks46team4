@@ -1,6 +1,7 @@
 package ks46team04.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,7 +27,13 @@ public interface GoodsMapper {
 	
 	//상품등록 
 	public int addGoods(Goods goods);
-		
+	
+	//상품 제조사 조회
+	public List<String> getGoodsCompanyList();
+	
+	//상품 검색 결과 조회
+	public List<Goods> getGoodsListBySearch(Map<String, Object> paramMap);
+	
 	//상품 조회
 	public List<Goods> getGoodsList();
 	

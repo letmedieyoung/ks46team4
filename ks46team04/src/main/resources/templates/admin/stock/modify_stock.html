@@ -55,7 +55,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsInfo.goodsName}" readonly/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsInfo.goodsName}" readonly="${goodsInfo.goodsName != null}"/>
 											</div>
 										</td>
 									</tr>

@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -55,11 +46,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" placeholder="상품명을 입력해주세요."/>
-												&nbsp;
-												<button type="submit" id="overlapCheck" class="btn btn-primary btn-icon-split">
-													<span class="text">중복확인</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -94,11 +81,6 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsCompany}" placeholder="제조사를 검색하거나 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">제조사 검색</span>
-												</button>
 											</div>
 										</td>
 									</tr>
@@ -151,17 +133,10 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -173,8 +148,8 @@
 		 * 상품분류 select box value 값 -> input value로 넣기
 		 */
 		function goodsCate(category) {
-			const selectInput = document.querySelector('#goodsCategory');
-			selectInput.value = category;
+			const selectInputEle = $('#goodsCategory');
+			selectInputEle.val(category);
 		};
 	</script>
 </th:block>

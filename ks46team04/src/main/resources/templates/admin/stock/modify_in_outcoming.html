@@ -36,7 +36,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<form id="modifyInOutcomingForm" th:action="@{/admin/stock/modify_stock}" method="post">
+						<form id="modifyInOutcomingForm" th:action="@{/admin/stock/modify_in_outcoming}" method="post">
 							<table th:object="${inOutcomingInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 								<tbody>
 									<tr class="hidden">
@@ -51,33 +51,12 @@
 										</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="inOutcomingType">입/출고분류</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-										     	&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutcomingType(this.value)">
-													<option value="">:: 입/출고 ::</option>
-													<option th:selected="*{inOutcomingType} == 'incoming'">입고</option>
-													<option th:selected="*{inOutcomingType} == 'outcoming'">출고</option>
-													<option th:selected="*{inOutcomingType} == 'exchange'">교환</option>
-													<option th:selected="*{inOutcomingType} == 'disposal'">폐기</option>
-												</select>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="inOutcomingType" name="inOutcomingType" th:value="*{inOutcomingType}" placeholder="입/출고분류를 선택해주세요." />
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
 											<label for="goodsName">상품명</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" placeholder="상품명을 입력해주세요."/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" 
+													th:value="*{goodsInfo == null ? '상품명을 입력해주세요.' : goodsInfo.goodsName}"/>
 												&nbsp;
 												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
 													<span class="text">상품명 검색</span>
@@ -87,33 +66,80 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="inOutcomingDate">입/출고일자</label>
+											<label for="goodsLotNumber">제조번호</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="date" class="form-control form-control-user-search" id="inOutcomingDate" name="inOutcomingDate" th:value="*{inOutcomingDate}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsLotNumber" name="goodsLotNumber" 
+													th:value="*{goodsLotNumber == null ? '제조번호를 입력해주세요.' : goodsLotNumber}"/>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="inOutcomingQuantity">입/출고수량</label>
+											<label for="goodsCompany">제조사</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control form-control-user-search" id="inOutcomingQuantity" name="inOutcomingQuantity" th:value="*{inOutcomingQuantity}" placeholder="입/출고 수량을 입력해주세요."/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" 
+													th:value="*{goodsInfo == null ? '제조사를 입력해주세요.' : goodsInfo.goodsCompany}"/>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsPrice">출고 상세정보</label>
+											<label for="inOutcomingType">입/출고 분류</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
+										     	&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutType(this.value)">
+													<option value="">:: 입/출고 ::</option>
+													<option th:selected="*{inOutcomingType} == 'incoming'">입고</option>
+													<option th:selected="*{inOutcomingType} == 'outcoming'">출고</option>
+													<option th:selected="*{inOutcomingType} == 'exchange'">교환</option>
+													<option th:selected="*{inOutcomingType} == 'disposal'">폐기</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
+												<input type="text" class="form-control form-control-user-search short-input" id="inOutcomingType" name="inOutcomingType" 
+													th:value="*{inOutcomingType == null ? '입/출고 분류를 선택해주세요.' : inOutcomingType}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingQuantity">입/출고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control form-control-user-search" id="inOutcomingQuantity" name="inOutcomingQuantity" 
+												th:value="*{inOutcomingQuantity == null ? '입/출고 수량을 입력해주세요.' : inOutcomingQuantity}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingDate">입/출고일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search" id="inOutcomingDate" name="inOutcomingDate" 
+													th:value="*{inOutcomingDate == null ? '입/출고일을 입력해주세요.' : inOutcomingDate}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationName">출고 재단명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" 
+													th:value="*{foundationInfo == null ? '해당없음' : foundationInfo.foundationName}"/>
+												&nbsp;
+												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
 													<span class="text">재단명 검색</span>
 												</button>
 											</div>
@@ -159,13 +185,13 @@
 		/*
 		* 입/출고 분류 select box value 값 -> input value로 넣기
 		*/
-		function inOutcomingType(category) {
+		function inOutType(category) {
 			const selectInput = document.querySelector('#inOutcomingType');
 			selectInput.value = category;
 		};
 		
 		/**
-		 * 재고조사 현황 select box selected 값 -> input text로 넣기
+		 * 입/출고 분류 select box selected 값 -> input text로 넣기
 		 */
 		var selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
 		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
