@@ -42,7 +42,7 @@
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-bordered search-table table-layout"
-						id="searchTable" width="100%" cellspacing="0">
+						id="searchTable" th:object="${userInfo}" width="100%" cellspacing="0">
 					
 						<tbody>
 							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">

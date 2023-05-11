@@ -23,66 +23,7 @@
 	rel="stylesheet">
 
 </head>
-<th:block layout:fragment="customJs">
-	<script th:src="@{/js/jquery-3.6.4.js}"></script>
-	<script>
-	$('#removesubmitBtn').click(function(event) {
-		  event.preventDefault(); //폼 제출 막기
 
-		  const userIdEle = $('#removeuserId');
-		  const userPwEle = $('#removeuserPw');
-		  let userId = userIdEle.val();
-		  let userPw = userPwEle.val();
-
-		  //비밀번호 필드를 필수로 입력하도록 유효성 검사
-		  if (typeof userPw == 'undefined' || userPw == null || userPw == '') {
-		    alert('회원비밀번호를 입력해주세요');
-		    userPwEle.focus();
-		    return false;
-		  }
-
-		  //서버로 비밀번호 일치 여부 검사 요청
-		  $.ajax({
-		    type: 'POST',
-		    url: '/checkUserPW', //비밀번호 일치 여부 검사 담당하는 URL
-		    data: {
-		      userPw: $('#removeuserPw').val()
-		    },
-		    success: function(result) {
-		      if (result.success) {
-		        //비밀번호가 일치하면 회원 삭제 요청
-		        $.ajax({
-		          type: 'POST',
-		          url: `/removeUser?userId=${userId}`, // 회원 삭제 처리를 담당하는 URL
-		          data: $('#removeUserForm').serialize(), // 폼 데이터 전송
-		          success: function(result) {
-		            if (result.success) {
-		              alert('회원 정보가 삭제되었습니다.');
-		            } else {
-		              if (result.removeFailure) {
-		                alert('회원 정보 삭제 중 오류가 발생하였습니다.');
-		              } else {
-		                alert('회원 정보 삭제에 실패하였습니다.');
-		              }
-		            }
-		          },
-		          error: function(xhr, status, error) {
-		            console.error(error);
-		          },
-		          dataType: 'json' // 데이터 타입을 JSON으로 지정
-		        });
-		      } else {
-		        alert('비밀번호가 일치하지 않습니다.');
-		      }
-		    },
-		    error: function(xhr, status, error) {
-		      console.error(error);
-		    },
-		    dataType: 'json' // 데이터 타입을 JSON으로 지정
-		  });
-		});
-	</script>
-</th:block>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
@@ -153,6 +94,82 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
+	<script>
+		$('#removesubmitBtn')
+				.click(
+						function(event) {
+							event.preventDefault(); //폼 제출 막기
+
+	
+							const userIdEle = $('#removeuserId');
+							const userPwEle = $('#removeuserPw');
+							
+							let userId = userIdEle.val();
+							let userPw = userPwEle.val();
+
+							//비밀번호 필드를 필수로 입력하도록 유효성 검사
+							if (typeof userPw == 'undefined' || userPw == null
+									|| userPw == '') {
+								alert('회원비밀번호를 입력해주세요');
+								userPwEle.focus();
+								return false;
+							}
+
+							//서버로 비밀번호 일치 여부 검사 요청
+							$
+									.ajax({
+										type : 'POST',
+										url : '/admin/user/pwCheck', //비밀번호 일치 여부 검사 담당하는 URL
+										 data : {
+											userId : $('#removeuserId').val(),
+											userPw : $('#removeuserPw').val()
+										}, 
+										
+										success : function(result) {
+											if (result.success) {
+												//비밀번호가 일치하면 회원 삭제 요청
+												$
+														.ajax({
+															type : 'POST',
+															url : '/admin/user/removeUser',
+															data: $('#removeUserForm').serialize(), // 폼 데이터 전송
+															
+																//data: { userId: $('#removeuserId').val()},
+														
+															success : function(
+																	result) {
+																if (result.success) {
+																	alert('회원 정보가 삭제되었습니다.');
+																} else {
+																	if (result.removeFailure) {
+																		alert('회원 정보 삭제 중 오류가 발생하였습니다.');
+																	} else {
+																		alert('회원 정보 삭제에 실패하였습니다.');
+																	}
+																}
+															},
+															error : function(
+																	xhr,
+																	status,
+																	error) {
+																console
+																		.error(error);
+															},
+															dataType : 'json' // 데이터 타입을 JSON으로 지정
+														});
+											} else {
+												alert('비밀번호가 일치하지 않습니다.');
+											}
+										},
+										error : function(xhr, status, error) {
+											console.error(error);
+										},
+										dataType : 'json' // 데이터 타입을 JSON으로 지정
+									});
+						});
+	</script>
+
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
