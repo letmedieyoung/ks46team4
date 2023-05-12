@@ -1,6 +1,8 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,29 +121,38 @@ public class PurchaseController {
 	
 	@PostMapping("/request_remove")
 	@ResponseBody
-	public boolean DeletePuchase(@RequestParam(name="masterPw") String masterPw,
+	public Map<String, Object> DeletePuchase(@RequestParam(name="masterPw") String masterPw,
 								@RequestParam(name="delPkValues[]") List<String> delPkValues,
 								HttpSession session) {
-		boolean isDel = false;
+		
 		String userId = (String) session.getAttribute("SID");
 		String userLevel = (String) session.getAttribute("SLEVEL");
 		
 		log.info("관리자 비번 masterPw: {}", masterPw);
 		log.info("삭제 선택된 요소들 deleteEles: {}", delPkValues);
-		/*
-		if(userLevel.equals("1")) {
+		log.info("관리자레벨 userLevel: {}", userLevel);
+		
+		String msg = "";
+		boolean isDel = false;
+		Map<String, Object> delResultMap = null;
+		delResultMap = new HashMap<String, Object>();
+		if(userLevel !=null && userLevel.equals("1")) {
 			User userInfo = userService.getUserInfoById(userId);
 			if(masterPw.equals(userInfo.getUserPw())){
 				//비밀번호 일치, 지우는 로직 추가
-				purchaseService.deletePurchase();//요소 코드들을 가져와야한다. 지우려는 요소 정보 배열을 파라미터
-				
-				isDel = true;
+				int delResultNumber = purchaseService.deletePurchase(delPkValues);	//요소 코드들을 가져와야한다. 지우려는 요소 정보 배열을 파라미터
+				if(delResultNumber > 0) {
+					isDel = true;
+				}
+			}else {
+				msg = "관리자 비밀번호가 일치하지 않습니다";
+				isDel = false;
 			}
 		}
-		*/
-	
-		//제대로 지워지면 true
-		return isDel;
+		delResultMap.put("isDel", isDel);
+		delResultMap.put("msg", msg);
+		
+		return delResultMap;	//제대로 지워지면 true
 	}
 	
 }

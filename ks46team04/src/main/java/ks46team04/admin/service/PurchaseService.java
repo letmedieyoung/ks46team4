@@ -119,8 +119,8 @@ public class PurchaseService {
 		return modifyResult;
 	}
 	
-	public int deletePurchase() {
-		int result = purchaseMapper.deletePurchase();
+	public int deletePurchase(List<String> delPkValues) {
+		int result = purchaseMapper.deletePurchase(delPkValues);
 		
 		return result; 
 	}

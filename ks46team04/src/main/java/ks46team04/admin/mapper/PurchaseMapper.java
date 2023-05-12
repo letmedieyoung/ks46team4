@@ -17,5 +17,5 @@ public interface PurchaseMapper {
 
 	public int modifyPurchase(Purchase purchase);
 	
-	public int deletePurchase();
+	public int deletePurchase(List<String> delPkValues);
 }
