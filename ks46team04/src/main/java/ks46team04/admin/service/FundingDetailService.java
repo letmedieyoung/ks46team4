@@ -55,7 +55,15 @@ public class FundingDetailService {
 		return fundingDetail;
 	}
 
-//	public FundingProduct FundingCode(String fundingCode) {
-//        return fundingProductMapper.fundingCode(fundingCode);
-//    }
+	/**
+     * 상세페이지 가격 조회
+     * @param option 옵션 값
+     * @return 가격
+     */
+    public int getPriceByOption(String option) {
+        // 옵션 값에 따른 가격 조회
+        int price = fundingDetailMapper.getPriceByOption(option);
+        return price;
+    }
+
 }
