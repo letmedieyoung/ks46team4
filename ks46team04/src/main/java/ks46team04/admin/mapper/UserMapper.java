@@ -41,10 +41,6 @@ public interface UserMapper {
 	public List<LoginLog> getLoginLogList(String userId);
 	void insertLoginLog(LoginLog loginlog);
 	void updateLogoutLog(LoginLog loginlog);
-	// 회원 미접속일수 업데이트
-	//public void updateLogDateCalcul(String userId);
-	// 회원 미접속일수 조회
-	//Integer selectLogDateCalcul(String userId);
 	// 회원 조회 + 미접속일수 조회
 	public List<User> getUserListWithLogDateCalcul(String searchKey, String searchValue);
 	// 휴면 회원 관리

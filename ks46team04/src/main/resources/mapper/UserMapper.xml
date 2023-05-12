@@ -37,7 +37,6 @@
 			,ui.user_email
 			,ui.user_addr
 			,ui.user_join_date
-			,ui.login_log_code
 			,ui.user_update_date
 			,ui.activity_status_standard_code
 			,DATEDIFF(NOW(), ll.last_login_time) AS log_date_calcul
@@ -55,6 +54,7 @@
 		<if test="searchKey != null and searchValue != null">
 			WHERE ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
 		</if>
+		ORDER BY ui.user_join_date DESC;
 	</select>
 	
 	<update id="updateUserSleep" parameterType="String">
@@ -156,9 +156,8 @@
 		,login_ip AS loginIp
 		FROM
 		login_log
-		ORDER BY
-		CAST(SUBSTRING_INDEX(login_log_code, 'login_log', -1) AS
-		UNSIGNED) DESC;
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(login_log_code, 'login_log', -1) AS UNSIGNED) DESC;
 	</select>
 
 
@@ -179,25 +178,9 @@
 
 
 	<delete id="removeUserById" parameterType="String">
-		/* 탈퇴 회원 전환 및 회원정보 삭제
-		*/
-		UPDATE user_info
-		SET
-		activity_status_standard_code = 'status_withdraw'
-		WHERE user_id =
-		#{userId};
-
 		DELETE FROM user_info
 		WHERE user_id =
 		#{userId};
-
-		/* 탈퇴 회원 추가 */
-		INSERT INTO
-		user_drop (user_id,
-		user_drop_date,
-		activity_status_standard_code)
-		VALUES (#{userId}, NOW(),
-		'status_withdraw');
 	</delete>
 
 	<select id="getUserDropList" resultType="userDrop">

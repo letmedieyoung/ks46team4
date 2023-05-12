@@ -60,8 +60,7 @@
 								<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
 								<td><input type="password"
 									class="form-control form-control-user-search search-input-gr"
-									id="removeuserPw" th:value="${userPw}" name="userPw"
-									placeholder="회원비밀번호를 입력해주세요." /></td>
+									id="removeuserPw" name="userPw" placeholder="회원비밀번호를 입력해주세요." /></td>
 							</tr>
 
 							<tr>
@@ -101,10 +100,9 @@
 						function(event) {
 							event.preventDefault(); //폼 제출 막기
 
-	
 							const userIdEle = $('#removeuserId');
 							const userPwEle = $('#removeuserPw');
-							
+
 							let userId = userIdEle.val();
 							let userPw = userPwEle.val();
 
@@ -117,56 +115,48 @@
 							}
 
 							//서버로 비밀번호 일치 여부 검사 요청
-							$
-									.ajax({
-										type : 'POST',
-										url : '/admin/user/pwCheck', //비밀번호 일치 여부 검사 담당하는 URL
-										 data : {
-											userId : $('#removeuserId').val(),
-											userPw : $('#removeuserPw').val()
-										}, 
-										
-										success : function(result) {
-											if (result.success) {
-												//비밀번호가 일치하면 회원 삭제 요청
-												$
-														.ajax({
-															type : 'POST',
-															url : '/admin/user/removeUser',
-															data: $('#removeUserForm').serialize(), // 폼 데이터 전송
-															
-																//data: { userId: $('#removeuserId').val()},
-														
-															success : function(
-																	result) {
-																if (result.success) {
-																	alert('회원 정보가 삭제되었습니다.');
-																} else {
-																	if (result.removeFailure) {
-																		alert('회원 정보 삭제 중 오류가 발생하였습니다.');
-																	} else {
-																		alert('회원 정보 삭제에 실패하였습니다.');
-																	}
-																}
-															},
-															error : function(
-																	xhr,
-																	status,
-																	error) {
-																console
-																		.error(error);
-															},
-															dataType : 'json' // 데이터 타입을 JSON으로 지정
-														});
-											} else {
-												alert('비밀번호가 일치하지 않습니다.');
-											}
-										},
-										error : function(xhr, status, error) {
-											console.error(error);
-										},
-										dataType : 'json' // 데이터 타입을 JSON으로 지정
-									});
+							$.ajax({
+						        type : 'POST',
+						        url : '/admin/user/pwCheck', 
+						        data : {
+						            userId : $('#removeuserId').val(),
+						            userPw : $('#removeuserPw').val()
+						        },
+
+						        success : function(result) {
+						            if (result) {
+						            	// 비밀번호가 일치하면 회원 삭제 요청
+						                $.ajax({
+						                    type: 'POST',
+						                    url: '/admin/user/removeUser',
+						                    data: $('#removeUserForm').serialize(), // 폼 데이터 전송
+
+						                    success: function(response) {
+						                        if (response.message === '삭제 성공') {
+						                            alert('회원 정보가 삭제되었습니다.');
+						                            window.location.href = '/admin/user/userList'; // userList로 이동
+						                        } else {
+						                            if (response.removeFailure) {
+						                                alert('회원 정보 삭제 중 오류가 발생하였습니다.');
+						                            } else {
+						                                alert('비밀번호가 일치하지 않습니다.');
+						                            }
+						                        }
+						                    },
+						                    error: function(xhr, status, error) {
+						                        console.error(xhr.responseText); // 회원 삭제 요청 실패 처리
+						                        alert('회원 정보 삭제 중 오류가 발생하였습니다.');
+						                    }
+						                });
+						            } else {
+						                alert('비밀번호가 일치하지 않습니다.');
+						            }
+						        },
+						        error: function(xhr, status, error) {
+						            console.error(xhr.responseText); // 비밀번호 일치 여부 검사 요청 실패 처리
+						            alert('비밀번호 일치 여부 검사 중 오류가 발생하였습니다.');
+						        }
+						    });
 						});
 	</script>
 

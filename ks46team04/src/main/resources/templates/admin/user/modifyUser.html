@@ -86,14 +86,42 @@
 									id="modifyuserBirth" th:value="${userInfo.userBirth}"
 									name="userBirth" placeholder="생년월일을 선택해주세요." /></td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<th class="bg-gray-100"><label for="userPhone">연락처</label>
 								</th>
 								<td><input type="tel"
 									class="form-control form-control-user-search search-input-gr"
 									id="modifyuserPhone" th:value="${userInfo.userPhone}"
 									name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
-							</tr>
+							</tr> -->
+							
+							
+							<tr>
+									<th class="bg-gray-100">
+										<label for="userPhone">연락처</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<select class="dropdown btn btn-primary required-form" id="modifyuserFirstTel" name="userFirstTel">
+												<option value="010" selected>010</option>
+											</select>
+											
+											<div style="padding-top: 2px; margin: 0 5px;">-</div>
+											<input type="text" maxlength="4"
+												class="form-control form-control-user-search search-input-gr-half required-form"
+												id="modifyuserSecondTel" name="userSecondTel" th:field="*{userSecondTel}"
+												 />
+											<div style="padding-top: 2px; margin: 0 5px;">-</div>
+											<input type="text" maxlength="4"
+												class="form-control form-control-user-search search-input-gr-half required-form"
+												id="modifyuserThirdTel" name="userThirdTel" th:field="*{userThirdTel}"
+												 />
+											
+										</div>
+									</td>
+								</tr>
+							
+							
 							<tr>
 									<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label></th>
@@ -114,13 +142,41 @@
 									id="modifyuserEmail" th:value="${userInfo.userEmail}"
 									name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
 									id="modifyuserAddr" th:value="${userInfo.userAddr}"
 									name="userAddr" placeholder="주소를 입력해주세요." /></td>
-							</tr>
+							</tr> -->
+							
+							<tr>
+									<th class="bg-gray-100"><label for="userPostCode">주소</label></th>
+									<td>
+										<div class=" align-items-center search-schedule">
+											<input type="text"
+												class="form-control form-control-user-search search-input-gr-half-two"
+												id="userPostCode" name="userPostCode" />
+											&nbsp;
+											<button type="button" id="checkBtn2" onclick="DaumPostcode()"
+												class="btn btn-primary btn-icon-split" style="margin-left: -9px;">
+												<span class="text">우편번호 찾기</span>
+											</button>
+											<div style="padding: 5px 0;"></div>
+											<input type="text"
+												class="form-control form-control-user-search search-input-gr"
+												id="userAddrRoad" name="userAddrRoad" />
+											<input type="text"
+											class="form-control form-control-user-search search-input-gr-half-two"
+											id="userExtraAddress" name="userExtraAddress"  />
+											<div style="padding: 5px 0;"></div>
+											<input type="text"
+												class="form-control form-control-user-search search-input-gr"
+												id="userAddrDetail" name="userAddrDetail" />
+										</div>
+									</td>
+								</tr>
+							
 							<tr>
 								<td colspan="2">
 									<button type="button" id="modifysubmitBtn"
@@ -141,6 +197,23 @@
 						</tbody>
 					</table>
 		</form>
+		<script>
+		const userPhone = '${userInfo.userPhone}';
+		const userPhoneParts = userPhone.split('-');
+		$('#modifyuserFirstTel').val(userPhoneParts[0]);
+		$('#modifyuserSecondTel').val(userPhoneParts[1]);
+		$('#modifyuserThirdTel').val(userPhoneParts[2]);
+
+		// 주소 쪼개어 가져오기
+		const userAddr = '${userInfo.userAddr}';
+		const userAddrParts = userAddr.split(', ');
+		const userPostCode = userAddrParts[0].substring(1, userAddrParts[0].length - 1);
+		const userAddrRoad = userAddrParts[1];
+		const userAddrDetail = userAddrParts[2];
+		$('#modifyuserPostCode').val(userPostCode);
+		$('#modifyuserAddrRoad').val(userAddrRoad);
+		$('#modifyuserAddrDetail').val(userAddrDetail);
+		</script>
 		<!-- /.container-fluid -->
 
 		<!-- Scroll to Top Button-->

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +29,12 @@ public class UserService {
 	@Autowired
 	private UserMapper userMapper;
 
-
 	public UserService() {
 	}
 
 	public UserService(UserMapper userMapper) {
 		this.userMapper = userMapper;
 	}
-	
 
 	public List<User> getUserDetailList(String userId) {
 
@@ -46,14 +43,6 @@ public class UserService {
 		return userDetailList;
 	}
 
-	/*
-	 * public Map<String, Object> loginCheck(String userId, String userPw) {
-	 * Map<String, Object> loginResultMap = new HashMap<String, Object>(); User user
-	 * = userMapper.getUserInfoById(userId); boolean loginCheck = false; if (user !=
-	 * null) { String checkPw = user.getUserPw(); if (userPw.equals(checkPw)) {
-	 * loginCheck = true; loginResultMap.put("userInfo", user); } }
-	 * loginResultMap.put("loginCheck", loginCheck); return loginResultMap; }
-	 */
 
 	public Map<String, Object> loginCheck(String userId, String userPw) {
 		Map<String, Object> loginResultMap = new HashMap<String, Object>();
@@ -91,19 +80,6 @@ public class UserService {
 		}
 	}
 
-	/*
-	 * public void removeUser(String userId, String userPw) { User userInfo =
-	 * userMapper.getUserInfoById(userId); if (userInfo != null) { String checkPw =
-	 * userInfo.getUserPw(); if (checkPw.equals(userPw)) {
-	 * userMapper.removeUserById(userId); } } }
-	 */
-
-	/*
-	 * public void removeUser(String userId, String userPw) { User userInfo =
-	 * userMapper.getUserInfoById(userId); if (userInfo != null) { String checkPw =
-	 * userInfo.getUserPw(); if (checkPw.equals(userPw)) {
-	 * userMapper.removeUserById(userId); } } }
-	 */
 	public void removeUser(String userId) {
 		userMapper.removeUserById(userId);
 	}
@@ -138,8 +114,6 @@ public class UserService {
 
 		return userDropList;
 	}
-	
-	
 
 	public List<UserSleep> getUserSleepList() {
 
@@ -149,6 +123,8 @@ public class UserService {
 	}
 
 	public List<LoginLog> getLoginLogList(String userId) {
+		
+
 		List<LoginLog> loginLogList = userMapper.getLoginLogList(userId);
 
 		return loginLogList;
@@ -166,42 +142,26 @@ public class UserService {
 		return userLevelList;
 	}
 
-	/*
-	 * public void updateLogDateCalcul(String userId) { Map<String, Object> paramMap
-	 * = new HashMap<>(); paramMap.put("user_id", userId);
-	 * userMapper.updateLogDateCalcul(userId); }
-	 */
-
-	/*
-	 * public void updateLogDateCalcul(String userId) {
-	 * userMapper.updateLogDateCalcul(userId); }
-	 */
 
 	public List<User> getUserListWithLogDateCalcul(String searchKey, String searchValue) {
 		if (searchKey != null) {
 			switch (searchKey) {
 			case "userId":
-				searchKey = "u.user_id";
+				searchKey = "ui.user_id";
 				break;
-			case "userName":
-				searchKey = "u.user_name";
-				break;
+			/*
+			 * case "userName": searchKey = "ui.user_name"; break;
+			 */
 			default:
-				searchKey = "u.user_email";
+				searchKey = "ui.user_name";
 				break;
 			}
 		}
 		List<User> userList = userMapper.getUserListWithLogDateCalcul(searchKey, searchValue);
-		/*
-		 * for (User user : userList) {
-		 * user.setLogDateCalcul(Integer.toString(user.getLogDateCalcul())); }
-		 */
-
+	
 		return userList;
 	}
-	
-	      
-	  
+
 	/*
 	 * public List<User> getUserList(String searchKey, String searchValue) { if
 	 * (searchKey != null) { switch (searchKey) { case "userId": searchKey =
