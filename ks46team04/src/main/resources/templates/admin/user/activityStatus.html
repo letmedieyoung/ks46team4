@@ -63,7 +63,6 @@
 				</tr> 
 			</tbody>
 		</table>
-			<br>
 				<button class="btn btn-primary">
 					<span class="text text-gray-100">등록</span>
 				</button>
@@ -79,5 +78,18 @@
 
     <!-- Page level custom scripts -->
     <script th:src="@{/js/demo/datatables-demo.js}"></script>
+    <script type="text/javascript">
+		$('#dataTable').DataTable({
+			// 표시 건수기능 숨기기
+			'lengthChange' : false,
+			// 정보 표시 숨기기
+			'info' : false,
+			// 검색 기능 숨기기
+			'searching' : false,
+			// 정렬 기능 숨기기
+			'ordering' : false,
+			
+		});
+	</script>
 </th:block>
 </html>

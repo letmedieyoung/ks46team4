@@ -130,7 +130,16 @@
   <script th:src="@{/js/demo/datatables-demo.js}"></script>
   <script type="text/javascript">
     $('#userDataTable').DataTable({
-      'ordering': false
+      // 표시 건수기능 숨기기
+      'lengthChange': false,
+       // 정보 표시 숨기기
+      //'info': false,
+      // 검색 기능 숨기기
+      'searching': false,
+      // 정렬 기능 숨기기
+      'ordering': false,
+      // 가로 스크롤바
+      'scrollX': true
     });
   </script>
 </th:block>

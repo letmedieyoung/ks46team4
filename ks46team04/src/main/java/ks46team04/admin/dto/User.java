@@ -7,6 +7,9 @@ public class User {
 	private String userPw;
 	private String userName;
 	private String userBirth;
+	private String userFirstTel;
+    private String userSecondTel;
+    private String userThirdTel;
 	private String userPhone;
 	private String userEmailAgree;
 	private String userEmail;
@@ -46,12 +49,30 @@ public class User {
 	public void setUserBirth(String userBirth) {
 		this.userBirth = userBirth;
 	}
+	public String getUserFirstTel() {
+		return userFirstTel;
+	}
+	public void setUserFirstTel(String userFirstTel) {
+		this.userFirstTel = userFirstTel;
+	}
+	public String getUserSecondTel() {
+		return userSecondTel;
+	}
+	public void setUserSecondTel(String userSecondTel) {
+		this.userSecondTel = userSecondTel;
+	}
+	public String getUserThirdTel() {
+		return userThirdTel;
+	}
+	public void setUserThirdTel(String userThirdTel) {
+		this.userThirdTel = userThirdTel;
+	}
 	public String getUserPhone() {
 		return userPhone;
 	}
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
+	public void setUserPhone() {
+        this.userPhone = userFirstTel + "-" + userSecondTel + "-" + userThirdTel;
+    }
 	public String getUserEmailAgree() {
 		return userEmailAgree;
 	}
