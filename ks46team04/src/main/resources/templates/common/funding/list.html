@@ -53,7 +53,7 @@
                         <div class="causes_content">
                             <div class="custom_progress_bar">
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar" role="progressbar" th:style="|width: ${l.achievedRate}%;|" aria-valuenow="${l.achievedRate}" aria-valuemin="0" aria-valuemax="100">
                                         <span class="progres_count" th:text="${l.achievedRate}+'%'"></span>
                                     </div>
                                   </div>
@@ -73,5 +73,36 @@
 		</div>
 	</div>
 	
+</th:block>
+
+<th:block>
+	<script th:inline="javascript">
+	
+	// nice-select의 변경 이벤트를 감지하는 함수
+    function handleFundingSelect() {
+    	let selectedValue = document.getElementById("funding_select").value;
+        let products = document.getElementsByClassName("single_cause");
+
+        for (let i = 0; i < products.length; i++) {
+            let product = products[i];
+            let progress = product.querySelector("p").textContent;
+
+            if (selectedValue === "all" ||
+                (selectedValue === "proceeding" && progress === "진행중") ||
+                (selectedValue === "complete" && progress === "종료")) {
+            	product.style.display = "block";
+            } else {
+            	product.style.display = "none";
+            }
+        }
+    }
+
+    // nice-select의 변경 이벤트를 감지하여 필터링 함수 호출
+    document.getElementById("funding_select").addEventListener("change", handleFundingSelect);
+
+
+	
+	</script>
+
 </th:block>
 </html>

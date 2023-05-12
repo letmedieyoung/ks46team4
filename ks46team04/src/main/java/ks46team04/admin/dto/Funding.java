@@ -7,6 +7,7 @@ import lombok.Data;
 public class Funding {
 	private String fundingCode;
 	private String fundingName;
+	private String fundingSummary;
 	private String fundingDescription;
 	private String foundationName;
 	private String goodsCode;
@@ -19,7 +20,7 @@ public class Funding {
 	private String fundingUpdateId;
 	private String fundingUpdateDate;
 	private String goodsName;
-	private int accomplishmentRate;
+	private int accomplishmentRate;	
 	
 	private List<Funding> fundingList;
 }

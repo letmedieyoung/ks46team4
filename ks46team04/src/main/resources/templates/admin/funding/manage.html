@@ -109,13 +109,15 @@
 					<h6 class="m-0 font-weight-bold text-primary">조회 결과</h6>
 				</div>
 				<div class="card-body">
-					<div class="table-responsive">					
-						<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
-							<span class="text">삭제</span>
-						</button>
-						<button type="submit" id="doneBtn" class="btn btn-secondary btn-icon-split">
-							<span class="text">진행완료</span>
-						</button>
+					<div class="table-responsive">
+						<div class="buttonArea">					
+							<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+								<span class="text">삭제</span>
+							</button>
+							<button type="submit" id="doneBtn" class="btn btn-secondary btn-icon-split">
+								<span class="text">진행완료</span>
+							</button>
+						</div>
 						<table class="targets fmtable table table-bordered table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 								<tr>
@@ -173,7 +175,22 @@
 	
 	<script th:inline="javascript">
 	
-		
+	
+	/** 
+	 * dataTable 기능 숨기기
+	*/
+	$("#dataTable").DataTable({
+	    // 표시 건수기능 숨기기
+	    lengthChange: false,
+	    // 정보 표시 숨기기
+	    //info: false,
+	    // 검색 기능 숨기기
+	    searching: false,
+	    // 정렬 기능 숨기기
+	    ordering: false	 
+	}); 
+
+	
 	/**
 	* 체크박스 전체 선택
 	*/

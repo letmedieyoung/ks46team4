@@ -65,9 +65,13 @@ public class FundingController {
 	 * @return
 	 */
 	@PostMapping("/modifyFunding")
-	public String modifyFunding(Funding funding, HttpSession session) {
+	public String modifyFunding(Funding funding,
+								@RequestParam(name="userId") String userId,
+								HttpSession session) {
 		log.info("funding: {}", funding);
 		
+		
+		session.setAttribute("SID", userId);
 		String fundingUpdateId = (String) session.getAttribute("SID");
 		funding.setFundingUpdateId(fundingUpdateId);
 		

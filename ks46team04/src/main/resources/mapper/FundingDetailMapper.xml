@@ -75,7 +75,9 @@
 			LEFT JOIN
 			goods_reg_info AS g ON f.goods_code = g.goods_code
 			LEFT JOIN
-			funding_current_amount AS fc ON f.funding_code = fc.funding_code;
+			funding_current_amount AS fc ON f.funding_code = fc.funding_code
+		ORDER BY
+			f.funding_code DESC;
 	</select>
 	
 	
@@ -84,13 +86,15 @@
 		SELECT
 		    f.funding_code 						AS fundingCode,
 		    f.funding_name 						AS fundingName,
+		    f.funding_summary					AS fundingSummary,
 		    f.funding_description 				AS fundingDescription,
 		    f.funding_foundation 				AS foundationName,
 		    f.funding_goal_amount 				AS fundingGoalAmount,
-		    f.funding_start_date 				AS fundingStartDate,
-		    f.funding_end_date 					AS fundingEndDate,
+		    DATE(f.funding_start_date) 			AS fundingStartDate,
+		    DATE(f.funding_end_date) 			AS fundingEndDate,
 		    f.funding_progress 					AS fundingProgress,
 		    g.goods_name 						AS goodsName,
+		    g.goods_price						AS goodsPrice,
 		    fc.funding_current_achieved_amount 	AS achievedAmount,
 		    fc.funding_achieved_rate 			AS achievedRate
 	 	FROM
@@ -100,6 +104,16 @@
 	  	WHERE
 	    	f.funding_code = #{fundingCode}
 	</select>
+  
+  	<select id="getPriceByOption" resultType="int">
+        SELECT
+        	goods_price
+        FROM
+        	each_funding_info AS f
+		    LEFT JOIN goods_reg_info AS g ON f.goods_code = g.goods_code        	
+        WHERE
+        	f.funding_code = #{fundingCode};
+    </select>
   
   </mapper>
   

@@ -18,5 +18,7 @@ public interface FundingDetailMapper {
 	public List<FundingDetail> getFundingDetailList();
 	// 펀딩 상세페이지
     public FundingDetail getFundingDetailByCode(@Param("fundingCode") String fundingCode);
-
+    // 옵션 값에 따른 가격 조회
+    int getPriceByOption(@Param("option") String option);
+    
 }
