@@ -35,4 +35,54 @@
 		FROM
 			profit_n_loss;
 	</select>
+	
+	
+	<update id="modifyDonationClosed">
+		/*정기기부 건 마감 완료로 전환*/
+		UPDATE user_regular_donation_payment
+		SET
+			user_regular_donation_deadline_check = 'closed'
+		WHERE
+		   regular_donation_sales_group = CONCAT('donation', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')	as previous_month;	
+	</update>
+	
+	<update id="modifyFundingClosed">
+		/*펀딩 건 마감 완료로 전환*/
+		UPDATE funding_payments
+		SET
+			deadline_status = 'closed';
+		WHERE
+			funding_group_code = CONCAT('funding', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')	as previous_month;		
+	</update>
+	
+	
+	<insert id="totalDonationMoney">
+		
+		INSERT INTO total_purchse_sale (payment_amount, payment_vat, purchase_budget)
+		SELECT
+			(SELECT SUM(payment_amount) FROM user_regular_donation_payment WHERE user_regular_donation_deadline_check = 'closed' AND regular_donation_sales_group = CONCAT('donation', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m'),
+			(SELECT SUM(sales_commission) FROM user_regular_donation_payment WHERE user_regular_donation_deadline_check = 'closed' AND regular_donation_sales_group = CONCAT('donation', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m'),
+			(SELECT SUM(purchase_budget) FROM user_regular_donation_payment WHERE user_regular_donation_deadline_check = 'closed' AND regular_donation_sales_group = CONCAT('donation', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')
+		FROM
+			user_regular_donation_payment
+		WHERE
+			user_regular_donation_deadline_check = 'closed'
+			AND
+		   regular_donation_sales_group = CONCAT('donation', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')	as previous_month;
+			
+	</insert>
+	
+	<insert id="totalFundingMoney">
+		INSERT INTO total_purchse_sale (payment_amount, payment_vat, purchase_budget)
+		SELECT
+			(SELECT SUM(funding_payment_amount) FROM funding_payments WHERE deadline_status = 'closed' AND funding_group_code = CONCAT('funding', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m'),
+			(SELECT SUM(sales_commission) FROM funding_payments WHERE deadline_status = 'closed' AND funding_group_code = CONCAT('funding', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m'),
+			(SELECT SUM(purchase_budget) FROM funding_payments WHERE deadline_status = 'closed' AND funding_group_code = CONCAT('funding', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')
+		FROM
+			funding_payments
+		WHERE
+			deadline_status = 'closed'
+			AND
+			funding_group_code = CONCAT('funding', '_sale_group_', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%y%m')	as previous_month;	
+	</insert>
  </mapper>

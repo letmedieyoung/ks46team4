@@ -255,7 +255,7 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
-		$('#dataTable').DataTable({
+		const dataTable	= $('#dataTable').DataTable({
 			'ordering': false,
 		  	'info': false
 		});
@@ -265,12 +265,14 @@
 		let isCheckDelBtn = false;
 		let isOnlyDelBtn = false;
 		
-		let $onlyRowSave = '';
-		const $checkRowsSave = [];
+		let $onlyRowSave = null;
+		let $checkRowsSave = [];
+
+		const $masterPw = $('#masterPw');
 		
 		//선택된 PK요소를 파라미터로 보낸다
-		/*function requestDelete(delPkValues){
-			let masterPw = $('#masterPw').val();
+		function requestDelete(delPkValues, $delPkEles){
+			let masterPw = $masterPw.val()
 			$.ajax({
 				  url: '/admin/purchase_sale/request_remove',
 				  method: 'POST',
@@ -279,17 +281,27 @@
 						  'delPkValues': delPkValues
 						}, 
 				  dataType: 'json',
-				  success: function(response) {
-				    // 요소 리무브
-				     $.each(deleteEles, function(idx, item){
-				    	$(item).remove();
-				    	
-						
-				    	modalOff();
-				    })
-				    
-				    $onlyRowSave = '';
-				    $checkRowsSave = [];
+				  success: function(response) {   
+								console.log(response);
+							    if(response.isDel){
+						    	 // 요소 리무브 
+								  	$.each($delPkEles, function(idx, item){
+								  		console.log($(item).parents('tr'));
+								  		dataTable.row( $(item).parents('tr') )
+								        		 .remove()
+								        		 .draw();	//화면에서 해당요소 지움
+								    });
+							    	modalOff();
+						    	 
+								  	console.log($onlyRowSave + '<- $onlyRowSave1');
+									console.log($checkRowsSave + ' <- $checkRowsSave1');
+							    	$onlyRowSave = null;
+									$checkRowsSave = [];
+									console.log($onlyRowSave + '<- $onlyRowSave2');
+									console.log($checkRowsSave + ' <- $checkRowsSave2');
+							    }else{
+							    	alert(response.msg);
+							    }
 				  },
 				  error: function(error) {
 				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
@@ -298,7 +310,7 @@
 				    console.log('요청실패');
 				  }
 			});
-		}*/
+		}
 	
 	</script>
 	
@@ -308,6 +320,7 @@
 		
 		function modalOn() {
 		    $modal.style.display = 'flex';
+		    $masterPw.val('');
 		    isModalOn = true;
 		}
 		function modalOff() {
@@ -323,8 +336,8 @@
 		$btnModal.forEach(function(item, idx){
 			item.addEventListener('click', e => {
 				const $parentTr = item.parentNode.parentNode; // item의 부모 요소인 tr을 가져옴
-				console.log($parentTr);
-				$onlyRowSave = $parentTr;	//체크된 단일 행 요소 저장	
+				console.log($parentTr + '<- $parentTr');
+				$onlyRowSave = item.parentNode.parentNode;	//체크된 단일 행 요소 저장	
 				
 				const $goodsNameEle = $parentTr.querySelector('.goodsName'); // tr 안에서 클래스가 'goodsName'인 요소를 선택
 				console.log($goodsNameEle);
@@ -418,45 +431,32 @@
 			//두 경우를 구분할 값이 필요함
 			//모달창이 꺼질때 값을 리셋해
 			
+			const $delPkEles = [];
 			const delPkValues = [];
 			//두 경우를 나누어서 PK값을 배열에 담는다
 				if(isCheckDelBtn){
 					for(idx in $checkRowsSave){
 						console.log($checkRowsSave[idx].find('.purchaseCode').val());
 						delPkValues[idx] = $checkRowsSave[idx].find('.purchaseCode').val();
+						console.log(delPkValues + ' <- 다중 체크된 요소');
+						console.log($checkRowsSave + ' <- $checkRowsSave2');
+						$delPkEles[idx] = $checkRowsSave[idx].find('.purchaseCode');
+						console.log($delPkEles[idx]);
 					}
+					requestDelete(delPkValues, $delPkEles)	// ajax 요청
 				} else if(isOnlyDelBtn){
-					console.log($onlyRowSave .find('.purchaseCode').val());			
-					delPkValues[0] = $onlyRowSave .find('.purchaseCode').val();
+					console.log($($onlyRowSave).find('.purchaseCode').val());			
+					delPkValues[0] = $($onlyRowSave).find('.purchaseCode').val();
+					console.log(delPkValues + ' <- 단일 선택된 요소');
+					console.log($onlyRowSave + '<- $onlyRowSave2');
+
+					$delPkEles[0] = $($onlyRowSave).find('.purchaseCode');
+					console.log($delPkEles[0]);
+					requestDelete(delPkValues, $delPkEles)	// ajax 요청
 				}
-			console.log(delPkValues);
-			//requestDelete(delPkValues)	// ajax 요청
-			let masterPw = $('#masterPw').val();
-			$.ajax({
-				  url: '/admin/purchase_sale/request_remove',
-				  method: 'POST',
-				  data: { 
-						  'masterPw': masterPw, 
-						  'delPkValues': delPkValues
-						}, 
-				  dataType: 'json',
-				  success: function(response) {
-				    // 요소 리무브
-				   /*  $.each(deleteEles, function(idx, item){
-				    	$(item).remove();
-				    	modalOff();
-				    }) */
-				    
-				    //$onlyRowSave = '';
-				   // $checkRowsSave = [];
-				  },
-				  error: function(error) {
-				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
-				    // 에러 처리 로직을 추가할 수 있음
-				    //alert('삭제할 수 없습니다.');
-				    console.log('요청실패');
-				  }
-			});
+			
+			
+			
 		});
 	
 		
