@@ -79,9 +79,9 @@ public class CommonController {
 			return "redirect:/";
 		}
 		
-		@PostMapping("/idCheck")
+		@PostMapping("/useridCheck")
 		@ResponseBody
-		public boolean idCheck(@RequestParam(name = "userId") String userId) {
+		public boolean useridCheck(@RequestParam(name = "userId") String userId) {
 			boolean checked = true;
 			// 아이디 중복체크
 			checked = userMapper.idCheck(userId); // 중복된 값이 없고 사용가능하면 true
