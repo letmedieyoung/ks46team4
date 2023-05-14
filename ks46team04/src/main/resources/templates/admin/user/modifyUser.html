@@ -48,57 +48,77 @@
 						width="100%" cellspacing="0">
 						<tbody>
 							<tr>
-								<th class="bg-gray-100"><label for="userId">아이디</label></th>
-								<td><input type="text"
-									class="form-control form-control-user-search search-input-gr"
+								<th class="bg-gray-100">
+									<label for="userId">아이디</label>
+									<span class="required-fields">*</span>
+								</th>
+								<td>
+									<input type="text"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserId" th:value="${userInfo.userId}" name="userId"
-									readonly="readonly" /></td>
+									readonly="readonly" /><span class="required-text"></span></td>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userLevel">등급</label></th>
+								<th class="bg-gray-100"><label for="userLevel">등급</label>
+								<span class="required-fields">*</span></th>
 								<td><select class="dropdown btn btn-primary required-form"
 									id="modifyuserLevel" th:value="${userInfo.userLevel}" name="userLevel">
 										<option value="1" th:selected="${userInfo.userLevel == '1'}">관리자</option>
            								<option value="2" th:selected="${userInfo.userLevel == '2'}">회원</option>
-								</select></td>
+								</select><span class="required-text"></span></td>
 							</tr>
 							
 
 							<tr>
-								<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
+								<th class="bg-gray-100"><label for="userPw">비밀번호</label>
+								<span class="required-fields">*</span></th>
 								<td><input type="password"
-									class="form-control form-control-user-search search-input-gr"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserPw" th:value="${userInfo.userPw}" name="userPw"
 									placeholder="영문+숫자 8~20자 이내" /></td>
+									<span class="required-text-pw"></span>
 							</tr>
 							<tr>
-								<th class="bg-gray-100"><label for="userName">이름</label></th>
+								<th class="bg-gray-100"><label for="userPwCheck">비밀번호 확인</label>
+								<span class="required-fields">*</span></th>
+								<td><input type="password"
+									class="form-control form-control-user-search search-input-gr required-form"
+									id="modifyuserPwCheck" name="userPwCheck"
+									placeholder="비밀번호를 한 번 더 입력해주세요" /></td>
+									<span class="required-text-pw"></span>
+							</tr>
+							<tr>
+								<th class="bg-gray-100"><label for="userName">이름</label>
+								<span class="required-fields">*</span></th>
 								<td><input type="text"
-									class="form-control form-control-user-search search-input-gr"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserName" th:value="${userInfo.userName}"
-									name="userName" readonly="readonly" /></td>
+									name="userName" readonly="readonly" /><span class="required-text"></span></td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
+								<span class="required-fields">*</span>
 								</th>
 								<td><input type="date"
-									class="form-control form-control-user-search search-input-gr"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserBirth" th:value="${userInfo.userBirth}"
-									name="userBirth" placeholder="생년월일을 선택해주세요." /></td>
+									name="userBirth" placeholder="생년월일을 선택해주세요." /><span class="required-text"></span></td>
 							</tr>
-							<!-- <tr>
+							 <tr>
 								<th class="bg-gray-100"><label for="userPhone">연락처</label>
+								<span class="required-fields">*</span>
 								</th>
 								<td><input type="tel"
-									class="form-control form-control-user-search search-input-gr"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserPhone" th:value="${userInfo.userPhone}"
-									name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
-							</tr> -->
+									name="userPhone" placeholder="하이픈(-)을 포함하여 입력해주세요." /><span class="required-text"></span></td>
+							</tr> 
 							
 							
-							<tr>
+							<!--<tr>
 									<th class="bg-gray-100">
 										<label for="userPhone">연락처</label>
+										<span class="required-fields">*</span>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
@@ -119,7 +139,7 @@
 											
 										</div>
 									</td>
-								</tr>
+								</tr>-->
 							
 							
 							<tr>
@@ -136,11 +156,12 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100"><label for="userEmail">이메일</label>
+								<span class="required-fields">*</span>
 								</th>
 								<td><input type="email"
-									class="form-control form-control-user-search search-input-gr"
+									class="form-control form-control-user-search search-input-gr required-form"
 									id="modifyuserEmail" th:value="${userInfo.userEmail}"
-									name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
+									name="userEmail" placeholder="at sign(@)을 포함하여 입력해주세요." /><span class="required-text"></span></td>
 							</tr>
 							<!-- <tr>
 								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
@@ -197,7 +218,7 @@
 						</tbody>
 					</table>
 		</form>
-		<script>
+		<!--<script>
 		const userPhone = '${userInfo.userPhone}';
 		const userPhoneParts = userPhone.split('-');
 		$('#modifyuserFirstTel').val(userPhoneParts[0]);
@@ -213,7 +234,7 @@
 		$('#modifyuserPostCode').val(userPostCode);
 		$('#modifyuserAddrRoad').val(userAddrRoad);
 		$('#modifyuserAddrDetail').val(userAddrDetail);
-		</script>
+		</script>-->
 		<!-- /.container-fluid -->
 
 		<!-- Scroll to Top Button-->
@@ -225,7 +246,6 @@
 <th:block layout:fragment="customJs">
 
 	<script th:src="@{/js/jquery-3.6.4.js}"></script>
-
 	<script>
 		$('#modifysubmitBtn').click(
 				function() {
@@ -235,6 +255,14 @@
 							|| userPw == '') {
 						alert('회원비밀번호를 입력해주세요');
 						userPwEle.focus();
+						return false;
+					}
+					const userPwCheckEle = $('#modifyuserPwCheck');
+					let userPwCheck = userPwCheckEle.val();
+					if (typeof userPwCheck == 'undefined' || userPwCheck == null
+							|| userPwCheck == '') {
+						alert('회원비밀번호확인란을 입력해주세요');
+						userPwCheckEle.focus();
 						return false;
 					}
 					
@@ -269,7 +297,121 @@
 				        userAddrEle.val(null);
 				    }
 				    
-				    // Ajax 요청 보내기
+				    let isPwCheck = 0;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력전/1=비번일치/2비번=불일치
+				    
+				    //비밀번호-------------------------
+				    /*
+		$('#modifyuserPw').on('input', function (event) {
+			isPwCheck = 2;
+			const $userPwEle = $('#modifyuserPw');
+			let userPw = $userPwEle.val();
+			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
+			let msg = '';
+
+			console.log(userPw);
+			console.log(userPw.length);
+
+			let regPwFormAlpha = /^[a-z0-9]+$/;		//특수문자 포함여부만 파악
+			let regPwFormLeng = /^[a-z0-9]{8,20}$/;	//글자수까지 파악
+			let pwColor = 1;
+
+			console.log((userPw.length < 8) + ' <- 1번');
+			console.log((userPw.length > 20) + '<- 2번');
+			console.log(regPwFormLeng.test(userPw) + ' < 3번');
+			if (!regPwFormAlpha.test(userPw)) {
+				msg = `*입력 규칙에 맞지 않습니다(영문 소문자)+숫자`;
+			} else if (!/[a-z]/.test(userPw) || !/[0-9]/.test(userPw)) {
+				msg = `*영문 소문자와 숫자를 모두 포함해야 합니다`;
+			} else if (userPw.length < 8) {
+				msg = `*글자 수가 적습니다(8~20자 이내)`;
+			} else if (userPw.length > 20) {
+				msg = `*글자 수가 많습니다(8~20자 이내)`;
+			} else if (regPwFormLeng.test(userPw)) {
+				pwColor = 2;
+				msg = `✔ 사용 가능한 비밀번호입니다`;
+			}
+
+			if (pwColor === 1) {
+				$('.pw > .required-text-pw').css("color", "red");
+			} else {
+				$('.pw > .required-text-pw').css("color", "green");
+			}
+			$rqTextPw.text(msg);
+
+			pwCheck();
+		});
+
+
+		//비밀번호 확인-------------------------
+		$('#modifyuserPwCheck').on('input', function (event) {
+			pwCheck();
+		});
+		//비밀번호 확인 함수-------------------------
+		function pwCheck() {
+			const $userPwEle = $('#modifyuserPw');
+			let userPw = $userPwEle.val();
+
+			const $userPwCheckEle = $('#modifyuserPwCheck');
+			let userPwCheck = $userPwCheckEle.val();
+
+			let $rqTextPwCheck = $userPwCheckEle.siblings('.required-text-pw');
+			let msg = '';
+			let pwColor = 1;
+
+			if (typeof userPwCheck != 'undefined' && userPwCheck != null &&
+				userPwCheck != '') {
+				if (userPwCheck.length == userPw.length && userPw === userPwCheck) {
+					pwColor = 2;
+					msg = `✔ 비밀번호가 일치합니다.`;
+					isPwCheck = 1;
+				} else {
+					msg = `*비밀번호가 일치하지 않습니다.`;
+					isPwCheck = 2;
+				}
+
+				if (pwColor === 1) {
+					$('.pwCheck > .required-text-pw').css("color", "red");
+				} else {
+					$('.pwCheck > .required-text-pw').css("color", "green");
+				}
+				$rqTextPwCheck.text(msg);
+			}
+		}
+	//이메일 입력-------------------------
+		$('#modifyuserEmail').on('blur', function () {
+			const $emailEle = $('#modifyuserEmail');
+			let email = $('#modifyuserEmail').val();
+			const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			const $rqTextCheck = $emailEle.siblings('.required-text');
+
+			if (emailPattern.test(email)) {
+				$rqTextCheck.text('');
+			} else {
+				$rqTextCheck.text(`*이메일 형식에 맞지 않습니다`);
+			}
+		}); */
+			//우편번호 값이 존재하면 주소가 입력됐음으로 간주하고 주소지 문자열 통합
+				let userPostCode = $('#userPostCode').val();
+				if (typeof userPostCode != 'undefined' && userPostCode != null &&
+					userPostCode != '') {
+					//주소 문자열 일정 형식으로 통합 - [우편번호]주소(extraAddress), 상세주소 
+					let userAddrRoad = $('#userAddrRoad').val() + ($('#userExtraAddress').val() ? $('#userExtraAddress').val() + ',' : '');
+					let userAddrDetail = $('#userAddrDetail').val();
+					let fullAddress = null;
+					fullAddress = `[${userPostCode}] ${userAddrRoad} ${userAddrDetail}`;
+
+					console.log(fullAddress);
+
+					const hiddenAddr = $('<input>').attr({
+						type: 'hidden',
+						name: 'userAddr',
+						value: fullAddress,
+					});
+					$modifyUserForm.append(hiddenAddr);
+				}
+
+			
+		// Ajax 요청 보내기
 				    $.ajax({
 				        type: 'POST',
 				        url: '/admin/user/modifyUser', // 수정 처리를 담당하는 URL
@@ -289,14 +431,66 @@
 				        }
 				    });
 				});
-
-
 		$('#modifyresetBtn').click(function() {
 			$('#modifyUserForm')[0].reset(); // 폼 필드 초기화
 			//location.href = '/user/userList';
 			//history.go(-1);
 		});
+		
+	
+		</script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+		function DaumPostcode() {
+			new daum.Postcode({
+				oncomplete: function (data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = ''; // 주소 변수
+					var extraAddr = ''; // 참고항목 변수
+
+					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+						addr = data.roadAddress;
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+						addr = data.jibunAddress;
+					}
+
+					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+					if (data.userSelectedType === 'R') {
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+							extraAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if (data.buildingName !== '' && data.apartment === 'Y') {
+							extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if (extraAddr !== '') {
+							extraAddr = ' (' + extraAddr + ')';
+						}
+						// 조합된 참고항목을 해당 필드에 넣는다.
+						document.getElementById('userExtraAddress').value = extraAddr;
+
+					} else {
+						document.getElementById('userExtraAddress').value = '';
+					}
+
+					// 우편번호와 주소 정보를 해당 필드에 넣는다.
+					document.getElementById('userPostCode').value = data.zonecode;
+					document.getElementById('userAddrRoad').value = addr;
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById('userAddrDetail').focus();
+				}
+			}).open();
+		}
 	</script>
+				    
+				    
 
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>

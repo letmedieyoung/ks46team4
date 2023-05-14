@@ -1,6 +1,8 @@
 package ks46team04.user.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.controller.UserController;
 import ks46team04.admin.dto.DonationPayMethod;
 import ks46team04.admin.dto.DonationSub;
@@ -32,12 +37,14 @@ public class UserMainController {
 	private final FundingService fundingService;
 	private final UserMapper userMapper;
 	private final DonationService donationService;
-
-	public UserMainController(UserService userService, UserMapper userMapper, FundingService fundingService, DonationService donationService) {
+	private final HttpServletRequest request;
+	
+	public UserMainController(UserService userService, UserMapper userMapper, FundingService fundingService, DonationService donationService, HttpServletRequest request) {
 		this.userService = userService;
 		this.userMapper = userMapper;
 		this.fundingService = fundingService;
 		this.donationService = donationService;
+		this.request = request;
 	}
 	
 	
@@ -72,30 +79,50 @@ public class UserMainController {
 	}
 	
 	
+	@PostMapping("/myPageDrop")
+	@ResponseBody
+	public Map<String, Object> myPageDrop(HttpServletRequest request, @RequestParam(name = "userPw") String userPw) {
+	    Logger logger = LoggerFactory.getLogger(getClass());
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	    	HttpSession session = request.getSession();
+	        String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+	        if (userService.pwCheck(userId, userPw)) {
+	            userService.removeUser(userId);
+	            response.put("success", true);
+	            response.put("message", "삭제 성공");
+	            
+	            request.getSession().invalidate(); //세션 무효화
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "비밀번호가 일치하지 않습니다.");
+	        }
+	    } catch (Exception e) {
+	        logger.error("An error occurred while deleting user information.", e);
+	        response.put("success", false);
+	        response.put("message", "회원 정보 삭제 중 오류가 발생하였습니다.");
+	    }
+	    
+	    return response;
+	}
 	
-	/*
-	 * @PostMapping("/myPage_drop") public String
-	 * mypageDrop(@RequestParam(name="userId") String userId
-	 * ,@RequestParam(name="userPw") String userPw) {
-	 * 
-	 * String redirectURI = "redirect:/user/myPage_drop?userId=" + userId; // 비밀번호
-	 * 확인 User user = userService.getUserInfoById(userId); if(user != null) { String
-	 * checkPw = user.getUserPw();
-	 * 
-	 * if(checkPw.equals(userPw)) { // 서비스 호출 userService.removeUser(userId);
-	 * redirectURI = "redirect:/user/mypage_index"; } }
-	 * 
-	 * 
-	 * return redirectURI; }
-	 */
-	
-	
+
+	@PostMapping("/userpwCheck")
+	@ResponseBody
+	public boolean userpwCheck(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw) {
+
+		return userService.pwCheck(userId, userPw);
+	}
+
 	
 	@GetMapping("/myPage_drop")
-	public String removeUserById(Model model) {
-		
-		//model.addAttribute("title", "회원탈퇴");
-		//model.addAttribute("userId", userId);
+	public String myPageDrop(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+	    String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+	    
+		model.addAttribute("title", "회원탈퇴");
+		model.addAttribute("userId", userId);
 		
 		return "user/myPage_drop";
 	}
