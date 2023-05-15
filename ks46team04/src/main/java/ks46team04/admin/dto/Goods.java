@@ -12,6 +12,14 @@ public class Goods {
 	private String goodsUpdDate;
 	private String goodsIsDelete;
 	
+	private Stock stockInfo;
+	
+	public Stock getStockInfo() {
+		return stockInfo;
+	}
+	public void setStockInfo(Stock stockInfo) {
+		this.stockInfo = stockInfo;
+	}
 	public String getGoodsCode() {
 		return goodsCode;
 	}
@@ -78,7 +86,7 @@ public class Goods {
 		return "Goods [goodsCode=" + goodsCode + ", goodsName=" + goodsName + ", goodsCompany=" + goodsCompany
 				+ ", goodsCategory=" + goodsCategory + ", goodsPrice=" + goodsPrice + ", goodsRegId=" + goodsRegId
 				+ ", goodsRegDate=" + goodsRegDate + ", goodsUpdId=" + goodsUpdId + ", goodsUpdDate=" + goodsUpdDate
-				+ ", goodsIsDelete=" + goodsIsDelete + "]";
+				+ ", goodsIsDelete=" + goodsIsDelete + ", stockInfo=" + stockInfo + "]";
 	}
 	
 }

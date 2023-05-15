@@ -10,7 +10,7 @@ $(function() {
 /** 
  * dataTable 기능 숨기기
 */
-$(".dataTable").DataTable({
+$("#dataTable").DataTable({
 	// 표시 건수기능 숨기기
     lengthChange: false,
  	// 정보 표시 숨기기

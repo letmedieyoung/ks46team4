@@ -1,6 +1,9 @@
 package ks46team04.admin.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,6 +117,70 @@ public class FoundationController {
 		model.addAttribute("title", "재단 요청사항 등록");
 		
 		return "admin/foundation/add_foundation_request";
+	}
+	
+	/**
+	 * 재단 요청사항 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_foundation_request_List")
+	@ResponseBody
+	public List<FoundationRequest> search(@RequestParam(value="searchKey", required = false) String searchKey 
+										, @RequestParam(value="searchValue", required = false) String searchValue
+										, @RequestParam(value="radioNameArr[]", required = false) List<String> radioNameArr
+										, @RequestParam(value="radioValueArr[]", required = false) List<String> radioValueArr
+										, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("searchKey: {}, searchValue: {}, radioNameArr: {}, radioValueArr: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
+				, searchKey, searchValue, radioNameArr, radioValueArr, dateSearchKey, startDate, endDate);
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			switch (searchKey) {
+			case "foundationName":
+				searchKey = "foundation_name";
+				break;
+			case "requestGoodsName":
+				searchKey = "request_goods_name";					
+				break;
+			}
+			searchMap.put("searchKey", searchKey);
+			searchMap.put("searchValue", searchValue);
+		}
+		
+		
+		if (radioNameArr != null && radioValueArr != null) {
+		    for (int i = 0; i < radioNameArr.size(); i++) {
+		    	String radioName = radioNameArr.get(i);
+		        switch (radioName) {
+		            case "contentCategory":
+		                radioNameArr.set(i, "content_category");
+		                break;
+		            case "requestProgressStatus":
+		                radioNameArr.set(i, "request_progress_status");
+		                break;
+		        }
+		       
+		    }
+		    searchMap.put("radioNameArr", radioNameArr);
+		    searchMap.put("radioValueArr", radioValueArr);
+		    
+		}
+
+
+		log.info("searchMap: {}", searchMap);
+		
+		List<FoundationRequest> foundationRequestList = foundationService.getFoundationRequestlistBySearch(searchMap);
+		log.info("foundationRequestList: {}", foundationRequestList);
+		
+		return foundationRequestList;
 	}
 	
 	/**

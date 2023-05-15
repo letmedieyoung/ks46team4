@@ -1,6 +1,5 @@
 package ks46team04.admin.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
+import ks46team04.admin.mapper.StockMapper;
 
 @Service
 @Transactional
@@ -21,19 +21,24 @@ public class GoodsService {
 	private static final Logger log = LoggerFactory.getLogger(GoodsService.class);
 
 	private final GoodsMapper goodsMapper;
+	private final StockMapper stockMapper;
 	
-	public GoodsService(GoodsMapper goodsMapper) {
+	public GoodsService(GoodsMapper goodsMapper, StockMapper stockMapper) {
 		this.goodsMapper = goodsMapper;
+		this.stockMapper = stockMapper;
 	}
 	
 	/**
      * 상품 삭제
      * @param goodsCode
      */
-    public void removeGoods(List<String> valueArr) {
-        for (int i = 0; i < valueArr.size(); i++) {
-            goodsMapper.removeGoods(valueArr.get(i));
+    public boolean removeGoods(String goodsCode) {
+    	boolean result = stockMapper.deleteStockCheck(goodsCode);
+    	if (result) {
+    		goodsMapper.removeGoods(goodsCode);
+    		return true;
         }
+        return false;
     }
 	
 	/**
@@ -87,8 +92,8 @@ public class GoodsService {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<Goods> getGoodsListBySearch(Map<String, Object> paramMap){
-		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(paramMap);
+	public List<Goods> getGoodsListBySearch(Map<String, Object> searchMap){
+		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(searchMap);
 		return goodsList;
 	}
 	

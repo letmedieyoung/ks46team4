@@ -15,6 +15,10 @@
 		<result column="goods_update_id"		property="goodsUpdId"/>
 		<result column="goods_update_date"		property="goodsUpdDate"/>
 		<result column="goods_is_delete"		property="goodsIsDelete"/>
+		<association property="stockInfo" javaType="Stock">
+			<result column="goods_code"						property="goodsCode"/>
+			<result column="final_stock_amount"				property="finalStockAmount"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="GoodsCategory" id="goodsCategoryResultMap">
@@ -25,7 +29,7 @@
 	
 	
 	<update id="removeGoods" parameterType="Goods">
-		/* 상품 삭제 - 삭제 여부 컬럼 수정 */
+		/* 상품 삭제 - 삭제 여부 컬럼 수정, 상품 재고 테이블에 해당 상품의 모든 재고량이 0인 경우에만 삭제 */
 		UPDATE goods_reg_info
 		SET
 			goods_is_delete = '1'

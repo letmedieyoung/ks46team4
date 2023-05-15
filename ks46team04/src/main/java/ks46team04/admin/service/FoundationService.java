@@ -1,6 +1,7 @@
 package ks46team04.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,16 @@ public class FoundationService {
 	public int addFoundationRequest(FoundationRequest foundationRequest) {
 		int result = foundationMapper.addFoundationRequest(foundationRequest);
 		return result;
+	}
+	
+	/**
+	 * 재단 요청사항 검색 결과 조회
+	 * @param paramMap
+	 * @return
+	 */
+	public List<FoundationRequest> getFoundationRequestlistBySearch(Map<String, Object> searchMap){
+		List<FoundationRequest> foundationRequestList = foundationMapper.getFoundationRequestListBySearch(searchMap);
+		return foundationRequestList;
 	}
 	
 	/**
