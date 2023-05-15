@@ -3,16 +3,22 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
 <head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 <!-- Custom styles for this page -->
-<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
-	rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <th:block layout:fragment="customContents">
+
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
+	
 <p> **회원이 신청하면 그 폼 가져와서 처리상태 등록하면 등록자, 등록일자 포함된 리스트로 조회</p>
-		<!-- Page Heading -->
+		
+		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h5 class="m-0 font-weight-bold text-gray-800">환불 요청 확인</h5>
@@ -87,16 +93,21 @@
 		</div>
 	</div>
 		<!-- container-fluid -->
+		
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
 </th:block>
 
-<!-- 사용자정의 Js 페이지 -->
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
 		$(document).on('click','#addBtn', function(){

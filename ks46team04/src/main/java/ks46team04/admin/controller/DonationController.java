@@ -1,6 +1,8 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,13 +36,17 @@ public class DonationController {
 	 */
 	@GetMapping("/donation_list")
 	public String getDonation(Model model, @RequestParam(name="searchKey", required = false) String searchKey
-										, @RequestParam(name="searchValue", required = false) String searchValue){
+										, @RequestParam(name="searchValue", required = false) String searchValue
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate){
 		
-		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue);
-				
-		model.addAttribute("title", "정기기부 단가 목록");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue, paramMap, startDate, endDate);
+		
+		model.addAttribute("title", "정기기부 콘텐츠 목록");
 		model.addAttribute("getDonation", getDonation);
-		
+
 		return "admin/donation/donation_list";
 	}
 
@@ -61,7 +68,7 @@ public class DonationController {
 	@GetMapping("/donation_add")
 	public String addDonation(Model model) {
 		
-		model.addAttribute("title", "정기기부 단가 등록");
+		model.addAttribute("title", "정기기부 콘텐츠 등록");
 
 		return "/admin/donation/donation_add";
 	}
@@ -86,7 +93,7 @@ public class DonationController {
 		
 		Donation donationInfo = donationService.getDonationInfoByCode(donationCode);
 		
-		model.addAttribute("title", "정기기부 단가 수정");
+		model.addAttribute("title", "정기기부 콘텐츠 수정");
 		model.addAttribute("donationInfo", donationInfo);
 		
 		return "admin/donation/donation_modify";
@@ -95,6 +102,13 @@ public class DonationController {
 	/*
 	 * 정기기부 콘텐츠 삭제
 	 * */
+	@PostMapping("/donation_remove")
+	@ResponseBody
+	public List <String> removeDonation(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonation(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donation_remove")
 	public String removeDonation(Donation donation) {
 		donationService.removeDonation(donation);
@@ -171,6 +185,13 @@ public class DonationController {
 	/*
 	 * 등록된 회원 결제수단 삭제
 	 * */
+	@PostMapping("/donationPayMethod_remove")
+	@ResponseBody
+	public List <String> removeDonationPayMethod(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationPayMethod(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationPayMethod_remove")
 	public String removeDonationPayMethod(DonationPayMethod donationPayMethod) {
 		donationService.removeDonationPayMethod(donationPayMethod);
@@ -281,6 +302,13 @@ public class DonationController {
 	/*
 	 * 정기기부 구독 신청 삭제
 	 * */
+	@PostMapping("/donationSub_remove")
+	@ResponseBody
+	public List <String> removeDonationSub(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationSub(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationSub_remove")
 	public String removeDonationSub(DonationSub donationSub) {
 		donationService.removeDonationSub(donationSub);
@@ -359,6 +387,13 @@ public class DonationController {
 	/*
 	 * 정기기부 구독 결제 상세 삭제
 	 * */
+	@PostMapping("/donationPayDetail_remove")
+	@ResponseBody
+	public List <String> removeDonationPayDetail(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationPayDetail(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationPayDetail_remove")
 	public String removeDonationPayDetail(DonationPayDetail donationPayDetail) {
 		donationService.removeDonationPayDetail(donationPayDetail);
@@ -427,6 +462,13 @@ public class DonationController {
 	/*
 	 * 정기기부 월별 결제 합계 삭제
 	 * */
+	@PostMapping("/donationMonthPay_remove")
+	@ResponseBody
+	public List <String> removeDonationMonthPay(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationMonthPay(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationMonthPay_remove")
 	public String removeDonationMonthPay(DonationMonthPay donationMonthPay) {
 		donationService.removeDonationMonthPay(donationMonthPay);
@@ -505,6 +547,13 @@ public class DonationController {
 	/*
 	 * 정기기부 환불 삭제
 	 * */
+	@PostMapping("/donationRefund_remove")
+	@ResponseBody
+	public List <String> removeDonationRefund(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationRefund(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationRefund_remove")
 	public String removeDonationRefund(DonationRefund donationRefund) {
 		donationService.removeDonationRefund(donationRefund);

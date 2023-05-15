@@ -52,6 +52,9 @@
 			<if test="searchKey != null and searchKey != ''">
 				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
 			</if>
+			<if test="startDate != null and endDate != null">
+				,regular_donationr_reg_date BETWEEN #{startDate} AND #{endDate})
+			</if>
 		</where>
 			ORDER BY CAST(SUBSTRING_INDEX(regular_donation_code, 'regular_donation', -1) AS unsigned) ASC;
 	</select>
