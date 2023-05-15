@@ -45,7 +45,7 @@
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search short-input searchValue"
+										<input type="text" class="form-control form-control-user-search short-input"
 											id="searchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
@@ -55,6 +55,11 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
+										<button class="btn btn-primary" id="allDateBtn">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
 										<button class="btn btn-secondary" id="todayBtn">
 											<span class="text text-gray-100">오늘</span>
 										</button>
@@ -67,11 +72,6 @@
 									<div class="form-row align-items-center search-schedule">
 										<button class="btn btn-secondary" id="oneMonthBtn">
 											<span class="text text-gray-100">1개월</span>
-										</button>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-primary" id="allDateBtn">
-											<span class="text text-gray-100">전체</span>
 										</button>
 									</div>
 									&nbsp;
@@ -104,7 +104,7 @@
 					<a href="/admin/goods/add_goods" class="btn btn-secondary btn-icon-split">
 						<span class="text">상품등록</span>
 					</a>
-					<table class="table table-bordered text-center table-layout-auto table-space dataTable" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
@@ -135,7 +135,7 @@
 								</td>
 							</tr>
 							<tr th:if="${goodsList == null}">
-								<td colspan="7">등록된 상품의 정보가 없습니다.</td>
+								<td colspan="8">등록된 상품의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -174,14 +174,14 @@
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
 				let data = {
-				    searchKey: searchKey,
-				    searchValue: searchValue,
-				    startDate: startDate,
-				    endDate: endDate
+				    'searchKey': searchKey,
+				    'searchValue': searchValue,
+				    'startDate': startDate,
+				    'endDate': endDate
 				};
 
 				let query = jQuery.param(data);
-				let url = '/admin/goods/searchList?' + query;
+				let url = '/admin/goods/search_goods_list?' + query;
 				
 				let request = $.ajax({
 					type: 'GET',
@@ -214,13 +214,12 @@
 													href="/admin/goods/modify_goods?goodsCode=${goodsInfo.goodsCode}">
 													<span class="text">수정</span>
 												</a>
-											</td>`;
+										</td>`;
 								html += '</tr>';
 							};
 						}else{
 							html += '<tr>';
-							html += `	<td><input class="checks" type="checkbox"></td>`;
-							html += '	<td colspan="7">등록된 상품의 정보가 없습니다.</td>';
+							html += '	<td colspan="8">등록된 상품의 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);
@@ -263,8 +262,7 @@
 				
 				if (length == 0) {
 					alert('선택된 항목이 없습니다.');
-				}
-				else {
+				}else{
 					let result = confirm(msg);
 					
 					if(result == true){
@@ -277,16 +275,23 @@
 						let request = $.ajax({
 							url: '/admin/goods/remove_goods',
 							method: 'POST',
-							data: { valueArr : valueArr },
-							dataType: 'json'
+							data: { 'valueArr' : valueArr },
+							dataType: 'json',
 						});
 						
-						request.done(function(result){
-							if(result){
-								alert('삭제되었습니다.');
-								location.reload();
-							}
-						});
+						 request.done(function(response) {
+				                let deleted = response.deleted;
+				                let failed = response.failed;
+				                let message = '';
+				                if (deleted.length > 0) {
+				                    message += `삭제된 상품: ${deleted.join(', ')}\n`;
+				                }
+				                if (failed.length > 0) {
+				                    message += `삭제할 수 없는 상품(재고가 있음): ${failed.join(', ')}\n`;
+				                }
+				                alert(message);
+				                location.reload();
+				            });
 						
 						request.fail(function(jqXHR, textStatus){
 							alert(`Request failed: ${textStatus}`);

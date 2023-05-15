@@ -32,7 +32,7 @@ public interface GoodsMapper {
 	public List<String> getGoodsCompanyList();
 	
 	//상품 검색 결과 조회
-	public List<Goods> getGoodsListBySearch(Map<String, Object> paramMap);
+	public List<Goods> getGoodsListBySearch(Map<String, Object> searchMap);
 	
 	//상품 조회
 	public List<Goods> getGoodsList();

@@ -280,6 +280,16 @@
 			goods_stock_code = #{goodsStockCode};
 	</select>
 	
+	<select id="deleteStockCheck" parameterType="String" resultType="boolean">
+		/* 삭제 상품 재고 유무 확인 - 삭제 여부 컬럼 수정 시 상품 재고 테이블에 해당 상품의 모든 재고량이 0인 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM
+			goods_stock
+		WHERE 
+			goods_code = #{goodsCode} and final_stock_amount != 0;
+	</select>
+	
 	<select id="getStockList" resultMap="stockResultMap">
 		/* 상품 재고 조회 */
 		SELECT

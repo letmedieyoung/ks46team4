@@ -1,6 +1,7 @@
 package ks46team04.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,6 +24,9 @@ public interface FoundationMapper {
 	
 	//재단 요청사항 등록
 	public int addFoundationRequest(FoundationRequest foundationRequest);
+	
+	//재단 요청사항 검색 결과 조회
+	public List<FoundationRequest> getFoundationRequestListBySearch(Map<String, Object> searchMap);
 	
 	//재단 요청사항 조회
 	public List<FoundationRequest> getFoundationRequestList();
