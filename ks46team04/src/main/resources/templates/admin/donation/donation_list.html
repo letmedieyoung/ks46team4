@@ -5,25 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
-
 <!-- Custom styles for this template -->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 <!-- Custom styles for this page -->
 <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- daterangepicker -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
 <th:block layout:fragment="customContents">
 
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
-
-			<!-- Page Heading -->
 
 		<!-- DataTales Example -->
 		<div class="card mb-4">
@@ -44,15 +37,11 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
-											<input type="date" class="form-control" id="startDate">
+											<input type="text" id="daterange" class="form-control short-input">
 										</div>
-										~
-										<div class="col-auto">
-											<input type="date" class="form-control" id="endDate">
-										</div>
-										&nbsp;
-										<button type="button" class="btn btn-primary" id="dateBtn">검색</button>
 									</div>
+										&nbsp;
+									<button type="submit" class="btn btn-primary" id="dateBtn">검색</button>
 								</td>
 							</tr>
 						</tbody>
@@ -67,9 +56,13 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
+					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+						<span class="text">선택삭제</span>
+					</button>
 						<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 								<tr class="bg-gray-100">
+									<th><input type="checkbox" id="allCheck" /></th>
 									<th>코드</th>
 									<th>콘텐츠명</th>
 									<th>콘텐츠 금액</th>
@@ -84,6 +77,7 @@
 							</thead>
 							<tbody>
 								<tr th:unless="${getDonation == null}" th:each=" l : ${getDonation}">
+								<td><input class="checks" type="checkbox" th:value="${l.donationCode}"></td>
 									<td th:text="${l.donationCode}"></td>
 									<td th:text="${l.donationName}"></td>
 									<td th:text="${l.donationPrice}"></td>
@@ -101,7 +95,7 @@
 									</td>
 								</tr>
 								<tr th:if="${getDonation == null}">
-									<td colspan="11">등록된 정기기부 단가 정보가 없습니다.</td>
+									<td colspan="11">등록된 정기기부 콘텐츠 정보가 없습니다.</td>
 								</tr>
 						</table>
 					</div>
@@ -118,7 +112,6 @@
 		class="fas fa-angle-up"></i>
 	</a>
 
-	<!-- /.container-fluid -->
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
@@ -127,19 +120,181 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	
 	<script type="text/javascript">
 		$('#dataTable').DataTable({
-			"ordering" : false 
-			});
+			// 정렬 기능 숨기기
+			"ordering" : false,
+			// 표시 건수기능 숨기기
+			"lengthChange" : false,
+			// 정보 표시 숨기기
+			"info" : false,
+			// 검색 기능 숨기기
+			"searching" : false,
+			// 가로 스크롤바
+			"scrollX" : true
+		});
+		
+		// 등록하기
 		$('#addBtn').click(function(){
-		location.href='/admin/donation/donation_add';
+			location.href='/admin/donation/donation_add';
+		});
+
+		// 기간 검색
+		$(function() {
+			 let today = moment();
+			 let resetDate = '2023-12-01';
+			 
+		function setDateRange(startDate, endDate) {
+			$('#daterange').data('daterangepicker').setStartDate(startDate);
+			$('#daterange').data('daterangepicker').setEndDate(endDate);
+		}
+
+		$('#daterange').daterangepicker({
+			locale: {
+			"separator": " ~ ",
+	      	"format": "YYYY-MM-DD",
+	      	"applyLabel": "확인",
+	      	"cancelLabel": "취소",
+	       	"daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+	       	"monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+		},
+			applyClass: 'btn-primary btn-sm',
+	   	 	cancelClass: 'btn-secondary btn-sm',
+		});
+	
+		$('#daterange').data('daterangepicker').setStartDate(moment(resetDate));
+		$('#daterange').data('daterangepicker').setEndDate(moment(today));
+			
+		
+		});
+		
+		$('#dateBtn').click(function() {
+
+			let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+			let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+			let data = {
+							startDate : startDate,
+							endDate : endDate
+						};
+				});
+		
+		let data = '';
+		let query = jQuery.param(data);
+		let url = '/admin/donation/donation_list?' + query;
+		
+		let request = $.ajax({
+			type: 'GET',
+		    url: url,
+		    contentType: 'application/json; charset=UTF-8',
+			success : function(data){
+				//테이블 초기화
+				$('#dataTable > tbody').empty();
+				let html = '';
+				if(data != null && data.length > 0){
+					const getDonation = data;
+					for(const donationInfo of getDonation){
+						html += '<tr>';
+						html += `	<td><input class="checks" type="checkbox" value="${donationInfo.donationCode}"></td>`;
+						html += `	<td>${donationInfo.donationName}</td>`;
+						html += `	<td>${donationInfo.donationPrice}</td>`;
+						html += `	<td>${donationInfo.donationDescription}</td>`;
+						html += `	<td>${donationInfo.donationRegId}</td>`;
+						html += `	<td>${donationInfo.donationRegDate}</td>`;
+						if(donationInfo.donationUpdateId == null){
+							html += `	<td>${donationInfo.donationUpdateId}</td>`;
+						}else{
+							html += `	<td>${donationInfo.donationUpdateDate}</td>`;
+							
+						}
+						html += `<td>
+										<a class="btn btn-secondary btn-icon-split btn-sm"
+											href="/admin/donation/donation_modify?donationCode=${donationInfo.donationCode}">
+											<span class="text">수정</span>
+										</a>
+									</td>`;
+						html += '</tr>';
+					};
+				}else{
+					html += '<tr>';
+					html += `	<td><input class="checks" type="checkbox"></td>`;
+					html += '	<td colspan="7">등록된 정기기부 콘텐츠 정보가 없습니다.</td>';
+					html += '</tr>';
+				}
+				$('#dataTable > tbody').append(html);
+				$('#dataTable').DataTable();
+			}
+		})
+		request.fail(function(jqXHR, textStatus){
+			alert(`Request failed: ${textStatus}`);
+		});
+		
+		// 전체 선택
+		$('#allCheck').click(function(){
+			$('.checks').prop('checked', $(this).prop('checked'));
+		});
+		$('.checks').click(function(){
+			let length = $('.checks').length;
+			let checkedLength = $('.checks:checked').length;
+			if (length == checkedLength) {
+				$('#allCheck').prop('checked', true);
+			} else {
+				$('#allCheck').prop('checked', false);
+			}
+		});
+		
+		// 선택 삭제
+		$('#delCheckBtn').click(function(){
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert('선택된 항목이 없습니다.');
+				}
+				else {
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function(){
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/donation/donation_remove',
+							method: 'POST',
+							data: { valueArr : valueArr },
+							dataType: 'json'
+						});
+						
+						request.done(function(result){
+							if(result){
+								alert('삭제되었습니다.');
+								location.reload();
+							}
+						});
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
 			});
 	</script>
 </th:block>

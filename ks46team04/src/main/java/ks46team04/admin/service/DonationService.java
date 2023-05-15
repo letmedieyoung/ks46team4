@@ -1,6 +1,7 @@
 package ks46team04.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class DonationService {
 	/*
 	 * 정기기부 콘텐츠 조회
 	 * */
-	public List<Donation> getDonation(String searchKey, String searchValue){
+	public List<Donation> getDonation(String searchKey, String searchValue, Map<String, Object> paramMap, String startDate, String endDate){
 		
 		if(searchKey != null) {
 			switch (searchKey) {
@@ -42,8 +43,13 @@ public class DonationService {
 				break;
 			}
 		}
+
+		List<Donation> getDonation = donationMapper.getDonation(searchKey, searchValue, paramMap, startDate, endDate);
 		
-		List<Donation> getDonation = donationMapper.getDonation(searchKey, searchValue);
+		if(startDate != null && endDate != null) {
+			paramMap.put("startDate", startDate);
+			paramMap.put("endDate", endDate);			
+		}
 		
 		return getDonation;
 	}
@@ -76,6 +82,12 @@ public class DonationService {
 	/*
 	 * 정기기부 콘텐츠 삭제
 	 * */
+	public void removeDonation(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonation(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonation(Donation donation) {
 		donationMapper.removeDonation(donation);
 	}
@@ -139,6 +151,12 @@ public class DonationService {
 	/*
 	 * 등록된 회원 결제수단 삭제
 	 * */
+	public void removeDonationPayMethod(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonationPayMethod(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonationPayMethod(DonationPayMethod donationPayMethod) {
 		donationMapper.removeDonationPayMethod(donationPayMethod);
 	}
@@ -207,6 +225,12 @@ public class DonationService {
 	/*
 	 * 정기기부 구독 신청 삭제
 	 * */
+	public void removeDonationSub(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonationSub(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonationSub(DonationSub donationSub) {
 		donationMapper.removeDonationSub(donationSub);
 	}
@@ -276,6 +300,12 @@ public class DonationService {
 	/*
 	 * 정기기부 구독 결제 상세 삭제
 	 * */
+	public void removeDonationPayDetail(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonationPayDetail(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonationPayDetail(DonationPayDetail donationPayDetail) {
 		donationMapper.removeDonationPayDetail(donationPayDetail);
 	}
@@ -340,6 +370,12 @@ public class DonationService {
 	/*
 	 * 정기기부 월별 결제 합계 삭제
 	 * */
+	public void removeDonationMonthPay(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonationMonthPay(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonationMonthPay(DonationMonthPay donationMonthPay) {
 		donationMapper.removeDonationMonthPay(donationMonthPay);
 	}
@@ -407,6 +443,12 @@ public class DonationService {
 	/*
 	 * 정기기부 환불 삭제
 	 * */
+	public void removeDonationRefund(List<String> valueArr) {
+		  for (int i = 0; i < valueArr.size(); i++) {
+	            donationMapper.removeDonationRefund(valueArr.get(i));
+	        }
+	}
+	
 	public void removeDonationRefund(DonationRefund donationRefund) {
 		donationMapper.removeDonationRefund(donationRefund);
 	}

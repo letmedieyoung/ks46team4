@@ -2,13 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/default}">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for this page -->
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
 
 <th:block layout:fragment="customContents">
 	
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-	
-	    <!-- Page Heading -->
 	    
 	    <!-- DataTales Example -->
      	<div class="card mb-4">
@@ -123,13 +129,13 @@
 			</div>
     	</div>
 	</div>
+	<!-- /.container-fluid -->
 	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
 	</a>
 
-	<!-- /.container-fluid -->
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
@@ -137,12 +143,8 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
 		$(document).on('click','#addBtn', function(){
