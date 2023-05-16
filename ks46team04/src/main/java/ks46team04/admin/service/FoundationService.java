@@ -86,12 +86,15 @@ public class FoundationService {
 	
 	/**
 	 * 재단 삭제
-	 * @param valueArr
+	 * @param foundationCode
 	 */
-	public void removeFoundation(List<String> valueArr) {
-		for(int i=0; i<valueArr.size(); i++) {
-			foundationMapper.removeFoundation(valueArr.get(i));
+	public boolean removeFoundation(String foundationCode) {
+		boolean result = foundationMapper.removeFoundationCheck(foundationCode);
+		if(result) {
+			foundationMapper.removeFoundation(foundationCode);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -119,8 +122,19 @@ public class FoundationService {
 	 * @return
 	 */
 	public int addFoundation(Foundation foundation) {
+		
 		int result = foundationMapper.addFoundation(foundation);
 		return result;
+	}
+	
+	/**
+	 * 재단 검색 결과 조회
+	 * @param searchMap
+	 * @return
+	 */
+	public List<Foundation> getFoundationListBySearch(Map<String, Object> searchMap){
+		List<Foundation> foundationList = foundationMapper.getFoundationListBySearch(searchMap);
+		return foundationList;
 	}
 	
 	/**

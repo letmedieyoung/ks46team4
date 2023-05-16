@@ -46,8 +46,7 @@ public class GoodsController {
      */
     @PostMapping("/remove_goods")
     @ResponseBody
-    public Map<String, Object> removeGoods(Model model
-    								, @RequestParam(value="valueArr[]") List<String> valueArr) {
+    public Map<String, Object> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
     	
     	log.info("valueArr: {}", valueArr);
     	
@@ -174,8 +173,6 @@ public class GoodsController {
 	@GetMapping("/add_goods")
 	public String addGoods(Model model) {
 
-		log.info("model: {}", model);
-		
 		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
