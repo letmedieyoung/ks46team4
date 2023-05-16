@@ -57,7 +57,7 @@ public interface StockMapper {
 	public Stock getStockInfoByCode(String goodsStockCode);
 	
 	//삭제 상품 재고 유무 확인
-	public boolean deleteStockCheck(String goodsCode);
+	public boolean removeStockCheck(String goodsCode);
 	
 	//상품 재고 조회
 	public List<Stock> getStockList();

@@ -33,7 +33,7 @@ public class GoodsService {
      * @param goodsCode
      */
     public boolean removeGoods(String goodsCode) {
-    	boolean result = stockMapper.deleteStockCheck(goodsCode);
+    	boolean result = stockMapper.removeStockCheck(goodsCode);
     	if (result) {
     		goodsMapper.removeGoods(goodsCode);
     		return true;

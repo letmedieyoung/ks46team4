@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.FoundationRequest;
+import ks46team04.admin.mapper.FoundationMapper;
 import ks46team04.admin.service.FoundationService;
 
 @Controller
@@ -27,9 +28,11 @@ public class FoundationController {
 	private static final Logger log = LoggerFactory.getLogger(FoundationController.class);
 
 	private final FoundationService foundationService;
+	private final FoundationMapper foundationMapper;
 	
-	public FoundationController(FoundationService foundationService) {
+	public FoundationController(FoundationService foundationService, FoundationMapper foundationMapper) {
 		this.foundationService = foundationService;
+		this.foundationMapper = foundationMapper;
 	}
 	
 	
@@ -74,7 +77,8 @@ public class FoundationController {
 	 * @return
 	 */
 	@GetMapping("/modify_foundation_request")
-	public String modifyFoundationRequest(Model model, @RequestParam(name="foundationRequestCode") String foundationRequestCode){
+	public String modifyFoundationRequest(Model model
+										, @RequestParam(name="foundationRequestCode") String foundationRequestCode){
 
 		FoundationRequest foundationRequestInfo = foundationService.getFoundationRequestInfoByCode(foundationRequestCode);
 		log.info("foundationRequestInfo: {}", foundationRequestInfo);
@@ -111,8 +115,6 @@ public class FoundationController {
 	 */
 	@GetMapping("/add_foundation_request")
 	public String addFoundationRequest(Model model) {
-		
-		log.info("model: {}", model);
 		
 		model.addAttribute("title", "재단 요청사항 등록");
 		
@@ -208,12 +210,31 @@ public class FoundationController {
 	 */
 	@PostMapping("/remove_foundation")
 	@ResponseBody
-	public List<String> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
+	public Map<String, Object> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
 		
 		log.info("valueArr: {}", valueArr);
-		foundationService.removeFoundation(valueArr);
 		
-		return valueArr;
+		Map<String, Object> response = new HashMap<>();
+
+        List<String> deletedFoundation = new ArrayList<>();
+        List<String> failedFoundation = new ArrayList<>();
+
+        for (String foundationCode : valueArr) {
+        	boolean result = foundationService.removeFoundation(foundationCode);
+            if (result) {
+            	deletedFoundation.add(foundationCode);
+            } else {
+            	failedFoundation.add(foundationCode);
+            }
+        }
+        log.info("deletedFoundation: {}", deletedFoundation);
+        log.info("failedFoundation: {}", failedFoundation);
+
+        response.put("deleted", deletedFoundation);
+        response.put("failed", failedFoundation);
+        log.info("response: {}", response);
+
+        return response;
 	}
 	
 	/**
@@ -241,7 +262,8 @@ public class FoundationController {
 	 * @return
 	 */
 	@GetMapping("/modify_foundation")
-	public String modifyFoundation(Model model, @RequestParam(name="foundationCode") String foundationCode) {
+	public String modifyFoundation(Model model
+								, @RequestParam(name="foundationCode") String foundationCode) {
 		
 		Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
 		log.info("foundationInfo: {}", foundationInfo);
@@ -253,6 +275,21 @@ public class FoundationController {
 	}
 	
 	/**
+	 * 재단명 중복체크
+	 * @param foundationName
+	 * @return
+	 */
+	@PostMapping("/check_foundation_name")
+	@ResponseBody
+	public boolean foundationNameChek(@RequestParam(name="foundationName") String foundationName) {
+		boolean checked = true;
+		
+		checked = foundationMapper.foundationNameCheck(foundationName);
+		
+		return checked;
+	}
+	
+	/**
 	 * 재단 등록 @PostMapping
 	 * @param foundation
 	 * @return
@@ -261,11 +298,11 @@ public class FoundationController {
 	public String addFoundation(Foundation foundation, HttpSession session) {
 		
 		String foundationRegId = (String) session.getAttribute("SID");
-	    log.info("foundationRegId: {}", foundationRegId);
+		log.info("foundationRegId: {}", foundationRegId);
 	    
 	    foundation.setFoundationRegId(foundationRegId);
-		log.info("foundation: {}", foundation);
 		
+		log.info("foundation: {}", foundation);
 		foundationService.addFoundation(foundation);
 		
 		return "redirect:/admin/foundation/foundation_list";
@@ -279,11 +316,52 @@ public class FoundationController {
 	@GetMapping("/add_foundation")
 	public String addFoundation(Model model) {
 		
-		log.info("model: {}", model);
-		
 		model.addAttribute("title", "재단 등록");
 		
 		return "admin/foundation/add_foundation";
+	}
+	
+	/**
+	 * 재단 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_foundation_list")
+	@ResponseBody
+	public List<Foundation> search(@RequestParam(value="searchKey", required = false) String searchKey 
+								, @RequestParam(value="searchValue", required = false) String searchValue
+								, @RequestParam(value="startDate", required = false) String startDate
+								, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			switch (searchKey) {
+			case "foundationName":
+				searchKey = "foundation_name";
+				break;
+			case "foundationManager":
+				searchKey = "foundation_manager";					
+				break;
+			}
+			searchMap.put("searchKey", searchKey);
+			searchMap.put("searchValue", searchValue);
+		}
+		if(startDate != null && endDate != null) {
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		log.info("searchMap: {}", searchMap);
+		
+		List<Foundation> foundationList = foundationService.getFoundationListBySearch(searchMap);
+		log.info("foundationList: {}", foundationList);
+		
+		return foundationList;
 	}
 	
 	/**

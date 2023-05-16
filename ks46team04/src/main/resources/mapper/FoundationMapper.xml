@@ -9,10 +9,14 @@
 		<result column="foundation_name"				property="foundationName"/>
 		<result column="foundation_manager"				property="foundationManager"/>
 		<result column="foundation_phone"				property="foundationPhone"/>
+		<result column="foundation_zipcode"				property="foundationZipcode"/>
 		<result column="foundation_addr"				property="foundationAddr"/>
+		<result column="foundation_extra_addr"			property="foundationExtraAddr"/>
+		<result column="foundation_detail_addr"			property="foundationDetailAddr"/>
 		<result column="foundation_reg_id"				property="foundationRegId"/>
 		<result column="foundation_reg_date"			property="foundationRegDate"/>
 		<result column="foundation_update_id"			property="foundationUpdId"/>
+		<result column="foundation_update_date"			property="foundationUpdDate"/>
 		<result column="foundation_is_delete"			property="foundationIsDelete"/>
 	</resultMap>
 	
@@ -180,6 +184,16 @@
 			foundation_code = #{foundationCode};
 	</update>
 	
+	<select id="removeFoundationCheck" parameterType="String" resultType="boolean">
+		/* 삭제 재단 진행 중 컨텐츠 유무 확인 - 재단 요청사항 테이블에 진행 중인 컨텐츠가 없는 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM
+			foundation_request
+		WHERE 
+			foundation_code = #{foundationCode} and request_progress_status = '진행중';
+	</select>
+	
 	<update id="modifyFoundation" parameterType="Foundation">
 		/* 재단 수정 */
 		UPDATE foundation_list
@@ -193,8 +207,17 @@
 			<if test="foundationPhone != null and foundationPhone !=''">
 				, foundation_phone = #{foundationPhone}
 			</if>
+			<if test="foundationZipcode != null and foundationZipcode !=''">
+				, foundation_zipcode = #{foundationZipcode}
+			</if>
 			<if test="foundationAddr != null and foundationAddr !=''">
 				, foundation_addr = #{foundationAddr}
+			</if>
+			<if test="foundationExtraAddr != null">
+				, foundation_extra_addr = #{foundationExtraAddr}
+			</if>
+			<if test="foundationDetailAddr != null and foundationDetailAddr !=''">
+				, foundation_detail_addr = #{foundationDetailAddr}
 			</if>
 			, foundation_update_id = #{foundationUpdId}
 			, foundation_update_date = NOW()
@@ -210,7 +233,10 @@
 			, foundation_name
 			, foundation_manager
 			, foundation_phone
+			, foundation_zipcode
 			, foundation_addr
+			, foundation_extra_addr
+			, foundation_detail_addr
 			, foundation_reg_id
 			, foundation_reg_date
 			, foundation_update_id
@@ -221,15 +247,62 @@
 			foundation_code = #{foundationCode};
 	</select>
 	
+	<select id="foundationNameCheck" parameterType="String" resultType="boolean">
+		/* 재단명 중복체크 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM
+			foundation_list
+		WHERE 
+			foundation_name = #{foundationName} and foundation_is_delete = '0';
+	</select>
+	
 	<insert id="addFoundation" parameterType="Foundation">
 		/* 재단 등록 */
 		INSERT INTO foundation_list
-			(foundation_code, foundation_name, foundation_manager, foundation_phone, foundation_addr,
-				 foundation_reg_id, foundation_reg_date)
+			(foundation_code, foundation_name, foundation_manager, foundation_phone, foundation_zipcode, 
+			foundation_addr, foundation_extra_addr, foundation_detail_addr, foundation_reg_id, foundation_reg_date)
 		VALUES 
-			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationAddr}, 
-				#{foundationRegId}, NOW());
+			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationZipcode}, 
+			#{foundationAddr}, #{foundationExtraAddr}, #{foundationDetailAddr}, #{foundationRegId}, NOW());
 	</insert>
+	
+	<select id="getFoundationListBySearch" resultMap="foundationResultMap" parameterType="map">
+		/* 재단 검색 결과 조회 */
+		SELECT
+			foundation_code
+			, foundation_name
+			, foundation_manager
+			, foundation_phone
+			, foundation_zipcode
+			, foundation_addr
+			, foundation_extra_addr
+			, foundation_detail_addr
+			, foundation_reg_id
+			, foundation_reg_date
+			, foundation_update_id
+			, foundation_update_date
+		FROM 
+			foundation_list
+		WHERE
+			foundation_is_delete = '0'
+			<if test="searchKey != null and searchKey != ''">
+				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			</if>
+			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				AND (
+						(foundation_update_date IS NULL
+						 AND foundation_reg_date BETWEEN #{startDate} 
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
+						OR
+						(foundation_update_date IS NOT NULL
+						 AND foundation_update_date BETWEEN #{startDate}
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
+				)
+			</if>
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(foundation_code, 'foundation', -1) AS UNSIGNED) DESC;
+	</select>
 	
 	<select id="getFoundationList" resultMap="foundationResultMap">
 		/* 재단 목록 조회 */
@@ -238,7 +311,10 @@
 			, foundation_name
 			, foundation_manager
 			, foundation_phone
+			, foundation_zipcode
 			, foundation_addr
+			, foundation_extra_addr
+			, foundation_detail_addr
 			, foundation_reg_id
 			, foundation_reg_date
 			, foundation_update_id

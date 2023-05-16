@@ -28,7 +28,7 @@ $("#dataTable").DataTable({
  */
 $(function() {
 	 let today = moment();
-	 let resetDate = '2023-01-01';
+	 let resetDate = '2022-01-01';
 	 
 	 function setDateRange(startDate, endDate) {
 		 $('#daterange').data('daterangepicker').setStartDate(startDate);

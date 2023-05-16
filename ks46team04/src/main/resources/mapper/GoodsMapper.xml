@@ -123,10 +123,15 @@
 			<if test="searchKey != null and searchKey != ''">
 				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
 			</if>
-			<if test="startDate != null and endDate != null">
+			<if test="startDate != null startDate != '' and endDate != null and endDate != ''">
 				AND (
-					goods_update_date IS NULL AND goods_reg_date BETWEEN #{startDate} AND #{endDate}
-					OR goods_update_date IS NOT NULL AND goods_update_date BETWEEN #{startDate} AND #{endDate}
+						(goods_update_date IS NULL
+						 AND goods_reg_date BETWEEN #{startDate} 
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
+						OR 
+						(goods_update_date IS NOT NULL
+						 AND goods_update_date BETWEEN #{startDate} 
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
 				)
 			</if>
 		ORDER BY 
