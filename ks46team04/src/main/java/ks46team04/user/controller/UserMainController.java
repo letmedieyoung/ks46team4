@@ -157,21 +157,52 @@ public class UserMainController {
 	
 	
 	@GetMapping("/myPage_myInfoModify")
-	public String mypageInfoModify() {
+	public String mypageInfoModify(HttpServletRequest request,Model model) {
+		
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+		String userName = (String) session.getAttribute("SNAME");
+		
+		// 사용자 정보 조회
+	    User userInfo = userService.getUserInfoById(userId);
+		
+		model.addAttribute("title", "회원수정");
+		model.addAttribute("userInfo", userInfo);
 		
 		return "user/myPage_myInfoModify";
 	}
 	
 	
+	/*
+	 * @GetMapping("/myPage_myInfo") public String mypageInfo(HttpServletRequest
+	 * request, Model model) { HttpSession session = request.getSession(); String
+	 * userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+	 * 
+	 * // 비밀번호 확인 로직 String userPw = "사용자 입력 비밀번호"; // 사용자로부터 입력받은 비밀번호 boolean
+	 * isPasswordCorrect = userService.pwCheck(userId, userPw); // pwCheck 메서드 호출
+	 * 
+	 * if (isPasswordCorrect) { model.addAttribute("title", "회원정보");
+	 * model.addAttribute("userId", userId); return "user/myPage_myInfo"; } else {
+	 * return "user/myPage_index"; } }
+	 */
+	 
+	
+
 	@GetMapping("/myPage_myInfo")
-	public String getUserInfoById(Model model) {
+	public String mypageInfo(HttpServletRequest request,Model model) {
 		
-		/*
-		 * User userInfo = userService.getUserInfoById(userId);
-		 * log.info("userInfo: {}",userInfo); model.addAttribute("userInfo", userInfo);
-		 */
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+		
+		// 사용자 정보 조회
+	    User userInfo = userService.getUserInfoById(userId);
+		
+		model.addAttribute("title", "회원정보");
+		model.addAttribute("userInfo", userInfo);
+		
 		return "user/myPage_myInfo";
 	}
+
 	
 	@GetMapping("/mypage_index")
 	public String mypageMain(Model model) {
