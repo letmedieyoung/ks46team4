@@ -156,14 +156,26 @@ public class UserController {
 	@PostMapping("/modifyUser")
 	@ResponseBody
 	public Map<String, Object> modifyUser(@ModelAttribute User user) {
-		// 회원 정보 수정 처리 코드
-		boolean success = userService.modifyUser(user);
-		// 처리 결과 반환
-		Map<String, Object> modifyResultMap = new HashMap<>();
-		modifyResultMap.put("success", success);
-		return modifyResultMap;
+		try {
+	        // 회원 정보 수정 처리 코드
+	        boolean success = userService.modifyUser(user);
+
+	        // 처리 결과 반환
+	        Map<String, Object> modifyResultMap = new HashMap<>();
+	        modifyResultMap.put("success", success);
+	        return modifyResultMap;
+	    } catch (Exception e) {
+	        // Handle the exception
+	        e.printStackTrace();
+	        // You can return an error response or customize it according to your requirements
+	        Map<String, Object> errorMap = new HashMap<>();
+	        errorMap.put("success", false);
+	        errorMap.put("message", "An error occurred during user modification.");
+	        return errorMap;
+	    }
 	}
 
+	    
 	@GetMapping("/modifyUser")
 	public String modifyUser(@RequestParam(name = "userId") String userId, Model model) {
 		User userInfo = userService.getUserInfoById(userId);
