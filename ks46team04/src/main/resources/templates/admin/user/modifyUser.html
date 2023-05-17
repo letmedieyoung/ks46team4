@@ -250,6 +250,8 @@
 	$('#modifyUserForm').ready(function() {
 		  let isPwCheck = 0; // 비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력 전/1=비번 일치/2=비번 불일치
 		  let fullAddress = ''; // fullAddress 변수를 전역 범위로 이동
+		  let userId = $('#modifyuserId').val;
+		  let $userIdEle = $('#modifyuserId');
 
 		  function validatePassword() {
 		    let userPw = $('#modifyuserPw').val();
@@ -389,6 +391,7 @@
 				        type: 'POST',
 				        url: '/admin/user/modifyUser', // 수정 처리를 담당하는 URL
 				        data: {
+								userId : $('#modifyuserId').val(),
 								userLevel: $('#modifyuserLevel').val(),
 						        userPw: $('#modifyuserPw').val(),
 						        userBirth: $('#modifyuserBirth').val(),

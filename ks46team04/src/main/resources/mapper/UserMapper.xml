@@ -195,7 +195,7 @@
 				test="userAddr != null and userAddr != ''">
 				user_addr = #{userAddr},
 			</if> user_update_date = now() </trim>
-		WHERE user_id = #{userId} AND user_name = #{userName}; </update>
+		WHERE user_id = #{userId}; </update>
 
 	<select id="getUserDetailList" parameterType="String"
 		resultMap="userResultMap">
