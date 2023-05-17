@@ -84,17 +84,20 @@
 									id="userPhone" th:value="${userPhone}" name="userPhone"
 									placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
 							</tr>
+				
 							<tr>
-								<th class="bg-gray-100"><label for="userEmailAgree">이메일
+									<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label><span class="required-fields">*</span></th>
-								<td><select id="userEmailAgree" name="userEmailAgree"
-									th:value="${userEmailAgree}">
-										<option value="Y" th:selected="${userEmailAgree == 'Y'}">수신동의</option>
-										
-										<option value="N" th:selected="${userEmailAgree == 'N'}">수신거부</option>
-								</select></td>
+								<td><select class="dropdown btn btn-success required-form"
+									id="modifyuserEmailAgree" name="userEmailAgree"
+									th:value="${userInfo.userEmailAgree}">
+										<option value="1" th:selected="${userInfo.userEmailAgree == '1'}">수신동의</option>
+
+										<option value="0" th:selected="${userInfo.userEmailAgree == '0'}">수신거부</option>
+								</select><span class="required-text"></span></td>
 
 							</tr>
+							
 							<tr>
 									<th class="bg-gray-100"><label for="userEmail">이메일</label>
 									<span class="required-fields">*</span>

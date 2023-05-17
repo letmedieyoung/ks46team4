@@ -155,14 +155,14 @@ public class UserController {
 
 	@PostMapping("/modifyUser")
 	@ResponseBody
-	public Map<String, Object> modifyUser(@ModelAttribute User user) {
+	public Map<String, Object> modifyUser(@RequestParam(name = "userId") String userId, @ModelAttribute User user) {
 		try {
 	        // 회원 정보 수정 처리 코드
-	        boolean success = userService.modifyUser(user);
+	        boolean isSuccess = userService.modifyUser(user);
 
 	        // 처리 결과 반환
 	        Map<String, Object> modifyResultMap = new HashMap<>();
-	        modifyResultMap.put("success", success);
+	        modifyResultMap.put("success", isSuccess);
 	        return modifyResultMap;
 	    } catch (Exception e) {
 	        // Handle the exception

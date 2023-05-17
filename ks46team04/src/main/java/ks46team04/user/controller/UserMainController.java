@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import ks46team04.admin.dto.DonationSub;
 import ks46team04.admin.dto.FundingPay;
 import ks46team04.admin.dto.FundingRefund;
 import ks46team04.admin.dto.User;
+import ks46team04.admin.dto.UserLevel;
 import ks46team04.admin.mapper.UserMapper;
 import ks46team04.admin.service.DonationService;
 import ks46team04.admin.service.FundingService;
@@ -150,18 +152,35 @@ public class UserMainController {
 	}
 	
 	@PostMapping("/myPage_myInfoModify")
-	public String  mypageInfoModify(User user) {
+	@ResponseBody
+	public Map<String, Object> mypageInfoModify(HttpServletRequest request,@ModelAttribute User user) {
+		 	Logger logger = LoggerFactory.getLogger(getClass());
+		    Map<String, Object> response = new HashMap<>();
+		    
+		    try {
+		    	HttpSession session = request.getSession();
+		        String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+		        boolean success = userService.modifyUser(user);
+		            response.put("success", true);
+		            response.put("message", "수정 성공");
+		            
+		            request.getSession().invalidate(); //세션 무효화
+
+		    } catch (Exception e) {
+		        logger.error("An error occurred while during user modification", e);
+		        response.put("success", false);
+		        response.put("message", "회원 정보 수정 중 오류가 발생하였습니다.");
+		    }
+		    
+		    return response;
+		}
 		
-		return "redirect:/user/userList";
-	}
-	
-	
+		
 	@GetMapping("/myPage_myInfoModify")
 	public String mypageInfoModify(HttpServletRequest request,Model model) {
 		
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
-		String userName = (String) session.getAttribute("SNAME");
 		
 		// 사용자 정보 조회
 	    User userInfo = userService.getUserInfoById(userId);
@@ -171,7 +190,6 @@ public class UserMainController {
 		
 		return "user/myPage_myInfoModify";
 	}
-	
 	
 	/*
 	 * @GetMapping("/myPage_myInfo") public String mypageInfo(HttpServletRequest
