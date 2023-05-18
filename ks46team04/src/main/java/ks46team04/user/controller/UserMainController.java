@@ -151,7 +151,8 @@ public class UserMainController {
 		return "user/myPage_myFunding";
 	}
 	
-	@PostMapping("/myPage_myInfoModify")
+	
+	@PostMapping("/mypageInfoModify")
 	@ResponseBody
 	public Map<String, Object> mypageInfoModify(HttpServletRequest request,@ModelAttribute User user) {
 		 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -160,11 +161,9 @@ public class UserMainController {
 		    try {
 		    	HttpSession session = request.getSession();
 		        String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+		        user.setUserId(userId);
 		        boolean success = userService.modifyUser(user);
-		            response.put("success", true);
-		            response.put("message", "수정 성공");
-		            
-		            request.getSession().invalidate(); //세션 무효화
+		            response.put("success", success);
 
 		    } catch (Exception e) {
 		        logger.error("An error occurred while during user modification", e);
@@ -190,6 +189,7 @@ public class UserMainController {
 		
 		return "user/myPage_myInfoModify";
 	}
+	
 	
 	/*
 	 * @GetMapping("/myPage_myInfo") public String mypageInfo(HttpServletRequest
