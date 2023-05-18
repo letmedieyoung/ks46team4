@@ -25,7 +25,7 @@
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-success">내 정보 수정</h6>
 			</div>
-	<form id="modifyUserForm" th:action="@{/user/myPage_myInfoModify}" method="post">
+	<form id="myInfoModifyForm" th:action="@{/user/mypageInfoModify}" method="post">
 			<div class="card-body">
 				<div class="table-responsive">
 
@@ -38,7 +38,7 @@
 								<td><input
 									type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="userId" th:value="${userId}" name="userId"
+									id="userId" th:value="${userInfo.userId}" name="userId"
 									 readonly="readonly" /></td>
 							</tr>
 							
@@ -65,7 +65,7 @@
 								</th>
 								<td><input type="text"
 									class="form-control form-control-user-search search-input-gr"
-									id="userName" th:value="${userName}" name="userName"
+									id="userName" th:value="${userInfo.userName}" name="userName"
 									readonly="readonly" /></td>
 							</tr>
 							<tr>
@@ -73,7 +73,7 @@
 								</th>
 								<td><input type="date"
 									class="form-control form-control-user-search search-input-gr"
-									id="userBirth" th:value="${userBirth}" name="userBirth"
+									id="userBirth" th:value="${userInfo.userBirth}" name="userBirth"
 									placeholder="생년월일을 선택해주세요." /></td>
 							</tr>
 							<tr>
@@ -81,7 +81,7 @@
 								</th>
 								<td><input type="tel"
 									class="form-control form-control-user-search search-input-gr"
-									id="userPhone" th:value="${userPhone}" name="userPhone"
+									id="userPhone" th:value="${userInfo.userPhone}" name="userPhone"
 									placeholder="하이픈(-)을 포함하여 입력해주세요." /></td>
 							</tr>
 				
@@ -104,7 +104,7 @@
 								</th>
 								<td><input type="email"
 									class="form-control form-control-user-search search-input-gr"
-									id="userEmail" th:value="${userEmail}" name="userEmail"
+									id="userEmail" th:value="${userInfo.userEmail}" name="userEmail"
 									placeholder="at sign(@)을 포함하여 입력해주세요." /></td>
 							</tr>
 							
@@ -159,6 +159,184 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
+		<script>
+	$('#myInfoModifyForm').ready(function() {
+		  let isPwCheck = 0; // 비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력 전/1=비번 일치/2=비번 불일치
+		  let fullAddress = ''; // fullAddress 변수를 전역 범위로 이동
+		  let userId = $('#userId').val;
+		  let $userIdEle = $('#userId');
+
+		  function validatePassword() {
+		    let userPw = $('#userPw').val();
+		    let $userPwEle = $('#userPw');
+		    let $rqTextPw = $userPwEle.siblings('.required-text-pw');
+
+		    let msg = '';
+		    let pwColor = 1;
+		    let isValid = false;
+
+		    let regPwForm = /^(?=.*[a-z])(?=.*\d)[a-z\d]{8,20}$/;
+
+		    if (!regPwForm.test(userPw)) {
+		      if (userPw.length < 8) {
+		        msg = `*글자 수가 적습니다 (8~20자 이내)`;
+		      } else if (userPw.length > 20) {
+		        msg = `*글자 수가 많습니다 (8~20자 이내)`;
+		      } else {
+		        msg = `*입력 규칙에 맞지 않습니다 (영문 소문자와 숫자를 모두 포함해야 합니다)`;
+		      }
+		    } else {
+		      pwColor = 2;
+		      msg = `✔ 사용 가능한 비밀번호입니다`;
+		      isValid = true;
+		    }
+
+		    $rqTextPw.css("color", pwColor === 1 ? "red" : "green");
+		    $rqTextPw.text(msg);
+
+		    return isValid;
+		  }
+
+		  function pwCheck() {
+		    let userPw = $('#userPw').val();
+		    let userPwCheck = $('#userPwCheck').val();
+
+		    let $rqTextPwCheck = $('#userPwCheck').siblings('.required-text-pw');
+		    let msg = '';
+		    let pwColor = 1;
+
+		    if (userPwCheck.length == userPw.length && userPw === userPwCheck) {
+		      pwColor = 2;
+		      msg = `✔ 비밀번호가 일치합니다.`;
+		      isPwCheck = 1;
+		    } else {
+		      msg = `*비밀번호가 일치하지 않습니다.`;
+		      isPwCheck = 2;
+		    }
+
+		    $rqTextPwCheck.css("color", pwColor === 1 ? "red" : "green");
+		    $rqTextPwCheck.text(msg);
+		    
+		    return isPwCheck === 1;
+		  }
+
+		  $('#userPw').on('input', validatePassword);
+		  $('#userPwCheck').on('input', pwCheck);
+
+		  $('#submitBtn').click(
+					function(event) {
+					let isValid = true;
+				    let isPasswordValid = validatePassword();
+				    let isPwCheckValid = pwCheck();
+		
+				    if (!isPasswordValid || !isPwCheckValid) {
+				    	alert('비밀번호가 유효하지 않거나 일치하지 않습니다');
+				      return false;
+				    }
+		    
+					const userPwEle = $('#userPw');
+					let userPw = userPwEle.val();
+					if (typeof userPw == 'undefined' || userPw == null
+							|| userPw == '') {
+						alert('회원비밀번호를 입력해주세요');
+						userPwEle.focus();
+						isValid = false;
+					}
+					const userPwCheckEle = $('#userPwCheck');
+					let userPwCheck = userPwCheckEle.val();
+					if (typeof userPwCheck == 'undefined' || userPwCheck == null
+							|| userPwCheck == '') {
+						alert('회원비밀번호확인란을 입력해주세요');
+						userPwCheckEle.focus();
+						isValid = false;
+					}
+					
+					const userBirthEle = $('#userBirth');
+					const userBirth = userBirthEle.val();
+					if (typeof userBirth == 'undefined' || userBirth == null || userBirth == '') {
+						alert('회원생년월일을 입력해주세요');
+						userBirthEle.focus();
+						isValid = false;
+					}
+
+					const userPhoneEle = $('#userPhone');
+					const userPhone = userPhoneEle.val();
+					if (typeof userPhone == 'undefined' || userPhone == null || userPhone == '') {
+						alert('회원연락처를 입력해주세요');
+						userPhoneEle.focus();
+						isValid = false;
+					}
+
+					const userEmailEle = $('#userEmail');
+					const userEmail = userEmailEle.val();
+					if (typeof userEmail == 'undefined' || userEmail == null || userEmail == '') {
+						alert('회원이메일을 입력해주세요');
+						userEmailEle.focus();
+						isValid = false;
+					}
+					
+					 // 주소 필드의 값을 체크하여, 우편번호 값이 없으면 null로 설정
+				   const userPostCodeEle = $('#userPostCode');
+				   const userPostCode = userPostCodeEle.val();
+				   if (typeof userPostCode === 'undefined' || userPostCode === null || userPostCode === '') {
+    				   userPostCodeEle.val(null);
+					}
+					
+					if (!isValid) {
+        			return false;
+    				}
+				    
+			//우편번호 값이 존재하면 주소가 입력됐음으로 간주하고 주소지 문자열 통합
+				if (userPostCode) {
+					//주소 문자열 일정 형식으로 통합 - [우편번호]주소(extraAddress), 상세주소 
+					let userAddrRoad = $('#userAddrRoad').val().trim() + ($('#userExtraAddress').val() ? ' ' + $('#userExtraAddress').val().trim() : '');
+					let userAddrDetail = ($('#userAddrDetail').val() ? ', ' + $('#userAddrDetail').val() : '');
+					fullAddress = `[${userPostCode}] ${userAddrRoad} ${userAddrDetail}`;
+
+					console.log(fullAddress);
+
+				}
+			
+		// Ajax 요청 보내기
+				
+  				if (isPasswordValid && isPwCheckValid && isValid) {
+				    $.ajax({
+				        type: 'POST',
+				        url: '/user/mypageInfoModify', // 수정 처리를 담당하는 URL
+				        data: {
+								userId : $('#userId').val(),
+						        userPw: $('#userPw').val(),
+						        userBirth: $('#userBirth').val(),
+						        userPhone: $('#userPhone').val(),
+						        userEmailAgree: $('#userEmailAgree').val(),
+						        userEmail: $('#userEmail').val(),
+						        userAddr: fullAddress
+						        },
+				        success: function(result) {
+				            // 서버에서 전송한 응답을 처리하는 코드 작성
+				            console.log(result);
+				            if (result.hasOwnProperty('success') && result.success) {
+				                alert('회원 정보가 수정되었습니다.');
+				                window.location.href = '/user/myPage_myInfo'; 
+				            } else {
+				                alert('회원 정보 수정에 실패하였습니다.');
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            console.error(error);
+				            alert('회원 정보 수정 중 오류가 발생하였습니다.');
+				        }
+				    });
+				 }
+			});	 
+		$('#resetBtn').click(function() {
+			$('#myInfoModifyForm')[0].reset(); // 폼 필드 초기화
+			
+			
+		});
+	});	
+	</script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		function DaumPostcode() {
