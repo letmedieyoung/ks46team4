@@ -23,7 +23,7 @@ private static final Logger log = LoggerFactory.getLogger(ProfitLossController.c
 		this.profitLossMapper = profitLossMapper;
 	}
 	
-	//--------------- 기본 조회
+	//--------------- 기본 조회 start
 	public List<TotalPurchaseSale> getTotalPurchaseSale() {
 		List<TotalPurchaseSale> totalPurchaseSale = profitLossMapper.getTotalPurchaseSale();
 		log.info("totalPurchaseSale: {}", totalPurchaseSale);
@@ -34,7 +34,7 @@ private static final Logger log = LoggerFactory.getLogger(ProfitLossController.c
 		List<ProfitLoss> profitLoss = profitLossMapper.getProfitLoss();
 		return profitLoss;
 	}
-	//--------------- 기본 조회
+	//--------------- 기본 조회 end
 	
 	//마감 완료 로직 ---------------
 		//정기기부 건 마감 완료로 전환 ---------------

@@ -8,5 +8,5 @@ import ks46team04.admin.dto.Vat;
 public interface VatMapper {
 
 	public Vat getVatRow();
-	public void modifyVat(String vatRatio);
+	public void modifyVat(String vatRatio, String loginId);
 }

@@ -33,14 +33,14 @@ public class VatService {
 		return getVatRow;
 	}
 	
-	public void modifyVat(Vat vat) {
+	public void modifyVat(Vat vat, String loginId) {
 		log.info("vat: {}", vat);
 		String vatRatio = vat.getVatRatio();
 		
 		if(vatRatio != null) {
 			vatRatio = String.valueOf(Double.valueOf(vatRatio) / 100);
 			System.out.println(vatRatio);
-			vatMapper.modifyVat(vatRatio);
+			vatMapper.modifyVat(vatRatio, loginId);
 		}
 	}
 	
