@@ -110,6 +110,7 @@
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>재단코드</th>
 								<th>재단명</th>
 								<th>담당자</th>
 								<th>연락처</th>
@@ -122,6 +123,10 @@
 							<tr th:unless="${foundationList == null}" th:each=" l : ${foundationList}">
 								<td><input class="checks" type="checkbox" th:value="${l.foundationCode}"></td>
 								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.foundationCode}"
+										th:href="@{modify_foundation(foundationCode=${l.foundationCode})}"></a>
+								</td>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.foundationManager}"></td>
 								<td th:text="${l.foundationPhone}"></td>
@@ -133,13 +138,13 @@
 								<td th:unless="${l.foundationUpdDate == null}" th:text="|${l.foundationUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/admin/foundation/modify_foundation(foundationCode=${l.foundationCode})}">
+										th:href="@{modify_foundation(foundationCode=${l.foundationCode})}">
 										<span class="text">수정</span>
 									</a>
 								</td>
 							</tr>
 							<tr th:if="${foundationList == null}">
-								<td colspan="8">등록된 재단의 정보가 없습니다.</td>
+								<td colspan="9">등록된 재단의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -202,6 +207,9 @@
 								html += '<tr>';
 								html += `	<td><input class="checks" type="checkbox" value="${foundationInfo.foundationCode}"></td>`;
 								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/foundation/modify_foundation?foundationCode=${foundationInfo.foundationCode}">${foundationInfo.foundationCode}</a>
+											</td>`;
 								html += `	<td>${foundationInfo.foundationName}</td>`;
 								html += `	<td>${foundationInfo.foundationManager}</td>`;
 								html += `	<td>${foundationInfo.foundationPhone}</td>`;
@@ -234,7 +242,7 @@
 							};
 						}else{
 							html += '<tr>';
-							html += '	<td colspan="8">검색된 재단의 정보가 없습니다.</td>';
+							html += '	<td colspan="9">검색된 재단의 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);
@@ -303,7 +311,7 @@
 			                    message += `삭제된 재단: ${deleted.join(', ')}\n`;
 			                }
 			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 재단(진행 중인 콘텐츠 있음): ${failed.join(', ')}\n`;
+			                    message += `삭제할 수 없는 재단(진행중 또는 대기중인 콘텐츠 있음): ${failed.join(', ')}\n`;
 			                }
 			                alert(message);
 			                location.reload();

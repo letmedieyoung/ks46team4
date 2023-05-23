@@ -35,8 +35,7 @@ public class FoundationController {
 		this.foundationMapper = foundationMapper;
 	}
 	
-	
-	
+
 	/**
 	 * 재단 요청사항 삭제
 	 * @param valueArr
@@ -44,13 +43,31 @@ public class FoundationController {
 	 */
 	@PostMapping("/remove_foundation_request")
 	@ResponseBody
-	public List<String> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
+	public Map<String, Object> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
 		
 		log.info("valueArr: {}", valueArr);
-		foundationService.removeFoundationRequest(valueArr);
-		
-		return valueArr;
-	}
+		Map<String, Object> response = new HashMap<>();
+
+        List<String> deletedFoundationRequest = new ArrayList<>();
+        List<String> failedFoundationRequest = new ArrayList<>();
+
+        for (String foundationRequestCode : valueArr) {
+            boolean result = foundationService.removeFoundationRequest(foundationRequestCode);
+            if (result) {
+            	deletedFoundationRequest.add(foundationRequestCode);
+            } else {
+            	failedFoundationRequest.add(foundationRequestCode);
+            }
+        }
+        log.info("deletedFoundationRequest: {}", deletedFoundationRequest);
+        log.info("failedFoundationRequest: {}", failedFoundationRequest);
+
+        response.put("deleted", deletedFoundationRequest);
+        response.put("failed", failedFoundationRequest);
+        log.info("response: {}", response);
+
+        return response;
+    }
 	
 	/**
 	 * 재단 요청사항 수정 @PostMapping

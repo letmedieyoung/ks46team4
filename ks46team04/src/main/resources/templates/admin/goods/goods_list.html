@@ -109,6 +109,7 @@
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>상품코드</th>
 								<th>상품명</th>
 								<th>제조사</th>
 								<th>상품분류</th>
@@ -121,6 +122,10 @@
 							<tr th:unless="${goodsList == null}" th:each="l : ${goodsList}">
 								<td><input class="checks" type="checkbox" th:value="${l.goodsCode}"></td>
 								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.goodsCode}"
+										th:href="@{modify_goods(goodsCode=${l.goodsCode})}"></a>
+								</td>
 								<td th:text="${l.goodsName}"></td>
 								<td th:text="${l.goodsCompany}"></td>
 								<td th:text="${l.goodsCategory}"></td>
@@ -129,13 +134,13 @@
 								<td th:unless="${l.goodsUpdDate == null}" th:text="|${l.goodsUpdDate} (수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/admin/goods/modify_goods(goodsCode=${l.goodsCode})}">
+										th:href="@{modify_goods(goodsCode=${l.goodsCode})}">
 										<span class="text">수정</span>
 									</a>
 								</td>
 							</tr>
 							<tr th:if="${goodsList == null}">
-								<td colspan="8">등록된 상품의 정보가 없습니다.</td>
+								<td colspan="9">등록된 상품의 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -199,6 +204,9 @@
 								html += '<tr>';
 								html += `	<td><input class="checks" type="checkbox" value="${goodsInfo.goodsCode}"></td>`;
 								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/goods/modify_goods?goodsCode=${goodsInfo.goodsCode}">${goodsInfo.goodsCode}</a>
+											</td>`;
 								html += `	<td>${goodsInfo.goodsName}</td>`;
 								html += `	<td>${goodsInfo.goodsCompany}</td>`;
 								html += `	<td>${goodsInfo.goodsCategory}</td>`;
@@ -210,16 +218,16 @@
 									
 								}
 								html += `<td>
-												<a class="btn btn-secondary btn-icon-split btn-sm"
-													href="/admin/goods/modify_goods?goodsCode=${goodsInfo.goodsCode}">
-													<span class="text">수정</span>
-												</a>
+											<a class="btn btn-secondary btn-icon-split btn-sm"
+												href="/admin/goods/modify_goods?goodsCode=${goodsInfo.goodsCode}">
+												<span class="text">수정</span>
+											</a>
 										</td>`;
 								html += '</tr>';
 							};
 						}else{
 							html += '<tr>';
-							html += '	<td colspan="8">검색된 상품의 정보가 없습니다.</td>';
+							html += '	<td colspan="9">검색된 상품의 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);

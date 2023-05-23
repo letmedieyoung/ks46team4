@@ -93,19 +93,19 @@
 										<div class="form-row align-items-center search-schedule">
 									      <label>
 										      <input type="radio" name="requestProgressStatus" value="fundingContent">
-										      <span class="text">진행 전</span>&nbsp;&nbsp;
+										      <span class="text">대기중</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
 										      <input type="radio" name="requestProgressStatus" value="donationContent">
-										      <span class="text">진행 중</span>
+										      <span class="text">진행중</span>
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
 										      <input type="radio" name="requestProgressStatus" value="donationContent">
-										      <span class="text">종료</span>
+										      <span class="text">완료</span>
 									      </label>
 									    </div>
 									</div>
@@ -178,6 +178,7 @@
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>재단요청사항코드</th>
 								<th>재단명</th>
 								<th>콘텐츠 분류</th>
 								<th>요청 상품명</th>
@@ -193,6 +194,10 @@
 							<tr th:unless="${foundationRequestList == null}" th:each=" l : ${foundationRequestList}">
 								<td><input class="checks" type="checkbox" th:value="${l.foundationRequestCode}"></td>
 								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.foundationRequestCode}"
+										th:href="@{modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}"></a>
+								</td>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.contentCategory}"></td>
 								<td th:text="${l.requestGoodsName}"></td>
@@ -205,13 +210,13 @@
 								<td th:unless="${l.requestUpdDate == null}" th:text="|${l.requestUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/admin/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
+										th:href="@{modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
 										<span class="text">수정</span>
 									</a>
 								</td>
 							</tr>
 							<tr th:if="${foundationRequestList == null}">
-								<td colspan="13">등록된 재단 요청사항 정보가 없습니다.</td>
+								<td colspan="12">등록된 재단 요청사항 정보가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -220,17 +225,6 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-
 </th:block>
 
 <th:block layout:fragment="customJs">
@@ -269,20 +263,6 @@
 			    let dateSearchKey = $('#dateSearchKey  option:selected').attr('value');
 			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-
-			    // 데이터에 담기
-			    /*
-			    let data = {
-			      'searchKey': searchKey,
-			      'searchValue': searchValue,
-			      'radioNameArr': radioNameArr,
-			      'radioValueArr': radioValueArr,
-			      'dateSearchKey': dateSearchKey,
-			      'startDate': startDate,
-				  'endDate': endDate
-			    };
-				*/
-				//let query = jQuery.param(data);
 				let url = '/admin/foundation/search_foundation_request_List';
 				
 				let request = $.ajax({
@@ -310,6 +290,10 @@
 								html += '<tr>';
 								html += `	<td><input class="checks" type="checkbox" value="${foundationRequestInfo.foundationRequestCode}"></td>`;
 								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/foundation/modify_foundation_request?foundationRequestCode=${foundationRequestInfo.foundationRequestCode}">
+													${foundationRequestInfo.foundationCode}</a>
+											</td>`;
 								html += `	<td>${foundationRequestInfo.foundationName}</td>`;
 								html += `	<td>${foundationRequestInfo.contentCategory}</td>`;
 								html += `	<td>${foundationRequestInfo.requestGoodsName}</td>`;
@@ -327,16 +311,16 @@
 									html += `	<td>${foundationRequestInfo.requestUpdDate} (수정)</td>`;
 								}
 								html += `<td>
-												<a class="btn btn-secondary btn-icon-split btn-sm"
-													href="/admin/foundation/modify_foundation_request?foundationRequestCode=${foundationRequestInfo.foundationRequestCode}">
-													<span class="text">수정</span>
-												</a>
+											<a class="btn btn-secondary btn-icon-split btn-sm"
+												href="/admin/foundation/modify_foundation_request?foundationRequestCode=${foundationRequestInfo.foundationRequestCode}">
+												<span class="text">수정</span>
+											</a>
 										</td>`;
 								html += '</tr>';
 							};
 						}else{
 							html += '<tr>';
-							html += '	<td colspan="13">등록된 재단 요청사항 정보가 없습니다.</td>';
+							html += '	<td colspan="12">등록된 재단 요청사항 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);
@@ -397,12 +381,19 @@
 							dataType: 'json'
 						});
 						
-						request.done(function(result){
-							if(result){
-								alert('삭제되었습니다.');
-								location.reload();
-							}
-						});
+						request.done(function(response) {
+			                let deleted = response.deleted;
+			                let failed = response.failed;
+			                let message = '';
+			                if (deleted.length > 0) {
+			                    message += `삭제된 요청사항: ${deleted.join(', ')}\n`;
+			                }
+			                if (failed.length > 0) {
+			                    message += `삭제할 수 없는 요청사항(진행중 또는 완료된 요청사항): ${failed.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
 						
 						request.fail(function(jqXHR, textStatus){
 							alert(`Request failed: ${textStatus}`);

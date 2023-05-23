@@ -62,7 +62,7 @@
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
+												<input type="hidden" class="form-control form-control-user-search short-input"
 													id="goodsCategory" name="goodsCategory" placeholder="상품 분류를 선택해주세요." />
 											</div>
 										</td>
@@ -178,7 +178,6 @@
 				let data = $(ele).val();
 				let isValid = true;
 				if(typeof data == 'undefined' || data == null || data == ''){
-					$(ele).focus();
 					isValid = false;
 				}
 				return isValid;
@@ -192,7 +191,7 @@
 					isSubmit = validationCheck(item);
 					if(!isSubmit) {
 						let msg = $(item).parents('tr').find('label').text();
-						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`)
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
 						$(item).focus();
 						return false;
 					}
