@@ -1,5 +1,6 @@
 package ks46team04.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -73,6 +73,50 @@ public class UserController {
 
 		return "admin/user/userSleepList";
 	}
+	
+	/*
+	 * @GetMapping("/userSleepList") public String getUserSleepList(Model model) {
+	 * 
+	 * // updateUserSleep 쿼리 실행 userMapper.updateUserSleep();
+	 * 
+	 * // insertUserSleep 쿼리 실행 userMapper.insertUserSleep();
+	 * 
+	 * // deleteUserInfo 쿼리 실행 userMapper.deleteUserInfo();
+	 * 
+	 * List<UserSleep> userSleepList = userService.getUserSleepList();
+	 * 
+	 * model.addAttribute("title", "휴면회원목록조회"); model.addAttribute("userSleepList",
+	 * userSleepList);
+	 * 
+	 * return "admin/user/userSleepList"; }
+	 */
+	
+	/**
+	 * 로그인 기록 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/removeLoginLog")
+	@ResponseBody
+	public Map<String, Object> removeLoginLog(@RequestParam(value="valueArr[]") List<String> valueArr) {
+	    log.info("valueArr: {}", valueArr);
+	    Map<String, Object> response = new HashMap<>();
+	    List<String> deletedLoginLog = new ArrayList<>();
+
+	    for (String loginLogCode : valueArr) {
+	        boolean result = userService.removeLoginLog(loginLogCode);
+	        if (result) {
+	            deletedLoginLog.add(loginLogCode);
+	        }
+	    }
+
+	    log.info("deletedLoginLog: {}", deletedLoginLog);
+	    response.put("deleted", deletedLoginLog);
+	    log.info("response: {}", response);
+
+	    return response;
+	}
+
 
 	@GetMapping("/loginLog")
 	public String getLoginLogList(Model model, HttpSession session, HttpServletRequest request) {
@@ -229,6 +273,25 @@ public class UserController {
 	    return "admin/user/userList";
 	}
 	
-
+	/*
+	 * @GetMapping("/userList") public String getUserList(Model
+	 * model, @RequestParam(name = "searchKey", required = false) String searchKey,
+	 * 
+	 * @RequestParam(name = "searchValue", required = false) String searchValue) {
+	 * 
+	 * // updateUserSleep 쿼리 실행 userMapper.updateUserSleep();
+	 * 
+	 * // insertUserSleep 쿼리 실행 userMapper.insertUserSleep();
+	 * 
+	 * // deleteUserInfo 쿼리 실행 userMapper.deleteUserInfo();
+	 * 
+	 * List<User> userList = userService.getUserListWithLogDateCalcul(searchKey,
+	 * searchValue);
+	 * 
+	 * model.addAttribute("title", "회원목록조회"); model.addAttribute("userList",
+	 * userList);
+	 * 
+	 * return "admin/user/userList"; }
+	 */
 
 }

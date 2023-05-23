@@ -192,6 +192,7 @@
 	<script type="text/javascript" th:inline="javascript">
 		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값, submit 할 때 검사
 		let isPwCheck = 0;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력전/1=비번일치/2비번=불일치
+		let pwColor = 1;
 		
 		// 값 여부 체크
 		function validationCheck(ele){
@@ -278,30 +279,42 @@
 			
 			let regPwFormAlpha = /^[a-z0-9]+$/;		//특수문자 포함여부만 파악
 			let regPwFormLeng = /^[a-z0-9]{8,20}$/;	//글자수까지 파악
-			let pwColor = 1;
 			
 			console.log((userPw.length < 8) + ' <- 1번');
 			console.log((userPw.length > 20) + '<- 2번');
 			console.log(regPwFormLeng.test(userPw)+ ' < 3번');
 			if(!regPwFormAlpha.test(userPw)){
 				msg = `*입력 규칙에 맞지 않습니다`;
+				pwColor = 1; // 비밀번호 형식이 다른 경우
 			}else if (!/[a-z]/.test(userPw) || !/[0-9]/.test(userPw)) {
    			 	msg = `*영문 소문자와 숫자를 모두 포함해야 합니다`;
+   			 	pwColor = 1; // 비밀번호 형식이 다른 경우
     		}else if(userPw.length < 8){
 				msg = `*글자 수가 적습니다(8~20자 이내)`;
+				pwColor = 1; // 비밀번호 형식이 다른 경우
 			}else if(userPw.length > 20){
 				msg = `*글자 수가 많습니다(8~20자 이내)`;
+				pwColor = 1; // 비밀번호 형식이 다른 경우
+			}else if (!regPwFormLeng.test(userPw)) {
+			    msg = `*입력 규칙에 맞지 않습니다`;
+			    pwColor = 1; // 비밀번호 형식이 다른 경우
 			}else if(regPwFormLeng.test(userPw)){
-				pwColor = 2;
 				msg = `✔ 사용 가능한 비밀번호입니다`;
+				pwColor = 2;
 			}
 			
 			if(pwColor === 1){
-				$('.pw > .required-text-pw').css("color", "red");
+				$('.col-sm-6 > .required-text-pw').css("color", "red");
+				isPwCheck = 2; // 비밀번호 형식이 다른 경우
 			}else{
-				$('.pw > .required-text-pw').css("color", "green");
+				$('.col-sm-6 > .required-text-pw').css("color", "green");
+				isPwCheck = 1; // 비밀번호가 일치하는 경우
 			}
 			$rqTextPw.text(msg);
+			
+			if ($('#userPwCheck').val() !== userPw) {
+			    isPwCheck = 2;
+			}
 			
 			pwCheck();
 		});
@@ -321,27 +334,35 @@
 			
 			let $rqTextPwCheck = $userPwCheckEle.siblings('.required-text-pw');
 			let msg = '';
-			let pwColor = 1;
 			
 			if(typeof userPwCheck != 'undefined' &&	userPwCheck != null &&
 					userPwCheck != ''){
-				if(userPwCheck.length == userPw.length && userPw === userPwCheck){
-					pwColor = 2;
-					msg = `✔ 비밀번호가 일치합니다.`;
-					isPwCheck = 1;
-				}else{
-					msg = `*비밀번호가 일치하지 않습니다.`;
-					isPwCheck = 2;
-				}
-				
-				if(pwColor === 1){
-					$('.pwCheck > .required-text-pw').css("color", "red");
-				}else{
-					$('.pwCheck > .required-text-pw').css("color", "green");
-				}
-				$rqTextPwCheck.text(msg);
+				let regPwFormAlpha = /^[a-z0-9]+$/; // 특수문자 포함여부만 파악
+			    let regPwFormLeng = /^[a-z0-9]{8,20}$/; // 글자수까지 파악
+			    
+
+			    if (!regPwFormAlpha.test(userPwCheck) || !regPwFormLeng.test(userPwCheck)) {
+			      pwColor = 1;
+			      msg = `*입력 규칙에 맞지 않습니다.`;
+			      isPwCheck = 2;
+			    } else if (userPwCheck.length === userPw.length && userPw === userPwCheck) {
+			      pwColor = 2;
+			      msg = `✔ 비밀번호가 일치합니다.`;
+			      isPwCheck = 1;
+			    } else {
+			      pwColor = 1;
+			      msg = `*비밀번호가 일치하지 않습니다.`;
+			      isPwCheck = 2;
+			    }
+
+			    if (pwColor === 1) {
+			      $('.col-sm-6 > .required-text-pw').css("color", "red");
+			    } else {
+			      $('.col-sm-6 > .required-text-pw').css("color", "green");
+			    }
+			    $rqTextPwCheck.text(msg);
+			  }
 			}
-		}
 		//날짜 확인 -------------------------
 		//170살을 넘을 수 없음. 오늘 날짜를 넘길 수 없음.
 		//오늘 날짜를 파악하는 함수
@@ -464,20 +485,19 @@
 				}
 			});	//each문 끝
 			
-			if(isIdCheck == false){
-				alert('아이디를 중복 체크 해주세요');
-				$('#checkBtn').focus();
-				return false;
-			}else if(isPwCheck == 2){
-				alert('비밀번호가 서로 다릅니다');
-				$('#userPw').val('');
-				$('#userPwCheck').val('');
-				$('#userPw').focus();
-				return false;
-			}		
+			if (isIdCheck == false) {
+			    alert('아이디를 중복 체크 해주세요');
+			    $('#checkBtn').focus();
+			    return false;
+			} else if (isPwCheck === 2 || pwColor === 1) {
+			    alert('비밀번호 형식이 올바르지 않거나 비밀번호가 서로 다릅니다');
+			    $('#userPw').val('');
+			    $('#userPwCheck').val('');
+			    $('#userPw').focus();
+			    return false;
+			}
 			
-			console.log(isSubmit, isIdCheck, isIdCheck);
-			if(isSubmit == true && isIdCheck == true && isPwCheck == 1){
+			if(isSubmit == true && isIdCheck == true && isPwCheck == 1 && pwColor == 2){
 				//연락처 통합 ('-')로 연결
 				const userFirstTel = $('#userFirstTel').val();
 				const userSecondTel = $('#userSecondTel').val();
