@@ -26,16 +26,13 @@ public class UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+	private final UserMapper userMapper;
+	
 	@Autowired
-	private UserMapper userMapper;
-
-	public UserService() {
-	}
-
 	public UserService(UserMapper userMapper) {
 		this.userMapper = userMapper;
 	}
-
+	
 	public List<User> getUserDetailList(String userId) {
 
 		List<User> userDetailList = userMapper.getUserDetailList(userId);
@@ -121,6 +118,16 @@ public class UserService {
 
 		return userSleepList;
 	}
+	
+	/**
+	 * 로그인 기록 삭제
+	 * @param valueArr
+	 */
+	public boolean removeLoginLog(String loginLogCode) {
+	    userMapper.removeLoginLog(loginLogCode);
+	    return true;
+	}
+
 
 	public List<LoginLog> getLoginLogList(String userId) {
 		
