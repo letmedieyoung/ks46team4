@@ -29,7 +29,7 @@
 							<input type="text" name="searchValue" class="form-control form-control-user-search search-input" />										
 						</div>
 					    <div class="f-progress-btn btn">				    	
-							<button type="button" id="searchBtn" class="btn btn-primary btn-icon-split" ><span class="text">검색</span></button>	
+							<button type="submit" id="searchBtn" class="btn btn-primary btn-icon-split" ><span class="text">검색</span></button>	
 							<button type="reset" id="searchReset" class="btn btn-secondary btn-icon-split"><span class="text">초기화</span></button>
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 	                                    </div>
 	                                    <div class="col">
 	                                        <div class="progress progress-sm mr-2">
-	                                            <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+	                                            <div class="progress-bar bg-info" role="progressbar" th:style="|width: ${allAccomplishmentRate}%;|" th:aria-valuenow="${allAccomplishmentRate}" aria-valuemin="0" aria-valuemax="100"></div>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -139,8 +139,8 @@
 									<td th:text="${l.fundingCode}"></td>
 									<td th:text="${l.fundingName}"></td>
 									<td th:text="${l.foundationName}"></td>									
-									<td th:text="|${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}|"></td>
-									<td th:text="|${#numbers.formatInteger(l.currentAchievedAmount, 3, 'COMMA')}|"></td>
+									<td th:text="|${#numbers.formatInteger(l.fundingGoalAmount, 3, 'COMMA')}원|"></td>
+									<td th:text="|${#numbers.formatInteger(l.currentAchievedAmount, 3, 'COMMA')}원|"></td>
 									<td th:text="${l.achievedRate}+'%'"></td>													
 								</tr>
 								<tr th:if="${fundingCurrentAmountList == null}">
@@ -157,14 +157,29 @@
 	
 </th:block>
 
+<!-- javascript 삽입 시작 -->
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	
+	<script th:inline="javascript">
+		/** 
+		 * dataTable 기능 숨기기
+		*/
+		$("#dataTable").DataTable({
+		    // 표시 건수기능 숨기기
+		    lengthChange: false,
+		    // 정보 표시 숨기기
+		    //info: false,
+		    // 검색 기능 숨기기
+		    searching: false,
+		    // 정렬 기능 숨기기
+		    ordering: false	 
+		}); 
+	</script>
 </th:block>
+<!-- javascript 삽입 끝 -->
+
 </html>
 
