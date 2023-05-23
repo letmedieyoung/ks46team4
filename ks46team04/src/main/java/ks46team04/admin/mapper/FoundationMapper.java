@@ -16,6 +16,9 @@ public interface FoundationMapper {
 	//재단 요청사항 삭제
 	public int removeFoundationRequest(String foundationRequestCode);
 	
+	//삭제 재단 요청사항 진행 현황 확인
+	public boolean removeFoundationRequestCheck(String foundationRequestCode);
+	
 	//재단 요청사항 수정
 	public int modifyFoundationRequest(FoundationRequest foundationRequest);
 	
