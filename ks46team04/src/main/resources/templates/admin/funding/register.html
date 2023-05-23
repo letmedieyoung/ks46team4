@@ -14,8 +14,6 @@
 </head>
 
 <th:block layout:fragment="customContents">
-
-	<!-- Begin Page Content -->
 	<div class="container-fluid">
 	    <form id="registFundingForm" th:action="@{/admin/funding/register}" method="post">
 		    <!-- DataTales Example -->
@@ -111,10 +109,19 @@
 												<th:block th:if="${goodsNameList == null}">
 													<option>등록된 상품 정보가 없습니다.</option>
 												</th:block>												
-											</select>
-											<div class="form-row align-items-center search-schedule" style="width: 500px;">												
-												<input type="text" id="goodsCode" th:value="*{goodsCode}" name="goodsCode" class="form-control form-control-user-search search-input" readonly="readonly"/>										
-											</div>
+											</select>											
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="goodsCode">상품코드</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">																	
+											
+												<input type="text" th:value="*{goodsCode}"/>													
+											
 										</div>
 									</td>
 								</tr>		                        
@@ -176,7 +183,6 @@
 	    	</div>
     	</form>
 	</div>
-	<!-- /.container-fluid -->
 	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top">
@@ -185,12 +191,33 @@
 	
 </th:block>
 
+<!-- javascript 삽입 시작 -->
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/custom/khj.js}"></script>
+	
+	<script th:inline="javascript">
+		$(function() {
+		      // 펀딩 등록 validation
+		      $('#registFundingForm').validate({
+		        rules : {
+		          fundingName : {
+		            required : true
+		          }
+		        },
+		        messages : {
+		        	fundingName : {
+		            required : '펀딩 컨텐츠명을 입력해주세요'		          
+		          }
+		        }
+		      })
+		})
+	</script>
 </th:block>
+
+	
+
+
+
+<!-- javascript 삽입 끝 -->
 
 </html>

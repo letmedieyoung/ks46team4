@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
-
 <head>
 	<meta charset="UTF-8">
 	<title th:text="${title}"></title>	
@@ -12,10 +11,7 @@
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 	
-
 <th:block layout:fragment="customContents">
-
-	<!-- Begin Page Content -->
 	<div class="container-fluid">		
 		<form id="modifyFundingRefundForm" th:action="@{/admin/funding/modifyFundingRefund}" method="post">
 			<div class="card mb-4">
@@ -135,23 +131,18 @@
 				</div>
 			</div>
 		</form>
-	</div>
-	<!-- /.container-fluid -->
-	
+	</div>	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </th:block>
 
-
-
+<!-- javascript 삽입 시작 -->
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/khj.js}"></script>
 </th:block>
+<!-- javascript 삽입 끝 -->
 
 </html>

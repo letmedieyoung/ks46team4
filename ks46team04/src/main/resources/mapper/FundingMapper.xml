@@ -203,14 +203,17 @@
 	<select id="getFundingPayList" resultType="fundingPay">
 		/* 펀딩 결제 내역 목록 조회 */
 		SELECT
-			fp.funding_payment_code  	AS fundingPayCode,
-			fp.user_id		  			AS userId,
-			fp.funding_code		  		AS fundingCode,
-			fp.funding_payment_date 	AS fundingPaymentDate,	
-			fp.funding_payment_amount 	AS fundingPaymentAmount,			
-			pm.pm_name				  	AS pmName			
+			fp.funding_payment_code  		AS fundingPayCode,
+			fp.user_id		  				AS userId,
+			fp.funding_code		  			AS fundingCode,
+			DATE(fp.funding_payment_date) 	AS fundingPaymentDate,	
+			fp.funding_payment_amount 		AS fundingPaymentAmount,			
+			pm.pm_name				  		AS pmName,
+			ef.funding_progress				AS fundingProgress			
 		FROM
 			funding_payments AS fp
+			JOIN
+			each_funding_info AS ef ON fp.funding_code = ef.funding_code
 			JOIN
 			payment_method AS pm ON	fp.pm_code = pm.pm_code
 		<where>			
@@ -219,7 +222,7 @@
 			</if>		
 		</where>			
 		ORDER BY 
-			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code;
+			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code = #{funding_payment_code};
 	</select>
 
 
@@ -345,20 +348,7 @@
 		FROM
 			funding_current_amount
 		WHERE funding_progress = '진행중';
-	</select>
-	
-	<!-- 
-	<select id="accomplishmentRate" parameterType="Integer" resultMap="FundingCurrentAmountResultMap">
-		/* 개별 펀딩 달성률 */ 			
-		SELECT
-			ROUND((funding_current_achieved_amount / funding_goal_amount) * 100) AS roundedValue
-		FROM
-			funding_current_amount
-		WHERE
-			funding_current_amount_code = #{fundingCurrentAmountCode};
-			
-	</select>
-	 -->
+	</select>	
 	
 	<select id="getFundingProgressStatus" resultType="FundingCurrentAmount">
 		/* 펀딩 모금 진행현황 조회 */	
@@ -377,7 +367,7 @@
 			<if test="searchKey != null and searchKey != ''">			
 				${searchKey} LIKE CONCAT('%', #{searchValue},'%')
 			</if>		
-			fc.funding_progress = '진행중';
+			AND fc.funding_progress = '진행중';
 		</where>	
 	</select>
 	

@@ -10,11 +10,14 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/admin_khj.css}" />
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<style>
+		.list-table td {text-align: center;}
+	</style>
+
 </head>
 
 <th:block layout:fragment="customContents">
-	
-	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<form action="/admin/funding/payments" method="get" >		
 			<!-- Page Heading -->
@@ -94,11 +97,12 @@
 						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 	                            <tr>
-	                                <th><input type="checkbox" id="allCheckBox"></th>                                
+	                                <th style="width: 25px;"><input type="checkbox" id="allCheckBox"></th>                                
 	                                <th>주문일(결제일)</th>
 	                                <th>결제코드</th>
 	                                <th>주문자아이디</th>
-	                                <th>펀딩코드</th>                                
+	                                <th>펀딩코드</th>
+	                                <th>펀딩진행현황</th>                                
 	                                <th>펀딩금액</th>
 	                                <th>결제수단</th>                                
 	                            </tr>
@@ -110,7 +114,8 @@
 									<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}"></a></td>
 									<td><a th:text="${l.userId}" th:href="@{/admin/user/modifyUser(userId=${l.userId})}" target="_blank"></a></td>
 									<td><a th:text="${l.fundingCode}" th:href="@{modifyFunding(fundingCode=${l.fundingCode})}" target="_blank"></a></td>								
-									<td th:text="|₩ ${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}|"></td>								
+									<td th:text="${l.fundingProgress}"></td>
+									<td th:text="|${#numbers.formatInteger(l.fundingPaymentAmount, 3, 'COMMA')}원|"></td>								
 									<td th:text="${l.pmName}"></td>
 								</tr>
 								<tr th:if="${fundingPayList == null}">
@@ -131,14 +136,29 @@
 	</a>
 </th:block>
 
+<!-- javascript 삽입 시작 -->
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/khj.js}"></script>
+	
+	<script th:inline="javascript">
+		/** 
+		 * dataTable 기능 숨기기
+		*/
+		$("#dataTable").DataTable({
+		    // 표시 건수기능 숨기기
+		    lengthChange: false,
+		    // 정보 표시 숨기기
+		    //info: false,
+		    // 검색 기능 숨기기
+		    searching: false,
+		    // 정렬 기능 숨기기
+		    ordering: false	 
+		}); 
+	</script>
 </th:block>
+<!-- javascript 삽입 종료 -->
+
 </html>
