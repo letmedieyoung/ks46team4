@@ -2,6 +2,7 @@ package ks46team04.admin.constant;
 
 public enum DeadlineCheck {
 		CLOSED("closed", "마감완료"),
+		WAITING("waiting", "마감대기중"),
 		BEFORE_DEADLINE("before_deadline", "마감전");
 	
 	  private final String checkStr;

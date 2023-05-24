@@ -26,10 +26,16 @@ public class ProfitLossController {
 	
 	
 	@GetMapping("/month_profit_loss")
-	public String getTotalPurchseSale(Model model) {
+	public String getTotalPurchseSale(Model model) throws Exception {
 		
 		List<TotalPurchaseSale> totalPurchaseSale = profitLossService.getTotalPurchaseSale();
 		List<ProfitLoss> profitLoss = profitLossService.getProfitLoss();
+		
+		//profitLossService.setWaiting();
+		//profitLossService.resetWaiting();
+		//profitLossService.addTotalPurchaseSale();
+		//profitLossService.addProfitLoss();
+		//profitLossService.MonthProfitLossLogic();
 		
 		log.info("totalPurchaseSale: {}", totalPurchaseSale);
 		model.addAttribute("title", "Pilling Good - 관리 - 매입·매출 종합 수익 조회");

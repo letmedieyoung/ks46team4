@@ -36,6 +36,8 @@ public class SaleService {
 				totalSale.setDeadlineCheck(DeadlineCheck.BEFORE_DEADLINE.getReplace());
 			}else if(deadlineCheck.equals(DeadlineCheck.CLOSED.getCheck())) {
 				totalSale.setDeadlineCheck(DeadlineCheck.CLOSED.getReplace());
+			}else if(deadlineCheck.equals(DeadlineCheck.WAITING.getCheck())) {
+				totalSale.setDeadlineCheck(DeadlineCheck.WAITING.getReplace());
 			}
 		}
 		

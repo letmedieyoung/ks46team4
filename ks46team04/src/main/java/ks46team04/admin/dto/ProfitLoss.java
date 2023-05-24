@@ -2,8 +2,8 @@ package ks46team04.admin.dto;
 
 public class ProfitLoss {
 	private String profitLossCode;		
-	private int paymentYear;		
-	private int paymentMonth;		
+	private String paymentYear;		
+	private String paymentMonth;		
 	private int monthTotalSales;		
 	private int monthTotalVat;		
 	private int monthTotalBudge;		
@@ -14,23 +14,22 @@ public class ProfitLoss {
 	private String settlementDate;		
 	private String settlementCheckId;
 	
-	
 	public String getProfitLossCode() {
 		return profitLossCode;
 	}
 	public void setProfitLossCode(String profitLossCode) {
 		this.profitLossCode = profitLossCode;
 	}
-	public int getPaymentYear() {
+	public String getPaymentYear() {
 		return paymentYear;
 	}
-	public void setPaymentYear(int paymentYear) {
+	public void setPaymentYear(String paymentYear) {
 		this.paymentYear = paymentYear;
 	}
-	public int getPaymentMonth() {
+	public String getPaymentMonth() {
 		return paymentMonth;
 	}
-	public void setPaymentMonth(int paymentMonth) {
+	public void setPaymentMonth(String paymentMonth) {
 		this.paymentMonth = paymentMonth;
 	}
 	public int getMonthTotalSales() {
@@ -88,7 +87,6 @@ public class ProfitLoss {
 		this.settlementCheckId = settlementCheckId;
 	}
 	
-	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -118,5 +116,5 @@ public class ProfitLoss {
 		builder.append(settlementCheckId);
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
 }
