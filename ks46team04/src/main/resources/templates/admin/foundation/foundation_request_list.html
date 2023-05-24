@@ -36,7 +36,7 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										 <select class="dropdown btn btn-primary required-form" id="searchKey">
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
 											<option value="" selected>:: 검색 조건 ::</option>
 											<option value="foundationName">재단명</option>
 											<option value="requestGoodsName">요청 상품명</option>
@@ -45,7 +45,7 @@
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search short-input"
-											id="searchValue" placeholder="검색어를 입력해주세요." />
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
@@ -71,7 +71,13 @@
 										<div class="form-row align-items-center search-schedule">
 									      <label>
 										      <input type="radio" name="contentCategory">
-										      <span class="text">정기기부</span>
+										      <span class="text">정기기부</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" name="contentCategory">
+										      <span class="text">미정</span>
 									      </label>
 									    </div>
 									</div>
@@ -99,7 +105,7 @@
 										<div class="form-row align-items-center search-schedule">
 									      <label>
 										      <input type="radio" name="requestProgressStatus">
-										      <span class="text">진행중</span>
+										      <span class="text">진행중</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
@@ -247,42 +253,37 @@
 			*/
 			$('#searchBtn').click(function(){
 				
-				let searchKey = [];
-			    let searchValue = [];
-
-			 	// 선택된 검색 조건의 id와 값을 가져와서 배열에 추가
-			    $('#searchKey option:selected').each(function() {
-			        searchKey.push($(this).val());
-			        searchValue.push($('#searchValue').val());
-			    });
+				// inputSearch 선택된 값 가져오기
+				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+				let inputSearchValue = $('#inputSearchValue').val();
+				
+				// contentCategory 선택된 값 가져오기
+				let contentKey = $('input[name="contentCategory"]:checked').attr('name');
+				let contentValue = $('input[name="contentCategory"]:checked').next('span.text').text();
+				
+				// requestProgressStatus 선택된 값 가져오기
+				let progressKey = $('input[name="requestProgressStatus"]:checked').attr('name');
+				let progressValue = $('input[name="requestProgressStatus"]:checked').next('span.text').text();
 			    
-			 	// 선택된 콘텐츠 분류의 name과 값을 가져와서 배열에 추가
-			    $('input[name="contentCategory"]:checked').each(function() {
-			        searchKey.push($(this).attr('name'));
-			        searchValue.push($(this).next('span.text').text());
-			    });
-			 	
-			 	// 선택된 콘텐츠 분류의 name과 값을 가져와서 배열에 추가
-			    $('input[name="requestProgressStatus"]:checked').each(function() {
-			        searchKey.push($(this).attr('name'));
-			        searchValue.push($(this).next('span.text').text());
-			    });
-			 	
 			 	// 선택된 기간 검색의 value값
 			    let dateSearchKey = $('#dateSearchKey option:selected').val();
 			    
 			    // Date Range Picker에서 선택된 값을 가져오기
 			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-				let url = '/admin/foundation/search_foundation_request_List';
+				let url = '/admin/foundation/search_foundation_request_list';
 				
 				let request = $.ajax({
 					type: 'GET',
 				    url: url,
 				    dataType: 'json',
 				    data:{
-					      'searchKey': searchKey,
-					      'searchValue': searchValue,
+					      'inputSearchKey': inputSearchKey,
+					      'inputSearchValue': inputSearchValue,
+					      'contentKey': contentKey,
+					      'contentValue': contentValue,
+					      'progressKey': progressKey,
+					      'progressValue': progressValue,
 					      'dateSearchKey': dateSearchKey,
 					      'startDate': startDate,
 						  'endDate': endDate
@@ -329,7 +330,7 @@
 							};
 						}else{
 							html += '<tr>';
-							html += '	<td colspan="12">등록된 재단 요청사항 정보가 없습니다.</td>';
+							html += '	<td colspan="12">검색된 재단 요청사항 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);

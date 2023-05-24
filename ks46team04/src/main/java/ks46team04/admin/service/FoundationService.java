@@ -74,40 +74,46 @@ public class FoundationService {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<FoundationRequest> getFoundationRequestlistBySearch(List<String> searchKey
-																	,List<String> searchValue
+	public List<FoundationRequest> getFoundationRequestlistBySearch(String inputSearchKey
+																	,String inputSearchValue
+																	,String contentKey
+																	,String contentValue
+																	,String progressKey
+																	,String progressValue
 																	,String dateSearchKey
 																	,String startDate
 																	,String endDate){
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		
-		if(searchKey != null && searchValue != null) {
-			for(int i=0; i < searchKey.size(); i++) {
-				String key = searchKey.get(i);
-				switch (key) {
-				case "foundationName":
-					key = "foundation_name";
-					break;
-				case "requestGoodsName":
-					key = "request_goods_name";					
-					break;
-				case "contentCategory":
-					key = "content_category";					
-					break;
-				case "requestProgressStatus":
-					key = "request_progress_status";					
-					break;
-				}
-				searchKey.set(i, key);
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
+			case "foundationName":
+				inputSearchKey = "foundation_name";
+				break;
+			case "requestGoodsName":
+				inputSearchKey = "request_goods_name";					
+				break;
 			}
-			searchMap.put("searchKey", searchKey);
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
+		}
+		
+		if(contentKey != null && contentValue != null) {
+			contentKey = "content_category";					
+			searchMap.put("contentKey", contentKey);
 			
-			for(int i=0; i < searchValue.size(); i++) {
-				String value = searchValue.get(i);
-				if(value.equals("전체")) value = "";
-				searchValue.set(i, value);
-			}
-			searchMap.put("searchValue", searchValue);
+			boolean isAll = contentValue.equals("전체");
+			if(isAll) contentValue = "";
+			searchMap.put("contentValue", contentValue);
+		}
+		
+		if(progressKey != null && progressValue != null) {
+			progressKey = "request_progress_status";					
+			searchMap.put("progressKey", progressKey);
+			
+			boolean isAll = progressValue.equals("전체");
+			if(isAll) progressValue = "";
+			searchMap.put("progressValue", progressValue);
 		}
 		
 		if(dateSearchKey != null && startDate != null && endDate != null) {

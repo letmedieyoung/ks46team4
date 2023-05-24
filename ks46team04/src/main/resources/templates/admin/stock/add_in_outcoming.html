@@ -105,6 +105,17 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
+											<label for="outcomingId">출고 담당자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" 
+													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요." disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
 											<label for="foundationName">출고 재단명</label>
 										</th>
 										<td>
@@ -160,8 +171,10 @@
 		        var selectedValue = $(this).val();
 		        if (selectedValue === '출고') {
 		            $('#foundationName').prop('disabled', false);
+		            $('#outcomingId').prop('disabled', false);
 		        } else {
 		            $('#foundationName').prop('disabled', true);
+		            $('#outcomingId').prop('disabled', true);
 		        }
 		    });
 			
@@ -178,7 +191,7 @@
 					}
 			    } else {
 			        if (typeof data === 'undefined' || data === null || data === ''
-			        	&& ele.id !== 'foundationName') {
+			        	&& ele.id !== 'foundationName' && ele.id !== 'outcomingId') {
 						let msg = $(ele).parents('tr').find('label').text();
 						isValid = false;
 			        }

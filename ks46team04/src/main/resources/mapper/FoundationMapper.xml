@@ -138,11 +138,14 @@
 		FROM
 			foundation_request
 		<where>
-			<if test="searchKey != null and searchKey != ''">
-				<foreach collection="searchKey" item="key" separator="AND" index="index">
-					<bind name="value" value="searchValue.get(index)" />
-					${key} LIKE CONCAT('%', #{value}, '%')
-				</foreach>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+			<if test="contentKey != null and contentValue != ''">
+				AND ${contentKey} LIKE CONCAT('%', #{contentValue}, '%')
+			</if>
+			<if test="progressKey != null and progressValue != ''">
+				AND ${progressKey} LIKE CONCAT('%', #{progressValue}, '%')
 			</if>
 		    <if test="startDate != null and endDate != null">
 		    	<choose>

@@ -1,18 +1,38 @@
 package ks46team04.admin.dto;
 
+import ks46team04.exception.NotEnoughStockException;
+
 public class Stock {
 	private String goodsStockCode;
 	private String goodsCode;
 	private String goodsLotNumber;
-	private String currentStockAmount;
+	private int currentStockAmount;
 	private String stocktakingCheck;
 	private String stocktakingDate;
 	private String goodsExprityDate;
-	private String finalStockAmount;
-	private String unusualStockAmount;
+	private int finalStockAmount;
+	private int unusualStockAmount;
 	private String unusualStockCheck;
 	
 	private Goods goodsInfo;
+	
+	/**
+	 * 재고 자동 증가
+	 */
+	public void addStock(int quantity) {
+		this.currentStockAmount += quantity;
+	}
+	
+	/**
+	 * 재고 자동 감소
+	 */
+	public void removeStock(int quantity) {
+		int restStock = this.currentStockAmount - quantity;
+		if(restStock < 0) {
+			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
+		}
+		this.currentStockAmount = restStock;
+	}
 	
 	public Goods getGoodsInfo() {
 		return goodsInfo;
@@ -38,10 +58,10 @@ public class Stock {
 	public void setGoodsLotNumber(String goodsLotNumber) {
 		this.goodsLotNumber = goodsLotNumber;
 	}
-	public String getCurrentStockAmount() {
+	public int getCurrentStockAmount() {
 		return currentStockAmount;
 	}
-	public void setCurrentStockAmount(String currentStockAmount) {
+	public void setCurrentStockAmount(int currentStockAmount) {
 		this.currentStockAmount = currentStockAmount;
 	}
 	public String getStocktakingCheck() {
@@ -62,16 +82,16 @@ public class Stock {
 	public void setGoodsExprityDate(String goodsExprityDate) {
 		this.goodsExprityDate = goodsExprityDate;
 	}
-	public String getFinalStockAmount() {
+	public int getFinalStockAmount() {
 		return finalStockAmount;
 	}
-	public void setFinalStockAmount(String finalStockAmount) {
+	public void setFinalStockAmount(int finalStockAmount) {
 		this.finalStockAmount = finalStockAmount;
 	}
-	public String getUnusualStockAmount() {
+	public int getUnusualStockAmount() {
 		return unusualStockAmount;
 	}
-	public void setUnusualStockAmount(String unusualStockAmount) {
+	public void setUnusualStockAmount(int unusualStockAmount) {
 		this.unusualStockAmount = unusualStockAmount;
 	}
 	public String getUnusualStockCheck() {
@@ -88,5 +108,4 @@ public class Stock {
 				+ ", finalStockAmount=" + finalStockAmount + ", unusualStockAmount=" + unusualStockAmount
 				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + "]";
 	}
-	
 }

@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
-import ks46team04.admin.dto.Stock;
 import ks46team04.admin.mapper.GoodsMapper;
-import ks46team04.admin.mapper.StockMapper;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
 
@@ -56,8 +54,7 @@ public class GoodsController {
         List<String> failedGoods = new ArrayList<>();
 
         for (String goodsCode : valueArr) {
-        	boolean isRemove = true;
-        	isRemove = goodsService.removeGoods(goodsCode);
+        	boolean isRemove = goodsService.removeGoods(goodsCode);
             if (isRemove) {
                 deletedGoods.add(goodsCode);
             } else {
@@ -140,9 +137,8 @@ public class GoodsController {
 	@PostMapping("/check_goods_name")
 	@ResponseBody
 	public boolean goodsNameCheck(@RequestParam(name="goodsName") String goodsName) {
-		boolean isCheck = true;
 		
-		isCheck = goodsMapper.goodsNameCheck(goodsName);
+		boolean isCheck = goodsMapper.goodsNameCheck(goodsName);
 		
 		return isCheck;
 	}
