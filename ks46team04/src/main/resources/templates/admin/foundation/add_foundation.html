@@ -105,14 +105,6 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
@@ -198,12 +190,6 @@
 				});
 			});
 			
-			 const handlePress = (e) => {
-			        const regex = /^[0-9\b -]{0,13}$/;
-			        if (regex.test(e.target.value)) {
-			            setTel(e.target.value);
-			        }
-			    };
 			/**
 			 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
 			 */
@@ -212,7 +198,6 @@
 				let isValid = true;
 				 if (typeof data == 'undefined' || data == null || data == '' 
 						 && ele.id !== 'foundationExtraAddr' && ele.id !== 'foundationDetailAddr') {
-					$(ele).focus();
 					isValid = false;
 				}
 				return isValid;
@@ -225,7 +210,7 @@
 				isSubmit = validationCheck(item);
 					if(!isSubmit) {
 						let msg = $(item).parents('tr').find('label').text();
-						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`)
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
 						$(item).focus();
 						return false;
 					}

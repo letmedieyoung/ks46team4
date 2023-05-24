@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
@@ -35,18 +35,18 @@ public class DonationController {
 	 * 정기기부 콘텐츠 조회
 	 */
 	@GetMapping("/donation_list")
-	public String getDonation(Model model, @RequestParam(name="searchKey", required = false) String searchKey
-										, @RequestParam(name="searchValue", required = false) String searchValue
-										, @RequestParam(value="startDate", required = false) String startDate
-										, @RequestParam(value="endDate", required = false) String endDate){
+	public String getDonation(Model model,
+		@RequestParam(name="searchKey", required = false) String searchKey,
+		@RequestParam(name="searchValue", required = false) String searchValue,
+		@RequestParam(value="startDate", required = false) String startDate,
+		@RequestParam(value="endDate", required = false) String endDate
+	) {
+		Map<String, Object> searchMap = new HashMap<>();
+		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue, searchMap, startDate, endDate);
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue, paramMap, startDate, endDate);
-		
-		model.addAttribute("title", "정기기부 콘텐츠 목록");
+		model.addAttribute("title", "등록된 회원 결제수단 목록");
 		model.addAttribute("getDonation", getDonation);
-
+		
 		return "admin/donation/donation_list";
 	}
 
@@ -70,7 +70,7 @@ public class DonationController {
 		
 		model.addAttribute("title", "정기기부 콘텐츠 등록");
 
-		return "/admin/donation/donation_add";
+		return "admin/donation/donation_add";
 	}
 	
 	/*
@@ -153,7 +153,7 @@ public class DonationController {
 		model.addAttribute("title", "등록된 회원 결제수단 등록");
 		model.addAttribute("paymentCode", paymentCode);
 		
-		return "/admin/donation/donationPayMethod_add";
+		return "admin/donation/donationPayMethod_add";
 	}
 	
 	/*
@@ -238,7 +238,7 @@ public class DonationController {
 		model.addAttribute("donationCode", donationCode);
 		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
-		return "/admin/donation/donationSub_add";
+		return "admin/donation/donationSub_add";
 	}
 	
 	/*
@@ -354,7 +354,7 @@ public class DonationController {
 		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		model.addAttribute("donationSubCode", donationSubCode);
 		
-		return "/admin/donation/donationPayDetail_add";
+		return "admin/donation/donationPayDetail_add";
 	}
 	
 	/*
@@ -435,7 +435,7 @@ public class DonationController {
 		model.addAttribute("title", "정기기부 월별 결제 합계 등록");
 		model.addAttribute("donationCode", donationCode);
 		
-		return "/admin/donation/donationMonthPay_add";
+		return "admin/donation/donationMonthPay_add";
 	}
 	
 	/*
@@ -514,7 +514,7 @@ public class DonationController {
 		model.addAttribute("title", "정기기부 환불 등록");
 		model.addAttribute("donationPayDetailCode", donationPayDetailCode);
 		
-		return "/admin/donation/donationRefund_add";
+		return "admin/donation/donationRefund_add";
 	}
 	
 	/*

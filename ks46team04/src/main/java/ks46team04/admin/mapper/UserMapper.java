@@ -41,10 +41,14 @@ public interface UserMapper {
 	public List<LoginLog> getLoginLogList(String userId);
 	void insertLoginLog(LoginLog loginlog);
 	void updateLogoutLog(LoginLog loginlog);
+	// 회원 로그인 기록 삭제
+	public int removeLoginLog(String loginLogCode);
 	// 회원 조회 + 미접속일수 조회
 	public List<User> getUserListWithLogDateCalcul(String searchKey, String searchValue);
 	// 휴면 회원 관리
-	void userSleep();
+	 void updateUserSleep(); // updateUserSleep 쿼리에 대한 메소드
+	 void insertUserSleep(); // insertUserSleep 쿼리에 대한 메소드
+	 void deleteUserInfo(); // deleteUserInfo 쿼리에 대한 메소드
 	// 휴면 회원 목록 조회
 	public List<UserSleep> getUserSleepList();
 	// 탈퇴 회원 목록 조회

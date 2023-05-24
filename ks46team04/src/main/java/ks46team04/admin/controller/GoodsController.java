@@ -207,7 +207,6 @@ public class GoodsController {
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		
 		if(searchKey != null && searchValue != null) {
-			
 			switch (searchKey) {
 			case "goodsName":
 				searchKey = "goods_name";

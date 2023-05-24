@@ -28,7 +28,7 @@ public class DonationService {
 	/*
 	 * 정기기부 콘텐츠 조회
 	 * */
-	public List<Donation> getDonation(String searchKey, String searchValue, Map<String, Object> paramMap, String startDate, String endDate){
+	public List<Donation> getDonation(String searchKey, String searchValue, Map<String, Object> searchMap, String startDate, String endDate){
 		
 		if(searchKey != null) {
 			switch (searchKey) {
@@ -44,11 +44,11 @@ public class DonationService {
 			}
 		}
 
-		List<Donation> getDonation = donationMapper.getDonation(searchKey, searchValue, paramMap, startDate, endDate);
+		List<Donation> getDonation = donationMapper.getDonation(searchKey, searchValue, searchMap, startDate, endDate);
 		
 		if(startDate != null && endDate != null) {
-			paramMap.put("startDate", startDate);
-			paramMap.put("endDate", endDate);			
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);			
 		}
 		
 		return getDonation;

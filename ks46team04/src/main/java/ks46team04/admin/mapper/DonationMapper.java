@@ -17,7 +17,7 @@ import ks46team04.admin.dto.Payment;
 public interface DonationMapper {
 	
 	/*정기기부 콘텐츠 조회*/
-	public List<Donation> getDonation(String searchKey, String searchValue, Map<String, Object> paramMap, String startDate, String endDate);
+	public List<Donation> getDonation(String searchKey, String searchValue, Map<String, Object> searchMap, String startDate, String endDate);
 	
 	/*정기기부 콘텐츠 등록*/
 	public int addDonation(Donation donation);

@@ -42,8 +42,21 @@
 		FROM 
 			foundation_request
 		WHERE 
-			foundation_request_code = #{foundationRequestCode};
+			foundation_request_code = #{foundationRequestCode}
 	</delete>
+	
+	<select id="removeFoundationRequestCheck" parameterType="String" resultType="boolean">
+		/* 삭제 재단 요청사항 진행 현황 확인 - 요청사항 진행 현황이 진행중, 완료 아닌 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM 
+			foundation_request
+		WHERE 
+			foundation_request_code = #{foundationRequestCode}
+			and
+			(request_progress_status = '진행중' OR request_progress_status = '완료');
+	</select>
+	
 	
 	<update id="modifyFoundationRequest" parameterType="FoundationRequest">
 		/* 재단 요청사항 수정 */
@@ -63,6 +76,9 @@
 			</if>
 			<if test="deliveryRequestDate != null and deliveryRequestDate !=''">
 				, delivery_request_date = #{deliveryRequestDate}
+			</if>
+			<if test="requestProgressStatus != null and requestProgressStatus !=''">
+				, request_progress_status = #{requestProgressStatus}
 			</if>
 			, request_update_id = #{requestUpdId}
 			, request_update_date = NOW()
@@ -191,7 +207,9 @@
 		FROM
 			foundation_request
 		WHERE 
-			foundation_code = #{foundationCode} and request_progress_status = '진행중';
+			foundation_code = #{foundationCode}
+			and
+			(request_progress_status = '진행중' OR request_progress_status = '대기중');
 	</select>
 	
 	<update id="modifyFoundation" parameterType="Foundation">

@@ -7,18 +7,11 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
+	<!-- daterangepicker -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <th:block layout:fragment="customContents">
 
@@ -38,18 +31,21 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsName">상품명</label>
+									<label for="search">검색 조건</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
+										 <select class="dropdown btn btn-primary required-form" id="searchKey">
+											<option value="" selected>:: 검색 조건 ::</option>
+											<option value="goodsName">상품명</option>
+											<option value="unusualStockReason">비정상재고사유</option>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">상품명 검색</span>
-										</button>
+										<input type="text" class="form-control form-control-user-search short-input"
+											id="searchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
@@ -58,77 +54,38 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
-											<option value="option1">:: 기간 분류 ::</option>
-											<option value="option1">비정상재고발생일</option>
-											<option value="option2">등록/수정일</option>
+										 <select class="dropdown btn btn-primary required-form" id="dateSearchKey">
+											<option value="">:: 기간 분류 ::</option>
+											<option value="deliveryDate">비정상재고발생일</option>
+											<option value="regUdpDate">등록/수정일</option>
 										</select>
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-											&nbsp;
-										</div>
-										<div class="col-auto">
-											<label for="start-date" class="sr-only">시작일</label>
-											<input type="date" id="start-date" class="form-control"
-												placeholder="시작일">
-										</div>
-										~
-										<div class="col-auto">
-											<label for="end-date" class="sr-only">종료일</label>
-											<input type="date" id="end-date" class="form-control" placeholder="종료일">
-										</div>
 									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsPrice">비정상 재고 수량</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<div class="col-auto">
-											<input type="number"
-												class="form-control"
-												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="최소 상품 수량" />
-										</div>
-										~
-										<div class="col-auto">
-											<input type="number"
-												class="form-control"
-												id="purchase-search" min="0" name="goodsPrice"
-												placeholder="최대 상품 수량" />
-										</div>개
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">비정상 재고 사유</label>
-								</th>
-								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="비정상 재고 사유를 입력해주세요." />
+										<button class="btn btn-primary" id="allDateBtn">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="todayBtn">
+											<span class="text text-gray-100">오늘</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneweekBtn">
+											<span class="text text-gray-100">일주일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneMonthBtn">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									&nbsp;
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="text" id="daterange" class="form-control short-input">
+										</div>
 									</div>
 								</td>
 							</tr>
@@ -147,20 +104,16 @@
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
-				<div class="table-responsive overflow-x">
+				<div class="table-responsive">
 					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
 						<span class="text">선택삭제</span>
 					</button>
-					<a href="/admin/stock/add_unusual_stock_detail" class="btn btn-secondary btn-icon-split">
-						<span class="text">비정상재고등록</span>
-					</a>
-					<br><br>
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
-						cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>비정상재고코드</th>
 								<th>상품명</th>
 								<th>비정상 재고 수량</th>
 								<th>비정상 재고 발생일</th>
@@ -174,7 +127,11 @@
 								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
 									<tr>
 										<td><input class="checks" type="checkbox" th:value="${l.unusualStockCode}"></td>
-										<th th:text="${lStat.count}"></th>	
+										<th th:text="${lStat.count}"></th>
+										<td>
+											<a th:text="${l.unusualStockCode}"
+												th:href="@{modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}"></a>
+										</td>	
 										<td th:text="${gl.goodsName}"></td>
 										<td th:text="${l.unusualStockQuantity}"></td>
 										<td th:text="${l.unusualStockDate}"></td>
@@ -183,13 +140,13 @@
 										<td th:unless="${l.unusualStockUpdDate == null}" th:text="|${l.unusualStockUpdDate}(수정)|"></td>
 										<td>
 											<a class="btn btn-secondary btn-icon-split btn-sm"
-												th:href="@{/admin/stock/modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
+												th:href="@{modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
 												<span class="text">수정</span>
 											</a>
 										</td>
 									</tr>
 									<tr th:if="${unusualStockList == null}">
-										<td colspan="7">등록된 비정상재고 정보가 없습니다.</td>
+										<td colspan="8">등록된 비정상재고 정보가 없습니다.</td>
 									</tr>
 								</th:block>
 							</th:block>
@@ -200,21 +157,14 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
@@ -269,12 +219,19 @@
 						dataType: 'json'
 					});
 					
-					request.done(function(result){
-						if(result){
-							alert('삭제되었습니다.');
-							location.reload();
-						}
-					});
+					request.done(function(response) {
+		                let deleted = response.deleted;
+		                let failed = response.failed;
+		                let message = '';
+		                if (deleted.length > 0) {
+		                    message += `삭제된 비정상재고: ${deleted.join(', ')}\n`;
+		                }
+		                if (failed.length > 0) {
+		                    message += `삭제할 수 없는 비정상재고: ${failed.join(', ')}\n`;
+		                }
+		                alert(message);
+		                location.reload();
+		            });
 					
 					request.fail(function(jqXHR, textStatus){
 						alert(`Request failed: ${textStatus}`);

@@ -26,15 +26,18 @@ public class FoundationService {
 	}
 	
 	
-	
 	/**
 	 * 재단 요청사항 삭제
-	 * @param valueArr
+	 * @param foundationRequestCode
+	 * @return
 	 */
-	public void removeFoundationRequest(List<String> valueArr) {
-		for(int i=0; i<valueArr.size(); i++) {
-			foundationMapper.removeFoundationRequest(valueArr.get(i));
+	public boolean removeFoundationRequest(String foundationRequestCode) {
+		boolean result = foundationMapper.removeFoundationRequestCheck(foundationRequestCode);
+		if(result){
+			foundationMapper.removeFoundationRequest(foundationRequestCode);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
