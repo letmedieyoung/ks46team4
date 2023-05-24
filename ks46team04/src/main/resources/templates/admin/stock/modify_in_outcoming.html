@@ -9,12 +9,12 @@
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link href="/css/admin_kgr9.css" rel="stylesheet">
+	<link href="/css/admin_kgr9.css" rel="stylesheet"> 
 </head>
 <th:block layout:fragment="customContents">
 
 	<!-- Begin Page Content -->
-	<div class="container-fluid">
+	<div class="container-fluid">                                                                          
 
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
@@ -118,12 +118,23 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
+											<label for="outcomingId">출고 담당자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="outcomingId" name="outcomingId" 
+													th:value="*{outcomingId == null ? '-' : outcomingId}" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
 											<label for="foundationName">출고 재단명</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" 
-													th:value="*{foundationInfo == null ? '-' : foundationInfo.foundationName}" disabled/>
+													th:value="*{foundationName == null ? '-' : foundationName}" disabled/>
 											</div>
 										</td>
 									</tr>
@@ -179,8 +190,10 @@
 		        var selectedValue = $(this).val();
 		        if (selectedValue === '출고') {
 		            $('#foundationName').prop('disabled', false);
+		            $('#outcomingId').prop('disabled', false);
 		        } else {
 		            $('#foundationName').prop('disabled', true);
+		            $('#outcomingId').prop('disabled', true);
 		        }
 		    });
 		});

@@ -41,11 +41,20 @@ public interface StockMapper {
 	//특정 상품 입출고 조회
 	public InOutcoming getInOutcomingInfoByCode(String inOutcomingCode);
 	
+	//상품 재고 등록
+	public int addStock(Map<String, Object> stockMap);
+	
 	//상품 출고 상세정보 등록
-	public int addOutcomingDetail(OutcomingDetail outcomingDetail);
+	public int addOutcomingDetail(Map<String, Object> outcomingDetailMap);
+
+	//등록된 입출고 정보 가져오기
+	public InOutcoming getLastInOutcomingInfo();
 	
 	//상품 입출고 등록
 	public int addInOutcoming(InOutcoming inOutcoming);
+	
+	//상품 입출고 검색 결과 조회
+	public List<InOutcoming> getInOutcomingListBySearch(Map<String, Object> searchMap);
 	
 	//상품 입출고 조회
 	public List<InOutcoming> getInOutcomingList();

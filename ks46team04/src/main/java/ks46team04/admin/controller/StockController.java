@@ -1,8 +1,6 @@
 package ks46team04.admin.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,7 +207,6 @@ public class StockController {
 			String foundationCode = outcomingDetailInfo.getFoundationCode();
 			Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
 			log.info("foundationInfo: {}", foundationInfo);
-			inOutcomingInfo.setFoundationInfo(foundationInfo);
 		}
 		
 		log.info("inOutcomingInfo: {}", inOutcomingInfo);
@@ -219,29 +216,7 @@ public class StockController {
 	    
 	    return "admin/stock/modify_in_outcoming";
 	}
-
-	@PostMapping("/add_outcoming_detail")
-	public String addOutcomingDetail(Model model,
-									@RequestParam(name = "inOutcomingCode") String inOutcomingCode,
-									OutcomingDetail outcomingDetail, HttpSession session) {
-		
-		log.info("model: {}", model);
-		
-		String outcomingDetailRegId = (String) session.getAttribute("SID");
-		log.info("outcomingDetailRegId: {}", outcomingDetailRegId);
-		outcomingDetail.setOutcomingDetailRegId(outcomingDetailRegId);
-		log.info("outcomingDetail: {}", outcomingDetail);
-		
-		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-		log.info("inOutcomingInfo: {}", inOutcomingInfo);
-		
-		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
-		
-		stockService.addOutcomingDetail(outcomingDetail);
-		
-		return "redirect:/admin/stock/in_outcoming_list";
-
-	}
+	
 	
 	/**
 	 * 상품 입출고 등록 @PostMapping
@@ -250,7 +225,7 @@ public class StockController {
 	 * @return
 	 */
 	@PostMapping("/add_in_outcoming")
-	public String addInOutcoming(InOutcoming inOutcoming, HttpSession session) {
+	public String addInOutcoming(InOutcoming inOutcoming, HttpSession session, Model model) {
 
 		String inOutcomingRegId = (String) session.getAttribute("SID");
 		log.info("inOutcomingRegId: {}", inOutcomingRegId);
@@ -258,9 +233,34 @@ public class StockController {
 		inOutcoming.setInOutcomingRegId(inOutcomingRegId);
 	    log.info("inOutcoming: {}", inOutcoming);
 	    
+	    // 상품 입출고 등록
 	    stockService.addInOutcoming(inOutcoming);
 	    
-		return "redirect:/admin/stock/add_outgoing_detail?inOutcomingCode=" + inOutcoming.getInOutcomingCode();
+	    // 등록된 입출고 정보 가져오기
+	    InOutcoming lastInOutcomingInfo = stockService.getLastInOutcomingInfo();
+	    log.info("lastInOutcomingInfo: {}", lastInOutcomingInfo);
+	    
+	    // 상품 출고가 등록된 경우 - 상품 출고상세 등록
+	    String inOutcomingType = lastInOutcomingInfo.getInOutcomingType();
+	    log.info("inOutcomingType: {}", inOutcomingType);
+	    
+	    boolean isOutcoming = inOutcomingType.equals("outcoming");
+	    if(isOutcoming) {
+	    	String foundationName = (String) model.getAttribute("foundationName");
+	    	log.info("foundationName: {}", foundationName);
+	    	lastInOutcomingInfo.setFoundationName(foundationName);
+	    	
+	    	String outcomingId = (String) model.getAttribute("outcomingId");
+	    	log.info("outcomingId: {}", outcomingId);
+	    	lastInOutcomingInfo.setOutcomingId(outcomingId);
+	    	
+	    	stockService.addOutcomingDetail(lastInOutcomingInfo);
+	    }
+	    
+	    // 상품 재고 등록
+	    stockService.addStock(lastInOutcomingInfo);
+	    
+		return "redirect:/admin/stock/in_outcoming_list";
 	}
 	
 	/**
@@ -276,6 +276,32 @@ public class StockController {
 		model.addAttribute("title", "상품 입출고 등록");
 		
 		return "admin/stock/add_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_in_outcoming_list")
+	@ResponseBody
+	public List<InOutcoming> search(@RequestParam(value="searchKey", required = false) String searchKey 
+									, @RequestParam(value="searchValue", required = false) String searchValue
+									, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+									, @RequestParam(value="startDate", required = false) String startDate
+									, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("searchKey: {}, searchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
+				, searchKey, searchValue, dateSearchKey, startDate, endDate);	
+		
+		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(searchKey, searchValue, dateSearchKey, startDate, endDate);
+		log.info("inOutcomingList: {}", inOutcomingList);
+
+		return inOutcomingList;
 	}
 	
 	/**

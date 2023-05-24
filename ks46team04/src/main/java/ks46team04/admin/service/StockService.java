@@ -1,5 +1,6 @@
 package ks46team04.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,14 +113,67 @@ public class StockService {
 	}
 	
 	/**
+	 * 상품 재고 등록
+	 * @param inOutcoming
+	 * @return
+	 */
+	public int addStock(InOutcoming lastInOutcomingInfo) {
+		Map<String, Object> stockMap = new HashMap<String, Object>();
+		
+		String goodsCode = lastInOutcomingInfo.getGoodsCode();
+		String goodsLotNumber = lastInOutcomingInfo.getGoodsLotNumber();
+		int currentStockAmount = lastInOutcomingInfo.getInOutcomingQuantity();
+		String stocktakingCheck = "무";
+		String stocktakingDate = lastInOutcomingInfo.getGoodsCode();
+		String goodsExprityDate = lastInOutcomingInfo.getGoodsCode();
+		String finalStockAmount = lastInOutcomingInfo.getGoodsCode();
+		String unusualStockAmount = lastInOutcomingInfo.getGoodsCode();
+		String unusualStockCheck = lastInOutcomingInfo.getGoodsCode();
+		
+		stockMap.put(unusualStockAmount, unusualStockCheck);
+		
+		int result = stockMapper.addStock(stockMap);
+		return result;
+	}
+	
+	/**
 	 * 상품 출고 상세정보 등록
 	 * @param outcomingDetail
 	 * @return
 	 */
-	public int addOutcomingDetail(OutcomingDetail outcomingDetail) {
-		int result = stockMapper.addOutcomingDetail(outcomingDetail);
+	public int addOutcomingDetail(InOutcoming lastInOutcomingInfo) {
+		
+		Map<String, Object> outcomingDetailMap = new HashMap<String, Object>();
+		
+		String inOutcomingCode = lastInOutcomingInfo.getInOutcomingCode();
+		String goodsCode = lastInOutcomingInfo.getGoodsCode();
+		int outcomingQuantity = lastInOutcomingInfo.getInOutcomingQuantity();
+		String outcomingDate = lastInOutcomingInfo.getInOutcomingDate();
+		String outcomingId = lastInOutcomingInfo.getOutcomingId();
+		String foundationName = lastInOutcomingInfo.getFoundationName();
+		String outcomingDetailRegId = lastInOutcomingInfo.getInOutcomingRegId();
+		
+		outcomingDetailMap.put("inOutcomingCode", inOutcomingCode);
+		outcomingDetailMap.put("goodsCode", goodsCode);
+		outcomingDetailMap.put("outcomingQuantity", outcomingQuantity);
+		outcomingDetailMap.put("outcomingDate", outcomingDate);
+		outcomingDetailMap.put("outcomingId", outcomingId);
+		outcomingDetailMap.put("foundationName", foundationName);
+		outcomingDetailMap.put("outcomingDetailRegId", outcomingDetailRegId);
+		log.info("outcomingDetailMap: {}", outcomingDetailMap);
+		
+		int result = stockMapper.addOutcomingDetail(outcomingDetailMap);
 		return result;
 	}
+	
+	/**
+	 * 등록된 입출고 정보 가져오기
+	 * @return
+	 */
+	public InOutcoming getLastInOutcomingInfo() {
+		InOutcoming lastInOutcomingInfo = stockMapper.getLastInOutcomingInfo();
+		return lastInOutcomingInfo;
+    }
 	
 	/**
 	 * 상품 입출고 등록
@@ -130,7 +184,50 @@ public class StockService {
 		int result = stockMapper.addInOutcoming(inOutcoming);
 		return result;
 	}
+	
+	/**
+	 * 상품 입출고 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<InOutcoming> getInOutcomingListBySearch(String searchKey
+														, String searchValue
+														, String dateSearchKey
+														, String startDate
+														, String endDate){
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			switch (searchKey) {
+			case "goodsName":
+				searchKey = "goods_name";
+				break;
+			case "goodsCategory":
+				searchKey = "goods_category";					
+				break;
+			case "goodsLotNumber":
+				searchKey = "goods_company";					
+				break;
+			}
+			searchMap.put("searchKey", searchKey);
+			searchMap.put("searchValue", searchValue);
+		}
+		
+		if(dateSearchKey != null && startDate != null && endDate != null) {
+			searchMap.put("dateSearchKey", dateSearchKey);
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		
+		log.info("searchMap: {}", searchMap);
 
+		List<InOutcoming> inOutcomingList = stockMapper.getInOutcomingListBySearch(searchMap);
+		return inOutcomingList;
+	}
+	
 	/**
 	 * 상품 입출고 조회
 	 * @return
