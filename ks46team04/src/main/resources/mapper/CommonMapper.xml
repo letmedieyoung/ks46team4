@@ -20,6 +20,22 @@
 				
  	</select>
  	
+ 	<select id="getPrimaryKeyVerTwo" parameterType="string" resultType="string">
+ 		/* PK 자동증가 코드2 */
+ 		SELECT 
+			(
+			  CASE
+			    WHEN COUNT(*) = 0 THEN CONCAT(#{codeName},1) 
+			    ELSE
+			      CONCAT(#{codeName},max(cast(SUBSTRING_INDEX(${columnName}, #{codeName}, -1) AS UNSIGNED))+1)
+			  END
+			  ) as newGoodsCode
+		FROM
+			${tableName}; 
+				
+ 	</select>
+ 	
+ 	
  	<select id="getPurchaseGroupCode" parameterType="String" resultType="String">
 	 	/*매입 그룹 자동증가 코드*/
 	 	SELECT 

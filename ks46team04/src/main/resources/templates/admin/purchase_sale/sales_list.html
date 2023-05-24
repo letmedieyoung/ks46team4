@@ -21,6 +21,15 @@
 			DB연결 완료. subscriptionCode에서 문자열 뽑아 구분 컬럼 로직 세울 것.<br>
 			마감 유무 부분 db 수정 및 형식 통일할 것
 		</p>
+		
+		
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > <a th:href="@{/admin/purchase_sale/sales_list}">매출 조회</a>
+				</h6>
+			</div>
+		</div>
 
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
@@ -142,10 +151,11 @@
 						</tfoot>
 						<tbody>
 							<tr th:unless="${totalSaleList == null}" th:each="l : ${totalSaleList}">
-								<td th:text="구분"></td>
+								<td th:if="${#strings.substring(l.subscriptionCode, 0, 4) == 'dona'}" th:text="정기기부"></td>
+								<td th:if="${#strings.substring(l.subscriptionCode, 0, 4) == 'fund'}" th:text="펀딩"></td>
 								<td th:text="${l.subscriptionCode}"></td>
 								<td th:text="${l.userId}"></td>
-								<td th:text="${l.paymentAmount}"></td>
+								<td class="price" th:text="${l.paymentAmount}"></td>
 								<td th:text="${l.paymentDate}"></td>
 								<td th:text="${l.deadlineCheck}"></td>
 							</tr>
@@ -168,5 +178,26 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
+	
+	
+	<script>
+	$("#dataTable").DataTable({
+	    // 정렬 기능 숨기기
+	    ordering: false,
+		info: false
+	}); 
+
+		
+	//₩세자리,콤마----------------------------
+	const price = $('.price');
+	//console.log(price);
+	price.each(function(idx,item){
+		//console.log(item);
+		let priceText = item.textContent;
+		//console.log(priceText);
+		let formattedPrice = '₩' + priceText.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		item.textContent = formattedPrice;
+	});	
+	</script>
 </th:block>
 </html>
