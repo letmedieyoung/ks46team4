@@ -56,8 +56,9 @@ public class GoodsController {
         List<String> failedGoods = new ArrayList<>();
 
         for (String goodsCode : valueArr) {
-        	boolean result = goodsService.removeGoods(goodsCode);
-            if (result) {
+        	boolean isRemove = true;
+        	isRemove = goodsService.removeGoods(goodsCode);
+            if (isRemove) {
                 deletedGoods.add(goodsCode);
             } else {
                 failedGoods.add(goodsCode);
@@ -139,11 +140,11 @@ public class GoodsController {
 	@PostMapping("/check_goods_name")
 	@ResponseBody
 	public boolean goodsNameCheck(@RequestParam(name="goodsName") String goodsName) {
-		boolean checked = true;
+		boolean isCheck = true;
 		
-		checked = goodsMapper.goodsNameCheck(goodsName);
+		isCheck = goodsMapper.goodsNameCheck(goodsName);
 		
-		return checked;
+		return isCheck;
 	}
 	
 	/**
@@ -204,32 +205,7 @@ public class GoodsController {
 		
 		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
 		
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
-			case "goodsName":
-				searchKey = "goods_name";
-				break;
-			case "goodsCategory":
-				searchKey = "goods_category";					
-				break;
-			case "goodsCompany":
-				searchKey = "goods_company";					
-				break;
-			}
-			
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
-		}
-		if(startDate != null && endDate != null) {
-			searchMap.put("startDate", startDate);
-			searchMap.put("endDate", endDate);
-			
-		}
-		log.info("searchMap: {}", searchMap);
-		
-		List<Goods> goodsList = goodsService.getGoodsListBySearch(searchMap);
+		List<Goods> goodsList = goodsService.getGoodsListBySearch(searchKey, searchValue, startDate, endDate);
 		log.info("goodsList: {}", goodsList);
 		
 		return goodsList;

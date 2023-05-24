@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -57,10 +48,6 @@
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" 
 													th:value="*{goodsInfo == null ? '상품명을 입력해주세요.' : goodsInfo.goodsName}"/>
-												&nbsp;
-												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">상품명 검색</span>
-												</button>
 											</div>
 										</td>
 									</tr>
@@ -103,8 +90,7 @@
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input" id="inOutcomingType" name="inOutcomingType" 
-													th:value="*{inOutcomingType == null ? '입/출고 분류를 선택해주세요.' : inOutcomingType}"/>
+												<input type="hidden" id="inOutcomingType" name="inOutcomingType" th:value="*{inOutcomingType}"/>
 											</div>
 										</td>
 									</tr>
@@ -114,8 +100,8 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control form-control-user-search" id="inOutcomingQuantity" name="inOutcomingQuantity" 
-												th:value="*{inOutcomingQuantity == null ? '입/출고 수량을 입력해주세요.' : inOutcomingQuantity}"/>
+												<input type="number" class="form-control form-control-user-search number-input" id="inOutcomingQuantity" name="inOutcomingQuantity" 
+												th:value="*{inOutcomingQuantity == null ? '입/출고 수량' : inOutcomingQuantity}"/>개
 											</div>
 										</td>
 									</tr>
@@ -137,11 +123,7 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" 
-													th:value="*{foundationInfo == null ? '해당없음' : foundationInfo.foundationName}"/>
-												&nbsp;
-												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">재단명 검색</span>
-												</button>
+													th:value="*{foundationInfo == null ? '-' : foundationInfo.foundationName}" disabled/>
 											</div>
 										</td>
 									</tr>
@@ -164,17 +146,10 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -196,6 +171,19 @@
 		var selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
 		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 		
+		$(function(){
+			/**
+			* select box 출고 선택 시 출고 재단명 input 입력 활성화
+			*/
+			$('#inOutcomingTypeSelect').change(function() {
+		        var selectedValue = $(this).val();
+		        if (selectedValue === '출고') {
+		            $('#foundationName').prop('disabled', false);
+		        } else {
+		            $('#foundationName').prop('disabled', true);
+		        }
+		    });
+		});
 	</script>
 </th:block>
 

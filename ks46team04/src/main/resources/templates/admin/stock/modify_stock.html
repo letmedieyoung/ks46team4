@@ -210,33 +210,36 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		
+		/*
+		* 재고조사 현황 select box value 값 -> input value로 넣기
+		*/
+		function stocktaking(category) {
+			const selectInputEle = $('#stocktakingCheck');
+			selectInputEle.val(category);
+		};
+		
+		
+		/**
+		 * 재고조사 현황 select box selected 값 -> input text로 넣기
+		 */
+		var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		
+		/**
+		 * 비정상재고 select box value 값 -> input value로 넣기
+		 */
+		function unusualStock(category) {
+			const selectInputEle = $('#unusualStockCheck');
+			selectInputEle.val(category);
+		};
+		
+		/**
+		 * 비정상재고 select box selected 값 -> input text로 넣기
+		 */
+		var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+			
 		$(function(){
-			/*
-			* 재고조사 현황 select box value 값 -> input value로 넣기
-			*/
-			function stocktaking(category) {
-				$('#stocktakingCheck').val(category);
-			};
-			
-			/**
-			 * 비정상재고 select box value 값 -> input value로 넣기
-			 */
-			function unusualStock(category) {
-				$('#unusualStockCheck').val(category);
-			};
-			
-			/**
-			 * 재고조사 현황 select box selected 값 -> input text로 넣기
-			 */
-			var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-			$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
-			
-			/**
-			 * 비정상재고 select box selected 값 -> input text로 넣기
-			 */
-			var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-			$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
-			
 			/**
 			* 비정상재고 유 선택 시 비정상재고 상세 input 입력 활성화
 			*/

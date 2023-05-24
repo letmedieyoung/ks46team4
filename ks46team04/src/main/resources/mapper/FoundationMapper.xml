@@ -139,12 +139,9 @@
 			foundation_request
 		<where>
 			<if test="searchKey != null and searchKey != ''">
-				${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
-			</if>
-			<if test="radioNameArr != null">
-				<foreach collection="radioNameArr" item="item" separator="AND" index="index">
-					<bind name="data" value="radioValueArr.get(index)" />
-				  	${item} LIKE CONCAT('%', #{data}, '%')
+				<foreach collection="searchKey" item="key" separator="AND" index="index">
+					<bind name="value" value="searchValue.get(index)" />
+					${key} LIKE CONCAT('%', #{value}, '%')
 				</foreach>
 			</if>
 		    <if test="startDate != null and endDate != null">

@@ -123,8 +123,8 @@
 			const selectInputEle = $('#goodsCategory');
 			selectInputEle.val(category);
 		};
-		$(function(){
 			
+		$(function(){		
 			/**
 			 * checkBtn 상품명 중복확인 버튼
 			 */
@@ -150,10 +150,9 @@
 					  dataType: 'json'
 				});
 						 
-				request.done(function( check ) {
-					console.log(typeof check)
-					console.log(check)
-					if(!check){
+				request.done(function( isCheck ) {
+					console.log(isCheck)
+					if(!isCheck){
 						alert('중복된 상품명 입니다.');
 						goodsNameEle.val('');
 						goodsNameEle.focus();

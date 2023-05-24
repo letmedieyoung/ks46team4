@@ -33,6 +33,7 @@ public class FoundationController {
 	public FoundationController(FoundationService foundationService, FoundationMapper foundationMapper) {
 		this.foundationService = foundationService;
 		this.foundationMapper = foundationMapper;
+		
 	}
 	
 
@@ -52,8 +53,9 @@ public class FoundationController {
         List<String> failedFoundationRequest = new ArrayList<>();
 
         for (String foundationRequestCode : valueArr) {
-            boolean result = foundationService.removeFoundationRequest(foundationRequestCode);
-            if (result) {
+            boolean isRemove = true;
+            isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
+            if (isRemove) {
             	deletedFoundationRequest.add(foundationRequestCode);
             } else {
             	failedFoundationRequest.add(foundationRequestCode);
@@ -148,55 +150,20 @@ public class FoundationController {
 	 */
 	@GetMapping("/search_foundation_request_List")
 	@ResponseBody
-	public List<FoundationRequest> search(@RequestParam(value="searchKey", required = false) String searchKey 
-										, @RequestParam(value="searchValue", required = false) String searchValue
-										, @RequestParam(value="radioNameArr[]", required = false) List<String> radioNameArr
-										, @RequestParam(value="radioValueArr[]", required = false) List<String> radioValueArr
+	public List<FoundationRequest> search(@RequestParam(value="searchKey[]", required = false) List<String> searchKey 
+										, @RequestParam(value="searchValue[]", required = false) List<String> searchValue
 										, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
 										, @RequestParam(value="startDate", required = false) String startDate
 										, @RequestParam(value="endDate", required = false) String endDate) {
 		
-		log.info("searchKey: {}, searchValue: {}, radioNameArr: {}, radioValueArr: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
-				, searchKey, searchValue, radioNameArr, radioValueArr, dateSearchKey, startDate, endDate);
+		log.info("searchKey: {}, searchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
+					searchKey, searchValue, dateSearchKey, startDate, endDate);
 		
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
-			case "foundationName":
-				searchKey = "foundation_name";
-				break;
-			case "requestGoodsName":
-				searchKey = "request_goods_name";					
-				break;
-			}
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
-		}
-		
-		
-		if (radioNameArr != null && radioValueArr != null) {
-		    for (int i = 0; i < radioNameArr.size(); i++) {
-		    	String radioName = radioNameArr.get(i);
-		        switch (radioName) {
-		            case "contentCategory":
-		                radioNameArr.set(i, "content_category");
-		                break;
-		            case "requestProgressStatus":
-		                radioNameArr.set(i, "request_progress_status");
-		                break;
-		        }
-		       
-		    }
-		    searchMap.put("radioNameArr", radioNameArr);
-		    searchMap.put("radioValueArr", radioValueArr);
-		    
-		}
-
-
-		log.info("searchMap: {}", searchMap);
-		
-		List<FoundationRequest> foundationRequestList = foundationService.getFoundationRequestlistBySearch(searchMap);
+		List<FoundationRequest> foundationRequestList = foundationService.getFoundationRequestlistBySearch(searchKey
+																										, searchValue
+																										, dateSearchKey
+																										, startDate
+																										, endDate);
 		log.info("foundationRequestList: {}", foundationRequestList);
 		
 		return foundationRequestList;
@@ -237,8 +204,9 @@ public class FoundationController {
         List<String> failedFoundation = new ArrayList<>();
 
         for (String foundationCode : valueArr) {
-        	boolean result = foundationService.removeFoundation(foundationCode);
-            if (result) {
+        	boolean isRemove = true;
+        	isRemove = foundationService.removeFoundation(foundationCode);
+            if (isRemove) {
             	deletedFoundation.add(foundationCode);
             } else {
             	failedFoundation.add(foundationCode);
@@ -298,12 +266,12 @@ public class FoundationController {
 	 */
 	@PostMapping("/check_foundation_name")
 	@ResponseBody
-	public boolean foundationNameChek(@RequestParam(name="foundationName") String foundationName) {
-		boolean checked = true;
+	public boolean foundationNameCheck(@RequestParam(name="foundationName") String foundationName) {
+		boolean isCheck = true;
 		
-		checked = foundationMapper.foundationNameCheck(foundationName);
+		isCheck = foundationMapper.foundationNameCheck(foundationName);
 		
-		return checked;
+		return isCheck;
 	}
 	
 	/**
@@ -355,27 +323,10 @@ public class FoundationController {
 		
 		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
 		
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
-			case "foundationName":
-				searchKey = "foundation_name";
-				break;
-			case "foundationManager":
-				searchKey = "foundation_manager";					
-				break;
-			}
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
-		}
-		if(startDate != null && endDate != null) {
-			searchMap.put("startDate", startDate);
-			searchMap.put("endDate", endDate);
-		}
-		log.info("searchMap: {}", searchMap);
-		
-		List<Foundation> foundationList = foundationService.getFoundationListBySearch(searchMap);
+		List<Foundation> foundationList = foundationService.getFoundationListBySearch(searchKey
+																					, searchValue
+																					, startDate
+																					, endDate);
 		log.info("foundationList: {}", foundationList);
 		
 		return foundationList;

@@ -1,5 +1,6 @@
 package ks46team04.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,9 @@ public class GoodsService {
      * @param goodsCode
      */
     public boolean removeGoods(String goodsCode) {
-    	boolean result = stockMapper.removeStockCheck(goodsCode);
-    	if (result) {
+    	boolean isRemove = true; 
+    	isRemove = stockMapper.removeStockCheck(goodsCode);
+    	if (isRemove) {
     		goodsMapper.removeGoods(goodsCode);
     		return true;
         }
@@ -92,7 +94,35 @@ public class GoodsService {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<Goods> getGoodsListBySearch(Map<String, Object> searchMap){
+	public List<Goods> getGoodsListBySearch(String searchKey
+											, String searchValue
+											, String startDate
+											, String endDate){
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			switch (searchKey) {
+			case "goodsName":
+				searchKey = "goods_name";
+				break;
+			case "goodsCategory":
+				searchKey = "goods_category";					
+				break;
+			case "goodsCompany":
+				searchKey = "goods_company";					
+				break;
+			}
+			
+			searchMap.put("searchKey", searchKey);
+			searchMap.put("searchValue", searchValue);
+		}
+		
+		if(startDate != null && endDate != null) {
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		
+		log.info("searchMap: {}", searchMap);
 		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(searchMap);
 		return goodsList;
 	}

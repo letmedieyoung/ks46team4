@@ -169,10 +169,9 @@
 					  dataType: 'json'
 				});
 						 
-				request.done(function( check ) {
-					console.log(typeof check)
-					console.log(check)
-					if(!check){
+				request.done(function( isCheck ) {
+					console.log(isCheck)
+					if(!isCheck){
 						alert('중복된 재단명 입니다.');
 						foundationNameEle.val('');
 						foundationNameEle.focus();
