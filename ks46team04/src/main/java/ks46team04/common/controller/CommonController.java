@@ -191,12 +191,12 @@ public class CommonController {
 		
 		@GetMapping("/forgot-password")
 		public String forgotPassword(Model model) {
-			
+			model.addAttribute("title", "비밀번호 찾기");
 			return "common/forgot-password";
 		}
 		@GetMapping("/password-reset")
 		public String PasswordReset(Model model) {
-			
+			model.addAttribute("title", "비밀번호 재설정");
 			return "common/password-reset";
 		}
 }
