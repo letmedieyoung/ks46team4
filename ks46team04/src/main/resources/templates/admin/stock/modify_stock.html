@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -85,7 +76,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control short-input" id="goodsExprityDate" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>
+												<input type="text" class="form-control number-input" id="goodsExprityDate" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -103,9 +94,8 @@
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="stocktakingCheck" name="stocktakingCheck" th:value="*{stocktakingCheck}" placeholder="재고조사 현황을 선택해주세요." />
+												<input type="hidden" class="form-control form-control-user-search short-input"
+													id="stocktakingCheck" name="stocktakingCheck" th:value="*{stocktakingCheck}"/>
 											</div>
 										</td>
 									</tr>
@@ -115,7 +105,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control short-input" id="stocktakingDate" name="stocktakingDate" th:value="*{stocktakingDate}" placeholder="재고조사일을 입력해주세요." />
+												<input type="text" class="form-control number-input" id="stocktakingDate" name="stocktakingDate" th:value="*{stocktakingDate}" placeholder="재고조사일을 입력해주세요." />
 											</div>
 										</td>
 									</tr>
@@ -125,7 +115,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="currentStockAmount" min="0" name="goodsPrice" th:value="*{currentStockAmount}" placeholder="현재고량를 입력해주세요." />개
+												<input type="number" class="form-control number-input" id="currentStockAmount" min="0" name="goodsPrice" th:value="*{currentStockAmount}" placeholder="현재고량를 입력해주세요." />개
 											</div>
 										</td>
 									</tr>
@@ -139,14 +129,13 @@
 												 <select class="dropdown btn btn-primary required-form" id="unusualStockCheckSelect" name="unusualStockCheckSelect" onchange="unusualStock(this.value)">
 													<option value="">:: 비정상재고 ::</option>
 													<option th:selected="*{stocktakingCheck} == '1' and *{unusualStockCheck} == '0'" >무</option>
-													<option th:selected="*{stocktakingCheck} == '0' and *{unusualStockCheck} == '0'">재고조사 미진행</option>
 													<option th:selected="*{unusualStockCheck} == '1'" >유</option>
+													<option th:selected="*{stocktakingCheck} == '0' and *{unusualStockCheck} == '0'">재고조사 미진행</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="unusualStockCheck" name="unusualStockCheck" th:value="*{unusualStockCheck}" placeholder="비정상재고 유무를 선택해주세요." />
+												<input type="hidden" class="form-control form-control-user-search short-input"
+													id="unusualStockCheck" name="unusualStockCheck" th:value="*{unusualStockCheck}"/>
 											</div>
 										</td>
 									</tr>
@@ -156,17 +145,37 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="unusualStockAmount" name="unusualStockAmount" th:value="*{unusualStockAmount}" placeholder="비정상재고량을 입력해주세요." />개
+												<input type="number" class="form-control number-input" id="unusualStockAmount" name="unusualStockAmount" th:value="*{unusualStockAmount}" placeholder="비정상재고량을 입력해주세요." disabled/>개
 											</div>
 										</td>
 									</tr>
+									<tr>
+									<th class="bg-gray-100">
+										<label for="unusualStockDate">비정상 재고 발생일자</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="date" class="form-control form-control-user-search" id="unusualStockDate" name="unusualStockDate" disabled/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100">
+										<label for="unusualStockReason">비정상 재고 사유</label>
+									</th>
+									<td>
+										<div class="form-row align-items-center search-schedule">
+											<input type="text" class="form-control form-control-user-search long-input" id="unusualStockReason" name="unusualStockReason" placeholder="비정상 재고 발생 사유를 입력해주세요." disabled/>
+										</div>
+									</td>
+								</tr>
 									<tr>
 										<th class="bg-gray-100">
 											<label for="finalStockAmount">출고가능수량</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control short-input" id="finalStockAmount" name="finalStockAmount" th:value="*{unusualStockAmount}" placeholder="출고가능수량을 입력해주세요." />개
+												<input type="number" class="form-control number-input" id="finalStockAmount" name="finalStockAmount" th:value="*{unusualStockAmount}" placeholder="출고가능수량을 입력해주세요." />개
 											</div>
 										</td>
 									</tr>
@@ -189,17 +198,10 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -207,33 +209,50 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/*
-		* 재고조사 현황 select box value 값 -> input value로 넣기
-		*/
-		function stocktaking(category) {
-			const selectInput = document.querySelector('#stocktakingCheck');
-			selectInput.value = category;
-		};
 		
-		/**
-		 * 비정상재고 select box value 값 -> input value로 넣기
-		 */
-		function unusualStock(category) {
-			const selectInput = document.querySelector('#unusualStockCheck');
-			selectInput.value = category;
-		};
-		
-		/**
-		 * 재고조사 현황 select box selected 값 -> input text로 넣기
-		 */
-		var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
-		
-		/**
-		 * 비정상재고 select box selected 값 -> input text로 넣기
-		 */
-		var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		$(function(){
+			/*
+			* 재고조사 현황 select box value 값 -> input value로 넣기
+			*/
+			function stocktaking(category) {
+				$('#stocktakingCheck').val(category);
+			};
+			
+			/**
+			 * 비정상재고 select box value 값 -> input value로 넣기
+			 */
+			function unusualStock(category) {
+				$('#unusualStockCheck').val(category);
+			};
+			
+			/**
+			 * 재고조사 현황 select box selected 값 -> input text로 넣기
+			 */
+			var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+			$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+			
+			/**
+			 * 비정상재고 select box selected 값 -> input text로 넣기
+			 */
+			var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+			$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+			
+			/**
+			* 비정상재고 유 선택 시 비정상재고 상세 input 입력 활성화
+			*/
+			$('#unusualStockCheckSelect').change(function() {
+		        var selectedValue = $(this).val();
+		        if (selectedValue === '유') {
+		            $('#unusualStockAmount').prop('disabled', false);
+		            $('#unusualStockDate').prop('disabled', false);
+		            $('#unusualStockReason').prop('disabled', false);
+		        } else {
+		            $('#unusualStockAmount').prop('disabled', true);
+		            $('#unusualStockDate').prop('disabled', true);
+		            $('#unusualStockReason').prop('disabled', true);
+		        }
+		    });
+	    });
 	</script>
 </th:block>
 
