@@ -10371,6 +10371,12 @@ form.user .form-control-user-plus {
     padding: 1.13rem 1rem
 }
 
+.search-input-gr-two {
+    width: 10rem;
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 0.375rem 0.75rem;
+}
 
 /* addUser - LBR*/
 .search-input-gr-half {

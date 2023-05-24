@@ -44,10 +44,14 @@
 									<td th:text="${l.donationPayMethodCode}"></td>
 									<td>
 									<div
-										th:if="${l.donationPayCode == 'pm_account'}">자동이체</div>
+										th:if="${l.paymentCode == 'pm_account'}">자동이체</div>
 									</td>
 									<td th:text="${l.donationPayMethodBank}"></td>
 									<td th:text="${l.donationPayMethodAccount}"></td>
+									
+									
+								
+	
 									
 							</tr>
 							<tr th:if="${getDonationPayMethod == null}">

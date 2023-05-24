@@ -49,7 +49,17 @@ public class UserMainController {
 		this.request = request;
 	}
 	
-	
+	@GetMapping("/myPage_inquiry")
+	public String mypageInquiry(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
+
+		model.addAttribute("title", "회원문의내역");
+		model.addAttribute("userId", userId);
+
+		return "user/myPage_inquiry";
+	}
+
 	@GetMapping("/myPage_myPayment")
 	public String mypagePayment(Model model
 			 ,@RequestParam(name="keyword", required=false) String keyword
