@@ -54,7 +54,7 @@ public class UserMainController {
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
 
-		model.addAttribute("title", "회원문의내역");
+		model.addAttribute("title", "나의문의내역");
 		model.addAttribute("userId", userId);
 
 		return "user/myPage_inquiry";
@@ -68,7 +68,7 @@ public class UserMainController {
 		/*
 		 * List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword,
 		 * searchValue); log.info("getDonationPayMethod: {}", refundList);
-		 * model.addAttribute("title", "마이페이지결제내역"); model.addAttribute("refundList",
+		 * model.addAttribute("title", "나의결제내역"); model.addAttribute("refundList",
 		 * refundList);
 		 */
 		
@@ -84,7 +84,7 @@ public class UserMainController {
 		
 		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod(searchKey, searchValue);
 		log.info("getDonationPayMethod: {}", getDonationPayMethod);
-		model.addAttribute("title", "마이페이지결제수단");
+		model.addAttribute("title", "자주쓰는결제수단");
 		model.addAttribute("getDonationPayMethod", getDonationPayMethod);
 		
 		return "/user/myPage_myAutoPm";
@@ -144,7 +144,7 @@ public class UserMainController {
 			, @RequestParam(name="searchValue", required = false) String searchValue) {
 		List<DonationSub> getDonationSub = donationService.getDonationSub(searchKey, searchValue);
 		
-		model.addAttribute("title", "마이페이지정기후원내역");
+		model.addAttribute("title", "나의정기후원내역");
 		model.addAttribute("getDonationSub", getDonationSub);
 		
 		return "user/myPage_myDonation";
@@ -155,7 +155,7 @@ public class UserMainController {
 	public String mypageFunding(Model model) {
 		List<FundingPay> fundingPayList = fundingService.getFundingPayList();
 		log.info("fundingPayList_Service: {}", fundingPayList);
-		model.addAttribute("title", "마이페이지펀딩내역");
+		model.addAttribute("title", "나의펀딩내역");
 		model.addAttribute("fundingPayList", fundingPayList);
 		
 		return "user/myPage_myFunding";
@@ -194,7 +194,7 @@ public class UserMainController {
 		// 사용자 정보 조회
 	    User userInfo = userService.getUserInfoById(userId);
 		
-		model.addAttribute("title", "회원수정");
+		model.addAttribute("title", "회원정보수정");
 		model.addAttribute("userInfo", userInfo);
 		
 		return "user/myPage_myInfoModify";
