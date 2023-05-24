@@ -232,4 +232,5 @@ public class GoodsController {
 		return "admin/goods/goods_list";
 	}
 	
+	
 }
