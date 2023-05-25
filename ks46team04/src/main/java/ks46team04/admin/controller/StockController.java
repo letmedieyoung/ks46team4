@@ -92,7 +92,7 @@ public class StockController {
 		unusualStockInfo.setGoodsInfo(goodsInfo);
 		log.info("unusualStockInfo: {}", unusualStockInfo);
 		
-		model.addAttribute("title", "상품 비정상재고 수정");
+		model.addAttribute("title", "상품 비정상 재고 수정");
 		model.addAttribute("unusualStockInfo", unusualStockInfo);
 		
 		return "admin/stock/modify_unusual_stock_detail";
@@ -128,9 +128,42 @@ public class StockController {
 		
 		log.info("model: {}", model);
 		
-		model.addAttribute("title", "상품 비정상재고 등록");
+		model.addAttribute("title", "상품 비정상 재고 등록");
 		
 		return "admin/stock/add_unusual_stock_detail";
+	}
+	
+	/**
+	 * 상품 비정상재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_unusual_stock_detail_list")
+	@ResponseBody
+	public List<UnusualStock> getUnusualStockListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+														, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+														, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+														, @RequestParam(value="startDate", required = false) String startDate
+														, @RequestParam(value="endDate", required = false) String endDate) {
+		log.info("inputSearchKey: {}, inputSearchValue: {}, stocktakingKey: {}, stocktakingValue: {},"
+				+ "unusualStockKey: {},unusualStockValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
+				inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);
+
+		
+		
+		List<UnusualStock> unusualStockList = stockService.getUnusualStockListBySearch(inputSearchKey
+																					, inputSearchValue
+																					, dateSearchKey
+																					, startDate
+																					, endDate);
+		
+		log.info("unusualStockList: {}", unusualStockList);
+		
+		return unusualStockList;
 	}
 	
 	/**
@@ -143,7 +176,7 @@ public class StockController {
 		
 		List<UnusualStock> unusualStockList = stockService.getUnsualStockList();
 		
-		model.addAttribute("title", "unusual_stock_detail_list");
+		model.addAttribute("title", "상품 비정상 재고 조회");
 		model.addAttribute("unusualStockList", unusualStockList);
 		
 		return "admin/stock/unusual_stock_detail_list";
