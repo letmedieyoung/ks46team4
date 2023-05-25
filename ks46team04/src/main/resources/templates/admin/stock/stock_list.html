@@ -36,42 +36,42 @@
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										 <select class="dropdown btn btn-primary required-form" id="searchKey">
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
 											<option value="" selected>:: 검색 조건 ::</option>
 											<option value="goodsName">상품명</option>
-											<option value="goodsCompany">제조사</option>
 											<option value="goodsLotNumber">제조번호</option>
+											<option value="goodsCompany">제조사</option>
 										</select>
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search short-input"
-											id="searchValue" placeholder="검색어를 입력해주세요." />
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="stocktakingCheck">재고조사 현황</label>
+									<label for="stocktaking">재고조사 현황</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allStatus" name="status" value="allStatus" checked>
+										      <input type="radio" name="stocktaking" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="endStatus" name="status" value="endStatus">
+										      <input type="radio" name="stocktaking">
 										      <span class="text">완료</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="undoneStatus" name="status" value="undoneStatus">
+										      <input type="radio" name="stocktaking">
 										      <span class="text">미완료</span>
 									      </label>
 										</div>
@@ -80,26 +80,26 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="unusualStockAmount">비정상재고</label>
+									<label for="unusualStock">비정상재고</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allUnusualStock" name="unusualStock" value="allUnusualStock" checked>
+										      <input type="radio" name="unusualStock" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="existUnsual" name="unusualStock" value="existUnsual">
+										      <input type="radio" name="unusualStock">
 										      <span class="text">유</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="notExistUnsual" name="unusualStock" value="notExistUnsual">
+										      <input type="radio" name="unusualStock">
 										      <span class="text">무</span>
 									      </label>
 										</div>
@@ -244,33 +244,37 @@
 			*/
 			$('#searchBtn').click(function(){
 				
-				// select box에서 선택된 값을 가져오기
-			    let searchKey = $('#searchKey option:selected').attr('value');
-			    let searchValue = $('#searchValue').val();
+				// inputSearch 선택된 값 가져오기
+			    let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+			    let inputSearchValue = $('#inputSearchValue').val();
 	
-			    // radio 버튼에서 선택된 값을 가져오기
-			  	const radioNameArr = [];
-				const radioValueArr = [];
-				$('input[type="radio"]:checked').each(function() {
-					radioNameArr.push($(this).attr('name'));
-					radioValueArr.push($(this).val());
-				});
+			 	// stocktaking 선택된 값 가져오기
+				let stocktakingKey = $('input[name="stocktaking"]:checked').attr('name');
+				let stocktakingValue = $('input[name="stocktaking"]:checked').next('span.text').text();
+				
+				// unusualStock 선택된 값 가져오기
+				let unusualStockKey = $('input[name="unusualStock"]:checked').attr('name');
+				let unusualStockValue = $('input[name="unusualStock"]:checked').next('span.text').text();
 	
+				// 선택된 기간 검색의 value값
+			    let dateSearchKey = $('#dateSearchKey option:selected').val();
+				
 			    // Date Range Picker에서 선택된 값을 가져오기
-			    let dateSearchKey = $('#dateSearchKey  option:selected').attr('value');
 			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
-				let url = '/admin/stock/search_stock_List';
+				let url = '/admin/stock/search_stock_list';
 				
 				let request = $.ajax({
 					type: 'GET',
 				    url: url,
 				    dataType: 'json',
 				    data:{
-					      'searchKey': searchKey,
-					      'searchValue': searchValue,
-					      'radioNameArr': radioNameArr,
-					      'radioValueArr': radioValueArr,
+					      'inputSearchKey': inputSearchKey,
+					      'inputSearchValue': inputSearchValue,
+					      'stocktakingKey': stocktakingKey,
+					      'stocktakingValue': stocktakingValue,
+					      'unusualStockKey': unusualStockKey,
+					      'unusualStockValue': unusualStockValue,
 					      'dateSearchKey': dateSearchKey,
 					      'startDate': startDate,
 						  'endDate': endDate
@@ -285,31 +289,35 @@
 							const stockList = data;
 							for(const stockInfo of stockList){
 								html += '<tr>';
-								html += `	<td><input class="checks" type="checkbox" value="${stockInfo.stockCode}"></td>`;
+								html += `	<td><input class="checks" type="checkbox" value="${stockInfo.goodsStockCode}"></td>`;
 								html += `	<th>${count++}</th>`;
 								html += `	<td>
-												<a href="/admin/stock/modify_stock?stockCode=${stockInfo.stockCode}">
-													${stockInfo.stockCode}</a>
+												<a href="/admin/stock/modify_stock?stockCode=${stockInfo.goodsStockCode}">
+													${stockInfo.goodsStockCode}</a>
 											</td>`;
-								html += `	<td>${stockInfo.foundationName}</td>`;
-								html += `	<td>${stockInfo.contentCategory}</td>`;
-								html += `	<td>${stockInfo.requestGoodsName}</td>`;
-								html += `	<td>${stockInfo.requestProgressStatus}</td>`;
-								html += `	<td>${stockInfo.initialGoodsAmount}</td>`;
-								if(stockInfo.finalGoodsAmount == null){
-									html += `	<td>미정</td>`;
+								html += `	<td>${stockInfo.goodsInfo.goodsName}</td>`;
+								html += `	<td>${stockInfo.goodsLotNumber}</td>`;
+								html += `	<td>${stockInfo.goodsInfo.goodsCompany}</td>`;
+								html += `	<td>${stockInfo.goodsExprityDate}</td>`;
+								if(stockInfo.stocktakingCheck == '1'){
+									html += `	<td>완료</td>`;
 								}else{
-									html += `	<td>${stockInfo.finalGoodsAmount}</td>`;
+									html += `	<td>미완료</td>`;
 								}
-								html += `	<td>${stockInfo.deliveryRequestDate}</td>`;
-								if(stockInfo.requestUpdDate == null){
-									html += `	<td>${stockInfo.requestRegDate}</td>`;
-								}else{
-									html += `	<td>${stockInfo.requestUpdDate} (수정)</td>`;
+								html += `	<td>${stockInfo.stocktakingDate}</td>`;
+								html += `	<td>${stockInfo.currentStockAmount}</td>`;
+								if(stockInfo.unusualStockCheck == '1'){
+									html += `	<td>유</td>`;
+								}else if(stockInfo.stocktakingCheck == '0' && stockInfo.unusualStockCheck == '0'){
+									html += `	<td>재고조사 미진행</td>`;
+								}else if(stockInfo.stocktakingCheck == '1' && stockInfo.unusualStockCheck == '0'){
+									html += `	<td>무</td>`;
 								}
+								html += `	<td>${stockInfo.unusualStockAmount}</td>`;
+								html += `	<td>${stockInfo.finalStockAmount}</td>`;
 								html += `<td>
 											<a class="btn btn-secondary btn-icon-split btn-sm"
-												href="/admin/stock/modify_stock?stockCode=${stockInfo.stockCode}">
+												href="/admin/stock/modify_stock?stockCode=${stockInfo.goodsStockCode}">
 												<span class="text">수정</span>
 											</a>
 										</td>`;

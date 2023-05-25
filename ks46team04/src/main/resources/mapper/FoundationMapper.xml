@@ -304,8 +304,8 @@
 			foundation_list
 		WHERE
 			foundation_is_delete = '0'
-			<if test="searchKey != null and searchKey != ''">
-				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			<if test="inputSearchKey != null and inputSearchValue != ''">
+				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
 			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
 				AND (

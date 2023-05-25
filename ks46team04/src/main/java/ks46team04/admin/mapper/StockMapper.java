@@ -68,6 +68,9 @@ public interface StockMapper {
 	//삭제 상품 재고 유무 확인
 	public boolean removeStockCheck(String goodsCode);
 	
+	//상품 재고 검색 결과 조회
+	public List<Stock> getStockListBySearch(Map<String, Object> searchMap);
+
 	//상품 재고 조회
 	public List<Stock> getStockList();
 	

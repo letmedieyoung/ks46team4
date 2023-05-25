@@ -185,24 +185,24 @@ public class FoundationService {
 	 * @param searchMap
 	 * @return
 	 */
-	public List<Foundation> getFoundationListBySearch(String searchKey
-													, String searchValue
+	public List<Foundation> getFoundationListBySearch(String inputSearchKey
+													, String inputSearchValue
 													, String startDate
 													, String endDate){
 		
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
 			case "foundationName":
-				searchKey = "foundation_name";
+				inputSearchKey = "foundation_name";
 				break;
 			case "foundationManager":
-				searchKey = "foundation_manager";					
+				inputSearchKey = "foundation_manager";					
 				break;
 			}
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
 		}
 		if(startDate != null && endDate != null) {
 			searchMap.put("startDate", startDate);
