@@ -2,25 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<div th:fragment="searchFragment">
 		<form th:action="@{/admin/user/userList}" method="get">
-			<select name="searchKey">
-				<option value="userId">회원아이디</option>
-				<option value="userName">회원이름</option>
+			<div class="align-items-center search-schedule">
+			<select class="form-control form-control-user-search search-input" name="searchKey">
+				<option value="userId">회원 아이디</option>
+				<option value="userName">회원 이름</option>
 			</select>
-			<input type="text" name="searchValue" placeholder="검색어를 입력해주세요." />
-			<button type="submit">검색</button>
+				</div>
+		<div class="search-schedule">
+			<input type="text"
+				class="form-control form-control-user-search search-input"
+				name="searchValue" style="width: 300px;" />
+		</div>&nbsp;
+			<button type="submit" class="btn btn-primary">검색</button>
 		</form>
 	</div>
 
 <div th:fragment="searchFragment2">
 		<form th:action="@{/admin/user/loginLog}" method="get">
-			<select name="searchKey">
-				<option value="userId">회원아이디</option>
+		<div class="align-items-center search-schedule">
+			<select class="form-control form-control-user-search search-input" name="searchKey">
+				<option value="userId">회원 아이디</option>
 			</select>
-			<input type="text" name="searchValue" placeholder="검색어를 입력해주세요." />
-			<button type="submit">검색</button>
+				</div>
+		<div class="search-schedule">
+			<input type="text"
+				class="form-control form-control-user-search search-input"
+				name="searchValue" placeholder="아이디를 입력해주세요." style="width: 300px;" />
+		</div>&nbsp;
+			<button type="submit" class="btn btn-primary">검색</button>
 		</form>
 	</div>
 
 
 
+		
 </html>
