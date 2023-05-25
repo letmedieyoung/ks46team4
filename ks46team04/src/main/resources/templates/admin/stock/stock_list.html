@@ -292,7 +292,7 @@
 								html += `	<td><input class="checks" type="checkbox" value="${stockInfo.goodsStockCode}"></td>`;
 								html += `	<th>${count++}</th>`;
 								html += `	<td>
-												<a href="/admin/stock/modify_stock?stockCode=${stockInfo.goodsStockCode}">
+												<a href="/admin/stock/modify_stock?goodsStockCode=${stockInfo.goodsStockCode}">
 													${stockInfo.goodsStockCode}</a>
 											</td>`;
 								html += `	<td>${stockInfo.goodsInfo.goodsName}</td>`;
@@ -317,7 +317,7 @@
 								html += `	<td>${stockInfo.finalStockAmount}</td>`;
 								html += `<td>
 											<a class="btn btn-secondary btn-icon-split btn-sm"
-												href="/admin/stock/modify_stock?stockCode=${stockInfo.goodsStockCode}">
+												href="/admin/stock/modify_stock?goodsStockCode=${stockInfo.goodsStockCode}">
 												<span class="text">수정</span>
 											</a>
 										</td>`;

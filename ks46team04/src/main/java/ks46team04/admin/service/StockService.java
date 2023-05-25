@@ -67,6 +67,48 @@ public class StockService {
 	}
 	
 	/**
+	 * 상품 비정상재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<UnusualStock> getUnusualStockListBySearch(String inputSearchKey
+														, String inputSearchValue
+														, String dateSearchKey
+														, String startDate
+														, String endDate){
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
+			case "goodsName":
+			inputSearchKey = "i.goods_name";
+			break;
+			case "unusualStockReason":
+			inputSearchKey = "u.unusual_stock_reason";					
+			break;
+			}
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
+		}
+		
+
+		if(startDate != null && endDate != null) {
+			searchMap.put("dateSearchKey", dateSearchKey);
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		log.info("searchMap: {}", searchMap);
+		
+		List<UnusualStock> unusualStockList = stockMapper.getUnusualStockListBySearch(searchMap);
+		return unusualStockList;
+	}
+	
+	/**
 	 * 상품 비정상재고 조회
 	 * @return
 	 */

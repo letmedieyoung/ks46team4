@@ -26,6 +26,9 @@ public interface StockMapper {
 	//상품 비정상재고 등록
 	public int addUnusualStock(UnusualStock unusualStock);
 	
+	//상품 비정상재고 검색 결과 조회
+	public List<UnusualStock> getUnusualStockListBySearch(Map<String, Object> searchMap);
+	
 	//상품 비정상재고 조회
 	public List<UnusualStock> getUnusualStockList();
 	

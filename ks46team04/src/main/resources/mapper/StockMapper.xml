@@ -91,6 +91,50 @@
 			 #{unusualStockReason}, #{unusualStockRegId}, NOW());
 	</insert>
 	
+	<select id="getUnusualStockListBySearch" resultMap="unusualStockResultMap" parameterType="map">
+		/* 비정상 재고 검색 결과 조회 */
+		SELECT
+			u.unusual_stock_detail_code
+			, u.goods_code
+			, i.goods_name
+			, u.goods_stock_code
+			, u.unusual_stock_quantity
+			, u.unusual_stock_date
+			, u.unusual_stock_reason
+			, u.unusual_stock_reg_id
+			, u.unusual_stock_reg_date
+			, u.unusual_stock_update_id
+			, u.unusual_stock_update_date
+		FROM
+			unusual_stock_detail AS u
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			u.goods_code = i.goods_code
+		<where>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+			<if test="startDate != null and endDate != null">
+		    	<choose>
+		    		<when test="dateSearchKey == 'unusualStockDate'">
+				        AND u.unusual_stock_date BETWEEN #{startDate} AND #{endDate}
+				    </when>
+				    <otherwise>
+				        AND 
+						(
+							u.unusual_stock_update_date IS NULL 
+							AND  u.unusual_stock_reg_date BETWEEN #{startDate} 
+							AND #{endDate}
+							OR u.unusual_stock_update_date IS NOT NULL 
+							AND u.unusual_stock_update_date BETWEEN #{startDate} AND #{endDate}
+						)
+				    </otherwise>
+		    	</choose>
+			</if>
+		</where>
+	</select>
+	
 	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
 		/* 비정상 재고 조회 */
 		SELECT
@@ -112,7 +156,6 @@
 		ON
 			u.goods_code = i.goods_code;
 	</select>
-	
 	
 	<delete id="removeInOutcoming" parameterType="String">
 		/* 상품 입출고 삭제 */
