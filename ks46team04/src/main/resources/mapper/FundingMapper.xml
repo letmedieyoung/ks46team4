@@ -225,7 +225,24 @@
 			CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC, fp.funding_payment_code = #{funding_payment_code};
 	</select>
 
-
+	<select id="getFundingPayListByUserId" resultType="fundingPay">
+		<!-- 특정 회원의 펀딩 결제 내역 목록 조회 -->
+		SELECT
+			fp.funding_payment_code AS fundingPayCode,
+			fp.funding_code AS fundingCode,
+			DATE(fp.funding_payment_date) AS fundingPaymentDate,
+			fp.funding_payment_amount AS fundingPaymentAmount
+		FROM
+			funding_payments AS fp
+		JOIN
+		each_funding_info AS ef ON fp.funding_code = ef.funding_code
+		WHERE
+		fp.user_id = #{userId}
+		ORDER BY
+		CAST(SUBSTRING_INDEX(funding_payment_code, 'funding_payment',-1) AS unsigned) DESC,
+		fp.funding_payment_code = #{funding_payment_code};
+	</select>
+	
 
 									<!-- 펀딩 환불 -->
 	<select id="getRefundStatusList" resultType="fundingRefund">

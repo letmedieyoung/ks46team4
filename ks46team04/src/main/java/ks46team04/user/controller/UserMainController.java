@@ -28,6 +28,7 @@ import ks46team04.admin.mapper.UserMapper;
 import ks46team04.admin.service.DonationService;
 import ks46team04.admin.service.FundingService;
 import ks46team04.admin.service.UserService;
+import ks46team04.user.service.UserMainService;
 
 @Controller
 @RequestMapping("/user")
@@ -36,16 +37,14 @@ public class UserMainController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	private final UserService userService;
-	private final FundingService fundingService;
+	private final UserMainService userMainService;
 	private final UserMapper userMapper;
-	private final DonationService donationService;
 	private final HttpServletRequest request;
 	
-	public UserMainController(UserService userService, UserMapper userMapper, FundingService fundingService, DonationService donationService, HttpServletRequest request) {
+	public UserMainController(UserService userService, UserMapper userMapper, UserMainService userMainService, HttpServletRequest request) {
 		this.userService = userService;
 		this.userMapper = userMapper;
-		this.fundingService = fundingService;
-		this.donationService = donationService;
+		this.userMainService = userMainService;
 		this.request = request;
 	}
 	
@@ -54,7 +53,7 @@ public class UserMainController {
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("SID"); // 세션에서 사용자 아이디를 가져옴
 
-		model.addAttribute("title", "나의문의내역");
+		model.addAttribute("title", "나의 문의내역");
 		model.addAttribute("userId", userId);
 
 		return "user/myPage_inquiry";
@@ -68,7 +67,7 @@ public class UserMainController {
 		/*
 		 * List<FundingRefund> refundList = fundingService.getFundingRefundList(keyword,
 		 * searchValue); log.info("getDonationPayMethod: {}", refundList);
-		 * model.addAttribute("title", "나의결제내역"); model.addAttribute("refundList",
+		 * model.addAttribute("title", "나의 결제내역"); model.addAttribute("refundList",
 		 * refundList);
 		 */
 		
@@ -79,17 +78,25 @@ public class UserMainController {
 	
 	
 	@GetMapping("/myPage_myAutoPm")
-	public String getDonationPayMethod(Model model, @RequestParam(name="searchKey", required = false) String searchKey
-			, @RequestParam(name="searchValue", required = false) String searchValue) {
+	public String mypageAutoPm(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+	    String userId = (String) session.getAttribute("SID");
+	    
+		List<DonationPayMethod> getDonationPayMethod = userMainService.getDonationPayMethodByUserId(userId);
 		
-		List<DonationPayMethod> getDonationPayMethod = donationService.getDonationPayMethod(searchKey, searchValue);
-		log.info("getDonationPayMethod: {}", getDonationPayMethod);
-		model.addAttribute("title", "자주쓰는결제수단");
-		model.addAttribute("getDonationPayMethod", getDonationPayMethod);
+
+		if (getDonationPayMethod.isEmpty()) {
+	        model.addAttribute("message", "자주쓰는 결제수단이 없습니다.");
+	    } else {
+	        model.addAttribute("title", "자주쓰는 결제수단");
+	        model.addAttribute("getDonationPayMethod", getDonationPayMethod);
+	    }
 		
 		return "/user/myPage_myAutoPm";
 	}
 	
+
+
 	
 	@PostMapping("/myPageDrop")
 	@ResponseBody
@@ -140,23 +147,40 @@ public class UserMainController {
 	}
 	
 	@GetMapping("/myPage_myDonation")
-	public String mypageDonation(Model model,  @RequestParam(name="searchKey", required = false) String searchKey
-			, @RequestParam(name="searchValue", required = false) String searchValue) {
-		List<DonationSub> getDonationSub = donationService.getDonationSub(searchKey, searchValue);
+	public String mypageDonation(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+	    String userId = (String) session.getAttribute("SID");
+	    
+		List<DonationSub> getDonationSub = userMainService.getDonationSubByUserId(userId);
 		
-		model.addAttribute("title", "나의정기후원내역");
-		model.addAttribute("getDonationSub", getDonationSub);
+
+		if (getDonationSub.isEmpty()) {
+	        model.addAttribute("message", "정기기부 참여내역이 없습니다.");
+	    } else {
+	        model.addAttribute("title", "정기기부 참여내역");
+	        model.addAttribute("getDonationSub", getDonationSub);
+	    }
 		
 		return "user/myPage_myDonation";
 	}
+
 	
 	
 	@GetMapping("/myPage_myFunding")
-	public String mypageFunding(Model model) {
-		List<FundingPay> fundingPayList = fundingService.getFundingPayList();
+	public String mypageFunding(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession();
+	    String userId = (String) session.getAttribute("SID");
+
+	    
+		List<FundingPay> fundingPayList = userMainService.getFundingPayListByUserId(userId);
 		log.info("fundingPayList_Service: {}", fundingPayList);
-		model.addAttribute("title", "나의펀딩내역");
-		model.addAttribute("fundingPayList", fundingPayList);
+		
+		if (fundingPayList.isEmpty()) {
+	        model.addAttribute("message", "펀딩 참여내역이 없습니다.");
+	    } else {
+	        model.addAttribute("title", "펀딩 참여내역");
+	        model.addAttribute("fundingPayList", fundingPayList);
+	    }
 		
 		return "user/myPage_myFunding";
 	}
