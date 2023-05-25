@@ -208,7 +208,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
-			, i.outcoming_id
+			, o.outcoming_id
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
@@ -291,7 +291,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
-			, i.outcoming_id
+			, o.outcoming_id
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
@@ -312,11 +312,25 @@
 		ON
 			o.foundation_code = f.foundation_code
 		<where>
-			<if test="searchKey != null and searchKey != ''">
-				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
 		    <if test="startDate != null and endDate != null">
-				AND ${dateSearchKey} BETWEEN #{startDate} AND CONCAT(#{endDate}, ' 23:59:59'))
+		    	<choose>
+		    		<when test="dateSearchKey == 'inOutcomingDate'">
+				        AND h.incoming_outcoming_date BETWEEN #{startDate} AND #{endDate}
+				    </when>
+				    <otherwise>
+				        AND 
+						(
+							h.incoming_outcoming_update_date IS NULL 
+							AND  h.incoming_outcoming_reg_date BETWEEN #{startDate} 
+							AND #{endDate}
+							OR h.incoming_outcoming_update_date IS NOT NULL 
+							AND h.incoming_outcoming_update_date BETWEEN #{startDate} AND #{endDate}
+						)
+				    </otherwise>
+		    	</choose>
 			</if>
 		</where>	
 		ORDER BY 
@@ -334,7 +348,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
-			, i.outcoming_id
+			, o.outcoming_id
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date

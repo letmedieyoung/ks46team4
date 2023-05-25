@@ -322,16 +322,20 @@ public class StockController {
 	 */
 	@GetMapping("/search_in_outcoming_list")
 	@ResponseBody
-	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="searchKey", required = false) String searchKey 
-													, @RequestParam(value="searchValue", required = false) String searchValue
+	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+													, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
 													, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
 													, @RequestParam(value="startDate", required = false) String startDate
 													, @RequestParam(value="endDate", required = false) String endDate) {
 		
-		log.info("searchKey: {}, searchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
-				, searchKey, searchValue, dateSearchKey, startDate, endDate);	
+		log.info("inputSearchKey: {}, inputSearchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
+				, inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);	
 		
-		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(searchKey, searchValue, dateSearchKey, startDate, endDate);
+		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(inputSearchKey
+																				, inputSearchValue
+																				, dateSearchKey
+																				, startDate
+																				, endDate);
 		log.info("inOutcomingList: {}", inOutcomingList);
 
 		return inOutcomingList;
