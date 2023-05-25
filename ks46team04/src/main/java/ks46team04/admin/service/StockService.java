@@ -235,27 +235,30 @@ public class StockService {
 	 * @param endDate
 	 * @return
 	 */
-	public List<InOutcoming> getInOutcomingListBySearch(String searchKey
-														, String searchValue
+	public List<InOutcoming> getInOutcomingListBySearch(String inputSearchKey
+														, String inputSearchValue
 														, String dateSearchKey
 														, String startDate
 														, String endDate){
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
 			case "goodsName":
-				searchKey = "goods_name";
+				inputSearchKey = "i.goods_name";
 				break;
-			case "goodsCategory":
-				searchKey = "goods_category";					
+			case "goodsCompany":
+				inputSearchKey = "i.goods_company";					
 				break;
 			case "goodsLotNumber":
-				searchKey = "goods_company";					
+				inputSearchKey = "h.goods_lot_number";					
+				break;
+			case "inOutcomingType":
+				inputSearchKey = "h.incoming_outcoming_type";					
 				break;
 			}
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
 		}
 		
 		if(dateSearchKey != null && startDate != null && endDate != null) {
