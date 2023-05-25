@@ -17,14 +17,13 @@
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">정기후원 결제수단</h1>
 			<p class="mb-4"> </p>
 
 		<!-- DataTales Example -->
 		
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">자주쓰는 결제수단</h6>
+				<h6 class="m-0 font-weight-bold text-success">자주쓰는 결제수단</h6>
 			</div>
 			<div class="card-body overflow-x">
 				<div class="table-responsive">
@@ -55,10 +54,11 @@
 									
 							</tr>
 							<tr th:if="${getDonationPayMethod == null}">
-								<td colspan="6">데이터가 존재하지 않습니다.</td>				
+								<!-- <td colspan="6">데이터가 존재하지 않습니다.</td> -->				
 							</tr>							
 						</tbody>
 					</table>
+					<p th:text="${message}" style="text-align: center;"></p>
 				</div>
 			</div>
 		</div>
@@ -79,5 +79,20 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:inline="javascript">
+		/** 
+		 * dataTable 기능 숨기기
+		*/
+		$("#dataTable").DataTable({
+		    // 표시 건수기능 숨기기
+		    lengthChange: false,
+		    // 정보 표시 숨기기
+		    //info: false,
+		    // 검색 기능 숨기기
+		    searching: false,
+		    // 정렬 기능 숨기기
+		    ordering: false	 
+		}); 
+	</script>
 </th:block>
 </html>

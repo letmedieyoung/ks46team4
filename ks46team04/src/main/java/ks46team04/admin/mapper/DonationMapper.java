@@ -35,7 +35,10 @@ public interface DonationMapper {
 	
 	/* 등록된 회원 결제수단 조회 */
 	public List<DonationPayMethod> getDonationPayMethod(String searchKey, String searchValue);
-
+	
+	/* 회원별 등록된 회원 결제수단 조회 */
+	public List<DonationPayMethod> getDonationPayMethodByUserId(String userId);
+	
 	/* 등록된 회원 결제수단 등록 */
 	public int addDonationPayMethod(DonationPayMethod donationPayMethod);
 	
@@ -52,6 +55,9 @@ public interface DonationMapper {
 	
 	/* 정기기부 구독 신청 조회 */
 	public List<DonationSub> getDonationSub(String searchKey, String searchValue);
+	
+	/* 회원별 정기기부 구독 신청 조회 */
+	public List<DonationSub> getDonationSubByUserId(String userId);
 	
 	/* 정기기부 구독 신청 등록 */
 	public int addDonationSub(DonationSub donationSub);

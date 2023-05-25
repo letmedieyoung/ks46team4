@@ -133,6 +133,22 @@
 			ORDER BY CAST(SUBSTRING_INDEX(donationPayMethodCode, 'auto_payment', -1) AS unsigned) ASC;
 	</select>
 	
+	<select id="getDonationPayMethodByUserId" resultType="DonationPayMethod">
+		/* 회원별 등록된 회원 결제수단 조회 */
+		SELECT 
+			regular_donation_auto_pm_code AS donationPayMethodCode
+			, pm_code AS paymentCode
+			, regular_donation_payment_bank AS donationPayMethodBank
+			, regular_donation_payment_account AS donationPayMethodAccount
+			, regular_donation_payment_reg_date AS donationPayMethodRegDate
+			, regular_donation_payment_update_date AS donationPayMethodUpdateDate
+		FROM
+			donation_auto_pay_method
+		WHERE
+        	user_id = #{userId}
+		ORDER BY CAST(SUBSTRING_INDEX(donationPayMethodCode, 'auto_payment', -1) AS unsigned) ASC;
+	</select>
+	
 	<insert id="addDonationPayMethod" parameterType="DonationPayMethod">
 		/* 등록된 회원 결제수단 등록 */
 		INSERT INTO donation_auto_pay_method
@@ -156,6 +172,8 @@
 		WHERE
 			regular_donation_auto_pm_code = #{donationPayMethodCode};
 	</select>
+	
+	
 	
 	<update id="modifyDonationPayMethod" parameterType="DonationPayMethod">
 		/* 등록된 회원 결제수단 수정 */
@@ -199,6 +217,21 @@
 			</if>		
 		</where>
 			ORDER BY CAST(SUBSTRING_INDEX(donationSubCode, 'donation_subscription', -1) AS unsigned) ASC;
+	</select>
+	
+	<select id="getDonationSubByUserId" resultType="DonationSub">
+		/* 회원별 정기기부 구독 신청 조회 */
+		SELECT 
+			user_regular_donation_subscription_code AS `donationSubCode`
+			, regular_donation_code AS `donationCode`
+			, regular_donation_auto_pm_code AS `donationPayMethodCode`
+			, user_regular_donation_subscription_start_date AS `donationSubStartDate`
+			, user_regular_donation_subscription_end_date AS `donationSubEndDate`
+		FROM
+			user_regular_donation_subscription
+		WHERE
+        	user_id = #{userId}
+		ORDER BY CAST(SUBSTRING_INDEX(donationSubCode, 'donation_subscription', -1) AS unsigned) ASC;
 	</select>
 	
 	<insert id="addDonationSub" parameterType="DonationSub">

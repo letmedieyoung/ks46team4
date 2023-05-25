@@ -42,7 +42,8 @@ public interface FundingMapper {
 	public FundingPay getFundingPayInfoByCode(String fundingPayCode);
 	// 펀딩 결제내역 조회
 	public List<FundingPay> getFundingPayList();
-	
+	// 특정회원 펀딩 결제내역 조회
+	public List<FundingPay> getFundingPayListByUserId(String userId);
 	// 환불내역 수정 - 진행상태 
 	public List<FundingRefund> getRefundStatusList();
 	// 환불내역 수정
