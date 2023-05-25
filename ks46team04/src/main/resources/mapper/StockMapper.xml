@@ -372,6 +372,43 @@
 			goods_code = #{goodsCode} and final_stock_amount != 0;
 	</select>
 	
+	<select id="getStockListBySearch" resultMap="stockResultMap" parameterType="map">
+		/* 상품 재고 검색 결과 조회 */
+		SELECT
+			s.goods_stock_code
+			, s.goods_code
+			, i.goods_name
+			, s.goods_lot_number
+			, i.goods_company
+			, s.goods_expiry_date
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.current_stock_amount
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
+		FROM
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code
+		<where>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+			<if test="stocktakingKey != null and stocktakingValue != ''">
+				AND ${stocktakingKey} LIKE CONCAT('%', #{stocktakingValue}, '%')
+			</if>
+			<if test="unusualStockKey != null and unusualStockValue != ''">
+				AND ${unusualStockKey} LIKE CONCAT('%', #{unusualStockValue}, '%')
+			</if>
+		    <if test="dateSearchKey != null and dateSearchKey != '' and startDate != null and endDate != null">
+				AND ${dateSearchKey} BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+	</select>
+	
 	<select id="getStockList" resultMap="stockResultMap">
 		/* 상품 재고 조회 */
 		SELECT

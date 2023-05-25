@@ -289,11 +289,11 @@ public class StockController {
 	 */
 	@GetMapping("/search_in_outcoming_list")
 	@ResponseBody
-	public List<InOutcoming> search(@RequestParam(value="searchKey", required = false) String searchKey 
-									, @RequestParam(value="searchValue", required = false) String searchValue
-									, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
-									, @RequestParam(value="startDate", required = false) String startDate
-									, @RequestParam(value="endDate", required = false) String endDate) {
+	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="searchKey", required = false) String searchKey 
+													, @RequestParam(value="searchValue", required = false) String searchValue
+													, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+													, @RequestParam(value="startDate", required = false) String startDate
+													, @RequestParam(value="endDate", required = false) String endDate) {
 		
 		log.info("searchKey: {}, searchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
 				, searchKey, searchValue, dateSearchKey, startDate, endDate);	
@@ -357,6 +357,51 @@ public class StockController {
 		model.addAttribute("stockInfo", stockInfo);
 		
 		return "admin/stock/modify_stock";
+	}
+	
+	/**
+	 * 상품 재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param stocktakingKey
+	 * @param stocktakingValue
+	 * @param unusualStockKey
+	 * @param unusualStockValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_stock_list")
+	@ResponseBody
+	public List<Stock> getStockListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+										, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+										, @RequestParam(value="stocktakingKey", required = false) String stocktakingKey
+										, @RequestParam(value="stocktakingValue", required = false) String stocktakingValue
+										, @RequestParam(value="unusualStockKey", required = false) String unusualStockKey
+										, @RequestParam(value="unusualStockValue", required = false) String unusualStockValue
+										, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate) {
+		log.info("inputSearchKey: {}, inputSearchValue: {}, stocktakingKey: {}, stocktakingValue: {},"
+				+ "unusualStockKey: {},unusualStockValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
+				inputSearchKey, inputSearchValue, stocktakingKey, stocktakingValue, unusualStockKey, unusualStockValue, dateSearchKey, startDate, endDate);
+
+		
+		
+		List<Stock> stockList = stockService.getStockListBySearch(inputSearchKey
+																, inputSearchValue
+																, stocktakingKey
+																, stocktakingValue
+																, unusualStockKey
+																, unusualStockValue
+																, dateSearchKey
+																, startDate
+																, endDate);
+		
+		log.info("stockList: {}", stockList);
+		
+		return stockList;
 	}
 	
 	/**

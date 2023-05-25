@@ -149,15 +149,15 @@ public class FoundationController {
 	 */
 	@GetMapping("/search_foundation_request_list")
 	@ResponseBody
-	public List<FoundationRequest> search(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
-										, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
-										, @RequestParam(value="contentKey", required = false) String contentKey
-										, @RequestParam(value="contentValue", required = false) String contentValue
-										, @RequestParam(value="progressKey", required = false) String progressKey
-										, @RequestParam(value="progressValue", required = false) String progressValue
-										, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
-										, @RequestParam(value="startDate", required = false) String startDate
-										, @RequestParam(value="endDate", required = false) String endDate) {
+	public List<FoundationRequest> getFoundationRequestlistBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+																	, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+																	, @RequestParam(value="contentKey", required = false) String contentKey
+																	, @RequestParam(value="contentValue", required = false) String contentValue
+																	, @RequestParam(value="progressKey", required = false) String progressKey
+																	, @RequestParam(value="progressValue", required = false) String progressValue
+																	, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+																	, @RequestParam(value="startDate", required = false) String startDate
+																	, @RequestParam(value="endDate", required = false) String endDate) {
 		
 		log.info("inputSearchKey: {}, inputSearchValue: {}, contentKey: {}, contentValue: {},"
 				+ "progressKey: {},progressValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
@@ -322,15 +322,15 @@ public class FoundationController {
 	 */
 	@GetMapping("/search_foundation_list")
 	@ResponseBody
-	public List<Foundation> search(@RequestParam(value="searchKey", required = false) String searchKey 
-								, @RequestParam(value="searchValue", required = false) String searchValue
-								, @RequestParam(value="startDate", required = false) String startDate
-								, @RequestParam(value="endDate", required = false) String endDate) {
+	public List<Foundation> getFoundationListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+													, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+													, @RequestParam(value="startDate", required = false) String startDate
+													, @RequestParam(value="endDate", required = false) String endDate) {
 		
-		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
+		log.info("inputSearchKey: {}, inputSearchValue: {}, startDate: {}, endDate: {}", inputSearchKey, inputSearchValue, startDate, endDate);
 		
-		List<Foundation> foundationList = foundationService.getFoundationListBySearch(searchKey
-																					, searchValue
+		List<Foundation> foundationList = foundationService.getFoundationListBySearch(inputSearchKey
+																					, inputSearchValue
 																					, startDate
 																					, endDate);
 		log.info("foundationList: {}", foundationList);

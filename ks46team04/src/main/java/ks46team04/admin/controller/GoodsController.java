@@ -194,10 +194,10 @@ public class GoodsController {
 	 */
 	@GetMapping("/search_goods_list")
 	@ResponseBody
-	public List<Goods> search(@RequestParam(value="searchKey", required = false) String searchKey 
-							, @RequestParam(value="searchValue", required = false) String searchValue
-							, @RequestParam(value="startDate", required = false) String startDate
-							, @RequestParam(value="endDate", required = false) String endDate) {
+	public List<Goods> getGoodsListBySearch(@RequestParam(value="searchKey", required = false) String searchKey 
+										, @RequestParam(value="searchValue", required = false) String searchValue
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate) {
 		
 		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
 		

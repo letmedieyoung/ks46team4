@@ -254,7 +254,83 @@ public class StockService {
 		Stock stockInfo = stockMapper.getStockInfoByCode(goodsStockCode);
 		return stockInfo;
 	}
-	
+	/**
+	 * 상품 재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param stocktakingKey
+	 * @param stocktakingValue
+	 * @param unusualStockKey
+	 * @param unusualStockValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<Stock> getStockListBySearch(String inputSearchKey
+											, String inputSearchValue
+											, String stocktakingKey
+											, String stocktakingValue
+											, String unusualStockKey
+											, String unusualStockValue
+											, String dateSearchKey
+											, String startDate
+											, String endDate){
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
+			case "goodsName":
+				inputSearchKey = "i.goods_name";
+				break;
+			case "goodsLotNumber":
+				inputSearchKey = "s.goods_lot_number";					
+				break;
+			case "goodsCompany":
+				inputSearchKey = "i.goods_company";					
+				break;
+			}
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
+		}
+		
+		if(stocktakingKey != null && stocktakingValue != null) {
+			stocktakingKey = "s.stocktaking_check";					
+			searchMap.put("stocktakingKey", stocktakingKey);
+			
+			boolean isAll = stocktakingValue.equals("전체");
+			if(isAll) stocktakingValue = "";
+			searchMap.put("stocktakingValue", stocktakingValue);
+		}
+		
+		if(unusualStockKey != null && unusualStockValue != null) {
+			unusualStockKey = "s.unusual_stock_check";					
+			searchMap.put("unusualStockKey", unusualStockKey);
+			
+			boolean isAll = unusualStockValue.equals("전체");
+			if(isAll) unusualStockValue = "";
+			searchMap.put("unusualStockValue", unusualStockValue);
+		}
+		
+		if(dateSearchKey != null && startDate != null && endDate != null) {
+			switch (dateSearchKey) {
+			case "goodsExprityDate":
+				dateSearchKey = "s.goods_expiry_date";
+				break;
+			case "stocktakingDate":
+				dateSearchKey = "s.stocktaking_date";					
+				break;
+			}
+			searchMap.put("dateSearchKey", dateSearchKey);
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		log.info("searchMap: {}", searchMap);
+		
+		List<Stock> stockList = stockMapper.getStockListBySearch(searchMap);
+		return stockList;
+	}
+
 	/**
 	 * 상품 재고 조회
 	 * @return
