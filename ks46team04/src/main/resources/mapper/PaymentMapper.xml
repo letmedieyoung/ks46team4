@@ -11,7 +11,7 @@
 	</resultMap>
 	
 	<select id="getPayment" resultMap="paymentResultMap">
-		/*정기기부 단가 조회*/
+		/* 결제방식 조회 */
 		SELECT 
 			pm_code
 			, pm_name
