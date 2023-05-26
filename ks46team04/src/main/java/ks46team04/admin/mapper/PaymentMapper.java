@@ -10,6 +10,6 @@ import ks46team04.admin.dto.Payment;
 @Mapper
 public interface PaymentMapper {
 
-	/*정기기부 단가 조회*/
+	/* 결제방식 조회 */
 	public List<Payment> getPayment();
 }
