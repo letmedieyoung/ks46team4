@@ -53,19 +53,19 @@
 
 	<update id="updateUserSleep" parameterType="String">
 	/* 활동 상태 'status_dormant'로 업데이트 */
-UPDATE user_info AS ui
-JOIN (
-  SELECT ui.user_id
-  FROM user_info AS ui
-  JOIN (
-    SELECT user_id, MAX(login_time) AS last_login_time
-    FROM login_log
-    GROUP BY user_id
-  ) AS ll ON ui.user_id = ll.user_id
-  WHERE DATEDIFF(NOW(), ll.last_login_time) >= 91
-) AS u
-ON ui.user_id = u.user_id
-SET ui.activity_status_standard_code = 'status_dormant';
+	UPDATE user_info AS ui
+	JOIN (
+	SELECT ui.user_id
+	FROM user_info AS ui
+	JOIN (
+	SELECT user_id, MAX(login_time) AS last_login_time
+	FROM login_log
+	GROUP BY user_id
+	) AS ll ON ui.user_id = ll.user_id
+	WHERE DATEDIFF(NOW(), ll.last_login_time) >= 91
+	) AS u
+	ON ui.user_id = u.user_id
+	SET ui.activity_status_standard_code = 'status_dormant';
 
 </update>
 
@@ -140,6 +140,7 @@ SET ui.activity_status_standard_code = 'status_dormant';
 	</update>
 
 
+
 	<select id="getLoginLogList" resultType="LoginLog">
 		/* 회원 로그인 정보 조회 */
 		SELECT
@@ -155,6 +156,24 @@ SET ui.activity_status_standard_code = 'status_dormant';
 		CAST(SUBSTRING_INDEX(login_log_code, 'login_log', -1) AS UNSIGNED) DESC;
 	</select>
 	
+	<select id="getLoginLogListByUserId" resultType="LoginLog">
+  		SELECT
+		login_log_code AS loginLogCode
+		,user_id AS userId
+		,login_time AS
+		loginTime
+		,logout_time AS logoutTime
+		,login_ip AS loginIp
+		FROM
+		login_log
+		<if
+			test="searchKey != null and searchValue != null">
+			WHERE ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+		</if>
+		ORDER BY
+		CAST(SUBSTRING_INDEX(login_log_code, 'login_log', -1) AS UNSIGNED) DESC;
+	</select>
+
 	
 	<delete id="removeLoginLog" parameterType="String">
 		/* 로그인 기록 삭제 */
@@ -200,36 +219,36 @@ SET ui.activity_status_standard_code = 'status_dormant';
 	</select>
 
 
-	<update id="modifyUser" parameterType="User"> /* 회원 정보 수정 */ UPDATE
-		user_info <trim prefix="SET" suffixOverrides=",">
+	<update id="modifyUser" parameterType="User">
+		/* 회원 정보 수정 */
+		UPDATE
+		user_info
+		<trim prefix="SET" suffixOverrides=",">
 			<if test="userLevel != null and userLevel != ''">
 				user_level = #{userLevel},
 			</if>
-			<if
-				test="userPw != null and userPw != ''">
+			<if test="userPw != null and userPw != ''">
 				user_pw = #{userPw},
 			</if>
-			<if
-				test="userBirth != null and userBirth != ''">
+			<if test="userBirth != null and userBirth != ''">
 				user_birth = #{userBirth},
 			</if>
-			<if
-				test="userPhone != null and userPhone != ''">
+			<if test="userPhone != null and userPhone != ''">
 				user_phone = #{userPhone},
 			</if>
-			<if
-				test="userEmailAgree != null and userEmailAgree != ''">
-		user_email_agree = #{userEmailAgree},
+			<if test="userEmailAgree != null and userEmailAgree != ''">
+				user_email_agree = #{userEmailAgree},
 			</if>
-			<if
-				test="userEmail != null and userEmail != ''">
+			<if test="userEmail != null and userEmail != ''">
 				user_email = #{userEmail},
 			</if>
-			<if
-				test="userAddr != null and userAddr != ''">
+			<if test="userAddr != null and userAddr != ''">
 				user_addr = #{userAddr},
-			</if> user_update_date = now() </trim>
-		WHERE user_id = #{userId}; </update>
+			</if>
+			user_update_date = now()
+		</trim>
+		WHERE user_id = #{userId};
+	</update>
 
 	<select id="getUserDetailList" parameterType="String"
 		resultMap="userResultMap">

@@ -39,6 +39,8 @@ public interface UserMapper {
 	public List<ActivityStatus> getActivityStatusList();
 	// 회원 로그인 기록 조회
 	public List<LoginLog> getLoginLogList(String userId);
+	// 회원 로그인 기록 아이디별 조회
+	public List<LoginLog> getLoginLogListByUserId(String searchKey, String searchValue);
 	void insertLoginLog(LoginLog loginlog);
 	void updateLogoutLog(LoginLog loginlog);
 	// 회원 로그인 기록 삭제

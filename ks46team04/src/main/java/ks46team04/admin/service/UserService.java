@@ -128,14 +128,30 @@ public class UserService {
 	    return true;
 	}
 
+	
+	public List<LoginLog> getLoginLogList(String userId, String searchKey, String searchValue) {
+	    List<LoginLog> loginLogList;
 
-	public List<LoginLog> getLoginLogList(String userId) {
-		
+	    if (searchKey != null) {
+	        switch (searchKey) {
+	            case "userId":
+	            	searchKey = "user_id";
+	                loginLogList = userMapper.getLoginLogListByUserId(searchKey, searchValue);
+	                break;
+	            default:
+	                // 검색 조건이 지원되지 않는 경우 모든 기록을 검색
+	                loginLogList = userMapper.getLoginLogList(userId);
+	                break;
+	        }
+	    } else {
+	        // 검색 조건이 제공되지 않은 경우에는 전체 로그인 기록 리스트를 가져옴
+	        loginLogList = userMapper.getLoginLogList(userId);
+	    }
 
-		List<LoginLog> loginLogList = userMapper.getLoginLogList(userId);
-
-		return loginLogList;
+	    return loginLogList;
 	}
+	
+	
 
 	public List<ActivityStatus> getActivityStatusList() {
 		List<ActivityStatus> activityStatusList = userMapper.getActivityStatusList();
@@ -156,12 +172,13 @@ public class UserService {
 			case "userId":
 				searchKey = "ui.user_id";
 				break;
-			/*
-			 * case "userName": searchKey = "ui.user_name"; break;
-			 */
+			
+			  case "userName": 
+				 searchKey = "ui.user_name"; 
+				 break;
+			 
 			default:
-				searchKey = "ui.user_name";
-				break;
+			
 			}
 		}
 		List<User> userList = userMapper.getUserListWithLogDateCalcul(searchKey, searchValue);
