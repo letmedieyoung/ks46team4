@@ -41,124 +41,125 @@
 		<form id="userDetailListForm" th:action="@{/admin/user/userDetailList}" method="get">
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-bordered search-table table-layout"
+					<table class="table table-bordered search-table-gr"
 						id="searchTable" width="100%" cellspacing="0">
-					
+
 						<tbody>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userId">아이디</label></th>
-								<td class="form-row align-items-center search-schedule"
-										th:text="${l.userId}"></td>
-					
-
-
+								<td class="form-row align-items-center search-schedule">
+								 <input type="text" id="userId" name="userId" th:value="${l.userId}" readonly>
+								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userLevel">등급</label></th>
-								<td class="form-row align-items-center search-schedule" th:text="${l.userLevel}">
+								<td class="form-row align-items-center search-schedule">
+								<input type="text" id="userLevel" name="userLevel" th:value="${l.userLevel}" readonly>
 								</td>
 
 
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
 								<td
-									class="form-row align-items-center search-schedule"
-										th:text="${l.userPw}">
+									class="form-row align-items-center search-schedule">
+								<input type="text" id="userPw" name="userPw" th:value="${l.userPw}" readonly>
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userName">이름</label></th>
 								<td
-									class="form-row align-items-center search-schedule"
-										th:text="${l.userName}">
+									class="form-row align-items-center search-schedule">
+								<input type="text" id="userName" name="userName" th:value="${l.userName}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
 								</th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userBirth}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userBirth" name="userBirth" th:value="${l.userBirth}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userPhone">연락처</label>
 								</th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userPhone}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userPhone" name="userPhone" th:value="${l.userPhone}" readonly>
+										
 
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userEmailAgree">이메일
 										수신여부</label></th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userEmailAgree}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userEmailAgree" name="userEmailAgree" th:value="${l.userEmailAgree}" readonly>
+										
 									
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userEmail">이메일</label>
 								</th>
 								<td
-									class="form-row align-items-center search-schedule"
-										th:text="${l.userEmail}">
+									class="form-row align-items-center search-schedule">
+							<input type="text" id="userEmail" name="userEmail" th:value="${l.userEmail}" readonly>
+										
 
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userAddr}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userAddr" name="userAddr" th:value="${l.userAddr}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userJoinDate">가입일</label>
 								</th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userJoinDate}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userJoinDate" name="userJoinDate" th:value="${l.userJoinDate}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
-								<th class="bg-gray-100"><label for="loginLogCode">로그인기록코드</label>
+							
+							<tr th:each="l : ${userDetailList}">
+								<th class="bg-gray-100"><label for="logDateCalcul">미접속일수</label>
 								</th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.logDateCalcul}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="logDateCalcul" name="logDateCalcul" th:value="${l.logDateCalcul}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
-								<th class="bg-gray-100"><label for="LogDateCalcul">미접속일수</label>
-								</th>
-								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userUpdateDate}">
-								</td>
-							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label for="userUpdateDate">회원정보수정일자</label>
 								</th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.userUpdateDate}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="userUpdateDate" name="userUpdateDate" th:value="${l.userUpdateDate}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:unless="${userDetailList == null}" th:each=" l : ${userDetailList}">
+							<tr th:each="l : ${userDetailList}">
 								<th class="bg-gray-100"><label
 									for="activityStatusStandardCode">활동상태</label></th>
 								<td
-									 class="form-row align-items-center search-schedule"
-										th:text="${l.activityStatusStandardCode}">
+									 class="form-row align-items-center search-schedule">
+								<input type="text" id="activityStatusStandardCode" name="activityStatusStandardCode" th:value="${l.activityStatusStandardCode}" readonly>
+										
 								</td>
 							</tr>
-							<tr th:if="${userDetailList == null}">
-								<td colspan="14">등록된 회원의 정보가 없습니다.</td>
-							</tr>
+				
 						</tbody>
 					</table>
 					</form>

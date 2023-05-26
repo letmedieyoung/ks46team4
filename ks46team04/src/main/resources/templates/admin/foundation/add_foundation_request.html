@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -45,12 +36,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" placeholder="재단명을 검색하거나 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">재단 검색</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" placeholder="재단명을 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -64,14 +50,14 @@
 												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="content(this.value)">
 													<option value="">:: 콘텐츠 분류 ::</option>
 														<option>펀딩</option>
-														<option>정기 후원</option>
+														<option>정기기부</option>
 														<option>미정</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search number-input"
-													id="contentCategory" name="contentCategory" th:value="*{contentCategory}" placeholder=":: 콘텐츠 분류 ::" />
+												<input type="hidden" class="form-control form-control-user-search number-input"
+													id="contentCategory" name="contentCategory" th:value="*{contentCategory}"/>
 											</div>
 										</td>
 									</tr>
@@ -83,12 +69,7 @@
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" 
 													class="form-control form-control-user-search middle-input" 
-													id="requestGoodsName" name="requestGoodsName" placeholder="요청 상품을 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">상품 검색</span>
-												</button>
+													id="requestGoodsName" name="requestGoodsName" placeholder="요청 상품명을 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -115,26 +96,26 @@
 										</td>
 									</tr>
 									<tr>
-											<th class="bg-gray-100">
-												<label for="requestProgressStatus">진행현황</label>
-											</th>
-											<td>
-												<div class="form-row align-items-center search-schedule">
-													&nbsp;
-													 <select class="dropdown btn btn-primary required-form" id="statusCategory" name="statusCategory" onchange="status(this.value)">
-														<option value="">:: 진행현황 ::</option>
-															<option>대기중</option>
-															<option>진행중</option>
-															<option>완료</option>
-													</select>
-												</div>
-												<div class="form-row align-items-center search-schedule">
-													&nbsp;
-													<input type="text" class="form-control form-control-user-search number-input"
-														id="requestProgressStatus" name="requestProgressStatus" placeholder=":: 진행현황 ::" />
-												</div>
-											</td>
-										</tr>
+										<th class="bg-gray-100">
+											<label for="requestProgressStatus">진행현황</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="statusCategory" name="statusCategory" onchange="status(this.value)">
+													<option value="">:: 진행현황 ::</option>
+														<option>대기중</option>
+														<option>진행중</option>
+														<option>완료</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="hidden" class="form-control form-control-user-search number-input"
+													id="requestProgressStatus" name="requestProgressStatus"/>
+											</div>
+										</td>
+									</tr>
 								</tbody>
 							</table>
 							<div align="center">
@@ -165,6 +146,7 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -188,7 +170,7 @@
 			selectInput.value = category;
 		};
 		
-		 /**
+		/**
 		 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
 		 */
 		$(function(){
@@ -196,28 +178,26 @@
 				let data = $(ele).val();
 				let isValid = true;
 				if(typeof data == 'undefined' || data == null || data == ''){
-					let msg = $(ele).parents('tr').find('label').text();
-					alert(`${msg} 필수 항목입니다.`)
-					$(ele).focus();
 					isValid = false;
 				}
 				return isValid;
 			};
+			
 			$('#submitBtn').click(function(){
-				const addFoundationRequestForm = $('#addFoundationRequestForm');
-				const inputGroup = $('#addFoundationRequestForm input');
-				let isSubmit = true;
-				inputGroup.each(function(idx, item){
-				isSubmit = validationCheck(item);
-					if(!isSubmit) {
-						let msg = $(item).parents('tr').find('label').text();
-						alert(msg + '입력해주세요.');
-						$(item).focus();
-						return false;
-					}
-				});
-			if(isSubmit) addFoundationRequestForm.submit();
-			});
+                const addFoundationRequestForm = $('#addFoundationRequestForm');
+                const inputGroup = $('#addFoundationRequestForm input');
+                let isSubmit = true;
+                inputGroup.each(function(idx, item){
+                isSubmit = validationCheck(item);
+                    if(!isSubmit) {
+                        let msg = $(item).parents('tr').find('label').text();
+                        alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
+                        $(item).focus();
+                        return false;
+                    }
+                });
+            if(isSubmit) addFoundationRequestForm.submit();
+            });
 		});
 	</script>
 </th:block>

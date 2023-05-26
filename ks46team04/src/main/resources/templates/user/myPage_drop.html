@@ -1,90 +1,148 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default3}">
 
 
 <head>
-<meta charset="UTF-8">
-<title th:text="${title}"></title>
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
-<th:block layout:fragment="customJs">
-	<script th:src="@{/js/jquery-3.6.4.js}"></script>
-	</th:block>
+
 
 <th:block layout:fragment="customContents">
 	<div class="container-fluid">
 		<!-- Page Heading -->
-		
 
-			<div class="card shadow mb-4">
+
+		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">회원 탈퇴</h6>
+				<h6 class="m-0 font-weight-bold text-success">회원 탈퇴</h6>
 			</div>
-	<form id="dropForm" th:action="@{admin/user/myPage_drop}" method="get">
-			<div class="card-body">
-				<div class="table-responsive">
+			<form id="dropForm" th:action="@{user/myPageDrop}" method="post">
+				<div class="card-body">
+					<div class="table-responsive">
 
-					<table 
-						class="table table-bordered search-table-gr" id="searchTable"
-						width="100%" cellspacing="0">
-			<tbody>
-				<tr>
-						<th class="bg-gray-100"><label for="userId">아이디</label></th>
-								<td><input
-									type="text"
-									class="form-control form-control-user-search search-input-gr"
-									
-									 readonly="readonly" /></td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userPw">비밀번호</label>
-								</th>
-								<td><input type="text"
-									class="form-control form-control-user-search search-input-gr"
-									
-									placeholder="회원비밀번호를 입력해주세요." /></td>
-							</tr>
-																		
-				<tr>
-					<td colspan="2">
-						<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+						<table th:object="${userInfo}" class="table table-bordered search-table-gr" id="searchTable"
+							width="100%" cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100"><label for="userId">아이디</label></th>
+									<td><input type="text" class="form-control form-control-user-search search-input-gr"
+											id="dropId" th:value="${userId}" name="userId" readonly="readonly" /></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100"><label for="userPw">비밀번호</label></th>
+									<td><input type="password"
+											class="form-control form-control-user-search search-input-gr" id="dropPw"
+											name="userPw" placeholder="비밀번호를 입력해주세요." /></td>
+								</tr>
+							</tbody>
+						</table>
+						<div align="center">
+							<button type="button" id="dropsubmitBtn" class="btn btn-primary btn-icon-split" style="background-color: #1cc88a;">
 								<span class="icon text-white-50"><i class="fas fa-check" aria-hidden="true"></i></span>
 								<span class="text">회원탈퇴</span>
 							</button>
-
-						<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+							<button type="reset" id="dropresetBtn" class="btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash" aria-hidden="true"></i></span>
 								<span class="text">입력취소</span>
 							</button>
-					</td>
-				</tr>								
-			</tbody>
-		</table>
-	</form>
-               
-     <!-- /.container-fluid -->
+						</div>
+			</form>
 
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	
+			<!-- /.container-fluid -->
+
+			<!-- Scroll to Top Button-->
+			<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+			</a>
+
 </th:block>
 
+
 <th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
+	<script>
+		$('#dropsubmitBtn')
+			.click(
+				function (event) {
+					event.preventDefault(); //폼 제출 막기
+
+					const userIdEle = $('#dropId');
+					const userPwEle = $('#dropPw');
+
+					let userId = userIdEle.val();
+					let userPw = userPwEle.val();
+
+					//비밀번호 필드를 필수로 입력하도록 유효성 검사
+					if (typeof userPw == 'undefined' || userPw == null
+						|| userPw == '') {
+						alert('비밀번호를 입력해주세요');
+						userPwEle.focus();
+						return false;
+					}
+
+					//서버로 비밀번호 일치 여부 검사 요청
+					$.ajax({
+						type: 'POST',
+						url: '/user/userpwCheck',
+						data: {
+							userId: $('#dropId').val(),
+							userPw: $('#dropPw').val()
+						},
+
+						success: function (result) {
+							if (result) {
+								// 비밀번호가 일치하면 회원 삭제 확인 알림 표시
+								if (confirm('정말로 탈퇴하시겠습니까?')) {
+									// 회원 삭제 요청
+									$.ajax({
+										type: 'POST',
+										url: '/user/myPageDrop',
+										data: $('#dropForm').serialize(), // 폼 데이터 전송
+										success: function (response) {
+											if (response.message === '삭제 성공') {
+												alert('탈퇴가 완료되었습니다.');
+												window.location.href = '/'; // 메인페이지로 이동
+											} else {
+												if (response.removeFailure) {
+													alert('회원 정보 삭제 중 오류가 발생하였습니다.');
+												} else {
+													alert('비밀번호가 일치하지 않습니다.');
+												}
+											}
+										},
+										error: function (xhr, status, error) {
+											console.error(xhr.responseText); // 회원 삭제 요청 실패 처리
+											alert('회원 정보 삭제 중 오류가 발생하였습니다.');
+										}
+									});
+								} else {
+									history.back(); // 이전 페이지로 이동
+								}
+							} else {
+								alert('비밀번호가 일치하지 않습니다.');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText); // 비밀번호 일치 여부 검사 요청 실패 처리
+							alert('비밀번호 일치 여부 검사 중 오류가 발생하였습니다.');
+						}
+					});
+				});
+	</script>
+
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
-	<script th:src="@{/js/demo/datatables-demo.js}"></script>          
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 
 </th:block>
 

@@ -2264,8 +2264,8 @@ fieldset:disabled a.btn {
 }
 .btn-success {
   color: #fff;
-  background-color:#2653d4;
-  border-color: #244ec9;
+  background-color: #1cc88a;
+  border-color: #1cc88a
   }
 .btn-success:hover {
   color: #fff;
@@ -10371,6 +10371,12 @@ form.user .form-control-user-plus {
     padding: 1.13rem 1rem
 }
 
+.search-input-gr-two {
+    width: 10rem;
+    display: inline-block;
+    margin-right: 0.2rem;
+    padding: 0.375rem 0.75rem;
+}
 
 /* addUser - LBR*/
 .search-input-gr-half {
@@ -10423,3 +10429,4 @@ form.user .form-control-user-plus {
 .addNewPurchase{
 	float: right;
 }
+

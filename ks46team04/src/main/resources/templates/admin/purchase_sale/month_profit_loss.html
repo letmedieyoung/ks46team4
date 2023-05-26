@@ -19,6 +19,16 @@
 			년도, 월, 단위로만 조회 가능하며, 매입·매출 따로 조회는 불가능합니다.<br>
 			조회 디비 연결 완료. 년, 월, ₩단위, 금액세자리쉼표 붙이기 
 		</p>
+		
+		
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > <a th:href="@{/admin/purchase_sale/month_profit_loss}">달 마감된 매입·매출 조회</a>
+				</h6>
+			</div>
+		</div>
+		
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">달 마감된 매입·매출 조회</h6>
@@ -50,7 +60,7 @@
 				<br>
 				<!-- 달 마감된 매입·매출 조회 -->
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable" width="100%"
+					<table class="table table-bordered" id="searchTable" width="100%"
 						cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr class="text-center">
@@ -79,9 +89,9 @@
 								<td th:text="${l.division}"></td>
 								<td th:text="${l.paymentYear}"></td>
 								<td th:text="${l.paymentMonth}"></td>
-								<td th:text="${l.paymentAmount}"></td>
-								<td th:text="${l.paymentVat}"></td>
-								<td th:text="${l.purchaseBudget}"></td>
+								<td class="price" th:text="${l.paymentAmount}"></td>
+								<td class="price" th:text="${l.paymentVat}"></td>
+								<td class="price" th:text="${l.purchaseBudget}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -118,31 +128,16 @@
 								<th>결재 담당자</th>
 							</tr>
 						</thead>
-						<!-- <tfoot class="bg-gray-100">
-                                        <tr class="text-center">
-                                            <th>기준 년도</th>
-                                            <th>기준 월</th>
-                                            <th>월 총 매출액</th>
-                                            <th>월 수수료 합</th>
-                                            <th>월 매입예산 합</th>
-                                            <th>월 매입 합</th>
-                                            <th>월 손익<br>(수수료제외)</th>
-                                            <th>월 최종 손익<br>(수수료 포함)</th>
-                                            <th>결산 확인 여부</th>
-                                            <th>결산 확인 일자</th>
-                                            <th>결재 담당자</th>
-                                        </tr>
-                                    </tfoot> -->
 						<tbody>
 							<tr th:unless="${profitLoss == null}" th:each="l : ${profitLoss}">
 								<td th:text="${l.paymentYear}"></td>
 								<td th:text="${l.paymentMonth}"></td>
-								<td th:text="${l.monthTotalSales}"></td>
-								<td th:text="${l.monthTotalVat}"></td>
-								<td th:text="${l.monthTotalBudge}"></td>
-								<td th:text="${l.monthTotalPurchase}"></td>
-								<td th:text="${l.monthProfitLoss}"></td>
-								<td th:text="${l.finalMonthProfitLoss}"></td>
+								<td class="price" th:text="${l.monthTotalSales}"></td>
+								<td class="price" th:text="${l.monthTotalVat}"></td>
+								<td class="price" th:text="${l.monthTotalBudge}"></td>
+								<td class="price" th:text="${l.monthTotalPurchase}"></td>
+								<td class="price" th:text="${l.monthProfitLoss}"></td>
+								<td class="price" th:text="${l.finalMonthProfitLoss}"></td>
 								<td th:text="${l.settlementCheck}"></td>
 								<td th:text="${l.settlementDate}"></td>
 								<td th:text="${l.settlementCheckId}"></td>
@@ -165,5 +160,24 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
+	
+	<script>
+		$("#dataTable").DataTable({
+		    // 정렬 기능 숨기기
+		    ordering: false,
+			info: false
+		});
+	
+		//₩세자리,콤마----------------------------
+		const price = $('.price');
+		//console.log(price);
+		price.each(function(idx,item){
+			//console.log(item);
+			let priceText = item.textContent;
+			//console.log(priceText);
+			let formattedPrice = '₩' + priceText.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			item.textContent = formattedPrice;
+		});	
+	</script>
 </th:block>
 </html>

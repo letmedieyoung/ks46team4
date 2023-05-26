@@ -7,21 +7,11 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
-
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
@@ -47,7 +37,7 @@
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
 												&nbsp;
-												<button type="button" id="overlapCheck" class="btn btn-primary btn-icon-split">
+												<button type="button" id="checkBtn" class="btn btn-primary btn-icon-split">
 													<span class="text">중복확인</span>
 												</button>
 											</div>
@@ -72,7 +62,7 @@
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
+												<input type="hidden" class="form-control form-control-user-search short-input"
 													id="goodsCategory" name="goodsCategory" placeholder="상품 분류를 선택해주세요." />
 											</div>
 										</td>
@@ -83,12 +73,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 검색하거나 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">제조사 검색</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -121,17 +106,9 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
-
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -143,66 +120,84 @@
 		 * 상품분류 select box value 값 -> input value로 넣기
 		 */
 		function goodsCate(category) {
-			const selectInput = document.querySelector('#goodsCategory');
-			selectInput.value = category;
+			const selectInputEle = $('#goodsCategory');
+			selectInputEle.val(category);
 		};
-		
-		/**
-		 * overlapCheck 상세검색 버튼
-		 */
-		$('#overlapCheck').click(function(){
-			const goodsNameEle = $('#goodsName');
-			let goodsName = goodsNameEle.val();
-			console.log(goodsName);
 			
-			let request = $.ajax({
-				url: '/admin/goods/goodsNameCheck',
-				method: 'POST',
-				data: { 'goodsName' : goodsName },
-				dataType: 'json'
+		$(function(){		
+			/**
+			 * checkBtn 상품명 중복확인 버튼
+			 */
+			$('#goodsName').change(function(){
+				$('#addGoodsForm input').not('#goodsName').prop('disabled', true);
+				$('#addGoodsForm button').not('#checkBtn').prop('disabled', true);
+				$('#addGoodsForm select').prop('disabled', true);
 			});
 			
-			request.done(function(){
-				alert('중복된 상품명입니다.');
+			$('#checkBtn').click(function(){
+				const goodsNameEle = $('#goodsName');
+				let goodsName = goodsNameEle.val();
+				console.log(goodsName);
+				if(typeof goodsName == 'undefined' || goodsName == null || goodsName == ''){
+					alert('상품명을 입력해주세요');
+					goodsNameEle.focus();
+					return false;
+				}
+				let request = $.ajax({
+					  url: '/admin/goods/check_goods_name',
+					  method: 'POST',
+					  data: { 'goodsName' : goodsName },
+					  dataType: 'json'
+				});
+						 
+				request.done(function( isCheck ) {
+					console.log(isCheck)
+					if(!isCheck){
+						alert('중복된 상품명 입니다.');
+						goodsNameEle.val('');
+						goodsNameEle.focus();
+					}else{
+						alert('등록 가능한 상품명 입니다.');
+						// 중복이 아닐 경우 속성의 disabled를 제거
+						$('#addGoodsForm input').prop('disabled', false);
+						$('#addGoodsForm button').prop('disabled', false);
+						$('#addGoodsForm select').prop('disabled', false);
+					}
+				});
+						 
+				request.fail(function( jqXHR, textStatus ) {
+					alert(`Request failed: ${textStatus}`);
+				});
 			});
-			
-			request.fail(function(jqXHR, textStatus){
-				alert(`Request failed: ${textStatus}`);
-			});
-		
-		});
-		/**
-		 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
-		 */
-		$(function(){
+				
+			/**
+			 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
+			 */
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;
 				if(typeof data == 'undefined' || data == null || data == ''){
-					let msg = $(ele).parents('tr').find('label').text();
-					alert(`${msg} 필수 항목입니다.`)
-					$(ele).focus();
 					isValid = false;
 				}
 				return isValid;
 			};
+				
 			$('#submitBtn').click(function(){
 				const addGoodsForm = $('#addGoodsForm');
 				const inputGroup = $('#addGoodsForm input');
 				let isSubmit = true;
 				inputGroup.each(function(idx, item){
-				isSubmit = validationCheck(item);
+					isSubmit = validationCheck(item);
 					if(!isSubmit) {
 						let msg = $(item).parents('tr').find('label').text();
-						alert(msg + '입력해주세요.');
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
 						$(item).focus();
 						return false;
 					}
 				});
-			if(isSubmit) addGoodsForm.submit();
+				if(isSubmit) addGoodsForm.submit();
 			});
 		});
 	</script>
 </th:block>
-
 </html>

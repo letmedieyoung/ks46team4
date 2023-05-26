@@ -1,5 +1,6 @@
 package ks46team04.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.ActivityStatus;
 import ks46team04.admin.dto.LoginLog;
@@ -43,7 +42,7 @@ public class UserController {
 	}
 
 	@GetMapping("/userDetailList")
-	public String getUserDetailList(Model model, @RequestParam(name = "userId", required = false) String userId) {
+	public String getUserDetailList(Model model, @RequestParam(name = "userId") String userId) {
 
 		List<User> userDetailList = userService.getUserDetailList(userId);
 
@@ -74,18 +73,68 @@ public class UserController {
 
 		return "admin/user/userSleepList";
 	}
+	
+	/*
+	 * @GetMapping("/userSleepList") public String getUserSleepList(Model model) {
+	 * 
+	 * // updateUserSleep 쿼리 실행 userMapper.updateUserSleep();
+	 * 
+	 * // insertUserSleep 쿼리 실행 userMapper.insertUserSleep();
+	 * 
+	 * // deleteUserInfo 쿼리 실행 userMapper.deleteUserInfo();
+	 * 
+	 * List<UserSleep> userSleepList = userService.getUserSleepList();
+	 * 
+	 * model.addAttribute("title", "휴면회원목록조회"); model.addAttribute("userSleepList",
+	 * userSleepList);
+	 * 
+	 * return "admin/user/userSleepList"; }
+	 */
+	
+	/**
+	 * 로그인 기록 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/removeLoginLog")
+	@ResponseBody
+	public Map<String, Object> removeLoginLog(@RequestParam(value="valueArr[]") List<String> valueArr) {
+	    log.info("valueArr: {}", valueArr);
+	    Map<String, Object> response = new HashMap<>();
+	    List<String> deletedLoginLog = new ArrayList<>();
 
-	@GetMapping("/loginLog")
-	public String getLoginLogList(Model model) {
+	    for (String loginLogCode : valueArr) {
+	        boolean result = userService.removeLoginLog(loginLogCode);
+	        if (result) {
+	            deletedLoginLog.add(loginLogCode);
+	        }
+	    }
 
-		List<LoginLog> loginLogList = userService.getLoginLogList();
+	    log.info("deletedLoginLog: {}", deletedLoginLog);
+	    response.put("deleted", deletedLoginLog);
+	    log.info("response: {}", response);
 
-		model.addAttribute("title", "로그인기록");
-		model.addAttribute("loginLogList", loginLogList);
-
-		return "admin/user/loginLog";
+	    return response;
 	}
 
+
+	
+	@GetMapping("/loginLog")
+	public String getLoginLogList(Model model, HttpSession session, HttpServletRequest request,
+	        @RequestParam(name = "searchKey", required = false) String searchKey,
+	        @RequestParam(name = "searchValue", required = false) String searchValue) {
+	    String userId = (String) session.getAttribute("SID");
+
+	    List<LoginLog> loginLogList = userService.getLoginLogList(searchKey, searchValue, userId);
+
+	    model.addAttribute("title", "로그인기록");
+	    model.addAttribute("loginLogList", loginLogList);
+
+	    return "admin/user/loginLog";
+	}
+	
+
+	
 	@GetMapping("/activityStatus")
 	public String getActivityStatusList(Model model) {
 
@@ -107,86 +156,74 @@ public class UserController {
 
 		return "admin/user/userLevel";
 	}
-	/*
-	 * @GetMapping("/logout") public String logout(HttpSession session) {
-	 * session.invalidate(); return "redirect:/admin/user/login"; }
-	 * 
-	 * @PostMapping("/login") public String login(@RequestParam(name = "userId")
-	 * String userId, @RequestParam(name = "userPw") String userPw, HttpSession
-	 * session, RedirectAttributes reAttr) { String redirect =
-	 * "redirect:/view/user/login"; Map<String, Object> loginResultMap =
-	 * userService.loginCheck(userId, userPw); boolean loginCheck = (boolean)
-	 * loginResultMap.get("loginCheck"); if (loginCheck) { User userInfo = (User)
-	 * loginResultMap.get("userInfo"); String userName = userInfo.getUserName();
-	 * String userLevel = userInfo.getUserLevel(); session.setAttribute("SID",
-	 * userId); session.setAttribute("SLEVEL", userLevel);
-	 * session.setAttribute("SNAME", userName); redirect = "redirect:/"; } else {
-	 * reAttr.addAttribute("result", "일치하는 회원의 정보가 없습니다."); }
-	 * 
-	 * return redirect; }
-	 * 
-	 * @GetMapping("/login") public String login(Model model, @RequestParam(name =
-	 * "result", required = false) String result) {
-	 * 
-	 * model.addAttribute("title", "로그인"); if (result != null)
-	 * model.addAttribute("result", result);
-	 * 
-	 * return "admin/user/login"; }
-	 */
-
+	
 	@PostMapping("/removeUser")
-	public String removeUser(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw,
-			RedirectAttributes redirectAttributes) {
-		
-		 // 비밀번호 검사
-	    if (userService.pwCheck(userId, userPw)) {
-	        // 삭제 작업
-	        userService.removeUser(userId, userPw);
-	        redirectAttributes.addFlashAttribute("message", "삭제 성공");
-	        return "redirect:/admin/user/userList";
-	    } else {
-	        redirectAttributes.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-	        redirectAttributes.addFlashAttribute("removeFailure", true); // 삭제 실패 여부 추가
-	        return "redirect:/admin/user/removeUser?userId=" + userId;
+	@ResponseBody
+	public Map<String, Object> removeUser(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw) {
+	    Logger logger = LoggerFactory.getLogger(getClass());
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	        if (userService.pwCheck(userId, userPw)) {
+	            userService.removeUser(userId);
+	            response.put("success", true);
+	            response.put("message", "삭제 성공");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "비밀번호가 일치하지 않습니다.");
+	        }
+	    } catch (Exception e) {
+	        logger.error("An error occurred while deleting user information.", e);
+	        response.put("success", false);
+	        response.put("message", "회원 정보 삭제 중 오류가 발생하였습니다.");
 	    }
+
+	    return response;
 	}
 	
+
 	@PostMapping("/pwCheck")
 	@ResponseBody
 	public boolean pwCheck(@RequestParam(name = "userId") String userId, @RequestParam(name = "userPw") String userPw) {
 
-	    User user = userMapper.getUserInfoById(userId);
-	    if (user != null) {
-	        String checkPw = user.getUserPw();
-	        if (checkPw.equals(userPw)) {
-	            return true;
-	        }
-	    }
-	    return false;
+		return userService.pwCheck(userId, userPw);
 	}
-	
 
+	
+	
 	@GetMapping("/removeUser")
 	public String removeUser(@RequestParam(name = "userId") String userId, Model model) {
 
 		model.addAttribute("title", "회원탈퇴");
 		model.addAttribute("userId", userId);
+	
 
 		return "admin/user/removeUser";
 	}
-	
-	
+
 	@PostMapping("/modifyUser")
 	@ResponseBody
-	public Map<String, Object> modifyUser(@ModelAttribute User user) {
-	    // 회원 정보 수정 처리 코드
-	    boolean success = userService.modifyUser(user);
-	    // 처리 결과 반환
-	    Map<String, Object> modifyResultMap = new HashMap<>();
-	    modifyResultMap.put("success", success);
-	    return modifyResultMap;
+	public Map<String, Object> modifyUser(@RequestParam(name = "userId") String userId, @ModelAttribute User user) {
+		try {
+	        // 회원 정보 수정 처리 코드
+	        boolean isSuccess = userService.modifyUser(user);
+
+	        // 처리 결과 반환
+	        Map<String, Object> modifyResultMap = new HashMap<>();
+	        modifyResultMap.put("success", isSuccess);
+	        return modifyResultMap;
+	    } catch (Exception e) {
+	        // Handle the exception
+	        e.printStackTrace();
+	        // You can return an error response or customize it according to your requirements
+	        Map<String, Object> errorMap = new HashMap<>();
+	        errorMap.put("success", false);
+	        errorMap.put("message", "An error occurred during user modification.");
+	        return errorMap;
+	    }
 	}
 
+	    
 	@GetMapping("/modifyUser")
 	public String modifyUser(@RequestParam(name = "userId") String userId, Model model) {
 		User userInfo = userService.getUserInfoById(userId);
@@ -227,17 +264,38 @@ public class UserController {
 		userService.addUser(user);
 		return "redirect:/admin/user/userList";
 	}
-
+	
 	@GetMapping("/userList")
 	public String getUserList(Model model, @RequestParam(name = "searchKey", required = false) String searchKey,
-			@RequestParam(name = "searchValue", required = false) String searchValue) {
+	        @RequestParam(name = "searchValue", required = false) String searchValue) {
 
-		List<User> userList = userService.getUserList(searchKey, searchValue);
+	    List<User> userList = userService.getUserListWithLogDateCalcul(searchKey, searchValue);
 
-		model.addAttribute("title", "회원목록조회");
-		model.addAttribute("userList", userList);
+	    model.addAttribute("title", "회원목록조회");
+	    model.addAttribute("userList", userList);
 
-		return "admin/user/userList";
+	    return "admin/user/userList";
 	}
+	
+	/*
+	 * @GetMapping("/userList") public String getUserList(Model
+	 * model, @RequestParam(name = "searchKey", required = false) String searchKey,
+	 * 
+	 * @RequestParam(name = "searchValue", required = false) String searchValue) {
+	 * 
+	 * // updateUserSleep 쿼리 실행 userMapper.updateUserSleep();
+	 * 
+	 * // insertUserSleep 쿼리 실행 userMapper.insertUserSleep();
+	 * 
+	 * // deleteUserInfo 쿼리 실행 userMapper.deleteUserInfo();
+	 * 
+	 * List<User> userList = userService.getUserListWithLogDateCalcul(searchKey,
+	 * searchValue);
+	 * 
+	 * model.addAttribute("title", "회원목록조회"); model.addAttribute("userList",
+	 * userList);
+	 * 
+	 * return "admin/user/userList"; }
+	 */
 
 }

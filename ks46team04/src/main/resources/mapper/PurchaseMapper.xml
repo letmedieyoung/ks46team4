@@ -22,47 +22,30 @@
  	</resultMap>
  	
  	<select id="getTotalPurchaseList" resultType="Purchase">
- 		/*매입 조회*/
- 		<!-- SELECT		
- 			purchase_history_code,
-			purchase_status,	
-			goods_code,		
-			goods_name,		
-			purchase_price,		
-			purchase_quantity,		
-			total_purchase_price,		
-			purchase_date,		
-			purchase_reg_id,		
-			purchase_reg_date,		
-			purchase_update_id,		
-			purchase_update_date,		
-			purchase_group_code,		
-			user_purchse_deadlinde_check
+ 		/*매입 조회*/	
+		SELECT		
+			ph.purchase_history_code as purchaseCode, 
+			ph.purchase_status as purchaseStatus,
+			ph.goods_code as goodsCode,			
+			gi.goods_name as goodsName,		
+			ph.purchase_price as purchasePrice,		
+			ph.purchase_quantity as purchaseQuantity,		
+			ph.total_purchase_price as totalPurchasePrice,		
+			ph.purchase_date as purchaseDate,		
+			ph.purchase_reg_id as purchaseRegId,		
+			ph.purchase_reg_date as purchaseRegDate,		
+			ph.purchase_update_id as purchaseUpdateId,		
+			ph.purchase_update_date as purchaseUpdateDate,		
+			ph.purchase_group_code as purchaseGroupCode,		
+			ph.user_purchse_deadlinde_check as userPurchseDeadlindeCheck,
+			gi.goods_is_delete AS goodsIsDel
 		FROM
-			purchase_history; -->
-			
-			SELECT		
-				ph.purchase_history_code as purchaseCode, 
-				ph.purchase_status as purchaseStatus,
-				ph.goods_code as goodsCode,			
-				gi.goods_name as goodsName,		
-				ph.purchase_price as purchasePrice,		
-				ph.purchase_quantity as purchaseQuantity,		
-				ph.total_purchase_price as totalPurchasePrice,		
-				ph.purchase_date as purchaseDate,		
-				ph.purchase_reg_id as purchaseRegId,		
-				ph.purchase_reg_date as purchaseRegDate,		
-				ph.purchase_update_id as purchaseUpdateId,		
-				ph.purchase_update_date as purchaseUpdateDate,		
-				ph.purchase_group_code as purchaseGroupCode,		
-				ph.user_purchse_deadlinde_check as userPurchseDeadlindeCheck,
-				gi.goods_is_delete AS goodsIsDel
-			FROM
-				purchase_history AS ph
-				INNER JOIN
-				goods_reg_info AS gi
-				ON
-				ph.goods_code = gi.goods_code
+			purchase_history AS ph
+			INNER JOIN
+			goods_reg_info AS gi
+			ON
+			ph.goods_code = gi.goods_code
+		ORDER BY COALESCE(purchaseUpdateDate, purchaseRegDate) DESC;
  	</select>
  	
  	<insert id="addPurchase" parameterType="Purchase">
@@ -97,35 +80,37 @@
  	</insert>
  	
  	<select id="getPurchaseByCode" parameterType="String" resultType="Purchase">
-			SELECT		
-				ph.purchase_history_code as purchaseCode, 
-				ph.purchase_status as purchaseStatus,
-				ph.goods_code as goodsCode,			
-				gi.goods_name as goodsName,		
-				ph.purchase_price as purchasePrice,		
-				ph.purchase_quantity as purchaseQuantity,		
-				ph.total_purchase_price as totalPurchasePrice,		
-				ph.purchase_date as purchaseDate,		
-				ph.purchase_reg_id as purchaseRegId,		
-				ph.purchase_reg_date as purchaseRegDate,		
-				ph.purchase_update_id as purchaseUpdateId,		
-				ph.purchase_update_date as purchaseUpdateDate,		
-				ph.purchase_group_code as purchaseGroupCode,		
-				ph.user_purchse_deadlinde_check as userPurchseDeadlindeCheck,
-				gi.goods_is_delete AS goodsIsDel
-			FROM
-				purchase_history AS ph
-				INNER JOIN
-				goods_reg_info AS gi
-				ON
-				ph.goods_code = gi.goods_code
-			WHERE 
-				ph.purchase_history_code = #{purchaseCode}
-				and
-				ph.goods_code = #{goodsCode};
+		/*PK값으로 매입 조회*/
+		SELECT		
+			ph.purchase_history_code as purchaseCode, 
+			ph.purchase_status as purchaseStatus,
+			ph.goods_code as goodsCode,			
+			gi.goods_name as goodsName,		
+			ph.purchase_price as purchasePrice,		
+			ph.purchase_quantity as purchaseQuantity,		
+			ph.total_purchase_price as totalPurchasePrice,		
+			ph.purchase_date as purchaseDate,		
+			ph.purchase_reg_id as purchaseRegId,		
+			ph.purchase_reg_date as purchaseRegDate,		
+			ph.purchase_update_id as purchaseUpdateId,		
+			ph.purchase_update_date as purchaseUpdateDate,		
+			ph.purchase_group_code as purchaseGroupCode,		
+			ph.user_purchse_deadlinde_check as userPurchseDeadlindeCheck,
+			gi.goods_is_delete AS goodsIsDel
+		FROM
+			purchase_history AS ph
+			INNER JOIN
+			goods_reg_info AS gi
+			ON
+			ph.goods_code = gi.goods_code
+		WHERE 
+			ph.purchase_history_code = #{purchaseCode}
+			and
+			ph.goods_code = #{goodsCode};
  	</select>
  	
  	<update id="modifyPurchase" parameterType="Purchase">
+ 		/*매입 수정*/
  		UPDATE
 			purchase_history
 		SET 
@@ -141,4 +126,17 @@
 		WHERE
 		 	purchase_history_code = #{purchaseCode};	
  	</update>
+ 	
+ 	
+ 	<delete id="deletePurchase" parameterType="List">
+ 		/* 매입 삭제 */
+ 		DELETE 
+		FROM 
+			purchase_history
+		WHERE
+			purchase_history_code IN
+			<foreach collection="delPkValues" item="code" open="(" close=")" separator=",">
+			 	#{code}
+			</foreach>
+ 	</delete>
  </mapper>

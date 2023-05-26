@@ -4,7 +4,7 @@ public class InOutcoming {
 	private String inOutcomingCode;
 	private String goodsCode;
 	private String goodsLotNumber;
-	private String inOutcomingQuantity;
+	private int inOutcomingQuantity;
 	private String inOutcomingType;
 	private String inOutcomingDate;
 	private String inOutcomingRegId;
@@ -16,12 +16,28 @@ public class InOutcoming {
 	private Goods goodsInfo;
 	private Foundation foundationInfo;
 	
+	private String foundationName;
+	private String outcomingId;
 	
-	public OutcomingDetail getOutcomingDetailInfo() {
-		return OutcomingDetailInfo;
+	
+	public String getOutcomingId() {
+		return outcomingId;
 	}
-	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
-		OutcomingDetailInfo = outcomingDetailInfo;
+	public void setOutcomingId(String outcomingId) {
+		this.outcomingId = outcomingId;
+	}
+	public String getFoundationName() {
+		return foundationName;
+	}
+	public void setFoundationName(String foundationName) {
+		this.foundationName = foundationName;
+	}
+	
+	public Foundation getFoundationInfo() {
+		return foundationInfo;
+	}
+	public void setFoundationInfo(Foundation foundationInfo) {
+		this.foundationInfo = foundationInfo;
 	}
 	public Goods getGoodsInfo() {
 		return goodsInfo;
@@ -29,11 +45,11 @@ public class InOutcoming {
 	public void setGoodsInfo(Goods goodsInfo) {
 		this.goodsInfo = goodsInfo;
 	}
-	public Foundation getFoundationInfo() {
-		return foundationInfo;
+	public OutcomingDetail getOutcomingDetailInfo() {
+		return OutcomingDetailInfo;
 	}
-	public void setFoundationInfo(Foundation foundationInfo) {
-		this.foundationInfo = foundationInfo;
+	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
+		OutcomingDetailInfo = outcomingDetailInfo;
 	}
 	public String getInOutcomingCode() {
 		return inOutcomingCode;
@@ -47,17 +63,16 @@ public class InOutcoming {
 	public void setGoodsCode(String goodsCode) {
 		this.goodsCode = goodsCode;
 	}
-	
 	public String getGoodsLotNumber() {
 		return goodsLotNumber;
 	}
 	public void setGoodsLotNumber(String goodsLotNumber) {
 		this.goodsLotNumber = goodsLotNumber;
 	}
-	public String getInOutcomingQuantity() {
+	public int getInOutcomingQuantity() {
 		return inOutcomingQuantity;
 	}
-	public void setInOutcomingQuantity(String inOutcomingQuantity) {
+	public void setInOutcomingQuantity(int inOutcomingQuantity) {
 		this.inOutcomingQuantity = inOutcomingQuantity;
 	}
 	public String getInOutcomingType() {
@@ -103,6 +118,7 @@ public class InOutcoming {
 				+ inOutcomingType + ", inOutcomingDate=" + inOutcomingDate + ", inOutcomingRegId=" + inOutcomingRegId
 				+ ", inOutcomingRegDate=" + inOutcomingRegDate + ", inOutcomingUpdId=" + inOutcomingUpdId
 				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", OutcomingDetailInfo=" + OutcomingDetailInfo
-				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + "]";
+				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + ", foundationName="
+				+ foundationName + ", outcomingId=" + outcomingId + "]";
 	}
 }

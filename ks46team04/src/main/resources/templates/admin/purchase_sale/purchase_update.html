@@ -28,6 +28,18 @@
 			매입 입금 완료 이며, 가격이 바뀌었을때 경고 메시지 "가격이 바뀌었습니다. [매입 입금 완료]한 것이 맞습니까?"
 		</p>
 
+		
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > 
+					<a th:href="@{/admin/purchase_sale/purchase_list}">매입 기록 조회</a>
+					> 매입 수정
+					<!-- <a th:href="@{/admin/purchase_sale/purchase_update}">매입 수정</a> -->
+				</h6>
+			</div>
+		</div>
+
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">매입 수정</h6>
@@ -233,6 +245,42 @@
 			let formattedPrice = totalPurchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 			$('#totalPurchasePrice').val(formattedPrice);
 		} 
+		
+		//날짜-------------------------
+		$('#purchaseDate').on('input', function(){
+			//서버에서 한국 표준시 가져오기
+			let xmlHttpRequest;
+			if(window.XMLHttpRequest){// code for Firefox, Mozilla, IE7, etc.
+				xmlHttpRequest = new XMLHttpRequest();
+			}else if(window.ActiveXObject){// code for IE5, IE6
+				xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			}else{
+				return;
+			}
+
+			xmlHttpRequest.open('HEAD', window.location.href.toString(), false);
+			xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+			xmlHttpRequest.send('');
+
+			let serverDate = xmlHttpRequest.getResponseHeader("Date");
+			const today = new Date(serverDate);
+			console.log(today);
+			//표준시 가져오기 end---
+				
+			const selectedPurchaseDate = $('#purchaseDate').val();
+			const [year, month, day] = selectedPurchaseDate.split('-');
+			const PurchaseDate = new Date(year, month-1, day);
+			PurchaseDate.setHours(23);
+			PurchaseDate.setMinutes(59);
+			PurchaseDate.setSeconds(59);
+			console.log(PurchaseDate);
+			if (PurchaseDate < today) {
+			 	// 매입 예정일이 오늘 미만의 과거라면
+			 	alert('이미 지날 날짜는 매입일이 될 수 없습니다');
+			 	$('#purchaseDate').val('');
+			 	$('#purchaseDate').focus();
+			}
+		});
 		
 		//submit-------------------------
 		$('#submitBtn').click(function(){

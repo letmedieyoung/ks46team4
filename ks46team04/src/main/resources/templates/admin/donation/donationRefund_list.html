@@ -5,15 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
-
 <!-- Custom styles for this template -->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-<!-- Custom styles for this page -->
-<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 <!-- Custom styles for this page -->
 <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
@@ -23,9 +16,7 @@
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
 
-			<!-- Page Heading -->
-
-			<!-- DataTales Example -->
+		<!-- DataTales Example -->
 		<div class="card mb-4">
 			<div class="card-header py-3">
 				<h5 class="m-0 font-weight-bold text-gray-800">환불 검색</h5>
@@ -65,16 +56,20 @@
 				</div>
 			<div class="card-body">
 					<div class="table-responsive">
+					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
+						<span class="text">선택삭제</span>
+					</button>
 						<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 								<tr class="bg-gray-100">
+									<th><input type="checkbox" id="allCheck" /></th>
 									<th>코드</th>
 									<th>회원 아이디</th>
 									<th>결제 상세</th>
 									<th>요청일자</th>
 									<th>요청금액</th>
 									<th>요청사유</th>
-									<th>계좌 은행명</th>
+									<th>은행명</th>
 									<th>계좌번호</th>
 									<th>처리상태</th>
 									<th>승인일자</th>
@@ -89,6 +84,7 @@
 							</thead>
 							<tbody>
 								<tr th:unless="${getDonationRefund == null}" th:each=" l : ${getDonationRefund}">
+									<td><input class="checks" type="checkbox" th:value="${l.donationRefundCode}"></td>
 									<td th:text="${l.donationRefundCode}"></td>
 									<td th:text="${l.donationRefundUserId}"></td>
 									<td th:text="${l.donationPayDetailCode}"></td>
@@ -130,29 +126,95 @@
 		class="fas fa-angle-up"></i>
 	</a>
 
-	<!-- /.container-fluid -->
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
 	</a>
-
 </th:block>
 
 <th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
 		$('#dataTable').DataTable({
-			"ordering" : false 
+			// 정렬 기능 숨기기
+			"ordering" : false,
+			// 표시 건수기능 숨기기
+			"lengthChange" : false,
+			// 정보 표시 숨기기
+			"info" : false,
+			// 검색 기능 숨기기
+			"searching" : false,
+			// 가로 스크롤바
+			"scrollX" : true
 		});
+		
+		// 등록하기
 		$('#addBtn').click(function(){
 			location.href='/admin/donation/donationRefund_add';
 		});
+		
+		// 전체 선택
+		$('#allCheck').click(function(){
+			$('.checks').prop('checked', $(this).prop('checked'));
+		});
+		$('.checks').click(function(){
+			let length = $('.checks').length;
+			let checkedLength = $('.checks:checked').length;
+			if (length == checkedLength) {
+				$('#allCheck').prop('checked', true);
+			} else {
+				$('#allCheck').prop('checked', false);
+			}
+		});
+		
+		// 선택 삭제
+		$('#delCheckBtn').click(function(){
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert('선택된 항목이 없습니다.');
+				}
+				else {
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function(){
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/donation/donationRefund_remove',
+							method: 'POST',
+							data: { valueArr : valueArr },
+							dataType: 'json'
+						});
+						
+						request.done(function(result){
+							if(result){
+								alert('삭제되었습니다.');
+								location.reload();
+							}
+						});
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
+			});
 	</script>
 </th:block>
 </html>

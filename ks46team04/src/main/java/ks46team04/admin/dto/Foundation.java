@@ -5,13 +5,15 @@ public class Foundation {
 	private String foundationName;
 	private String foundationManager;
 	private String foundationPhone;
+	private String foundationZipcode;
 	private String foundationAddr;
+	private String foundationExtraAddr;
+	private String foundationDetailAddr;
 	private String foundationRegId;
 	private String foundationRegDate;
 	private String foundationUpdId;
 	private String foundationUpdDate;
 	private String foundationIsDelete;
-	
 	public String getFoundationCode() {
 		return foundationCode;
 	}
@@ -36,11 +38,29 @@ public class Foundation {
 	public void setFoundationPhone(String foundationPhone) {
 		this.foundationPhone = foundationPhone;
 	}
+	public String getFoundationZipcode() {
+		return foundationZipcode;
+	}
+	public void setFoundationZipcode(String foundationZipcode) {
+		this.foundationZipcode = foundationZipcode;
+	}
 	public String getFoundationAddr() {
 		return foundationAddr;
 	}
 	public void setFoundationAddr(String foundationAddr) {
 		this.foundationAddr = foundationAddr;
+	}
+	public String getFoundationExtraAddr() {
+		return foundationExtraAddr;
+	}
+	public void setFoundationExtraAddr(String foundationExtraAddr) {
+		this.foundationExtraAddr = foundationExtraAddr;
+	}
+	public String getFoundationDetailAddr() {
+		return foundationDetailAddr;
+	}
+	public void setFoundationDetailAddr(String foundationDetailAddr) {
+		this.foundationDetailAddr = foundationDetailAddr;
 	}
 	public String getFoundationRegId() {
 		return foundationRegId;
@@ -66,7 +86,6 @@ public class Foundation {
 	public void setFoundationUpdDate(String foundationUpdDate) {
 		this.foundationUpdDate = foundationUpdDate;
 	}
-	
 	public String getFoundationIsDelete() {
 		return foundationIsDelete;
 	}
@@ -77,8 +96,10 @@ public class Foundation {
 	public String toString() {
 		return "Foundation [foundationCode=" + foundationCode + ", foundationName=" + foundationName
 				+ ", foundationManager=" + foundationManager + ", foundationPhone=" + foundationPhone
-				+ ", foundationAddr=" + foundationAddr + ", foundationRegId=" + foundationRegId + ", foundationRegDate="
-				+ foundationRegDate + ", foundationUpdId=" + foundationUpdId + ", foundationUpdDate="
-				+ foundationUpdDate + ", foundationIsDelete=" + foundationIsDelete + "]";
+				+ ", foundationZipcode=" + foundationZipcode + ", foundationAddr=" + foundationAddr
+				+ ", foundationExtraAddr=" + foundationExtraAddr + ", foundationDetailAddr=" + foundationDetailAddr
+				+ ", foundationRegId=" + foundationRegId + ", foundationRegDate=" + foundationRegDate
+				+ ", foundationUpdId=" + foundationUpdId + ", foundationUpdDate=" + foundationUpdDate
+				+ ", foundationIsDelete=" + foundationIsDelete + "]";
 	}
 }

@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -32,7 +23,7 @@
 			
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">재단 요청사항 등록</h6>
+					<h6 class="m-0 font-weight-bold text-primary">재단 요청사항 수정</h6>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -55,12 +46,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 검색하거나 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">재단 검색</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -71,17 +57,17 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="content(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="contentCate(this.value)">
 													<option value="">:: 콘텐츠 분류 ::</option>
 													<option th:selected="*{contentCategory} == '펀딩'" >펀딩</option>
-													<option th:selected="*{contentCategory} == '정기 후원'" >정기 후원</option>
+													<option th:selected="*{contentCategory} == '정기기부'" >정기기부</option>
 													<option th:selected="*{contentCategory} == '미정'" >미정</option>
 												</select>
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="contentCategory" name="contentCategory" th:value="*{contentCategory}" placeholder="콘텐츠 분류를 선택해주세요." />
+												<input type="hidden" class="form-control form-control-user-search short-input"
+													id="contentCategory" name="contentCategory" th:value="*{contentCategory}"/>
 											</div>
 										</td>
 									</tr>
@@ -94,11 +80,6 @@
 												<input type="text" 
 													class="form-control form-control-user-search middle-input" 
 													id="requestGoodsName" name="requestGoodsName" th:value="*{requestGoodsName}" placeholder="요청 상품을 입력해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">상품 검색</span>
-												</button>
 											</div>
 										</td>
 									</tr>
@@ -133,7 +114,7 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="status(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="requestStatus(this.value)">
 													<option value="">:: 진행현황 ::</option>
 														<option th:selected="*{requestProgressStatus} == '대기중'" >대기중</option>
 														<option th:selected="*{requestProgressStatus} == '진행중'" >진행중</option>
@@ -142,8 +123,8 @@
 											</div>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												<input type="text" class="form-control form-control-user-search short-input"
-													id="requestProgressStatus" name="requestProgressStatus" th:value="*{requestProgressStatus}" placeholder="진행현황을 선택해주세요." />
+												<input type="hidden" class="form-control form-control-user-search short-input"
+													id="requestProgressStatus" name="requestProgressStatus" th:value="*{requestProgressStatus}"/>
 											</div>
 										</td>
 									</tr>
@@ -207,7 +188,7 @@
 		/*
 		* 콘텐츠 분류 select box value 값 -> input value로 넣기
 		*/
-		function content(category) {
+		function contentCate(category) {
 			const selectInput = document.querySelector('#contentCategory');
 			selectInput.value = category;
 		};
@@ -215,7 +196,7 @@
 		/**
 		 * 진행현황 select box value 값 -> input value로 넣기
 		 */
-		function status(category) {
+		function requestStatus(category) {
 			const selectInput = document.querySelector('#requestProgressStatus');
 			selectInput.value = category;
 		};

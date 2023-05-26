@@ -15,6 +15,10 @@
 		<result column="goods_update_id"		property="goodsUpdId"/>
 		<result column="goods_update_date"		property="goodsUpdDate"/>
 		<result column="goods_is_delete"		property="goodsIsDelete"/>
+		<association property="stockInfo" javaType="Stock">
+			<result column="goods_code"						property="goodsCode"/>
+			<result column="final_stock_amount"				property="finalStockAmount"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="GoodsCategory" id="goodsCategoryResultMap">
@@ -25,7 +29,7 @@
 	
 	
 	<update id="removeGoods" parameterType="Goods">
-		/* 상품 삭제 - 삭제 여부 컬럼 수정 */
+		/* 상품 삭제 - 삭제 여부 컬럼 수정, 상품 재고 테이블에 해당 상품의 모든 재고량이 0인 경우에만 삭제 */
 		UPDATE goods_reg_info
 		SET
 			goods_is_delete = '1'
@@ -74,6 +78,14 @@
 			goods_code = #{goodsCode};
 	</select>
 	
+	<select id="getGoodsCompanyList" resultType="String">
+		/* 상품 제조사 조회 */
+		SELECT
+			goods_company AS goodsCompany
+		FROM
+			goods_reg_info;
+	</select>
+	
 	<select id="goodsNameCheck" parameterType="String" resultType="boolean">
 		/* 상품명 중복체크 */
 		SELECT
@@ -81,7 +93,7 @@
 		FROM
 			goods_reg_info
 		WHERE 
-			goods_code = #{goodsCode};
+			goods_name = #{goodsName} and goods_is_delete = '0';
 	</select>
 	
 	<insert id="addGoods" parameterType="Goods" >
@@ -91,6 +103,40 @@
 		VALUES
 			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
 	</insert>
+	
+	<select id="getGoodsListBySearch" resultMap="goodsResultMap" parameterType="map">
+		/* 상품 검색 결과 조회 */
+		SELECT
+			goods_code
+			, goods_name
+			, goods_company
+			, goods_category
+			, goods_price
+			, goods_reg_id
+			, goods_reg_date
+			, goods_update_id
+			, goods_update_date
+		FROM
+			goods_reg_info
+		WHERE
+			goods_is_delete = '0'
+			<if test="searchKey != null and searchKey != ''">
+				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			</if>
+			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				AND (
+						(goods_update_date IS NULL
+						 AND goods_reg_date BETWEEN #{startDate} 
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
+						OR 
+						(goods_update_date IS NOT NULL
+						 AND goods_update_date BETWEEN #{startDate} 
+						 AND CONCAT(#{endDate}, ' 23:59:59'))
+				)
+			</if>
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(goods_code, 'goods', -1) AS UNSIGNED) DESC;
+	</select>
 	
 	<select id="getGoodsList" resultMap="goodsResultMap">
 		/* 상품 목록 조회 */

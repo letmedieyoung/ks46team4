@@ -1,6 +1,8 @@
 package ks46team04.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +27,18 @@ public class FoundationService {
 	}
 	
 	
-	
 	/**
 	 * 재단 요청사항 삭제
-	 * @param valueArr
+	 * @param foundationRequestCode
+	 * @return
 	 */
-	public void removeFoundationRequest(List<String> valueArr) {
-		for(int i=0; i<valueArr.size(); i++) {
-			foundationMapper.removeFoundationRequest(valueArr.get(i));
+	public boolean removeFoundationRequest(String foundationRequestCode) {
+		boolean isRemove = foundationMapper.removeFoundationRequestCheck(foundationRequestCode);
+		if(isRemove){
+			foundationMapper.removeFoundationRequest(foundationRequestCode);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -54,7 +59,7 @@ public class FoundationService {
 		return foundationRequestInfo;
 	}
 	
-	/**]
+	/**
 	 * 재단 요청사항 등록
 	 * @param foundationRequest
 	 * @return
@@ -62,6 +67,65 @@ public class FoundationService {
 	public int addFoundationRequest(FoundationRequest foundationRequest) {
 		int result = foundationMapper.addFoundationRequest(foundationRequest);
 		return result;
+	}
+	
+	/**
+	 * 재단 요청사항 검색 결과 조회
+	 * @param paramMap
+	 * @return
+	 */
+	public List<FoundationRequest> getFoundationRequestlistBySearch(String inputSearchKey
+																	,String inputSearchValue
+																	,String contentKey
+																	,String contentValue
+																	,String progressKey
+																	,String progressValue
+																	,String dateSearchKey
+																	,String startDate
+																	,String endDate){
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
+			case "foundationName":
+				inputSearchKey = "foundation_name";
+				break;
+			case "requestGoodsName":
+				inputSearchKey = "request_goods_name";					
+				break;
+			}
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
+		}
+		
+		if(contentKey != null && contentValue != null) {
+			contentKey = "content_category";					
+			searchMap.put("contentKey", contentKey);
+			
+			boolean isAll = contentValue.equals("전체");
+			if(isAll) contentValue = "";
+			searchMap.put("contentValue", contentValue);
+		}
+		
+		if(progressKey != null && progressValue != null) {
+			progressKey = "request_progress_status";					
+			searchMap.put("progressKey", progressKey);
+			
+			boolean isAll = progressValue.equals("전체");
+			if(isAll) progressValue = "";
+			searchMap.put("progressValue", progressValue);
+		}
+		
+		if(dateSearchKey != null && startDate != null && endDate != null) {
+			searchMap.put("dateSearchKey", dateSearchKey);
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		
+		log.info("searchMap: {}", searchMap);
+		
+		List<FoundationRequest> foundationRequestList = foundationMapper.getFoundationRequestListBySearch(searchMap);
+		return foundationRequestList;
 	}
 	
 	/**
@@ -75,12 +139,15 @@ public class FoundationService {
 	
 	/**
 	 * 재단 삭제
-	 * @param valueArr
+	 * @param foundationCode
 	 */
-	public void removeFoundation(List<String> valueArr) {
-		for(int i=0; i<valueArr.size(); i++) {
-			foundationMapper.removeFoundation(valueArr.get(i));
+	public boolean removeFoundation(String foundationCode) {
+		boolean isRemove = foundationMapper.removeFoundationCheck(foundationCode);
+		if(isRemove) {
+			foundationMapper.removeFoundation(foundationCode);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -108,8 +175,43 @@ public class FoundationService {
 	 * @return
 	 */
 	public int addFoundation(Foundation foundation) {
+		
 		int result = foundationMapper.addFoundation(foundation);
 		return result;
+	}
+	
+	/**
+	 * 재단 검색 결과 조회
+	 * @param searchMap
+	 * @return
+	 */
+	public List<Foundation> getFoundationListBySearch(String inputSearchKey
+													, String inputSearchValue
+													, String startDate
+													, String endDate){
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
+			case "foundationName":
+				inputSearchKey = "foundation_name";
+				break;
+			case "foundationManager":
+				inputSearchKey = "foundation_manager";					
+				break;
+			}
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
+		}
+		if(startDate != null && endDate != null) {
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		log.info("searchMap: {}", searchMap);
+		
+		List<Foundation> foundationList = foundationMapper.getFoundationListBySearch(searchMap);
+		return foundationList;
 	}
 	
 	/**

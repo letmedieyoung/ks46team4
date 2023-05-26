@@ -1,5 +1,7 @@
 package ks46team04.admin.dto;
 
+import java.util.List;
+
 public class Purchase {
 	private String purchaseCode;		
 	private String purchaseStatus;	
@@ -16,6 +18,7 @@ public class Purchase {
 	private String purchaseGroupCode;		
 	private String userPurchseDeadlindeCheck;
 	private boolean goodsIsDel;
+	private List<String> delPkValues;
 	
 	
 	public String getPurchaseCode() {
@@ -108,7 +111,12 @@ public class Purchase {
 	public void setGoodsIsDel(boolean goodsIsDel) {
 		this.goodsIsDel = goodsIsDel;
 	}
-	
+	public void setDelPkValues(List<String> delPkValues) {
+		this.delPkValues = delPkValues;
+	}
+	public List<String> getDelPkValues() {
+		return delPkValues;
+	}
 	
 	@Override
 	public String toString() {
@@ -143,8 +151,9 @@ public class Purchase {
 		builder.append(userPurchseDeadlindeCheck);
 		builder.append(", goodsIsDel=");
 		builder.append(goodsIsDel);
+		builder.append(", delPkValues=");
+		builder.append(delPkValues);
 		builder.append("]");
 		return builder.toString();
-	}
-	
+	}	
 }

@@ -7,16 +7,8 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
 </head>
 <th:block layout:fragment="customContents">
@@ -53,11 +45,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
-												&nbsp;
-												<button type="button" id="foundationSearchBtn" class="btn btn-primary btn-icon-split">
-													<span class="text">중복확인</span>
-												</button>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요." readonly/>
 											</div>
 										</td>
 									</tr>
@@ -86,13 +74,20 @@
 											<label for="foundationAddr">주소</label>
 										</th>
 										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search long-input" id="foundationAddr" name="foundationAddr" th:value="*{foundationAddr}" placeholder="주소를 검색해주세요."/>
-											</div>
-											<div class="form-row align-items-center search-schedule">
+											<div class="search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" 
+													id="foundationZipcode" name="foundationZipcode" th:value="*{foundationZipcode}" placeholder="우편번호" readonly/>
 												<button type="button" id="addrSearchBtn" class="btn btn-primary btn-icon-split">
 													<span class="text">주소 검색</span>
 												</button>
+												<div style="padding: 5px 0;"></div>
+												<input type="text" class="form-control form-control-user-search long-input" 
+													id="foundationAddr" name="foundationAddr" th:value="*{foundationAddr}" placeholder="주소" readonly/>
+												<input type="text" class="form-control form-control-user-search short-input" 
+													id="foundationExtraAddr" name="foundationExtraAddr" th:value="*{foundationExtraAddr}" placeholder="참고주소" readonly/>
+												<div style="padding: 5px 0;"></div>
+												<input type="text" class="form-control form-control-user-search long-input" 
+													id="foundationDetailAddr" name="foundationDetailAddr" th:value="*{foundationDetailAddr}" placeholder="상세주소를 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -135,23 +130,45 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- 카카오 주소 API -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
-</th:block>
+	<script th:inline="javascript">
+		$(function(){
+			/**
+			 * 카카오 지도 API
+			*/	
+			$("#addrSearchBtn").click(function() { //주소입력칸을 클릭하면
+		        //카카오 지도 발생
+		        new daum.Postcode({
+		            oncomplete: function(data) { //선택시 입력값 세팅
+		            	let foundationZipcode = data.zonecode;
+		            	let foundationAddr = data.address;
+		            	let foundationExtraAddr = ''; //건물명
+		            	if(data.buildingName != null && data.buildingName != ''){
+		            		foundationExtraAddr = data.buildingName;
+		            	}
+		            	console.log('foundationZipcode: '+foundationZipcode);
+		            	console.log('foundationAddr: '+foundationAddr);
+		            	console.log('foundationExtraAddr: '+foundationExtraAddr);
 
+		            	$("#foundationZipcode").val(data.zonecode); // 우편 번호 넣기
+		                $("#foundationAddr").val(foundationAddr); // 주소 넣기
+		                $("#foundationExtraAddr").val(foundationExtraAddr); // 참고주소 넣기
+		                $("#foundationDetailAddr").focus(); //상세입력 포커싱
+		            }
+		        }).open();
+		    });
+		});
+	</script>
+</th:block>
 </html>

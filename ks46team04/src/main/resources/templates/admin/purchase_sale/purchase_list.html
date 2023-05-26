@@ -4,8 +4,8 @@
 	layout:decorate="~{layout/default}">
 <head>
 <!-- Custom styles for this page -->
-<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
-	rel="stylesheet">
+	<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+	<link th:href="@{/css/lbr-style.css}" rel="stylesheet">
 </head>
 
 <th:block layout:fragment="customContents">
@@ -40,6 +40,15 @@
                         3. 총 매입 누계 조회
                     -->
 
+
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">
+					매입·매출 > <a th:href="@{/admin/purchase_sale/purchase_list}">매입 기록 조회</a>
+				</h6>
+			</div>
+		</div>
+		
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
@@ -139,7 +148,7 @@
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<br>
-				<button class="btn btn-primary deleteAllChecks">
+				<button class="deleteAllChecks btn btn-primary">
 					<span class="text text-gray-100">선택 항목 일괄 삭제</span>
 				</button>
 				
@@ -175,10 +184,12 @@
 						</thead>
 						<tbody>
 							<tr th:unless="${totalPurchaseList == null}" th:each="l : ${totalPurchaseList}">
-								<td><input type="checkbox" class="update-delete deleteChecks"
-									name="DeleteCheck" value="false"></td>
+								<td>
+									<input type="checkbox" class="update-delete deleteChecks" name="DeleteCheck" value="false">
+									<input type="hidden" class="purchaseCode" name="purchaseCode" th:value="${l.purchaseCode}">	
+								</td>
 								<td th:text="${l.purchaseStatus}"></td>
-								<td th:text="${l.goodsName}"></td>
+								<td class="goodsName" th:text="${l.goodsName}"></td>
 								<td class="price" th:text="${l.purchasePrice}"></td>
 								<td th:text="${l.purchaseQuantity}"></td>
 								<td class="price" th:text="${l.totalPurchasePrice}"></td>
@@ -195,7 +206,7 @@
 									</a>
 								</td>
 								<td>
-									<button class="btn btn-secondary btn-sm">
+									<button class="btn btn-secondary btn-sm btn-modal">
 										<span class="text text-gray-100">삭제</span>
 									</button>
 								</td>
@@ -204,9 +215,39 @@
 					</table>
 				</div>
 				<br>
-				<button class="btn btn-primary deleteAllChecks">
+				<button class="deleteAllChecks btn btn-primary">
 					<span class="text text-gray-100">선택 항목 일괄 삭제</span>
 				</button>
+				
+				<!-- modal -->
+				<div id="modal" class="modal-overlay">
+					<div class="modal-window bg-gray-100">
+						<div class="title">
+							<h3>삭제 확인</h3>
+						</div>
+						<div class="close-area x-box">X</div>
+						<div class="content">
+							<p>
+								해당 매입 기록을 삭제하시겠습니까?<br>
+								삭제된 기록은 복구할 수 없습니다.<br>
+							</p>
+							<p class="content-goods">[<span class="content-goods-name"></span>]</p>
+							<hr>
+							<div>
+								<p>관리자 비밀번호 확인</p>
+								<input type="password" id="masterPw" name="masterPw" placeholder="비밀번호" class="form-control form-control-user-search purchase-search">
+							</div>						
+						</div>
+						<div class="modal-btns">
+								<button type="button" id="deletePurchase" class="btn btn-secondary">						
+								<span class="text-gray-100">매입 삭제</span>							
+							</button>
+							<button type="button" class="close-area btn btn-secondary">취소</button>
+						</div>
+					</div>
+				</div>
+				
+				
 			</div>
 		</div>
 	</div>
@@ -223,12 +264,125 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{../../js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
-		$('#dataTable').DataTable({
-			'ordering': false
+		const dataTable	= $('#dataTable').DataTable({
+			'ordering': false,
+		  	'info': false
 		});
 	</script>
 	
-	<script type="text/javascript">
+	<script>
+		let isCheckDelBtn = false;
+		let isOnlyDelBtn = false;
+		
+		let $onlyRowSave = null;
+		let $checkRowsSave = [];
+
+		const $masterPw = $('#masterPw');
+		
+		//선택된 PK요소를 파라미터로 보낸다
+		function requestDelete(delPkValues, $delPkEles){
+			let masterPw = $masterPw.val()
+			$.ajax({
+				  url: '/admin/purchase_sale/request_remove',
+				  method: 'POST',
+				  data: { 
+						  'masterPw': masterPw, 
+						  'delPkValues': delPkValues
+						}, 
+				  dataType: 'json',
+				  success: function(response) {   
+								console.log(response);
+							    if(response.isDel){
+						    	 // 요소 리무브 
+								  	$.each($delPkEles, function(idx, item){
+								  		console.log($(item).parents('tr'));
+								  		dataTable.row( $(item).parents('tr') )
+								        		 .remove()
+								        		 .draw();	//화면에서 해당요소 지움
+								    });
+							    	modalOff();
+						    	 
+								  	console.log($onlyRowSave + '<- $onlyRowSave1');
+									console.log($checkRowsSave + ' <- $checkRowsSave1');
+							    	$onlyRowSave = null;
+									$checkRowsSave = [];
+									console.log($onlyRowSave + '<- $onlyRowSave2');
+									console.log($checkRowsSave + ' <- $checkRowsSave2');
+							    }else{
+							    	alert(response.msg);
+							    }
+				  },
+				  error: function(error) {
+				    // 삭제 요청이 실패한 경우 실행되는 콜백 함수
+				    // 에러 처리 로직을 추가할 수 있음
+				    //alert('삭제할 수 없습니다.');
+				    console.log('요청실패');
+				  }
+			});
+		}
+	
+	</script>
+	
+	<script>
+		const $modal = document.getElementById('modal');
+		let isModalOn = false;
+		
+		function modalOn() {
+		    $modal.style.display = 'flex';
+		    $masterPw.val('');
+		    isModalOn = true;
+		}
+		function modalOff() {
+		    $modal.style.display = 'none';
+		    isModalOn = false;
+		   	isCheckDelBtn = false;
+			isOnlyDelBtn = false;
+		}
+		
+		//개별 삭제 버튼
+		const $btnModal = document.querySelectorAll('.btn-modal');	
+		console.log($btnModal);
+		$btnModal.forEach(function(item, idx){
+			item.addEventListener('click', e => {
+				const $parentTr = item.parentNode.parentNode; // item의 부모 요소인 tr을 가져옴
+				console.log($parentTr + '<- $parentTr');
+				$onlyRowSave = item.parentNode.parentNode;	//체크된 단일 행 요소 저장	
+				
+				const $goodsNameEle = $parentTr.querySelector('.goodsName'); // tr 안에서 클래스가 'goodsName'인 요소를 선택
+				console.log($goodsNameEle);
+				let goodsname = $goodsNameEle.textContent;
+				console.log(goodsname);
+				
+				const $modalContentName = document.querySelector('.content-goods-name')
+				$modalContentName.textContent = goodsname;
+				isOnlyDelBtn = true;
+			    modalOn();
+			});
+		});
+		
+		const $closeBtn = modal.querySelectorAll('.close-area');
+		$.each($closeBtn, (idx,item) => {
+			console.log(item);
+			item.addEventListener('click', e => {
+				modalOff();
+			})
+		});
+		
+		$modal.addEventListener('click', e => {
+		    const evTarget = e.target;
+		    if(evTarget.classList.contains('modal-overlay')) {
+		        modalOff();
+		    }
+		});
+		window.addEventListener('keyup', e => {
+		    if(isModalOn && e.key === 'Escape') {
+		        modalOff();
+		    }
+		});
+	</script>
+	
+	<script>
+		//전체선택 체크박스
 		$('#allDeleteCheck').click(function(){
 			$('.deleteChecks').prop('checked', $(this).prop('checked'));
 		});
@@ -236,7 +390,7 @@
 		$('.deleteChecks').click(function(){
 			let length = $('.deleteChecks').length;
 			let checkLength = $('.deleteChecks:checked').length;
-			console.log(length);
+			//console.log(length);
 
 			if(length == checkLength){
 				$('#allDeleteCheck').prop('checked',true);
@@ -244,28 +398,87 @@
 				$('#allDeleteCheck').prop('checked',false);
 			}
 		});
+		
+		
+		//체크된 항목 삭제 버튼
+		console.log($('.deleteAllChecks').length);
+		$.each($('.deleteAllChecks'), function(idx, item){
+			$(item).click(function(){
+				//삭제
+				const $checkRows = $('.deleteChecks[type="checkbox"]:checked').parents('tr');
+				console.log($checkRows.length);
+	
+				$.each($checkRows, function(idx, item){ //체크된 행 요소들 저장
+					$checkRowsSave[idx] = $(item);
+					console.log($checkRowsSave[idx]);
+				});
+				
+				
+				const $checkNames = $checkRows.last().find('.goodsName');
+				let nameStr = $checkNames.text();
+				
+				if($checkRows.length == 0){
+					alert('선택된 항목이 없습니다.');
+					return false;
+				}else if($checkRows.length > 1){
+					nameStr += '<br>' + `¨외 ${$checkRows.length-1} 건`;
+				}
+	
+				console.log(nameStr);
+				$('.content-goods-name').html(nameStr);
+				isCheckDelBtn = true;
+				modalOn();
+			});
+		});
+		
+		
+		$('#deletePurchase').click(function(){
+			//세션 아이디가 관리자이며 아이디에 해당하는 비밀번호가 일치하는지 확인
+			//정보가 맞다면 디비에서 해당 row 지우기
+			//체크된 요소 배열 넘기기 or 삭제 누른 요소 하나만 넘기기
+			//체크가 되었을수도 있고 체크 되었어도 오른쪽 삭제를 눌렀을 수도 있음...
+			//두 경우를 구분할 값이 필요함
+			//모달창이 꺼질때 값을 리셋해
+			
+			const $delPkEles = [];
+			const delPkValues = [];
+			//두 경우를 나누어서 PK값을 배열에 담는다
+				if(isCheckDelBtn){
+					for(idx in $checkRowsSave){
+						console.log($checkRowsSave[idx].find('.purchaseCode').val());
+						delPkValues[idx] = $checkRowsSave[idx].find('.purchaseCode').val();
+						console.log(delPkValues + ' <- 다중 체크된 요소');
+						console.log($checkRowsSave + ' <- $checkRowsSave2');
+						$delPkEles[idx] = $checkRowsSave[idx].find('.purchaseCode');
+						console.log($delPkEles[idx]);
+					}
+					requestDelete(delPkValues, $delPkEles)	// ajax 요청
+				} else if(isOnlyDelBtn){
+					console.log($($onlyRowSave).find('.purchaseCode').val());			
+					delPkValues[0] = $($onlyRowSave).find('.purchaseCode').val();
+					console.log(delPkValues + ' <- 단일 선택된 요소');
+					console.log($onlyRowSave + '<- $onlyRowSave2');
 
-		$('#deleteAllChecks').click(function(){
+					$delPkEles[0] = $($onlyRowSave).find('.purchaseCode');
+					console.log($delPkEles[0]);
+					requestDelete(delPkValues, $delPkEles)	// ajax 요청
+				}
+			
+			
 			
 		});
+	
 		
 		//₩세자리,콤마----------------------------
 		const price = $('.price');
-		console.log(price);
+		//console.log(price);
 		price.each(function(idx,item){
-			console.log(item);
+			//console.log(item);
 			let priceText = item.textContent;
-			console.log(priceText);
+			//console.log(priceText);
 			let formattedPrice = '₩' + priceText.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 			item.textContent = formattedPrice;
-		});
-		
-
-		$('.deleteAllChecks').click(function(){
-			$('.deleteAllChecks').each(function(){
-				
-			});
-		});
+		});		
 	</script>
 </th:block>
 </html>

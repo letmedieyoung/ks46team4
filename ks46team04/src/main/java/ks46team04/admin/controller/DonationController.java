@@ -1,6 +1,9 @@
 package ks46team04.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Donation;
 import ks46team04.admin.dto.DonationMonthPay;
@@ -29,22 +32,26 @@ public class DonationController {
 	private final DonationService donationService;
 	
 	/*
-	 * 정기기부 단가 조회
+	 * 정기기부 콘텐츠 조회
 	 */
 	@GetMapping("/donation_list")
-	public String getDonation(Model model, @RequestParam(name="searchKey", required = false) String searchKey
-										, @RequestParam(name="searchValue", required = false) String searchValue) {
+	public String getDonation(Model model,
+		@RequestParam(name="searchKey", required = false) String searchKey,
+		@RequestParam(name="searchValue", required = false) String searchValue,
+		@RequestParam(value="startDate", required = false) String startDate,
+		@RequestParam(value="endDate", required = false) String endDate
+	) {
+		Map<String, Object> searchMap = new HashMap<>();
+		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue, searchMap, startDate, endDate);
 		
-		List<Donation> getDonation = donationService.getDonation(searchKey, searchValue);
-				
-		model.addAttribute("title", "정기기부 단가 목록");
+		model.addAttribute("title", "등록된 회원 결제수단 목록");
 		model.addAttribute("getDonation", getDonation);
 		
 		return "admin/donation/donation_list";
 	}
 
 	/*
-	 * 정기기부 단가 등록
+	 * 정기기부 콘텐츠 등록
 	*/
 	@PostMapping("/donation_add")
 	public String addDonation(Donation donation, HttpSession session) {
@@ -61,13 +68,13 @@ public class DonationController {
 	@GetMapping("/donation_add")
 	public String addDonation(Model model) {
 		
-		model.addAttribute("title", "정기기부 단가 등록");
+		model.addAttribute("title", "정기기부 콘텐츠 등록");
 
-		return "/admin/donation/donation_add";
+		return "admin/donation/donation_add";
 	}
 	
 	/*
-	 * 정기기부 단가 수정
+	 * 정기기부 콘텐츠 수정
 	 */
 	@PostMapping("/donation_modify")
 	public String modifyDonation(Donation donation, HttpSession session) {
@@ -86,15 +93,22 @@ public class DonationController {
 		
 		Donation donationInfo = donationService.getDonationInfoByCode(donationCode);
 		
-		model.addAttribute("title", "정기기부 단가 수정");
+		model.addAttribute("title", "정기기부 콘텐츠 수정");
 		model.addAttribute("donationInfo", donationInfo);
 		
 		return "admin/donation/donation_modify";
 	}
 	
 	/*
-	 * 정기기부 단가 삭제
+	 * 정기기부 콘텐츠 삭제
 	 * */
+	@PostMapping("/donation_remove")
+	@ResponseBody
+	public List <String> removeDonation(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonation(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donation_remove")
 	public String removeDonation(Donation donation) {
 		donationService.removeDonation(donation);
@@ -139,7 +153,7 @@ public class DonationController {
 		model.addAttribute("title", "등록된 회원 결제수단 등록");
 		model.addAttribute("paymentCode", paymentCode);
 		
-		return "/admin/donation/donationPayMethod_add";
+		return "admin/donation/donationPayMethod_add";
 	}
 	
 	/*
@@ -171,6 +185,13 @@ public class DonationController {
 	/*
 	 * 등록된 회원 결제수단 삭제
 	 * */
+	@PostMapping("/donationPayMethod_remove")
+	@ResponseBody
+	public List <String> removeDonationPayMethod(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationPayMethod(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationPayMethod_remove")
 	public String removeDonationPayMethod(DonationPayMethod donationPayMethod) {
 		donationService.removeDonationPayMethod(donationPayMethod);
@@ -217,7 +238,36 @@ public class DonationController {
 		model.addAttribute("donationCode", donationCode);
 		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		
-		return "/admin/donation/donationSub_add";
+		return "admin/donation/donationSub_add";
+	}
+	
+	/*
+	 * 정기기부 구독 해지 등록
+	 */
+	@PostMapping("/donationSub_cancel")
+	public String cancelDonationSub(DonationSub donationSub, HttpSession session) {
+		
+		String donationSubUserId = (String) session.getAttribute("SID");
+		donationSub.setDonationSubUserId(donationSubUserId);
+		
+		donationService.cancelDonationSub(donationSub);
+		
+		
+		return "redirect:/admin/donation/donationSub_list";
+	}
+	@GetMapping("/donationSub_cancel")
+	public String cancelDonationSub(Model model, String donationSubCode){
+		
+		DonationSub donationSubInfo = donationService.getDonationSubInfoByCode(donationSubCode);
+		List<Donation> donationCode = donationService.getdonationCode();
+		List<DonationPayMethod> donationPayMethodCode = donationService.getdonationPayMethodCode();
+
+		model.addAttribute("title", "정기기부 구독 해지 등록");
+		model.addAttribute("donationSubInfo", donationSubInfo);
+		model.addAttribute("donationCode", donationCode);
+		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
+		
+		return "admin/donation/donationSub_cancel";
 	}
 	
 	/*
@@ -252,6 +302,13 @@ public class DonationController {
 	/*
 	 * 정기기부 구독 신청 삭제
 	 * */
+	@PostMapping("/donationSub_remove")
+	@ResponseBody
+	public List <String> removeDonationSub(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationSub(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationSub_remove")
 	public String removeDonationSub(DonationSub donationSub) {
 		donationService.removeDonationSub(donationSub);
@@ -297,7 +354,7 @@ public class DonationController {
 		model.addAttribute("donationPayMethodCode", donationPayMethodCode);
 		model.addAttribute("donationSubCode", donationSubCode);
 		
-		return "/admin/donation/donationPayDetail_add";
+		return "admin/donation/donationPayDetail_add";
 	}
 	
 	/*
@@ -330,6 +387,13 @@ public class DonationController {
 	/*
 	 * 정기기부 구독 결제 상세 삭제
 	 * */
+	@PostMapping("/donationPayDetail_remove")
+	@ResponseBody
+	public List <String> removeDonationPayDetail(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationPayDetail(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationPayDetail_remove")
 	public String removeDonationPayDetail(DonationPayDetail donationPayDetail) {
 		donationService.removeDonationPayDetail(donationPayDetail);
@@ -371,7 +435,7 @@ public class DonationController {
 		model.addAttribute("title", "정기기부 월별 결제 합계 등록");
 		model.addAttribute("donationCode", donationCode);
 		
-		return "/admin/donation/donationMonthPay_add";
+		return "admin/donation/donationMonthPay_add";
 	}
 	
 	/*
@@ -398,6 +462,13 @@ public class DonationController {
 	/*
 	 * 정기기부 월별 결제 합계 삭제
 	 * */
+	@PostMapping("/donationMonthPay_remove")
+	@ResponseBody
+	public List <String> removeDonationMonthPay(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationMonthPay(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationMonthPay_remove")
 	public String removeDonationMonthPay(DonationMonthPay donationMonthPay) {
 		donationService.removeDonationMonthPay(donationMonthPay);
@@ -443,7 +514,7 @@ public class DonationController {
 		model.addAttribute("title", "정기기부 환불 등록");
 		model.addAttribute("donationPayDetailCode", donationPayDetailCode);
 		
-		return "/admin/donation/donationRefund_add";
+		return "admin/donation/donationRefund_add";
 	}
 	
 	/*
@@ -476,6 +547,13 @@ public class DonationController {
 	/*
 	 * 정기기부 환불 삭제
 	 * */
+	@PostMapping("/donationRefund_remove")
+	@ResponseBody
+	public List <String> removeDonationRefund(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		donationService.removeDonationRefund(valueArr);
+		return valueArr;
+	}
+	
 	@GetMapping("/donationRefund_remove")
 	public String removeDonationRefund(DonationRefund donationRefund) {
 		donationService.removeDonationRefund(donationRefund);

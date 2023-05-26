@@ -35,4 +35,153 @@
 		FROM
 			profit_n_loss;
 	</select>
+	
+	
+	<update id="setWaiting" parameterType="String">
+		/*마감전을 마감대기중으로 변경*/
+		UPDATE
+			${tableName}
+		SET
+			${columnName} = 'waiting'
+		<where>
+			<if test="division!= null and division == 'purchase'">
+			AND 
+				SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(${group}, '_', 3), '_', -1), 1, 4) = DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%y%m')
+			</if>
+			<if test="division!= null and division != 'purchase'">
+			AND 
+				SUBSTRING_INDEX(${group}, '_', -1) = DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%y%m')
+			</if>	
+			AND 
+			${columnName} = 'before_deadline';
+		</where>
+	</update>
+	
+	
+	<update id="resetWaiting" parameterType="String">
+		/*마감전을 마감대기중으로 변경*/
+		UPDATE
+			${tableName}
+		SET
+			${columnName} = 'before_deadline'
+		<where>
+			<if test="division!= null and division == 'purchase'">
+			AND	
+				SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(${group}, '_', 3), '_', -1), 1, 4) = DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%y%m')
+			</if>
+			<if test="division!= null and division != 'purchase'">
+			AND
+				SUBSTRING_INDEX(${group}, '_', -1) = DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%y%m')
+			</if>	
+			AND 
+			${columnName} = 'waiting';
+		</where>
+	</update>
+	
+	<select id="monthPurchaseList" parameterType="String" resultType="Purchase">
+		SELECT
+	        total_purchase_price as totalPurchasePrice,
+	        purchase_group_code as purchaseGroupCode
+	    FROM
+	        purchase_history
+	    WHERE
+	        user_purchse_deadlinde_check = 'waiting'
+	        AND purchase_group_code LIKE CONCAT('%group_', #{yearMonth}, '%');
+	</select>
+	
+	<select id="monthFundingPayList" parameterType="String" resultType="FundingPay">
+		SELECT
+			funding_payment_amount as fundingPaymentAmount,
+			sales_commission as salesCommission,
+			purchase_budget as purchaseBudget,
+			funding_group_code as fundingGroupCode
+		FROM
+			funding_payments
+		WHERE
+			deadline_status = 'waiting'
+		   	AND
+		   	funding_group_code LIKE CONCAT('%group_', #{yearMonth}, '%');
+	</select>
+	
+	<select id="monthDonationPayList" parameterType="String" resultType="DonationPayDetail">
+		SELECT
+			payment_amount as donationPayAmount,
+			sales_commission as donationPaySalesCommission,
+			purchase_budget as donationPayPurchaseBudget,
+			regular_donation_sales_group as donationPaySalesGroup
+		FROM
+			user_regular_donation_payment
+		WHERE
+			user_regular_donation_deadline_check = 'waiting'
+		   	AND
+		   	regular_donation_sales_group LIKE CONCAT('%group_', #{yearMonth}, '%');
+	</select>
+	
+	<insert id="addToTotal" parameterType="TotalPurchaseSale">
+		INSERT INTO total_purchse_sale
+		(
+			month_donation_payment_code,		
+			payment_year,		
+			payment_month,		
+			purchase_sales_type,		
+			sales_group_code,		
+			payment_amount,		
+			payment_vat,		
+			purchase_budget,		
+			division		
+		)
+		VALUES
+		(
+			#{monthDonationPayCode},
+			#{paymentYear},
+			#{paymentMonth},
+			#{purchaseSalesType},
+			#{salesGroupCode},
+			#{paymentAmount},
+			#{paymentVat},
+			#{purchaseBudget},
+			#{division}
+		);	
+	</insert>
+	
+	<select id="getTotalByYearMonth" parameterType="String" resultType="TotalPurchaseSale">
+		SELECT
+			purchase_sales_type as purchaseSalesType,
+			payment_amount as paymentAmount,
+			payment_vat as paymentVat,		
+			purchase_budget	as purchaseBudget
+		FROM
+			total_purchse_sale
+		WHERE
+			payment_year = #{yearStr}
+			and
+			payment_month = #{monthStr};
+	</select>
+
+	<insert id="addProfitLoss" parameterType="ProfitLoss">
+		INSERT INTO profit_n_loss
+		(
+			profit_n_loss_code,		
+			payment_year,		
+			payment_month,		
+			month_total_sales,		
+			month_total_vat,		
+			month_total_budget,		
+			month_total_purchase,		
+			month_profit_loss,		
+			final_month_profit_loss		
+		)
+		VALUES
+		(
+			#{profitLossCode},
+			#{paymentYear},
+			#{paymentMonth},
+			#{monthTotalSales},
+			#{monthTotalVat},
+			#{monthTotalBudge},
+			#{monthTotalPurchase},
+			#{monthProfitLoss},
+			#{finalMonthProfitLoss}
+		);
+	</insert>
  </mapper>

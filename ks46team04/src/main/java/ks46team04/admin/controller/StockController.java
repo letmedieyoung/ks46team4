@@ -1,8 +1,6 @@
 package ks46team04.admin.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +84,7 @@ public class StockController {
 	@GetMapping("/modify_unusual_stock_detail")
 	public String modifyUnusualStock(Model model, @RequestParam(name="unusualStockCode") String unusualStockCode) {
 		
+		log.info("unusualStockCode: {}", unusualStockCode);
 		
 		UnusualStock unusualStockInfo = stockService.getUnusualStockInfoByCode(unusualStockCode);
 		String goodsCode = unusualStockInfo.getGoodsCode();
@@ -93,7 +92,7 @@ public class StockController {
 		unusualStockInfo.setGoodsInfo(goodsInfo);
 		log.info("unusualStockInfo: {}", unusualStockInfo);
 		
-		model.addAttribute("title", "상품 비정상재고 수정");
+		model.addAttribute("title", "상품 비정상 재고 수정");
 		model.addAttribute("unusualStockInfo", unusualStockInfo);
 		
 		return "admin/stock/modify_unusual_stock_detail";
@@ -129,9 +128,42 @@ public class StockController {
 		
 		log.info("model: {}", model);
 		
-		model.addAttribute("title", "상품 비정상재고 등록");
+		model.addAttribute("title", "상품 비정상 재고 등록");
 		
 		return "admin/stock/add_unusual_stock_detail";
+	}
+	
+	/**
+	 * 상품 비정상재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_unusual_stock_detail_list")
+	@ResponseBody
+	public List<UnusualStock> getUnusualStockListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+														, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+														, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+														, @RequestParam(value="startDate", required = false) String startDate
+														, @RequestParam(value="endDate", required = false) String endDate) {
+		log.info("inputSearchKey: {}, inputSearchValue: {}, stocktakingKey: {}, stocktakingValue: {},"
+				+ "unusualStockKey: {},unusualStockValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
+				inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);
+
+		
+		
+		List<UnusualStock> unusualStockList = stockService.getUnusualStockListBySearch(inputSearchKey
+																					, inputSearchValue
+																					, dateSearchKey
+																					, startDate
+																					, endDate);
+		
+		log.info("unusualStockList: {}", unusualStockList);
+		
+		return unusualStockList;
 	}
 	
 	/**
@@ -144,7 +176,7 @@ public class StockController {
 		
 		List<UnusualStock> unusualStockList = stockService.getUnsualStockList();
 		
-		model.addAttribute("title", "unusual_stock_detail_list");
+		model.addAttribute("title", "상품 비정상 재고 조회");
 		model.addAttribute("unusualStockList", unusualStockList);
 		
 		return "admin/stock/unusual_stock_detail_list";
@@ -193,30 +225,31 @@ public class StockController {
 	@GetMapping("/modify_in_outcoming")
 	public String modifyInOutcoming(Model model, @RequestParam(name="inOutcomingCode") String inOutcomingCode) {
 	    
-	    InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-	    OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
-	    log.info("outcomingDetailInfo: {}", outcomingDetailInfo);
-	    
-	    String goodsCode = inOutcomingInfo.getGoodsCode();
-	    Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
-	    log.info("goodsInfo: {}", goodsInfo);
-	    
-	    String foundationCode = outcomingDetailInfo.getFoundationCode();
-	    Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
-	    log.info("foundationInfo: {}", foundationInfo);
-
-	    Map<String, Object> inOutcomingMap = new HashMap<String, Object>();
-	    inOutcomingMap.put("inOutcomingInfo", inOutcomingInfo);
-	    inOutcomingMap.put("goodsInfo", goodsInfo);
-	    inOutcomingMap.put("foundationInfo", foundationInfo);
-	    log.info("inOutcomingMap: {}", inOutcomingMap);
-	    
-	    model.addAttribute("title", "상품 입출고 수정");
-	    model.addAttribute("inOutcomingMap", inOutcomingMap);
+		
+		log.info("inOutcomingCode: {}", inOutcomingCode);
+		
+		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
+		
+		String goodsCode = inOutcomingInfo.getGoodsCode();
+		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
+		log.info("goodsInfo: {}", goodsInfo);
+		inOutcomingInfo.setGoodsInfo(goodsInfo);
+		
+		if(inOutcomingInfo.getInOutcomingType().equals("outcoming")){
+			OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
+			String foundationCode = outcomingDetailInfo.getFoundationCode();
+			Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
+			log.info("foundationInfo: {}", foundationInfo);
+		}
+		
+		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		
+		model.addAttribute("title", "상품 입출고 수정");
+		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
 	    
 	    return "admin/stock/modify_in_outcoming";
 	}
-
+	
 	
 	/**
 	 * 상품 입출고 등록 @PostMapping
@@ -225,16 +258,41 @@ public class StockController {
 	 * @return
 	 */
 	@PostMapping("/add_in_outcoming")
-	public String addInOutcoming(InOutcoming InOutcoming, HttpSession session) {
-		
+	public String addInOutcoming(InOutcoming inOutcoming, HttpSession session, Model model) {
+
 		String inOutcomingRegId = (String) session.getAttribute("SID");
 		log.info("inOutcomingRegId: {}", inOutcomingRegId);
 
-		InOutcoming.setInOutcomingRegId(inOutcomingRegId);
-	    log.info("InOutcoming: {}", InOutcoming);
+		inOutcoming.setInOutcomingRegId(inOutcomingRegId);
+	    log.info("inOutcoming: {}", inOutcoming);
 	    
-	    stockService.addInOutcoming(InOutcoming);
-		
+	    // 상품 입출고 등록
+	    stockService.addInOutcoming(inOutcoming);
+	    
+	    // 등록된 입출고 정보 가져오기
+	    InOutcoming lastInOutcomingInfo = stockService.getLastInOutcomingInfo();
+	    log.info("lastInOutcomingInfo: {}", lastInOutcomingInfo);
+	    
+	    // 상품 출고가 등록된 경우 - 상품 출고상세 등록
+	    String inOutcomingType = lastInOutcomingInfo.getInOutcomingType();
+	    log.info("inOutcomingType: {}", inOutcomingType);
+	    
+	    boolean isOutcoming = inOutcomingType.equals("outcoming");
+	    if(isOutcoming) {
+	    	String foundationName = (String) model.getAttribute("foundationName");
+	    	log.info("foundationName: {}", foundationName);
+	    	lastInOutcomingInfo.setFoundationName(foundationName);
+	    	
+	    	String outcomingId = (String) model.getAttribute("outcomingId");
+	    	log.info("outcomingId: {}", outcomingId);
+	    	lastInOutcomingInfo.setOutcomingId(outcomingId);
+	    	
+	    	stockService.addOutcomingDetail(lastInOutcomingInfo);
+	    }
+	    
+	    // 상품 재고 등록
+	    stockService.addStock(lastInOutcomingInfo);
+	    
 		return "redirect:/admin/stock/in_outcoming_list";
 	}
 	
@@ -251,6 +309,36 @@ public class StockController {
 		model.addAttribute("title", "상품 입출고 등록");
 		
 		return "admin/stock/add_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_in_outcoming_list")
+	@ResponseBody
+	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+													, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+													, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+													, @RequestParam(value="startDate", required = false) String startDate
+													, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("inputSearchKey: {}, inputSearchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
+				, inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);	
+		
+		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(inputSearchKey
+																				, inputSearchValue
+																				, dateSearchKey
+																				, startDate
+																				, endDate);
+		log.info("inOutcomingList: {}", inOutcomingList);
+
+		return inOutcomingList;
 	}
 	
 	/**
@@ -294,6 +382,8 @@ public class StockController {
 	@GetMapping("/modify_stock")
 	public String modifyStock(Model model, @RequestParam(name="goodsStockCode") String goodsStockCode) {
 		
+		log.info("goodsStockCode: {}", goodsStockCode);
+		
 		Stock stockInfo = stockService.getStockInfoByCode(goodsStockCode);
 		String goodsCode = stockInfo.getGoodsCode();
 		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
@@ -304,6 +394,51 @@ public class StockController {
 		model.addAttribute("stockInfo", stockInfo);
 		
 		return "admin/stock/modify_stock";
+	}
+	
+	/**
+	 * 상품 재고 검색 결과 조회
+	 * @param inputSearchKey
+	 * @param inputSearchValue
+	 * @param stocktakingKey
+	 * @param stocktakingValue
+	 * @param unusualStockKey
+	 * @param unusualStockValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_stock_list")
+	@ResponseBody
+	public List<Stock> getStockListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+										, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+										, @RequestParam(value="stocktakingKey", required = false) String stocktakingKey
+										, @RequestParam(value="stocktakingValue", required = false) String stocktakingValue
+										, @RequestParam(value="unusualStockKey", required = false) String unusualStockKey
+										, @RequestParam(value="unusualStockValue", required = false) String unusualStockValue
+										, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate) {
+		log.info("inputSearchKey: {}, inputSearchValue: {}, stocktakingKey: {}, stocktakingValue: {},"
+				+ "unusualStockKey: {},unusualStockValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
+				inputSearchKey, inputSearchValue, stocktakingKey, stocktakingValue, unusualStockKey, unusualStockValue, dateSearchKey, startDate, endDate);
+
+		
+		
+		List<Stock> stockList = stockService.getStockListBySearch(inputSearchKey
+																, inputSearchValue
+																, stocktakingKey
+																, stocktakingValue
+																, unusualStockKey
+																, unusualStockValue
+																, dateSearchKey
+																, startDate
+																, endDate);
+		
+		log.info("stockList: {}", stockList);
+		
+		return stockList;
 	}
 	
 	/**

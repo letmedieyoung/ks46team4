@@ -1,6 +1,8 @@
 package ks46team04.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
+import ks46team04.admin.mapper.StockMapper;
 
 @Service
 @Transactional
@@ -19,19 +22,25 @@ public class GoodsService {
 	private static final Logger log = LoggerFactory.getLogger(GoodsService.class);
 
 	private final GoodsMapper goodsMapper;
+	private final StockMapper stockMapper;
 	
-	public GoodsService(GoodsMapper goodsMapper) {
+	public GoodsService(GoodsMapper goodsMapper, StockMapper stockMapper) {
 		this.goodsMapper = goodsMapper;
+		this.stockMapper = stockMapper;
 	}
 	
 	/**
      * 상품 삭제
      * @param goodsCode
      */
-    public void removeGoods(List<String> valueArr) {
-        for (int i = 0; i < valueArr.size(); i++) {
-            goodsMapper.removeGoods(valueArr.get(i));
+    public boolean removeGoods(String goodsCode) {
+    	boolean isRemove = true; 
+    	isRemove = stockMapper.removeStockCheck(goodsCode);
+    	if (isRemove) {
+    		goodsMapper.removeGoods(goodsCode);
+    		return true;
         }
+        return false;
     }
 	
 	/**
@@ -63,6 +72,15 @@ public class GoodsService {
 	}
 	
 	/**
+	 * 상품 제조사 조회
+	 * @return
+	 */
+	public List<String> getGoodsCompanyList(){
+		List<String> goodsCompanyList = goodsMapper.getGoodsCompanyList();
+		return goodsCompanyList;
+	}
+	
+	/**
 	 * 상품 분류 조회
 	 * @return
 	 */
@@ -70,6 +88,45 @@ public class GoodsService {
 		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
 		return goodsCategory;
 	}
+	
+	/**
+	 * 상품 검색 결과 조회
+	 * @param paramMap
+	 * @return
+	 */
+	public List<Goods> getGoodsListBySearch(String searchKey
+											, String searchValue
+											, String startDate
+											, String endDate){
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		if(searchKey != null && searchValue != null) {
+			switch (searchKey) {
+			case "goodsName":
+				searchKey = "goods_name";
+				break;
+			case "goodsCategory":
+				searchKey = "goods_category";					
+				break;
+			case "goodsCompany":
+				searchKey = "goods_company";					
+				break;
+			}
+			
+			searchMap.put("searchKey", searchKey);
+			searchMap.put("searchValue", searchValue);
+		}
+		
+		if(startDate != null && endDate != null) {
+			searchMap.put("startDate", startDate);
+			searchMap.put("endDate", endDate);
+		}
+		
+		log.info("searchMap: {}", searchMap);
+		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(searchMap);
+		return goodsList;
+	}
+	
 	/**
 	 * 상품 조회
 	 * @return List<Goods>

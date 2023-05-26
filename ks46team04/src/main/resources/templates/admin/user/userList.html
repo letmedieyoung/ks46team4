@@ -45,9 +45,10 @@
 			</div>
 			<div class="card-body overflow-x">
 				<div class="table-responsive">
-					<table class="table table-bordered text-center table-layout-auto table-space"
+					<table
+						class="table table-bordered text-center table-layout-auto table-space"
 						id="userDataTable" width="100%" cellspacing="0">
-						<thead class="bg-gray-100" >
+						<thead class="bg-gray-100">
 
 							<tr>
 								<th>아이디</th>
@@ -60,7 +61,6 @@
 								<th>이메일</th>
 								<th>주소</th>
 								<th>가입일</th>
-								<th>로그인코드</th>
 								<th>미접속일수</th>
 								<th>정보수정일자</th>
 								<th>활동상태</th>
@@ -88,7 +88,6 @@
 								<td th:text="${l.userEmail}"></td>
 								<td th:text="${l.userAddr}"></td>
 								<td th:text="${l.userJoinDate}"></td>
-								<td th:text="${l.loginLogCode}"></td>
 								<td th:text="${l.logDateCalcul}"></td>
 								<td th:text="${l.userUpdateDate}"></td>
 								<td>
@@ -115,18 +114,30 @@
 				<!-- /.container-fluid -->
 </th:block>
 <th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
+	<script>
+		
+	</script>
+
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script type="text/javascript">
 		$('#userDataTable').DataTable({
-			'ordering': false
+			// 표시 건수기능 숨기기
+			'lengthChange' : false,
+			// 정보 표시 숨기기
+			//'info': false,
+			// 검색 기능 숨기기
+			'searching' : false,
+			// 정렬 기능 숨기기
+			'ordering' : false,
+			// 가로 스크롤바
+			'scrollX' : true
 		});
-		
 	</script>
 </th:block>
 </html>

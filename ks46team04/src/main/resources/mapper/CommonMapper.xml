@@ -14,27 +14,50 @@
 			    ELSE
 			      CONCAT(#{tableName},max(cast(SUBSTRING_INDEX(${columnName}, #{tableName}, -1) AS UNSIGNED))+1)
 			  END
-			  ) as newGoodsCode
+			  ) as newPKCode
 		FROM
 			${tableName}; 
 				
  	</select>
  	
- 	<select id="getGroupCode" parameterType="String" resultType="String">
-	 	/*그룹 자동증가 코드*/
+ 	<select id="getPrimaryKeyVerTwo" parameterType="string" resultType="string">
+ 		/* PK 자동증가 코드2 */
+ 		SELECT 
+			(
+			  CASE
+			    WHEN COUNT(*) = 0 THEN CONCAT(#{codeName},1) 
+			    ELSE
+			      CONCAT(#{codeName},max(cast(SUBSTRING_INDEX(${columnName}, #{codeName}, -1) AS UNSIGNED))+1)
+			  END
+			  ) as newPKCode
+		FROM
+			${tableName}; 
+				
+ 	</select>
+ 	
+ 	
+ 	<select id="getPurchaseGroupCode" parameterType="String" resultType="String">
+	 	/*매입 그룹 자동증가 코드*/
 	 	SELECT 
 			(
 			  CASE
-			    WHEN COUNT(*) = 0 THEN CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_',1) 
+			    WHEN COUNT(*) = 0 THEN CONCAT(#{codeName}, '_purchase_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_',1) 
 			    ELSE
-			      CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_', max(cast(SUBSTRING_INDEX(${columnName}, '_', -1) AS UNSIGNED))+1)
+			      CONCAT(#{codeName}, '_purchase_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_', max(cast(SUBSTRING_INDEX(${columnName}, '_', -1) AS UNSIGNED))+1)
 			  END
 			  ) as newGroupCode
 		FROM
 			${tableName}
 		WHERE
-			${columnName} LIKE CONCAT(#{codeName}, '_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_%')
+			${columnName} LIKE CONCAT(#{codeName}, '_purchase_group_', DATE_FORMAT(NOW(), '%y%m%d'), '_%')
 			and
 			NOT (purchase_history_code = #{PKkey});
+ 	</select>
+ 	
+ 	 
+ 	<select id="getSaleGroupCode" parameterType="String" resultType="String">
+	 	/*매출 그룹 자동증가 코드*/
+	 	SELECT 
+			CONCAT(#{codeName}, '_sale_group_', DATE_FORMAT(NOW(), '%y%m'))	as newGroupCode
  	</select>
  </mapper>

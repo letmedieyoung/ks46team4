@@ -7,18 +7,9 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
 </head>
 <th:block layout:fragment="customContents">
 
@@ -36,109 +27,195 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
-							<tbody>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsSellerId">입/출고분류</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-									     	<label>
-										    	<input type="radio" id="fundingContent" name="content" value="fundingContent">
-										   		<span class="text">입고</span>&nbsp;&nbsp;
-									     	</label>
-									    </div>
-										<div class="form-row align-items-center search-schedule">
-									    	<label>
-										      	<input type="radio" id="donationContent" name="content" value="donationContent">
-										      	<span class="text">출고</span>
-									    	</label>
-									    </div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsName">상품명</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
-											&nbsp;
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">상품명 검색</span>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsSellerId">입/출고일자</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="date" class="form-control form-control-user-search" id="goodsSellerId" name="goodsSellerId"/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsSellerId">입/출고수량</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="number" class="form-control form-control-user-search" id="goodsSellerId" name="goodsSellerId" placeholder="상품수량을 입력해주세요."/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th class="bg-gray-100">
-										<label for="goodsPrice">출고 상세정보</label>
-									</th>
-									<td>
-										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="재단명을 입력해주세요."/>
-											&nbsp;
-											<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-												<span class="text">재단명 검색</span>
-											</button>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div align="center">
-							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-								<span class="text">등록하기</span>
-							</button>
-							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
-								<span class="text">입력취소</span>
-							</button>
-						</div>
+						<form id="addInOutcomingForm" th:action="@{/admin/stock/add_in_outcoming}" method="post">
+							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsLotNumber">제조번호</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsLotNumber" name="goodsLotNumber" placeholder="제조번호를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsCompany">제조사</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingType">입/출고 분류</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutType(this.value)">
+													<option value="">:: 입/출고 분류 ::</option>
+														<option>입고</option>
+														<option>출고</option>
+														<option>교환</option>
+														<option>폐기</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<input type="hidden" id="inOutcomingType" name="inOutcomingType" placeholder=":: 입/출고 분류 ::" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingQuantity">입/출고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control number-input" 
+													id="inOutcomingQuantity" name="inOutcomingQuantity" placeholder="입/출고 수량"/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingDate">입/출고일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search" 
+													id="inOutcomingDate" name="inOutcomingDate" placeholder="입/출고일을 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="outcomingId">출고 담당자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" 
+													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요." disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationName">출고 재단명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" 
+													id="foundationName" name="foundationName" placeholder="출고 재단명을 입력해주세요." disabled/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">등록하기</span>
+								</button>
+								<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">입력취소</span>
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		/*
+		* 입/출고 분류 select box value 값 -> input value로 넣기
+		*/
+		function inOutType(category) {
+			const selectInput = document.querySelector('#inOutcomingType');
+			selectInput.value = category;
+		};
+		
+		$(function(){
+			/**
+			* select box 출고 선택 시 출고 재단명 input 입력 활성화
+			*/
+			$('#inOutcomingTypeSelect').change(function() {
+		        var selectedValue = $(this).val();
+		        if (selectedValue === '출고') {
+		            $('#foundationName').prop('disabled', false);
+		            $('#outcomingId').prop('disabled', false);
+		        } else {
+		            $('#foundationName').prop('disabled', true);
+		            $('#outcomingId').prop('disabled', true);
+		        }
+		    });
+			
+			/**
+			* form submitBtn 등록하기 버튼 클릭 시 공란 체크
+			*/
+			function validationCheck(ele){
+				let data = $(ele).val();
+				let isValid = true;
+				if (ele.id === 'inOutcomingTypeSelect' && data === '출고') {
+					if(typeof data == 'undefined' || data == null || data == '') {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+					}
+			    } else {
+			        if (typeof data === 'undefined' || data === null || data === ''
+			        	&& ele.id !== 'foundationName' && ele.id !== 'outcomingId') {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+			        }
+			    }
+				return isValid;
+			};
+			
+			$('#submitBtn').click(function(){
+				const addInOutcomingForm = $('#addInOutcomingForm');
+				const inputGroup = $('#addInOutcomingForm input');
+				let isSubmit = true;
+				inputGroup.each(function(idx, item){
+				isSubmit = validationCheck(item);
+					if(!isSubmit) {
+						let msg = $(item).parents('tr').find('label').text();
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
+						$(item).focus();
+						return false;
+					}
+				});
+			if(isSubmit) addInOutcomingForm.submit();
+			});
+		});
+	</script>
 </th:block>
 
 </html>

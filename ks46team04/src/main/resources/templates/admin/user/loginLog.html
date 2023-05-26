@@ -23,7 +23,7 @@
 		<!-- Page Heading -->
 		<h1 class="h3 mb-4 text-gray-800">회원 로그인 정보 조회</h1>
 
-		 <div th:include="~{admin/search/search :: searchFragment2}"></div> 
+		<div th:include="~{admin/search/search :: searchFragment2}"></div>
 		<br>
 
 		<!-- DataTales Example -->
@@ -33,29 +33,37 @@
 			</div>
 			<div class="card-body overflow">
 				<div class="table-responsive">
-					<table class="table table-bordered text-center table-layout"
+					<button type="submit" id="delCheckBtn"
+						class="btn btn-secondary btn-icon-split">
+						<span class="text">선택삭제</span>
+					</button>
+					<table
+						class="table table-bordered text-center table-layout-auto table-space"
 						id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
+								<th><input type="checkbox" id="allCheck"></th>
 								<th>로그인기록코드</th>
 								<th>아이디</th>
 								<th>로그인시각</th>
 								<th>로그아웃시각</th>
 								<th>로그인아이피</th>
-								<th>삭제</th>
+
 							</tr>
 						</thead>
 						<tbody>
-							 <tr th:unless="${loginLogList == null}" th:each=" l : ${loginLogList}">
-									<td th:text="${l.loginLogCode}"></td>
-									<td th:text="${l.userId}"></td>
-									<td th:text="${l.loginTime}"></td>
-									<td th:text="${l.logoutTime}"></td>
-									<td th:text="${l.loginIp}"></td>
-									<td><a href="#">삭제</a></td> 
-								</tr>
-								<tr th:if="${loginLogList == null}">
-								</tr> 
+							<tr th:unless="${loginLogList == null}"
+								th:each=" l : ${loginLogList}">
+								<td><input class="checks" type="checkbox"
+									th:value="${l.loginLogCode}"></td>
+								<td th:text="${l.loginLogCode}"></td>
+								<td th:text="${l.userId}"></td>
+								<td th:text="${l.loginTime}"></td>
+								<td th:text="${l.logoutTime}"></td>
+								<td th:text="${l.loginIp}"></td>
+							</tr>
+							<tr th:if="${loginLogList == null}">
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -67,6 +75,86 @@
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script th:src="@{/js/jquery-3.6.4.js}"></script>
+	<script>
+		$(function() {
+			/**
+			 * 전체 선택
+			 */
+
+			$('#allCheck').click(function() {
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function() {
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
+				}
+			});
+			/**
+			 * 체크박스 선택 후 deleteBtn 버튼
+			 */
+			$('#delCheckBtn')
+					.click(
+							function() {
+
+								const checkedArr = $('.checks:checked');
+								console.log(checkedArr);
+
+								let length = checkedArr.length;
+
+								const valueArr = [];
+								let msg = '삭제하시겠습니까?';
+
+								if (length == 0) {
+									alert("선택된 항목이 없습니다.");
+								} else {
+									let result = confirm(msg);
+
+									if (result == true) {
+
+										$(checkedArr).each(
+												function() {
+													valueArr.push($(this).attr(
+															'value'));
+												});
+										console.log(valueArr);
+
+										let request = $.ajax({
+											url : '/admin/user/removeLoginLog',
+											method : 'POST',
+											data : {
+												'valueArr' : valueArr
+											},
+											dataType : 'json'
+										});
+
+										request
+												.done(function(response) {
+													let deleted = response.deleted;
+													let message = '';
+													if (deleted.length > 0) {
+														message += `삭제된 로그인기록: ${deleted.join(', ')}\n`;
+													}
+													alert(message);
+													location.reload();
+												});
+
+										request
+												.fail(function(jqXHR,
+														textStatus) {
+													alert(`Request failed: ${textStatus}`);
+												});
+									} else {
+										location.reload();
+									}
+								}
+							});
+		});
+	</script>
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
@@ -74,5 +162,22 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+
+
+	<script type="text/javascript">
+		//$('#dataTable').DataTable({ordering:false});
+		$('#dataTable').DataTable({
+			// 표시 건수기능 숨기기
+			'lengthChange' : false,
+			// 정보 표시 숨기기
+			//'info' : false,
+			// 검색 기능 숨기기
+			'searching' : false,
+			// 정렬 기능 숨기기
+			'ordering' : false,
+
+		});
+	</script>
 </th:block>
 </html>

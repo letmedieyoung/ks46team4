@@ -4,32 +4,30 @@ public class TotalPurchaseSale {
 	//매입매출 종합
 	
 	private String monthDonationPayCode;		
-	private int paymentYear;		
-	private int paymentMonth;		
+	private String paymentYear;		
+	private String paymentMonth;		
 	private String purchaseSalesType;		
 	private String salesGroupCode;		
 	private int paymentAmount;		
 	private int paymentVat;		
 	private int purchaseBudget;		
 	private String division;
-	
-	
 	public String getMonthDonationPayCode() {
 		return monthDonationPayCode;
 	}
 	public void setMonthDonationPayCode(String monthDonationPayCode) {
 		this.monthDonationPayCode = monthDonationPayCode;
 	}
-	public int getPaymentYear() {
+	public String getPaymentYear() {
 		return paymentYear;
 	}
-	public void setPaymentYear(int paymentYear) {
+	public void setPaymentYear(String paymentYear) {
 		this.paymentYear = paymentYear;
 	}
-	public int getPaymentMonth() {
+	public String getPaymentMonth() {
 		return paymentMonth;
 	}
-	public void setPaymentMonth(int paymentMonth) {
+	public void setPaymentMonth(String paymentMonth) {
 		this.paymentMonth = paymentMonth;
 	}
 	public String getPurchaseSalesType() {
@@ -92,4 +90,7 @@ public class TotalPurchaseSale {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
+	
 }

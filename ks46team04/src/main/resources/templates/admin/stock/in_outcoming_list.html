@@ -7,18 +7,11 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
+	<!-- daterangepicker -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <th:block layout:fragment="customContents">
 
@@ -38,92 +31,62 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsName">상품명</label>
+									<label for="search">검색 조건</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
-										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">상품명 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">제조사</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsSellerId" name="goodsSellerId" placeholder="제조사를 검색하거나 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">제조사 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsName">제조번호</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="제조번호를 입력해주세요." />
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">입/출고일</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
-											<option value="option1">:: 입/출고 ::</option>
-											<option value="option1">입고</option>
-											<option value="option2">출고</option>
-											<option value="option2">교환</option>
-											<option value="option2">폐기</option>
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
+											<option value="" selected>:: 검색 조건 ::</option>
+											<option value="goodsName">상품명</option>
+											<option value="goodsCompany">제조사</option>
+											<option value="goodsLotNumber">제조번호</option>
+											<option value="inOutcomingType">입출고 분류</option>
 										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-											&nbsp;
-										</div>
+										<input type="text" class="form-control form-control-user-search short-input"
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">기간 검색</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										 <select class="dropdown btn btn-primary required-form" id="dateSearchKey">
+											<option value="">:: 기간 분류 ::</option>
+											<option value="inOutcomingDate">입출고일</option>
+											<option value="regUdpDate">등록수정일</option>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<button class="btn btn-primary" id="allDateBtn">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="todayBtn">
+											<span class="text text-gray-100">오늘</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneweekBtn">
+											<span class="text text-gray-100">일주일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneMonthBtn">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									&nbsp;
+									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
-											<label for="start-date" class="sr-only">시작일</label>
-											<input type="date" id="start-date" class="form-control"
-												placeholder="시작일">
-										</div>
-										~
-										<div class="col-auto">
-											<label for="end-date" class="sr-only">종료일</label>
-											<input type="date" id="end-date" class="form-control" placeholder="종료일">
+											<input type="text" id="daterange" class="form-control short-input">
 										</div>
 									</div>
 								</td>
@@ -143,26 +106,27 @@
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
-				<div class="table-responsive overflow-x">
+				<div class="table-responsive">
 					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
 						<span class="text">선택삭제</span>
 					</button>
-					<a href="/admin/goods/add_goods" class="btn btn-secondary btn-icon-split">
+					<a href="/admin/stock/add_in_outcoming" class="btn btn-secondary btn-icon-split">
 						<span class="text">입/출고등록</span>
 					</a>
-					<br><br>
 					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
 						cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>입출고코드</th>
 								<th>상품명</th>
 								<th>제조번호</th>
 								<th>제조사</th>
 								<th>입/출고 분류</th>
-								<th>입/출고수량</th>
+								<th>입/출고 수량</th>
 								<th>입/출고일</th>
+								<th>출고 담당자</th>
 								<th>출고 재단명</th>
 								<th>등록/수정일</th>
 								<th>수정</th>
@@ -174,6 +138,10 @@
 										<tr>	
 											<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
 											<th th:text="${lStat.count}"></th>
+											<td>
+												<a th:text="${l.inOutcomingCode}"
+													th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}"></a>
+											</td>
 											<td th:text="${gl.goodsName}"></td>
 											<td th:text="${l.goodsLotNumber}"></td>
 											<td th:text="${gl.goodsCompany}"></td>
@@ -183,21 +151,19 @@
 											<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
 											<td th:text="${l.inOutcomingQuantity}"></td>
 											<td th:text="${l.inOutcomingDate}"></td>
-											<th:block>
-												<td th:if="${l.foundationInfo == null}">해당없음</td>
-												<td th:unless="${l.foundationInfo == null}" th:each="fl : ${l.foundationInfo}" th:text="${fl.foundationName}"></td>
-											</th:block>
+											<td th:text="${l.outcomingId == null ? '-' : l.outcomingId}"></td>
+											<td th:text="${l.foundationName == null ? '-' : l.foundationName}"></td>
 											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
 											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
 											<td>
 												<a class="btn btn-secondary btn-icon-split btn-sm"
-													th:href="@{/admin/stock/modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+													th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
 													<span class="text">수정</span>
 												</a>
 											</td>
 										</tr>
 										<tr th:if="${inOutcomingList == null}">
-											<td colspan="10">등록된 상품 재고 정보가 없습니다.</td>
+											<td colspan="12">등록된 상품 재고 정보가 없습니다.</td>
 										</tr>
 								</th:block>
 							</th:block>
@@ -208,89 +174,178 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		* 전체 선택
-		*/
-		$('#allCheck').click(function () {
-			$('.checks').prop('checked', $(this).prop('checked'));
-		});
-		$('.checks').click(function () {
-			let length = $('.checks').length;
-			let checkedLength = $('.checks:checked').length;
-			if (length == checkedLength) {
-				$('#allCheck').prop('checked', true);
-			} else {
-				$('#allCheck').prop('checked', false);
-			}
-		});
-		/**
-		 * 체크박스 선택 후 deleteBtn 버튼
-		 */
-		$('#delCheckBtn').click(function () {
-			
-			const checkedArr = $('.checks:checked');
-			console.log(checkedArr);
-			
-			let length = checkedArr.length;
-			
-			const valueArr = [];
-			let msg = '삭제하시겠습니까?';
-			
-			if (length == 0) {
-				alert("선택된 항목이 없습니다.");
-			}
-			else {
-				let result = confirm(msg);
+		$(function(){
+			/**
+			* 상품 입출고 검색 결과 조회
+			*/
+			$('#searchBtn').click(function(){
 				
-				if(result == true){
-					
-					$(checkedArr).each(function() {
-						valueArr.push($(this).attr('value'));
-			        });
-					console.log(valueArr);
-					
-					let request = $.ajax({
-						url: '/admin/goods/remove_goods',
-						method: 'POST',
-						data: { valueArr : valueArr },
-						dataType: 'json'
-					});
-					
-					request.done(function(result){
-						if(result){
-							alert('삭제되었습니다.');
-							location.reload();
+				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+				let inputSearchValue = $('#inputSearchValue').val();;
+
+			 	// 선택된 기간 검색의 value값
+			    let dateSearchKey = $('#dateSearchKey option:selected').val();
+			    
+			    // Date Range Picker에서 선택된 값을 가져오기
+			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+				let url = '/admin/stock/search_in_outcoming_list';
+				
+				let request = $.ajax({
+					type: 'GET',
+				    url: url,
+				    dataType: 'json',
+				    data:{
+					      'inputSearchKey': inputSearchKey,
+					      'inputSearchValue': inputSearchValue,
+					      'dateSearchKey': dateSearchKey,
+					      'startDate': startDate,
+						  'endDate': endDate
+					},
+				    //contentType: 'application/json; charset=UTF-8',
+					success : function(data){
+						//테이블 초기화
+						$('#dataTable > tbody').empty();
+						let html = '';
+						let count = 1;
+						if(data != null && data.length > 0){
+							const inOutcomingList = data;
+							for(const inOutcomingInfo of inOutcomingList){
+								html += '<tr>';
+								html += `	<td><input class="checks" type="checkbox" value="${inOutcomingInfo.inOutcomingCode}"></td>`;
+								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/stock/modify_in_outcoming?inOutcomingCode=${inOutcomingInfo.inOutcomingCode}">
+													${inOutcomingInfo.inOutcomingCode}</a>
+											</td>`;
+								html += `	<td>${inOutcomingInfo.goodsInfo.goodsName}</td>`;
+								html += `	<td>${inOutcomingInfo.goodsLotNumber}</td>`;
+								html += `	<td>${inOutcomingInfo.goodsInfo.goodsCompany}</td>`;
+								if(inOutcomingInfo.inOutcomingType == 'incoming'){
+									html += `	<td>입고</td>`;
+								}else if(inOutcomingInfo.inOutcomingType == 'outcoming'){
+									html += `	<td>출고</td>`;
+								}else if(inOutcomingInfo.inOutcomingType == 'exchange'){
+									html += `	<td>교환</td>`;
+								}else if(inOutcomingInfo.inOutcomingType == 'disposal'){
+									html += `	<td>폐기</td>`;
+								}
+								html += `	<td>${inOutcomingInfo.inOutcomingQuantity}</td>`;
+								html += `	<td>${inOutcomingInfo.inOutcomingDate}</td>`;
+								if(inOutcomingInfo.outcomingId == null){
+									html += `	<td>-</td>`;
+								}else{
+									html += `	<td>${inOutcomingInfo.outcomingId}</td>`;
+								}
+								if(inOutcomingInfo.foundationName == null){
+									html += `	<td>-</td>`;
+								}else{
+									html += `	<td>${inOutcomingInfo.foundationName}</td>`;
+								}
+								if(inOutcomingInfo.inOutcomingUpdDate == null){
+									html += `	<td>${inOutcomingInfo.inOutcomingRegDate}</td>`;
+								}else{
+									html += `	<td>${inOutcomingInfo.inOutcomingUpdDate} (수정)</td>`;
+								}
+								html += `<td>
+											<a class="btn btn-secondary btn-icon-split btn-sm"
+												href="/admin/stock/modify_in_outcoming?inOutcomingCode=${inOutcomingInfo.inOutcomingCode}">
+												<span class="text">수정</span>
+											</a>
+										</td>`;
+								html += '</tr>';
+							};
+						}else{
+							html += '<tr>';
+							html += '	<td colspan="12">검색된 상품 입출고 정보가 없습니다.</td>';
+							html += '</tr>';
 						}
-					});
-					
-					request.fail(function(jqXHR, textStatus){
-						alert(`Request failed: ${textStatus}`);
-					});
-				}else{
-					location.reload();
+						$('#dataTable > tbody').append(html);
+						$('#dataTable').DataTable();
+					}
+				})
+				request.fail(function(jqXHR, textStatus){
+					alert(`Request failed: ${textStatus}`);
+				});
+			});
+			
+			/**
+			* 전체 선택
+			*/
+			$('#allCheck').click(function () {
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function () {
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
 				}
-			}
+			});
+			/**
+			 * 체크박스 선택 후 deleteBtn 버튼
+			 */
+			$('#delCheckBtn').click(function () {
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert("선택된 항목이 없습니다.");
+				}
+				else {
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function() {
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/goods/remove_goods',
+							method: 'POST',
+							data: { valueArr : valueArr },
+							dataType: 'json'
+						});
+						
+						request.done(function(result){
+							if(result){
+								alert('삭제되었습니다.');
+								location.reload();
+							}
+						});
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
+			});
 		});
 	</script>
 </th:block>

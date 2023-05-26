@@ -19,14 +19,14 @@ public class PaymentController {
 private final PaymentService paymentService;
 	
 	/*
-	 * 결제수단 조회
+	 * 결제방식 조회
 	 */
 	@GetMapping("/payment_list")
 	public String getPayment(Model model) {
 		
 		List<Payment> getPayment = paymentService.getPayment();
 				
-		model.addAttribute("title", "결제수단 목록");
+		model.addAttribute("title", "결제방식 목록");
 		model.addAttribute("getPayment", getPayment);
 		
 		return "admin/payment/payment_list";

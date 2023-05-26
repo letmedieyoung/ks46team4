@@ -31,7 +31,9 @@
  		UPDATE
 			payment_vat
 		SET
-			payment_vat = #{vatRatio}
+			payment_vat = #{vatRatio},
+			payment_vat_update_id = #{loginId},
+			payment_vat_update_date = NOW()
 		WHERE
 			payment_vat_code = 'payment_vat1';
  	</update>

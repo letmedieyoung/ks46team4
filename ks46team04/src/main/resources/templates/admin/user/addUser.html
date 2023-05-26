@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default}">
 
 <head>
-<!-- Custom styles for this page -->
-<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
-	rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
 
-<!-- Custom styles for this page -->
-<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
-	rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
 
 </head>
 
@@ -24,23 +21,23 @@
 		<!-- Page Heading -->
 		<h1 class="h3 mb-2 text-gray-800">회원 등록</h1>
 		<p class="mb-4">
-			회원 등록입니다. 
+			회원 등록입니다.
 			<a target="_blank" th:href="@{/admin/user/userList}">전체 회원 목록 바로가기</a>
 			<br><br>
-			
-				아이디	- 영문+숫자 6~12자 이내<br>
-						- 중복 확인<br>
-				비밀번호	- 칸 수정<br>
-						- 영문+숫자 8~20자 이내<br>
-				이름		- 특수 문자나 숫자가 섞이지 않도록(중요도 낮음)<br>
-				생년월일 	- 특이사항 없음<br>
-				연락처 	- 드롭박스 - 칸 - 칸<br>
-				이메일 	- 이메일 형식(필수)<br>
-				수신여부	- 체크박스<br>
-				주소 - 카카오 주소 API 사용<br>
-				<br>
-				필수 사항 * 체크<br>
-				html 일관성있게 수정<br>
+
+			아이디 - 영문 소문자(+숫자) 6~12자 이내 (영문 소문자만으로도 가입 가능)<br>
+			- 중복 확인<br>
+			비밀번호 - 칸 수정<br>
+			- 영문 소문자+숫자 8~20자 이내<br>
+			이름 - 특수 문자나 숫자가 섞이지 않도록(중요도 낮음)<br>
+			생년월일 - 특이사항 없음<br>
+			연락처 - 드롭박스 - 칸 - 칸<br>
+			이메일 - 이메일 형식(필수)<br>
+			수신여부 - 체크박스<br>
+			주소 - 카카오 주소 API 사용<br>
+			<br>
+			필수 사항 * 체크<br>
+			html 일관성있게 수정<br>
 		</p>
 
 
@@ -51,31 +48,30 @@
 				</h6>
 			</div>
 		</div>
-		
+
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">회원 등록</h6>
 			</div>
-			
+
 			<div class="card-body">
 				<p>
 					지정값 부르기를 하면 지정해둔 테스트 값을 폼에 불러옵니다.<br>
 					단, 아이디가 중복되어 수정이 필요할 수도 있습니다.<br>
 					입력된 값을 리셋하고 싶다면 하단의 [입력리셋] 버튼을 눌러주세요.
 				<p>
-				<button type="button" id="saveValue"
-					class="btn btn-primary btn-icon-split">
-					<span class="text">지정값 부르기</span>
-				</button>
-				<hr>
+					<button type="button" id="saveValue" class="btn btn-primary btn-icon-split">
+						<span class="text">지정값 부르기</span>
+					</button>
+					<hr>
 				<p>
 					<span class="required-fields">*</span> 은 필수 입력 사항입니다.
 				</p>
 				<form id="addUserForm" th:action="@{/admin/user/addUser}" method="post">
 
 					<div class="table-responsive">
-						<table class="table table-bordered search-table-gr table-layout"
-							id="insertTable" width="100%" cellspacing="0">
+						<table class="table table-bordered search-table-gr table-layout" id="insertTable" width="100%"
+							cellspacing="0">
 							<tbody>
 								<tr>
 									<th class="bg-gray-100">
@@ -86,13 +82,12 @@
 										<div class="form-row align-items-center search-schedule">
 											<input type="text" maxlength="12"
 												class="form-control form-control-user-search search-input-gr required-form"
-												 id="userId" name="userId" placeholder="영문+숫자 6~12자 이내" />
+												id="userId" name="userId" placeholder="영문 소문자(+숫자) 6~12자 이내" />
 											&nbsp;
-											<button type="button" id="checkBtn"
-												class="btn btn-primary btn-icon-split">
+											<button type="button" id="checkBtn" class="btn btn-primary btn-icon-split">
 												<span class="text">아이디 중복체크</span>
 											</button>
-											
+
 											<!-- <span class="required-text">*필수 입력 사항입니다</span> -->
 											<span class="required-text"></span>
 										</div>
@@ -107,40 +102,41 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">
-											<select class="dropdown btn btn-primary required-form" id="userLevel" name="userLevel">
-													<option value="0">:: 등급 설정 ::</option>
-													<option value="1">관리자</option>
-													<option value="2">회원</option>
+											<select class="dropdown btn btn-primary required-form" id="userLevel"
+												name="userLevel">
+												<option value="0">:: 등급 설정 ::</option>
+												<option value="1">관리자</option>
+												<option value="2">회원</option>
 											</select>
 											<span class="required-text"></span>
 										</div>
 									</td>
 								</tr>
-								
+
 								<tr>
-									<th class="bg-gray-100" >
+									<th class="bg-gray-100">
 										<label for="userPw">비밀번호</label>
 										<span class="required-fields">*</span>
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule pw">
-											<input type="password" maxlength="20" 	
+											<input type="password" maxlength="20"
 												class="form-control form-control-user-search search-input-gr required-form"
-												 id="userPw" name="userPw" placeholder="영문+숫자 8~20자 이내" />
+												id="userPw" name="userPw" placeholder="영문 소문자+숫자 8~20자 이내" />
 											<span class="required-text-pw"></span>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<th class="bg-gray-100" >
-										<label for="userPwcheck">비밀번호 확인</label>
+									<th class="bg-gray-100">
+										<label for="userPwCheck">비밀번호 확인</label>
 										<span class="required-fields">*</span>
 									</th>
 									<td>
-										<div class="form-row align-items-center search-schedule pwCheck">	
+										<div class="form-row align-items-center search-schedule pwCheck">
 											<input type="password" maxlength="20"
-													class="form-control form-control-user-search search-input-gr required-form"
-												 id="userPwCheck" name="userPwCheck" placeholder="비밀번호 확인" />
+												class="form-control form-control-user-search search-input-gr required-form"
+												id="userPwCheck" name="userPwCheck" placeholder="비밀번호 확인" />
 											<span class="required-text-pw"></span>
 										</div>
 									</td>
@@ -182,10 +178,10 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<select class="dropdown btn btn-primary required-form" id="userFirstTel">
-													<!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
+												<!-- 02','031','032','033','041','043','042','044','051','052','053','054','055','061','062','063','064','070 -->
 												<option value="010" selected>010</option>
-												
-                                                <!--<option value="02">02</option>
+
+												<!--<option value="02">02</option>
                                                 <option value="031">031</option>
                                                 <option value="032">032</option>
                                                 <option value="033">033</option>
@@ -208,13 +204,11 @@
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
 											<input type="text" maxlength="4"
 												class="form-control form-control-user-search search-input-gr-half required-form"
-												id="userSecondTel" name="userSecondTel"
-												placeholder="0000" />
+												id="userSecondTel" name="userSecondTel" placeholder="0000" />
 											<div style="padding-top: 2px; margin: 0 5px;">-</div>
 											<input type="text" maxlength="4"
 												class="form-control form-control-user-search search-input-gr-half required-form"
-												id="userThirdTel" name="userThirdTel"
-												placeholder="0000" />
+												id="userThirdTel" name="userThirdTel" placeholder="0000" />
 											<span class="required-text"></span>
 										</div>
 									</td>
@@ -228,9 +222,8 @@
 										<div class="form-row align-items-center search-schedule">
 											<input type="email"
 												class="form-control form-control-user-search search-input-gr required-form"
-												id="userEmail" name="userEmail"
-												placeholder="예) email00@gmail.com " />
-										<span class="required-text"></span>
+												id="userEmail" name="userEmail" placeholder="예) email00@gmail.com " />
+											<span class="required-text"></span>
 										</div>
 									</td>
 								</tr>
@@ -242,12 +235,14 @@
 									<td>
 										<div class="form-row align-items-center search-schedule">
 											<div>
-												<input type="radio" id="userEmailAgree" class="required-form" value="1" name="userEmailAgree" /> 
-												<label for="userEmailAgree">수신동의</label> 
+												<input type="radio" id="userEmailAgree" class="required-form" value="1"
+													name="userEmailAgree" checked />
+												<label for="userEmailAgree">수신동의</label>
 											</div>
 											<div style="padding: 0 10px;"></div>
 											<div>
-												<input type="radio" id="userEmaildDisAgree" class="required-form" value="0" name="userEmailAgree" checked/> 
+												<input type="radio" id="userEmaildDisAgree" class="required-form"
+													value="0" name="userEmailAgree" />
 												<label for="userEmaildDisAgree">수신거부</label>
 												<span class="required-text"></span>
 											</div>
@@ -260,7 +255,7 @@
 										<div class=" align-items-center search-schedule">
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr-half-two"
-												id="userPostCode" name="userPostCode" placeholder="우편번호" readonly/>
+												id="userPostCode" name="userPostCode" placeholder="우편번호" readonly />
 											&nbsp;
 											<button type="button" id="checkBtn2" onclick="DaumPostcode()"
 												class="btn btn-primary btn-icon-split" style="margin-left: -9px;">
@@ -269,10 +264,11 @@
 											<div style="padding: 5px 0;"></div>
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
-												id="userAddrRoad" name="userAddrRoad" placeholder="주소" readonly/>
+												id="userAddrRoad" name="userAddrRoad" placeholder="주소" readonly />
 											<input type="text"
-											class="form-control form-control-user-search search-input-gr-half-two"
-											id="userExtraAddress" name="userExtraAddress" placeholder="참고주소" readonly/>
+												class="form-control form-control-user-search search-input-gr-half-two"
+												id="userExtraAddress" name="userExtraAddress" placeholder="참고주소"
+												readonly />
 											<div style="padding: 5px 0;"></div>
 											<input type="text"
 												class="form-control form-control-user-search search-input-gr"
@@ -285,13 +281,11 @@
 						</table>
 
 						<div align="center">
-							<button type="button" id="submitBtn"
-								class="btn btn-primary btn-icon-split">
+							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 								<span class="text">회원등록</span>
 							</button>
-							<button type="reset" id="resetBtn"
-								class="btn btn-secondary btn-icon-split">
+							<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
 								<span class="text">입력리셋</span>
 							</button>
@@ -303,115 +297,118 @@
 			<!-- /.container-fluid -->
 
 			<!-- Scroll to Top Button-->
-			<a class="scroll-to-top rounded" href="#page-top"> <i
-				class="fas fa-angle-up"></i>
+			<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 			</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
-	<script>	
+	<script>
 		let isIdCheck = false; 	//아이디 중복 검사 여부를 확인하는 플래그값, submit 할 때 검사
 		let isPwCheck = 0;	//비밀번호 확인 검사 여부를 확인하는 플래그값, submit 할 때 검사, 0=입력전/1=비번일치/2비번=불일치
-		
+
 		// 값 여부 체크
-		function validationCheck(ele){
+		function validationCheck(ele) {
 			let data = $(ele).val();
 			let isValid = true;
-			if(typeof data == 'undefined' || data == null ||
-					data == '' || /\s{1,}/.test(data)){
-			isValid = false;
+			if (typeof data == 'undefined' || data == null ||
+				data == '' || /\s{1,}/.test(data)) {
+				isValid = false;
 			}
 			return isValid;
 		}
-		
+
 		// 아이디 중복 체크
-		$('#checkBtn').click(function(){
+		$('#checkBtn').click(function () {
 			const $userIdEle = $('#userId');
-			let userId = $userIdEle.val(); 
+			let userId = $userIdEle.val();
 			console.log(userId + " <- 유저가 입력한 아이디 값");
-			
+
 			let $rqText = $userIdEle.siblings('.required-text');	//안내 메시지
-			
+
 			// (아이디 중복 체크 -) 값 여부 체크
-			if(typeof userId == 'undefined' ||	userId == null ||
-					userId == '' || /\s{1,}/.test(userId)){	
+			if (typeof userId == 'undefined' || userId == null ||
+				userId == '' || /\s{1,}/.test(userId)) {
 				$rqText.text(`*아이디를 입력해주세요`);
 				$userIdEle.focus();
 				return false;
-			}else{	// input에 아이디가 있다면 유효성 검사			
-				// 1. 아이디 양식 확인 - 영문+숫자 6~12자 이내
-				let regIdForm = /^[a-zA-Z0-9]{6,12}$/;
-				
-				if(userId.length >= 6 && userId.length <= 12 && regIdForm.test(userId)){		// id양식이 맞는다면
+			} else {	// input에 아이디가 있다면 유효성 검사			
+				// 1. 아이디 양식 확인 - 영문 소문자(+숫자) 6~12자 이내 (숫자만으로는 가입이 불가능하고 영문소문자만으로는 가입이 가능)
+				//let regIdForm = /^[a-z0-9]{6,12}$/;
+				//let regIdForm = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{6,12}$/; //영문소문자+숫자 무조건 포함하게 
+				let regIdForm = /^(?=.*[a-z])[a-z0-9]{6,12}$/;
+
+				if (userId.length >= 6 && userId.length <= 12 && regIdForm.test(userId)) {		// id양식이 맞는다면
 					// 2. 디비에 존재하는 id와 비교
 					let request = $.ajax({
 						url: '/admin/user/idCheck',
 						method: 'POST',
-						data: {'userId' : userId},
+						data: {'userId': userId},
 						dataType: 'json'
 					});
-					
+
 					//중복 없이 사용가능한 아이디면 request 결과 data == true
-					request.done(function(checkId){
+					request.done(function (checkId) {
 						//console.log(typeof checkId + '<- ajax 아이디 체크 메소드 실행 결과 자료형');
 						//console.log(checkId + ' <- ajax 아이디 체크 결과 불린값');
-						if(!checkId){
+						if (!checkId) {
 							alert('중복된 아이디입니다.');
 							$userIdEle.val('');
 							$userIdEle.focus();
-						}else{
+						} else {
 							// 사용가능 아이디
 							alert('사용 가능한 아이디입니다.');
 							isIdCheck = true;
 							console.log(`${isIdCheck} <- 아이디 체크 여부`);
 						}
 					});
-				
-					request.fail(function(jqXHR, textStatus){
+
+					request.fail(function (jqXHR, textStatus) {
 						alert(`Request failed: ${textStatus}`);
 					});
-				}else{	//아이디 양식에 맞지 않는다면
+				} else {	//아이디 양식에 맞지 않는다면
 					alert('아이디 규칙이 맞지 않습니다.');
-					$rqText.text(`*영문+숫자 6~12자 이내`);
+					$rqText.text(`*영문 소문자(+숫자) 6~12자 이내`);
 				}	//else문 끝 - id 양식 체크
 			}	//else문 끝 - input에 아이디가 있다면 유효성 검사
 		});	//click function 끝
-		
-		
-		$('#userId').change(function(){
+
+
+		$('#userId').change(function () {
 			isIdCheck = false;
 		});
-		
-		
+
+
 		//비밀번호-------------------------
-		$('#userPw').on('input', function(event){
+		$('#userPw').on('input', function (event) {
 			isPwCheck = 2;
 			const $userPwEle = $('#userPw');
 			let userPw = $userPwEle.val();
 			let $rqTextPw = $userPwEle.siblings('.required-text-pw');
 			let msg = '';
-			
+
 			console.log(userPw);
 			console.log(userPw.length);
-			
-			let regPwFormAlpha = /^[A-Za-z0-9]+$/;		//특수문자 포함여부만 파악
-			let regPwFormLeng = /^[A-Za-z0-9]{8,20}$/;	//글자수까지 파악
+
+			let regPwFormAlpha = /^[a-z0-9]+$/;		//특수문자 포함여부만 파악
+			let regPwFormLeng = /^[a-z0-9]{8,20}$/;	//글자수까지 파악
 			let pwColor = 1;
-			
+
 			console.log((userPw.length < 8) + ' <- 1번');
 			console.log((userPw.length > 20) + '<- 2번');
-			console.log(regPwFormLeng.test(userPw)+ ' < 3번');
-			if(!regPwFormAlpha.test(userPw)){
-				msg = `*입력 규칙에 맞지 않습니다(영문)+숫자`;
-			}else if(userPw.length < 8){
+			console.log(regPwFormLeng.test(userPw) + ' < 3번');
+			if (!regPwFormAlpha.test(userPw)) {
+				msg = `*입력 규칙에 맞지 않습니다(영문 소문자)+숫자`;
+			} else if (!/[a-z]/.test(userPw) || !/[0-9]/.test(userPw)) {
+				msg = `*영문 소문자와 숫자를 모두 포함해야 합니다`;
+			} else if (userPw.length < 8) {
 				msg = `*글자 수가 적습니다(8~20자 이내)`;
-			}else if(userPw.length > 20){
+			} else if (userPw.length > 20) {
 				msg = `*글자 수가 많습니다(8~20자 이내)`;
-			}else if(regPwFormLeng.test(userPw)){
+			} else if (regPwFormLeng.test(userPw)) {
 				pwColor = 2;
 				msg = `✔ 사용 가능한 비밀번호입니다`;
 			}
-			
+
 			/* if(userPw.length < 8){
 				msg = `*글자 수가 적습니다(8~20자 이내)`;
 				
@@ -423,48 +420,48 @@
 			}else{
 				msg = `*입력 규칙에 맞지 않습니다(영문)+숫자`;
 			} */
-			
-			if(pwColor === 1){
+
+			if (pwColor === 1) {
 				$('.pw > .required-text-pw').css("color", "red");
-			}else{
+			} else {
 				$('.pw > .required-text-pw').css("color", "green");
 			}
 			$rqTextPw.text(msg);
-			
+
 			pwCheck();
 		});
-	
-		
+
+
 		//비밀번호 확인-------------------------
-		$('#userPwCheck').on('input', function(event){
+		$('#userPwCheck').on('input', function (event) {
 			pwCheck();
 		});
 		//비밀번호 확인 함수-------------------------
-		function pwCheck(){
+		function pwCheck() {
 			const $userPwEle = $('#userPw');
 			let userPw = $userPwEle.val();
-			
+
 			const $userPwCheckEle = $('#userPwCheck');
 			let userPwCheck = $userPwCheckEle.val();
-			
+
 			let $rqTextPwCheck = $userPwCheckEle.siblings('.required-text-pw');
 			let msg = '';
 			let pwColor = 1;
-			
-			if(typeof userPwCheck != 'undefined' &&	userPwCheck != null &&
-					userPwCheck != ''){
-				if(userPwCheck.length == userPw.length && userPw === userPwCheck){
+
+			if (typeof userPwCheck != 'undefined' && userPwCheck != null &&
+				userPwCheck != '') {
+				if (userPwCheck.length == userPw.length && userPw === userPwCheck) {
 					pwColor = 2;
 					msg = `✔ 비밀번호가 일치합니다.`;
 					isPwCheck = 1;
-				}else{
+				} else {
 					msg = `*비밀번호가 일치하지 않습니다.`;
 					isPwCheck = 2;
 				}
-				
-				if(pwColor === 1){
+
+				if (pwColor === 1) {
 					$('.pwCheck > .required-text-pw').css("color", "red");
-				}else{
+				} else {
 					$('.pwCheck > .required-text-pw').css("color", "green");
 				}
 				$rqTextPwCheck.text(msg);
@@ -473,14 +470,14 @@
 		//날짜 확인 -------------------------
 		//170살을 넘을 수 없음. 오늘 날짜를 넘길 수 없음.
 		//오늘 날짜를 파악하는 함수
-		$('#userBirth').on('input', function(){
+		$('#userBirth').on('input', function () {
 			//서버에서 한국 표준시 가져오기
 			let xmlHttpRequest;
-			if(window.XMLHttpRequest){// code for Firefox, Mozilla, IE7, etc.
+			if (window.XMLHttpRequest) {// code for Firefox, Mozilla, IE7, etc.
 				xmlHttpRequest = new XMLHttpRequest();
-			}else if(window.ActiveXObject){// code for IE5, IE6
+			} else if (window.ActiveXObject) {// code for IE5, IE6
 				xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-			}else{
+			} else {
 				return;
 			}
 
@@ -492,221 +489,221 @@
 			const today = new Date(serverDate);
 			console.log(today);
 			//표준시 가져오기 end
-			
+
 			const minBirthDate = new Date(today.getFullYear() - 150, today.getMonth(), today.getDate());
-			
+
 			const selectedBirthDate = $('#userBirth').val();
 			const [year, month, day] = selectedBirthDate.split('-');
-			const userBirthDate = new Date(year, month-1, day);
+			const userBirthDate = new Date(year, month - 1, day);
 			if (userBirthDate > today) {
-			 	// 생년월일이 오늘을 넘거나
-			 	alert('생년월일은 오늘을 넘길 수 없습니다.');
-			 	$('#userBirth').val('');
-			 	$('#userBirth').focus();
-			}else if(userBirthDate < minBirthDate){
+				// 생년월일이 오늘을 넘거나
+				alert('생년월일은 오늘을 넘길 수 없습니다.');
+				$('#userBirth').val('');
+				$('#userBirth').focus();
+			} else if (userBirthDate < minBirthDate) {
 				//150살 이상을 선택
 				alert('150살을 넘도록 설정하였습니다.');
 				$('#userBirth').val('');
-			 	$('#userBirth').focus();
+				$('#userBirth').focus();
 			}
-			
+
 		});
-		
+
 		//연락처 입력-------------------------
 		function validateFourDigitNumber(userTel) {
 			console.log(userTel);
 			if (/^\d{4}$/.test(userTel)) {
-		    	return true;
-			} else {		
+				return true;
+			} else {
 				return false;
-		 	}
+			}
 		}
-		
-		$('#userSecondTel').on('blur', function(){
+
+		$('#userSecondTel').on('blur', function () {
 			const $userSecondTelEle = $('#userSecondTel');
-			let userSecondTel = $('#userSecondTel').val();	
+			let userSecondTel = $('#userSecondTel').val();
 			const $rqTextPwCheck = $userSecondTelEle.siblings('.required-text');
-			
-			if(typeof userSecondTel != 'undefined' && userSecondTel != null &&
-					userSecondTel != '' && !(/\s{1,}/.test(userSecondTel))){
-				let numberCheck = validateFourDigitNumber(userSecondTel);	
-				if(numberCheck == false){
+
+			if (typeof userSecondTel != 'undefined' && userSecondTel != null &&
+				userSecondTel != '' && !(/\s{1,}/.test(userSecondTel))) {
+				let numberCheck = validateFourDigitNumber(userSecondTel);
+				if (numberCheck == false) {
 					$rqTextPwCheck.text(`*번호 네 자리를 입력하세요`);
 					$userSecondTelEle.val('');
 					$userSecondTelEle.focus();
-				}else{
+				} else {
 					$rqTextPwCheck.text('');
 				}
 			}
 		});
-		
-		$('#userThirdTel').on('blur', function(){
+
+		$('#userThirdTel').on('blur', function () {
 			const $userThirdTelEle = $('#userThirdTel');
 			let userThirdTel = $('#userThirdTel').val();
-			
+
 			let $rqTextPwCheck = $userThirdTelEle.siblings('.required-text');
-			
-			if(typeof userThirdTel != 'undefined' && userThirdTel != null &&
-					userThirdTel != '' && !(/\s{1,}/.test(userThirdTel))){
-				let numberCheck = validateFourDigitNumber(userThirdTel);	
-				if(numberCheck == false){
+
+			if (typeof userThirdTel != 'undefined' && userThirdTel != null &&
+				userThirdTel != '' && !(/\s{1,}/.test(userThirdTel))) {
+				let numberCheck = validateFourDigitNumber(userThirdTel);
+				if (numberCheck == false) {
 					$rqTextPwCheck.text(`*번호 네 자리를 입력하세요`);
 					$userThirdTelEle.val('');
 					$userThirdTelEle.focus();
-				}else{
+				} else {
 					$rqTextPwCheck.text('');
 				}
 			}
 		});
-		
+
 		//이메일 입력-------------------------
-		$('#userEmail').on('blur', function(){
+		$('#userEmail').on('blur', function () {
 			const $emailEle = $('#userEmail');
 			let email = $('#userEmail').val();
 			const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 			const $rqTextCheck = $emailEle.siblings('.required-text');
-			
-			if(emailPattern.test(email)){
+
+			if (emailPattern.test(email)) {
 				$rqTextCheck.text('');
-			}else{
+			} else {
 				$rqTextCheck.text(`*이메일 형식에 맞지 않습니다`);
 			}
 		});
 	</script>
-	
-	
+
+
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
-	    function DaumPostcode() {
-	        new daum.Postcode({
-	            oncomplete: function(data) {
-	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	
-	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-	                var addr = ''; // 주소 변수
-	                var extraAddr = ''; // 참고항목 변수
-	
-	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-	                    addr = data.roadAddress;
-	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-	                    addr = data.jibunAddress;
-	                }
-	
-	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-	                if(data.userSelectedType === 'R'){
-	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-	                        extraAddr += data.bname;
-	                    }
-	                    // 건물명이 있고, 공동주택일 경우 추가한다.
-	                    if(data.buildingName !== '' && data.apartment === 'Y'){
-	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-	                    }
-	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-	                    if(extraAddr !== ''){
-	                        extraAddr = ' (' + extraAddr + ')';
-	                    }
-	                    // 조합된 참고항목을 해당 필드에 넣는다.
-	                    document.getElementById('userExtraAddress').value = extraAddr;
-	                
-	                } else {
-	                    document.getElementById('userExtraAddress').value = '';
-	                }
-	
-	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-	                document.getElementById('userPostCode').value = data.zonecode;
-	                document.getElementById('userAddrRoad').value = addr;
-	                // 커서를 상세주소 필드로 이동한다.
-	                document.getElementById('userAddrDetail').focus();
-	            }
-	        }).open();
-	    }
+		function DaumPostcode() {
+			new daum.Postcode({
+				oncomplete: function (data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = ''; // 주소 변수
+					var extraAddr = ''; // 참고항목 변수
+
+					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+						addr = data.roadAddress;
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+						addr = data.jibunAddress;
+					}
+
+					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+					if (data.userSelectedType === 'R') {
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+							extraAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if (data.buildingName !== '' && data.apartment === 'Y') {
+							extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if (extraAddr !== '') {
+							extraAddr = ' (' + extraAddr + ')';
+						}
+						// 조합된 참고항목을 해당 필드에 넣는다.
+						document.getElementById('userExtraAddress').value = extraAddr;
+
+					} else {
+						document.getElementById('userExtraAddress').value = '';
+					}
+
+					// 우편번호와 주소 정보를 해당 필드에 넣는다.
+					document.getElementById('userPostCode').value = data.zonecode;
+					document.getElementById('userAddrRoad').value = addr;
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById('userAddrDetail').focus();
+				}
+			}).open();
+		}
 	</script>
 	<script>
-	//필수항목 체크 후 제출 기능, insert문 작성
-	//상단에 버튼 하나 만들어두고 값 넣어두기
-	
-		$('#submitBtn').click(function(){
+		//필수항목 체크 후 제출 기능, insert문 작성
+		//상단에 버튼 하나 만들어두고 값 넣어두기
+
+		$('#submitBtn').click(function () {
 			const $addUserForm = $('#addUserForm');
 			const $requiredForm = $('#addUserForm .required-form');
 			let isSubmit = false;
-			$requiredForm.each(function(idx, item){
+			$requiredForm.each(function (idx, item) {
 				isSubmit = validationCheck(item);
-				
-				if(!isSubmit){
+
+				if (!isSubmit) {
 					let msg = $(item).parents('tr').find('label').text();
 					alert(msg + '은(는) 필수항목입니다');
 					$(item).focus();
 					return false;
 				}
 			});	//each문 끝
-			
-			if(isIdCheck == false){
+
+			if (isIdCheck == false) {
 				alert('아이디를 중복 체크 해주세요');
 				$('#checkBtn').focus();
 				return false;
-			}else if(isPwCheck == 2){
+			} else if (isPwCheck == 2) {
 				alert('비밀번호가 서로 다릅니다');
 				$('#userPw').val('');
 				$('#userPwCheck').val('');
 				$('#userPw').focus();
 				return false;
-			}		
-			
+			}
+
 			console.log(isSubmit, isIdCheck, isIdCheck);
-			if(isSubmit == true && isIdCheck == true && isPwCheck == 1){
+			if (isSubmit == true && isIdCheck == true && isPwCheck == 1) {
 				//연락처 통합 ('-')로 연결
 				const userFirstTel = $('#userFirstTel').val();
 				const userSecondTel = $('#userSecondTel').val();
 				const userThirdTel = $('#userThirdTel').val();
-				let UserTel = null; 
+				let UserTel = null;
 				UserTel = `${userFirstTel}-${userSecondTel}-${userThirdTel}`;
 				console.log(UserTel);
-				
+
 				const hiddenTelNum = $('<input>').attr({
-					  type: 'hidden',
-					  name: 'userPhone',
-					  value: UserTel,
-					});
+					type: 'hidden',
+					name: 'userPhone',
+					value: UserTel,
+				});
 				$addUserForm.append(hiddenTelNum);
-				
+
 				//우편번호 값이 존재하면 주소가 입력됐음으로 간주하고 주소지 문자열 통합
 				let userPostCode = $('#userPostCode').val();
-				if(typeof userPostCode != 'undefined' && userPostCode != null &&
-						userPostCode != ''){
+				if (typeof userPostCode != 'undefined' && userPostCode != null &&
+					userPostCode != '') {
 					//주소 문자열 일정 형식으로 통합 - [우편번호]주소(extraAddress), 상세주소 
 					let userAddrRoad = $('#userAddrRoad').val() + ($('#userExtraAddress').val() ? $('#userExtraAddress').val() + ',' : '');
 					let userAddrDetail = $('#userAddrDetail').val();
-					let fullAddress = null; 
+					let fullAddress = null;
 					fullAddress = `[${userPostCode}] ${userAddrRoad} ${userAddrDetail}`;
-					
+
 					console.log(fullAddress);
-						
+
 					const hiddenAddr = $('<input>').attr({
-						  type: 'hidden',
-						  name: 'userAddr',
-						  value: fullAddress,
-						});
+						type: 'hidden',
+						name: 'userAddr',
+						value: fullAddress,
+					});
 					$addUserForm.append(hiddenAddr);
-				}	
+				}
 				$addUserForm.submit();
 			}
 		});
-	
+
 		//이메일 입력-------------------------
-		$('#saveValue').click(function(){
+		$('#saveValue').click(function () {
 			isPwCheck = 1;
-			let userId = $('#userId').val(`dkssud1234`); 
+			let userId = $('#userId').val(`dkssud1234`);
 			let userLevel = $('#userLevel').val(`2`);
 			let userPw = $('#userPw').val(`dkssud1234`);
 			let userPwCheck = $('#userPwCheck').val(`dkssud1234`);
 			let userName = $('#userName').val(`홍길동`);
 			const selectedBirthDate = $('#userBirth').val(`1970-06-24`);
 			let userFirstTel = $('#userFirstTel').val(`010`);
-			let userSecondTel = $('#userSecondTel').val(`1234`);	
+			let userSecondTel = $('#userSecondTel').val(`1234`);
 			let userThirdTel = $('#userThirdTel').val(`5678`);
 			let email = $('#userEmail').val(`emailEx00@gmail.com`);
 			let userPostCode = $('#userPostCode').val(`54888`);

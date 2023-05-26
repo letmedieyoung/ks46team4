@@ -1,6 +1,9 @@
 package ks46team04.admin.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,7 @@ import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.service.GoodsService;
+import ks46team04.admin.service.StockService;
 
 @Controller
 @RequestMapping("/admin/goods")
@@ -28,7 +32,7 @@ public class GoodsController {
 	private final GoodsService goodsService;
 	private final GoodsMapper goodsMapper;
 	
-	public GoodsController(GoodsService goodsService, GoodsMapper goodsMapper) {
+	public GoodsController(GoodsService goodsService, GoodsMapper goodsMapper, StockService stockService) {
 		this.goodsService = goodsService;
 		this.goodsMapper = goodsMapper;
 	}
@@ -40,16 +44,35 @@ public class GoodsController {
      */
     @PostMapping("/remove_goods")
     @ResponseBody
-    public List<String> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
+    public Map<String, Object> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
+    	
+    	log.info("valueArr: {}", valueArr);
+    	
+    	Map<String, Object> response = new HashMap<>();
 
-        log.info("valueArr: {}", valueArr);
-        goodsService.removeGoods(valueArr);
+        List<String> deletedGoods = new ArrayList<>();
+        List<String> failedGoods = new ArrayList<>();
 
-        return valueArr;
+        for (String goodsCode : valueArr) {
+        	boolean isRemove = goodsService.removeGoods(goodsCode);
+            if (isRemove) {
+                deletedGoods.add(goodsCode);
+            } else {
+                failedGoods.add(goodsCode);
+            }
+        }
+        log.info("deletedGoods: {}", deletedGoods);
+        log.info("failedGoods: {}", failedGoods);
+
+        response.put("deleted", deletedGoods);
+        response.put("failed", failedGoods);
+        log.info("response: {}", response);
+
+        return response;
     }
 	
 	/**
-	 * 상품수정 @PostMapping
+	 * 상품 수정 @PostMapping
 	 * @param goods
 	 * @return
 	 */
@@ -90,18 +113,34 @@ public class GoodsController {
 	}
 	
 	/**
+	 * 상품 제조사 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modal_goods_company_search")
+	public String getGoodsCompanyList(Model model) {
+		
+		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
+		log.info("goodsCompanyList: {}", goodsCompanyList);
+		
+		model.addAttribute("title", "상품 제조사 조회");
+		model.addAttribute("goodsCompanyList", goodsCompanyList);
+		
+		return "admin/goods/modal_goods_company_search";
+	}
+	
+	/**
 	 * 상품명 중복체크
 	 * @param goodsName
 	 * @return
 	 */
-	@PostMapping("/goodsNameCheck")
+	@PostMapping("/check_goods_name")
 	@ResponseBody
 	public boolean goodsNameCheck(@RequestParam(name="goodsName") String goodsName) {
-		boolean checked = true;
 		
-		checked = goodsMapper.goodsNameCheck(goodsName);
+		boolean isCheck = goodsMapper.goodsNameCheck(goodsName);
 		
-		return checked;
+		return isCheck;
 	}
 	
 	/**
@@ -131,18 +170,43 @@ public class GoodsController {
 	@GetMapping("/add_goods")
 	public String addGoods(Model model) {
 
-		log.info("model: {}", model);
-		
 		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
+		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
+		log.info("goodsCompanyList: {}", goodsCompanyList);
 		
 		model.addAttribute("title", "상품 등록");
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
+		model.addAttribute("goodsCompanyList", goodsCompanyList);
 		
 		return "admin/goods/add_goods";
 	}
 	
+	/**
+	 * 상품 검색 결과 조회
+	 * @param model
+	 * @param searchKey
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_goods_list")
+	@ResponseBody
+	public List<Goods> getGoodsListBySearch(@RequestParam(value="searchKey", required = false) String searchKey 
+										, @RequestParam(value="searchValue", required = false) String searchValue
+										, @RequestParam(value="startDate", required = false) String startDate
+										, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
+		
+		List<Goods> goodsList = goodsService.getGoodsListBySearch(searchKey, searchValue, startDate, endDate);
+		log.info("goodsList: {}", goodsList);
+		
+		return goodsList;
+	}
+	  
 	/**
 	 * 상품 목록 조회
 	 * @param model
@@ -152,9 +216,9 @@ public class GoodsController {
 	public String getGoodsList(Model model) {
 		
 		List<Goods> goodsList = goodsService.getGoodsList();
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
-		
 		log.info("goodsList: {}", goodsList);
+		
+		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 목록");
@@ -163,5 +227,6 @@ public class GoodsController {
 		
 		return "admin/goods/goods_list";
 	}
+	
 	
 }

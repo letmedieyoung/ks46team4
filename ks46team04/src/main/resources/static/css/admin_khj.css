@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.buttonArea {
+	margin: 5px 0 15px 0;
+}
+
 #current_amount_select {
 	width: 120px;
 	
@@ -7,6 +11,16 @@
 
 select:focus {
 	outline: none;
+}
+
+.fundingDetailSummary_amount {
+	margin-top: 30px;
+}
+
+.fundingDetailSummary_number {
+	color: #3CC78F;
+	font-size: 27px;
+    font-weight: 800;    
 }
 
 #goodsCode{

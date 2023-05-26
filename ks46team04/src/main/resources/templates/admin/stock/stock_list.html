@@ -7,18 +7,11 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
-
+	<!-- daterangepicker -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <th:block layout:fragment="customContents">
 
@@ -38,164 +31,117 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="goodsName">상품명</label>
+									<label for="search">검색 조건</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="goodsName" name="goodsName" placeholder="상품명을 검색하거나 입력해주세요." />
-										&nbsp;
-										<button type="button" id="goodsSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">상품명 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsCompany">제조사</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 검색하거나 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="companySearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">제조사 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsLotNumber">제조번호</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search number-input"
-											id="goodsLotNumber" name="goodsLotNumber" placeholder="제조번호" />
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsAmount">상품수량</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<select class="dropdown btn btn-primary required-form" id="dropdownMenuButton">
-											<option value="">:: 상품수량 분류 ::</option>
-											<option value="currentStockAmount">재고량</option>
-											<option value="unusualStockAmount">비정상재고량</option>
-											<option value="finalStockAmount">출고가능수량</option>
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
+											<option value="" selected>:: 검색 조건 ::</option>
+											<option value="goodsName">상품명</option>
+											<option value="goodsLotNumber">제조번호</option>
+											<option value="goodsCompany">제조사</option>
 										</select>
-										<div class="col-auto">
-											<input type="number"
-												class="form-control number-input"
-												id="minGoodsAmount" min="0" name="goodsAmount"
-												placeholder="최소 수량" />
-										</div>
-										~
-										<div class="col-auto">
-											<input type="number"
-												class="form-control number-input"
-												id="maxGoodsAmount" min="0" name="goodsAmount"
-												placeholder="최대 수량" />
-										</div>개
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<input type="text" class="form-control form-control-user-search short-input"
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="stocktakingCheck">재고조사 현황</label>
+									<label for="stocktaking">재고조사 현황</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allStatus" name="status" value="allStatus" checked>
+										      <input type="radio" name="stocktaking" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="endStatus" name="status" value="endStatus">
+										      <input type="radio" name="stocktaking">
 										      <span class="text">완료</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="undoneStatus" name="status" value="undoneStatus">
+										      <input type="radio" name="stocktaking">
 										      <span class="text">미완료</span>
 									      </label>
-										</div>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">오늘</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1개월</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-secondary">
-												<span class="text text-gray-100">1년</span>
-											</button>
-										</div>
-										<div class="form-row align-items-center search-schedule">
-											<button class="btn btn-primary">
-												<span class="text text-gray-100">전체</span>
-											</button>
-											&nbsp;
-										</div>
-										<div class="col-auto">
-											<label for="start-date" class="sr-only">시작일</label>
-											<input type="date" id="start-date" class="form-control"
-												placeholder="시작일">
-										</div>
-										~
-										<div class="col-auto">
-											<label for="end-date" class="sr-only">종료일</label>
-											<input type="date" id="end-date" class="form-control" placeholder="종료일">
 										</div>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="unusualStockAmount">비정상재고</label>
+									<label for="unusualStock">비정상재고</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allUnusualStock" name="unusualStock" value="allUnusualStock" checked>
+										      <input type="radio" name="unusualStock" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="existUnsual" name="unusualStock" value="existUnsual">
+										      <input type="radio" name="unusualStock">
 										      <span class="text">유</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="notExistUnsual" name="unusualStock" value="notExistUnsual">
+										      <input type="radio" name="unusualStock">
 										      <span class="text">무</span>
 									      </label>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="bg-gray-100">기간 검색</th>
+								<td>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										 <select class="dropdown btn btn-primary required-form" id="dateSearchKey">
+											<option value="">:: 기간 분류 ::</option>
+											<option value="goodsExprityDate">상품유통기한</option>
+											<option value="stocktakingDate">재고조사일</option>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										&nbsp;
+										<button class="btn btn-primary" id="allDateBtn">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="todayBtn">
+											<span class="text text-gray-100">오늘</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneweekBtn">
+											<span class="text text-gray-100">일주일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneMonthBtn">
+											<span class="text text-gray-100">1개월</span>
+										</button>
+									</div>
+									&nbsp;
+									<div class="form-row align-items-center search-schedule">
+										<div class="col-auto">
+											<input type="text" id="daterange" class="form-control short-input">
 										</div>
 									</div>
 								</td>
@@ -215,12 +161,13 @@
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
-				<div class="table-responsive overflow-x">
+				<div class="table-responsive">
 					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>상품재고코드</th>
 								<th>상품명</th>
 								<th>제조번호</th>
 								<th>제조사</th>
@@ -240,6 +187,10 @@
 									<tr>
 										<td><input class="checks" type="checkbox" th:value="${l.goodsStockCode}"></td>
 										<th th:text="${lStat.count}"></th>
+										<td>
+											<a th:text="${l.goodsStockCode}"
+												th:href="@{modify_stock(goodsStockCode=${l.goodsStockCode})}"></a>
+										</td>
 										<td th:text="${gl.goodsName}"></td>
 										<td th:text="${l.goodsLotNumber}"></td>
 										<td th:text="${gl.goodsCompany}"></td>
@@ -255,7 +206,7 @@
 										<td th:text="${l.finalStockAmount}"></td>
 										<td>
 											<a class="btn btn-secondary btn-icon-split btn-sm"
-												th:href="@{/admin/stock/modify_stock(goodsStockCode=${l.goodsStockCode})}">
+												th:href="@{modify_stock(goodsStockCode=${l.goodsStockCode})}">
 												<span class="text">수정</span>
 											</a>
 										</td>
@@ -272,41 +223,135 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		* 전체 선택
-		*/
-		$('#allCheck').click(function () {
-			$('.checks').prop('checked', $(this).prop('checked'));
-		});
-		$('.checks').click(function () {
-			let length = $('.checks').length;
-			let checkedLength = $('.checks:checked').length;
-			if (length == checkedLength) {
-				$('#allCheck').prop('checked', true);
-			} else {
-				$('#allCheck').prop('checked', false);
-			}
+		$(function(){
+			
+			/**
+			* 재고 검색 결과 조회
+			*/
+			$('#searchBtn').click(function(){
+				
+				// inputSearch 선택된 값 가져오기
+			    let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+			    let inputSearchValue = $('#inputSearchValue').val();
+	
+			 	// stocktaking 선택된 값 가져오기
+				let stocktakingKey = $('input[name="stocktaking"]:checked').attr('name');
+				let stocktakingValue = $('input[name="stocktaking"]:checked').next('span.text').text();
+				
+				// unusualStock 선택된 값 가져오기
+				let unusualStockKey = $('input[name="unusualStock"]:checked').attr('name');
+				let unusualStockValue = $('input[name="unusualStock"]:checked').next('span.text').text();
+	
+				// 선택된 기간 검색의 value값
+			    let dateSearchKey = $('#dateSearchKey option:selected').val();
+				
+			    // Date Range Picker에서 선택된 값을 가져오기
+			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+				let url = '/admin/stock/search_stock_list';
+				
+				let request = $.ajax({
+					type: 'GET',
+				    url: url,
+				    dataType: 'json',
+				    data:{
+					      'inputSearchKey': inputSearchKey,
+					      'inputSearchValue': inputSearchValue,
+					      'stocktakingKey': stocktakingKey,
+					      'stocktakingValue': stocktakingValue,
+					      'unusualStockKey': unusualStockKey,
+					      'unusualStockValue': unusualStockValue,
+					      'dateSearchKey': dateSearchKey,
+					      'startDate': startDate,
+						  'endDate': endDate
+					},
+				    //contentType: 'application/json; charset=UTF-8',
+					success : function(data){
+						//테이블 초기화
+						$('#dataTable > tbody').empty();
+						let html = '';
+						let count = 1;
+						if(data != null && data.length > 0){
+							const stockList = data;
+							for(const stockInfo of stockList){
+								html += '<tr>';
+								html += `	<td><input class="checks" type="checkbox" value="${stockInfo.goodsStockCode}"></td>`;
+								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/stock/modify_stock?goodsStockCode=${stockInfo.goodsStockCode}">
+													${stockInfo.goodsStockCode}</a>
+											</td>`;
+								html += `	<td>${stockInfo.goodsInfo.goodsName}</td>`;
+								html += `	<td>${stockInfo.goodsLotNumber}</td>`;
+								html += `	<td>${stockInfo.goodsInfo.goodsCompany}</td>`;
+								html += `	<td>${stockInfo.goodsExprityDate}</td>`;
+								if(stockInfo.stocktakingCheck == '1'){
+									html += `	<td>완료</td>`;
+								}else{
+									html += `	<td>미완료</td>`;
+								}
+								html += `	<td>${stockInfo.stocktakingDate}</td>`;
+								html += `	<td>${stockInfo.currentStockAmount}</td>`;
+								if(stockInfo.unusualStockCheck == '1'){
+									html += `	<td>유</td>`;
+								}else if(stockInfo.stocktakingCheck == '0' && stockInfo.unusualStockCheck == '0'){
+									html += `	<td>재고조사 미진행</td>`;
+								}else if(stockInfo.stocktakingCheck == '1' && stockInfo.unusualStockCheck == '0'){
+									html += `	<td>무</td>`;
+								}
+								html += `	<td>${stockInfo.unusualStockAmount}</td>`;
+								html += `	<td>${stockInfo.finalStockAmount}</td>`;
+								html += `<td>
+											<a class="btn btn-secondary btn-icon-split btn-sm"
+												href="/admin/stock/modify_stock?goodsStockCode=${stockInfo.goodsStockCode}">
+												<span class="text">수정</span>
+											</a>
+										</td>`;
+								html += '</tr>';
+							};
+						}else{
+							html += '<tr>';
+							html += '	<td colspan="12">검색된 상품 재고 정보가 없습니다.</td>';
+							html += '</tr>';
+						}
+						$('#dataTable > tbody').append(html);
+						$('#dataTable').DataTable();
+					}
+				})
+				request.fail(function(jqXHR, textStatus){
+					alert(`Request failed: ${textStatus}`);
+				});
+			});
+	
+			/**
+			* 전체 선택
+			*/
+			$('#allCheck').click(function () {
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function () {
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
+				}
+			});
 		});
 	</script>
 </th:block>

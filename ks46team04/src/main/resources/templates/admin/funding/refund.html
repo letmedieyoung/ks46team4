@@ -13,8 +13,6 @@
 </head>
 
 <th:block layout:fragment="customContents">
-	
-	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<form>
 			<h5 class="m-0 font-weight-bold text-gray-800">펀딩 환불 관리</h5>
@@ -130,7 +128,7 @@
 									<td><a th:text="${l.fundingPayCode}" th:href="@{detailFundingPay(fundingPayCode=${l.fundingPayCode})}" target="_blank"></a></td>								
 									<td><a th:text="${l.refundUserId}" th:href="@{/admin/user/modifyUser(userId=${l.refundUserId})}" target="_blank"></a></td>								
 									<td th:text="${l.pmName}"></td>
-									<td th:text="|₩ ${#numbers.formatInteger(l.requestAmount, 3, 'COMMA')}|"></td>
+									<td th:text="|${#numbers.formatInteger(l.requestAmount, 3, 'COMMA')}원|"></td>
 									<td th:text="${l.refundBank}"></td>								
 									<td th:text="${l.refundAccount}"></td>	
 									<td th:text="${l.requestReason}"></td>
@@ -146,141 +144,149 @@
 			</div>
 		</form>
 	</div>
-	<!-- /.container-fluid -->
-	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
 	</a>
 </th:block>
 
-<th:block layout:fragment="customJs">
-	<!-- Page level plugins -->
+<!-- javascript 삽입 시작 -->
+<th:block layout:fragment="customJs">	
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-
-	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/khj.js}"></script>
 	
 	<script th:inline="javascript">
-	$('#allCheck').click(function () {
-		$('.chk').prop('checked', $(this).prop('checked'));
-	});
-	$('.chk').click(function () {
-		let length = $('.chk').length;
-		let checkedLength = $('.chk:checked').length;
-		if (length == checkedLength) {
-			$('#allCheck').prop('checked', true);
-		} else {
-			$('#allCheck').prop('checked', false);
-		}
-	});
+		/** 
+		 * dataTable 기능 숨기기
+		*/
+		$("#dataTable").DataTable({
+		    // 표시 건수기능 숨기기
+		    lengthChange: false,
+		    // 정보 표시 숨기기
+		    //info: false,
+		    // 검색 기능 숨기기
+		    searching: false,
+		    // 정렬 기능 숨기기
+		    ordering: false	 
+		}); 
+		
+		
+		$('#allCheck').click(function () {
+			$('.chk').prop('checked', $(this).prop('checked'));
+		});
+		$('.chk').click(function () {
+			let length = $('.chk').length;
+			let checkedLength = $('.chk:checked').length;
+			if (length == checkedLength) {
+				$('#allCheck').prop('checked', true);
+			} else {
+				$('#allCheck').prop('checked', false);
+			}
+		});
+		
+		
+		/**
+		 * 체크박스 선택 후 환불완료 버튼
+		 */
+		$('#refundBtn').click(function () {
+		    const checkedArr = $('.chk:checked');
+		    console.log(checkedArr);
 	
+		    let length = checkedArr.length;
 	
+		    const refundArr = [];
+		    let msg = '환불완료 처리 하시겠습니까?';
 	
-	/**
-	 * 체크박스 선택 후 환불완료 버튼
-	 */
-	$('#refundBtn').click(function () {
-	    const checkedArr = $('.chk:checked');
-	    console.log(checkedArr);
-
-	    let length = checkedArr.length;
-
-	    const refundArr = [];
-	    let msg = '환불완료 처리 하시겠습니까?';
-
-	    if (length == 0) {
-	        alert("선택된 항목이 없습니다.");
-	    }
-	    else {
-	        let result = confirm(msg);
-
-	        if(result == true){
-
-	            $(checkedArr).each(function() {
-	                refundArr.push($(this).attr('refund'));
-	            });
-	            console.log(refundArr);
-
-	            let request = $.ajax({
-	                url: '/admin/funding/updateFundingRefundStatus',
-	                method: 'POST',
-	                data: { refundArr : refundArr },
-	                dataType: 'json'
-	            });
-
-	            request.done(function(){
-	                alert('처리가 완료되었습니다.');
-	                location.reload();
-	            });
-
-	            request.fail(function(jqXHR, textStatus){
-	                alert(`Request failed: ${textStatus}`);
-	                console.log("실패함");
-	            });
-	        }else{
-	            location.reload();
-	        }
-	    }
-	});
-
-	
-	
-	function doSearchFunding() {
-		  alert("검색 결과를 조회합니다.");
-
-		  const searchInfo = {};
-		  const searchDateCate = document.querySelector('select[name="searchDateCate"]').value;
-		  searchInfo[searchDateCate] = document.querySelector(`input[name="${searchDateCate}"]`).value;
-		  const filter = document.querySelector('select[name="filter"]').value;
-		  searchInfo[filter] = document.querySelector('input[name="keyword"]').value;
-		  const refundStatus = document.querySelector('input[name="refundStatus"]:checked').value;
-		  searchInfo.refundStatus = refundStatus;
-
-		  console.table(searchInfo);
-
-		  $.ajax({
-		    type: 'POST',
-		    url: '/funding/getRefundList',
-		    contentType: 'application/json;charset=UTF-8',
-		    data: JSON.stringify(searchInfo),
-		    success: function(searchList) {
-		      const dataTableTbody = document.querySelector('#dataTable tbody');
-		      dataTableTbody.innerHTML = '';
-		      let html = '';
-		      for (const searchInfo of searchList) {
-		        html += '<tr>';
-		        html += '<td><input type="checkbox" name="chk" class="chk"></td>';
-		        html += '<td>' + searchInfo.fundingPaymentDate + '</td>';
-		        html += '<td>' + searchInfo.refundRequestDate + '</td>';
-		        html += '<td><a href="/funding/modifyFundingRefund?fundingRefundCode=' + searchInfo.fundingRefundCode + '">' + searchInfo.fundingRefundCode + '</a></td>';
-		        html += '<td><a href="/detailFundingPay?fundingPayCode=' + searchInfo.fundingPayCode + '" target="_blank">' + searchInfo.fundingPayCode + '</a></td>';
-		        html += '<td><a href="/admin/user/modifyUser?userId=' + searchInfo.refundUserId + '" target="_blank">' + searchInfo.refundUserId + '</a></td>';
-		        html += '<td>' + searchInfo.pmName + '</td>';
-		        html += '<td>₩ ' + searchInfo.requestAmount.toLocaleString('en-US') + '</td>';
-		        html += '<td>' + searchInfo.refundBank + '</td>';
-		        html += '<td>' + searchInfo.refundAccount + '</td>';
-		        html += '<td>' + searchInfo.requestReason + '</td>';
-		        html += '<td>' + searchInfo.refundStatus + '</td>';
-		        html += '</tr>';
-		      }
-		      dataTableTbody.innerHTML = html;
-		    },
-		    error: function() {
-		      console.log('error');
+		    if (length == 0) {
+		        alert("선택된 항목이 없습니다.");
 		    }
-		  });
-		}
-
-		document.querySelector('#searchBtn').addEventListener('click', function() {
-		  doSearchFunding();
+		    else {
+		        let result = confirm(msg);
+	
+		        if(result == true){
+	
+		            $(checkedArr).each(function() {
+		                refundArr.push($(this).attr('refund'));
+		            });
+		            console.log(refundArr);
+	
+		            let request = $.ajax({
+		                url: '/admin/funding/updateFundingRefundStatus',
+		                method: 'POST',
+		                data: { refundArr : refundArr },
+		                dataType: 'json'
+		            });
+	
+		            request.done(function(){
+		                alert('처리가 완료되었습니다.');
+		                location.reload();
+		            });
+	
+		            request.fail(function(jqXHR, textStatus){
+		                alert(`Request failed: ${textStatus}`);
+		                console.log("실패함");
+		            });
+		        }else{
+		            location.reload();
+		        }
+		    }
+		});
+	
+		
+		function doSearchFunding() {
+			  alert("검색 결과를 조회합니다.");
+	
+			  const searchInfo = {};
+			  const searchDateCate = document.querySelector('select[name="searchDateCate"]').value;
+			  searchInfo[searchDateCate] = document.querySelector(`input[name="${searchDateCate}"]`).value;
+			  const filter = document.querySelector('select[name="filter"]').value;
+			  searchInfo[filter] = document.querySelector('input[name="keyword"]').value;
+			  const refundStatus = document.querySelector('input[name="refundStatus"]:checked').value;
+			  searchInfo.refundStatus = refundStatus;
+	
+			  console.table(searchInfo);
+	
+			  $.ajax({
+			    type: 'POST',
+			    url: '/funding/getRefundList',
+			    contentType: 'application/json;charset=UTF-8',
+			    data: JSON.stringify(searchInfo),
+			    success: function(searchList) {
+			      const dataTableTbody = document.querySelector('#dataTable tbody');
+			      dataTableTbody.innerHTML = '';
+			      let html = '';
+			      for (const searchInfo of searchList) {
+			        html += '<tr>';
+			        html += '<td><input type="checkbox" name="chk" class="chk"></td>';
+			        html += '<td>' + searchInfo.fundingPaymentDate + '</td>';
+			        html += '<td>' + searchInfo.refundRequestDate + '</td>';
+			        html += '<td><a href="/funding/modifyFundingRefund?fundingRefundCode=' + searchInfo.fundingRefundCode + '">' + searchInfo.fundingRefundCode + '</a></td>';
+			        html += '<td><a href="/detailFundingPay?fundingPayCode=' + searchInfo.fundingPayCode + '" target="_blank">' + searchInfo.fundingPayCode + '</a></td>';
+			        html += '<td><a href="/admin/user/modifyUser?userId=' + searchInfo.refundUserId + '" target="_blank">' + searchInfo.refundUserId + '</a></td>';
+			        html += '<td>' + searchInfo.pmName + '</td>';
+			        html += '<td>₩ ' + searchInfo.requestAmount.toLocaleString('en-US') + '</td>';
+			        html += '<td>' + searchInfo.refundBank + '</td>';
+			        html += '<td>' + searchInfo.refundAccount + '</td>';
+			        html += '<td>' + searchInfo.requestReason + '</td>';
+			        html += '<td>' + searchInfo.refundStatus + '</td>';
+			        html += '</tr>';
+			      }
+			      dataTableTbody.innerHTML = html;
+			    },
+			    error: function() {
+			      console.log('error');
+			    }
+			  });
+			}
+	
+			document.querySelector('#searchBtn').addEventListener('click', function() {
+			  doSearchFunding();
 		});
 
 	</script>
-	
-	
 </th:block>
+<!-- javascript 삽입 끝 -->
+
 </html>

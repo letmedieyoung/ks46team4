@@ -2,25 +2,118 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="ks46team04.admin.mapper.FundingDetailMapper">
-	
-
-<!-- FundingDetail 등록 
-	<insert id="createFundingDetail" parameterType="FundingDetail">
-		INSERT INTO funding_detail
-		(funding_code, funding_name, funding_foundation, funding_goal_amount, funding_start_date, funding_end_date)
-		VALUES(#{fundingCode}, #{fundingName}, #{foundationName}, #{fundingGoalAmount}, #{fundingStartDate}, #{fundingEndDate})
-	</insert>
-
-	FundingDetail 조회
-	<select id="getFundingDetailInfoByCode" parameterType="String" resultMap="fundingDetailResultMap">
+	<resultMap type="FundingDetail" id="fundingDetailResultMap">
+		<id 	column="funding_code"			property="fundingCode"/>
+		<result column="funding_name"			property="fundingName"/>
+		<result column="funding_foundation"		property="foundationName"/>
+		<result column="funding_goal_amount"	property="fundingGoalAmount"/>
+		<result column="funding_start_date"		property="fundingStartDate"/>
+		<result column="funding_end_date"		property="fundingEndDate"/>
+		<result column="funding_progress"		property="fundingProgress"/>
+	</resultMap>
+  
+  
+	<select id="getFundingMainList" resultType="FundingDetail">
+		/* 메인페이지 진행중 펀딩 */
 		SELECT
-			*
+			f.funding_code		  				AS fundingCode,
+			f.funding_name		  				AS fundingName,
+			f.funding_foundation 				AS foundationName,			
+			f.funding_goal_amount 				AS fundingGoalAmount,	
+			f.funding_start_date  				AS fundingStartDate,			
+			f.funding_end_date	  				AS fundingEndDate,
+			f.funding_progress 	  				AS fundingProgress,			
+			fc.funding_current_achieved_amount 	AS achievedAmount,
+			fc.funding_achieved_rate 			AS achievedRate
 		FROM
-			funding_detail
-		WHERE funding_code = #{fundingCode}
-	</select> -->
- 
-
-</mapper>
+			each_funding_info AS f
+			LEFT JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code
+			LEFT JOIN
+			funding_current_amount AS fc ON f.funding_code = fc.funding_code
+		WHERE
+			f.funding_progress = '진행중';			
+	</select>
+	
+	<select id="getFundingCompleteList" resultType="FundingDetail">
+		/* 메인페이지 종료 펀딩 */
+		SELECT
+			f.funding_code		  				AS fundingCode,
+			f.funding_name		  				AS fundingName,
+			f.funding_foundation 				AS foundationName,			
+			f.funding_goal_amount 				AS fundingGoalAmount,	
+			f.funding_start_date  				AS fundingStartDate,			
+			f.funding_end_date	  				AS fundingEndDate,
+			f.funding_progress 	  				AS fundingProgress,			
+			fc.funding_current_achieved_amount 	AS achievedAmount,
+			fc.funding_achieved_rate 			AS achievedRate
+		FROM
+			each_funding_info AS f
+			LEFT JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code
+			LEFT JOIN
+			funding_current_amount AS fc ON f.funding_code = fc.funding_code
+		WHERE
+			f.funding_progress = '완료';			
+	</select>
+  
+	<select id="getFundingDetailList" resultType="FundingDetail">
+		/* 펀딩 진열 */
+		SELECT
+			f.funding_code		  				AS fundingCode,
+			f.funding_name		  				AS fundingName,
+			f.funding_foundation 				AS foundationName,			
+			f.funding_goal_amount 				AS fundingGoalAmount,	
+			f.funding_start_date  				AS fundingStartDate,			
+			f.funding_end_date	  				AS fundingEndDate,
+			f.funding_progress 	  				AS fundingProgress,			
+			fc.funding_current_achieved_amount 	AS achievedAmount,
+			fc.funding_achieved_rate 			AS achievedRate
+		FROM
+			each_funding_info AS f
+			LEFT JOIN
+			goods_reg_info AS g ON f.goods_code = g.goods_code
+			LEFT JOIN
+			funding_current_amount AS fc ON f.funding_code = fc.funding_code
+		ORDER BY
+			f.funding_code DESC;
+	</select>
+	
+	
+	<select id="getFundingDetailByCode" resultType="FundingDetail">
+		/* 펀딩 상세페이지 */
+		SELECT
+		    f.funding_code 						AS fundingCode,
+		    f.funding_name 						AS fundingName,
+		    f.funding_summary					AS fundingSummary,
+		    f.funding_description 				AS fundingDescription,
+		    f.funding_foundation 				AS foundationName,
+		    f.funding_goal_amount 				AS fundingGoalAmount,
+		    DATE(f.funding_start_date) 			AS fundingStartDate,
+		    DATE(f.funding_end_date) 			AS fundingEndDate,
+		    f.funding_progress 					AS fundingProgress,
+		    g.goods_name 						AS goodsName,
+		    g.goods_price						AS goodsPrice,
+		    fc.funding_current_achieved_amount 	AS achievedAmount,
+		    fc.funding_achieved_rate 			AS achievedRate
+	 	FROM
+		    each_funding_info AS f
+		    LEFT JOIN goods_reg_info AS g ON f.goods_code = g.goods_code
+		    LEFT JOIN funding_current_amount AS fc ON f.funding_code = fc.funding_code
+	  	WHERE
+	    	f.funding_code = #{fundingCode}
+	</select>
+  
+  	<select id="getPriceByOption" resultType="int">
+        SELECT
+        	goods_price
+        FROM
+        	each_funding_info AS f
+		    LEFT JOIN goods_reg_info AS g ON f.goods_code = g.goods_code        	
+        WHERE
+        	f.funding_code = #{fundingCode};
+    </select>
+  
+  </mapper>
+  

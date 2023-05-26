@@ -37,7 +37,7 @@ public class PurchaseService {
 			boolean isGoodsDel = item.isGoodsIsDel();
 			if(isGoodsDel == true) {
 				String goodsName = item.getGoodsName();
-				goodsName = goodsName + " (현재 삭제된 상품)";
+				goodsName = goodsName + " (삭제 상품)";
 				item.setGoodsName(goodsName);
 			}
 		}
@@ -58,7 +58,7 @@ public class PurchaseService {
 			purchase.setPurchaseStatus("매입 입금 완료");
 			
 			//그룹 코드
-			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey,"purchase");
+			String purchaseGroup = commonMapper.getPurchaseGroupCode("purchase_history", "purchase_group_code", PKkey,"purchase");
 			purchase.setPurchaseGroupCode(purchaseGroup);
 			//DeadlindeCheck
 			purchase.setUserPurchseDeadlindeCheck("마감전");
@@ -108,7 +108,7 @@ public class PurchaseService {
 			
 			String PKkey = purchase.getPurchaseCode();
 			//그룹 코드
-			String purchaseGroup = commonMapper.getGroupCode("purchase_history", "purchase_group_code", PKkey, "purchase");
+			String purchaseGroup = commonMapper.getPurchaseGroupCode("purchase_history", "purchase_group_code", PKkey, "purchase");
 			purchase.setPurchaseGroupCode(purchaseGroup);
 			//DeadlindeCheck
 			purchase.setUserPurchseDeadlindeCheck("마감전");
@@ -117,5 +117,11 @@ public class PurchaseService {
 		log.info("purchaseS: {}", purchase);
 		int modifyResult = purchaseMapper.modifyPurchase(purchase);
 		return modifyResult;
+	}
+	
+	public int deletePurchase(List<String> delPkValues) {
+		int result = purchaseMapper.deletePurchase(delPkValues);
+		
+		return result; 
 	}
 }

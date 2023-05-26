@@ -7,17 +7,11 @@
 	<title th:text="${title}"></title>
 	<!-- Custom styles for this template -->
 	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
 	<!-- Custom styles for this page -->
 	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	
 	<link href="/css/admin_kgr9.css" rel="stylesheet">
+	<!-- daterangepicker -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <th:block layout:fragment="customContents">
 
@@ -37,18 +31,21 @@
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="foundationName">재단명</label>
+									<label for="search">검색 조건</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input"
-											id="foundationName" name="foundationName" placeholder="재단명을 검색하거나 입력해주세요." />
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
+											<option value="" selected>:: 검색 조건 ::</option>
+											<option value="foundationName">재단명</option>
+											<option value="requestGoodsName">요청 상품명</option>
+										</select>
+									</div>
+									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<button type="button" id="foundationSearchBtn"
-											class="btn btn-primary btn-icon-split">
-											<span class="text">재단 검색</span>
-										</button>
+										<input type="text" class="form-control form-control-user-search short-input"
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
@@ -61,20 +58,26 @@
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allContent" name="contentCategory" value="allContent" checked>
+										      <input type="radio" name="contentCategory" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="fundingContent" name="contentCategory" value="fundingContent">
+										      <input type="radio" name="contentCategory" >
 										      <span class="text">펀딩</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="contentCategory" value="donationContent">
-										      <span class="text">정기 후원</span>
+										      <input type="radio" name="contentCategory">
+										      <span class="text">정기기부</span>&nbsp;&nbsp;
+									      </label>
+									    </div>
+										<div class="form-row align-items-center search-schedule">
+									      <label>
+										      <input type="radio" name="contentCategory">
+										      <span class="text">미정</span>
 									      </label>
 									    </div>
 									</div>
@@ -89,73 +92,37 @@
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="allContent" name="requestProgressStatus" value="allContent" checked>
+										      <input type="radio" name="requestProgressStatus"checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="fundingContent" name="requestProgressStatus" value="fundingContent">
-										      <span class="text">진행 전</span>&nbsp;&nbsp;
+										      <input type="radio" name="requestProgressStatus">
+										      <span class="text">대기중</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="requestProgressStatus" value="donationContent">
-										      <span class="text">진행 중</span>
+										      <input type="radio" name="requestProgressStatus">
+										      <span class="text">진행중</span>&nbsp;&nbsp;
 									      </label>
+									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" id="donationContent" name="requestProgressStatus" value="donationContent">
-										      <span class="text">종료</span>
+										      <input type="radio" name="requestProgressStatus">
+										      <span class="text">완료</span>
 									      </label>
 									    </div>
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="requestGoodsName">요청 상품명</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										&nbsp;
-										<input type="text" class="form-control form-control-user-search middle-input" id="requestGoodsName" name="requestGoodsName" placeholder="요청 상품을 입력해주세요."/>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button type="button" id="goodsSearchBtn" class="btn btn-primary btn-icon-split">
-											<span class="text">상품 검색</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100">
-									<label for="goodsAmount">상품 요청 수량</label>
-								</th>
-								<td>
-									<div class="form-row align-items-center search-schedule">
-										<div class="col-auto">
-											<input type="number"
-												class="form-control form-control-user-search number-input"
-												id="initialGoodsAmount" min="0" name="initialGoodsAmount"
-												placeholder="최소 수량" />
-										</div>
-										~
-										<div class="col-auto">
-											<input type="number"
-												class="form-control form-control-user-search number-input"
-												id="finalGoodsAmount" min="0" name="finalGoodsAmount"
-												placeholder="최대 수량" />
-										</div>개
-									</div>
-								</td>
 							<tr>
 								<th class="bg-gray-100">기간 검색</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										 <select class="dropdown btn btn-primary required-form" id="selectDate" name="selectCategory">
+										 <select class="dropdown btn btn-primary required-form" id="dateSearchKey">
 											<option value="">:: 기간 분류 ::</option>
 											<option value="deliveryDate">배송요청일</option>
 											<option value="regUdpDate">등록/수정일</option>
@@ -163,33 +130,29 @@
 									</div>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										<button class="btn btn-secondary">
+										<button class="btn btn-primary" id="allDateBtn">
+											<span class="text text-gray-100">전체</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="todayBtn">
 											<span class="text text-gray-100">오늘</span>
 										</button>
 									</div>
 									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
+										<button class="btn btn-secondary" id="oneweekBtn">
+											<span class="text text-gray-100">일주일</span>
+										</button>
+									</div>
+									<div class="form-row align-items-center search-schedule">
+										<button class="btn btn-secondary" id="oneMonthBtn">
 											<span class="text text-gray-100">1개월</span>
-										</button>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-secondary">
-											<span class="text text-gray-100">1년</span>
-										</button>
-									</div>
-									<div class="form-row align-items-center search-schedule">
-										<button class="btn btn-primary">
-											<span class="text text-gray-100">전체</span>
 										</button>
 									</div>
 									&nbsp;
 									<div class="form-row align-items-center search-schedule">
 										<div class="col-auto">
-											<input type="date" id="start-date" class="form-control">
-										</div>
-										~
-										<div class="col-auto">
-											<input type="date" id="end-date" class="form-control">
+											<input type="text" id="daterange" class="form-control short-input">
 										</div>
 									</div>
 								</td>
@@ -197,7 +160,7 @@
 						</tbody>
 					</table>
 					<div align="center">
-						<button type="button" id="totalSearchBtn" class="btn btn-primary btn-icon-split">
+						<button type="submit" id="searchBtn" class="btn btn-primary btn-icon-split">
 							<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 							<span class="text">검색</span>
 						</button>
@@ -209,22 +172,19 @@
 		<!-- DataTales Example -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
-				<div class="table-responsive overflow-x">
+				<div class="table-responsive">
 					<button type="submit" id="delCheckBtn" class="btn btn-secondary btn-icon-split">
 						<span class="text">선택삭제</span>
 					</button>
-					<a href="/admin/foundation/add_foundation_request">
-						<button type="button" id="submitBtn" class="btn btn-secondary btn-icon-split">
-							<span class="text">요청사항등록</span>
-						</button>
+					<a href="/admin/foundation/add_foundation_request" class="btn btn-secondary btn-icon-split">
+						<span class="text">요청사항등록</span>
 					</a>
-					<br><br>
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
-						cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
+								<th>재단요청사항코드</th>
 								<th>재단명</th>
 								<th>콘텐츠 분류</th>
 								<th>요청 상품명</th>
@@ -240,6 +200,10 @@
 							<tr th:unless="${foundationRequestList == null}" th:each=" l : ${foundationRequestList}">
 								<td><input class="checks" type="checkbox" th:value="${l.foundationRequestCode}"></td>
 								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.foundationRequestCode}"
+										th:href="@{modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}"></a>
+								</td>
 								<td th:text="${l.foundationName}"></td>
 								<td th:text="${l.contentCategory}"></td>
 								<td th:text="${l.requestGoodsName}"></td>
@@ -252,7 +216,7 @@
 								<td th:unless="${l.requestUpdDate == null}" th:text="|${l.requestUpdDate}(수정)|"></td>
 								<td>
 									<a class="btn btn-secondary btn-icon-split btn-sm"
-										th:href="@{/admin/foundation/modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
+										th:href="@{modify_foundation_request(foundationRequestCode=${l.foundationRequestCode})}">
 										<span class="text">수정</span>
 									</a>
 								</td>
@@ -267,86 +231,188 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-
-
 </th:block>
 
 <th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	<!-- Page level plugins -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		$('#allCheck').click(function () {
-			$('.checks').prop('checked', $(this).prop('checked'));
-		});
-		$('.checks').click(function () {
-			let length = $('.checks').length;
-			let checkedLength = $('.checks:checked').length;
-			if (length == checkedLength) {
-				$('#allCheck').prop('checked', true);
-			} else {
-				$('#allCheck').prop('checked', false);
-			}
-		});
-		/**
-		 * 체크박스 선택 후 deleteBtn 버튼
-		 */
-		$('#delCheckBtn').click(function () {
+	
+		$(function(){
 			
-			const checkedArr = $('.checks:checked');
-			console.log(checkedArr);
-			
-			let length = checkedArr.length;
-			
-			const valueArr = [];
-			let msg = '삭제하시겠습니까?';
-			
-			if (length == 0) {
-				alert("선택된 항목이 없습니다.");
-			}
-			else {
-				let result = confirm(msg);
+			/**
+			* 재단 요청사항 검색 결과 조회
+			*/
+			$('#searchBtn').click(function(){
 				
-				if(result == true){
-					
-					$(checkedArr).each(function() {
-						valueArr.push($(this).attr('value'));
-			        });
-					console.log(valueArr);
-					
-					let request = $.ajax({
-						url: '/admin/foundation/remove_foundation_request',
-						method: 'POST',
-						data: { valueArr : valueArr },
-						dataType: 'json'
-					});
-					
-					request.done(function(result){
-						if(result){
-							alert('삭제되었습니다.');
-							location.reload();
+				// inputSearch 선택된 값 가져오기
+				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+				let inputSearchValue = $('#inputSearchValue').val();
+				
+				// contentCategory 선택된 값 가져오기
+				let contentKey = $('input[name="contentCategory"]:checked').attr('name');
+				let contentValue = $('input[name="contentCategory"]:checked').next('span.text').text();
+				
+				// requestProgressStatus 선택된 값 가져오기
+				let progressKey = $('input[name="requestProgressStatus"]:checked').attr('name');
+				let progressValue = $('input[name="requestProgressStatus"]:checked').next('span.text').text();
+			    
+			 	// 선택된 기간 검색의 value값
+			    let dateSearchKey = $('#dateSearchKey option:selected').val();
+			    
+			    // Date Range Picker에서 선택된 값을 가져오기
+			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+				let url = '/admin/foundation/search_foundation_request_list';
+				
+				let request = $.ajax({
+					type: 'GET',
+				    url: url,
+				    dataType: 'json',
+				    data:{
+					      'inputSearchKey': inputSearchKey,
+					      'inputSearchValue': inputSearchValue,
+					      'contentKey': contentKey,
+					      'contentValue': contentValue,
+					      'progressKey': progressKey,
+					      'progressValue': progressValue,
+					      'dateSearchKey': dateSearchKey,
+					      'startDate': startDate,
+						  'endDate': endDate
+					},
+				    //contentType: 'application/json; charset=UTF-8',
+					success : function(data){
+						//테이블 초기화
+						$('#dataTable > tbody').empty();
+						let html = '';
+						let count = 1;
+						if(data != null && data.length > 0){
+							const foundationRequestList = data;
+							for(const foundationRequestInfo of foundationRequestList){
+								html += '<tr>';
+								html += `	<td><input class="checks" type="checkbox" value="${foundationRequestInfo.foundationRequestCode}"></td>`;
+								html += `	<th>${count++}</th>`;
+								html += `	<td>
+												<a href="/admin/foundation/modify_foundation_request?foundationRequestCode=${foundationRequestInfo.foundationRequestCode}">
+													${foundationRequestInfo.foundationCode}</a>
+											</td>`;
+								html += `	<td>${foundationRequestInfo.foundationName}</td>`;
+								html += `	<td>${foundationRequestInfo.contentCategory}</td>`;
+								html += `	<td>${foundationRequestInfo.requestGoodsName}</td>`;
+								html += `	<td>${foundationRequestInfo.requestProgressStatus}</td>`;
+								html += `	<td>${foundationRequestInfo.initialGoodsAmount}</td>`;
+								if(foundationRequestInfo.finalGoodsAmount == null){
+									html += `	<td>미정</td>`;
+								}else{
+									html += `	<td>${foundationRequestInfo.finalGoodsAmount}</td>`;
+								}
+								html += `	<td>${foundationRequestInfo.deliveryRequestDate}</td>`;
+								if(foundationRequestInfo.requestUpdDate == null){
+									html += `	<td>${foundationRequestInfo.requestRegDate}</td>`;
+								}else{
+									html += `	<td>${foundationRequestInfo.requestUpdDate} (수정)</td>`;
+								}
+								html += `<td>
+											<a class="btn btn-secondary btn-icon-split btn-sm"
+												href="/admin/foundation/modify_foundation_request?foundationRequestCode=${foundationRequestInfo.foundationRequestCode}">
+												<span class="text">수정</span>
+											</a>
+										</td>`;
+								html += '</tr>';
+							};
+						}else{
+							html += '<tr>';
+							html += '	<td colspan="12">검색된 재단 요청사항 정보가 없습니다.</td>';
+							html += '</tr>';
 						}
-					});
-					
-					request.fail(function(jqXHR, textStatus){
-						alert(`Request failed: ${textStatus}`);
-					});
-				}else{
-					location.reload();
+						$('#dataTable > tbody').append(html);
+						$('#dataTable').DataTable();
+					}
+				})
+				request.fail(function(jqXHR, textStatus){
+					alert(`Request failed: ${textStatus}`);
+				});
+			});
+
+			/**
+			* 전체 선택
+			*/
+		
+			$('#allCheck').click(function () {
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function () {
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
 				}
-			}
+			});
+			/**
+			 * 체크박스 선택 후 deleteBtn 버튼
+			 */
+			$('#delCheckBtn').click(function () {
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert("선택된 항목이 없습니다.");
+				}
+				else {
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function() {
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/foundation/remove_foundation_request',
+							method: 'POST',
+							data: { 'valueArr' : valueArr },
+							dataType: 'json'
+						});
+						
+						request.done(function(response) {
+			                let deleted = response.deleted;
+			                let failed = response.failed;
+			                let message = '';
+			                if (deleted.length > 0) {
+			                    message += `삭제된 요청사항: ${deleted.join(', ')}\n`;
+			                }
+			                if (failed.length > 0) {
+			                    message += `삭제할 수 없는 요청사항(진행중 또는 완료된 요청사항): ${failed.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
+			});
 		});
 	</script>
 </th:block>

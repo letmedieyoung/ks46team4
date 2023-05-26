@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Vat;
 import ks46team04.admin.service.VatService;
 
@@ -47,15 +47,19 @@ public class VatController {
 	 * 화면에서 0~100 사이 정수로 걸러진 값을 *0.01로 비율 수정하여 캐스트 후 insert
 	 * */
 	@GetMapping("/payment_vat_update")
-	public String getModifyVat(Model model) {
+	public String getModifyVat(/* Model model */) {
 		
 		return "admin/purchase_sale/payment_vat_update";
 	}
 	
 	@PostMapping("/payment_vat_update")
-	public String modifyVat(Vat vat) {
+	public String modifyVat(Vat vat, HttpSession session) {
 		log.info("vat: {}", vat);
-		vatService.modifyVat(vat);
+		String loginId = (String) session.getAttribute("SID");
+		log.info("세션 아이디loginId: {}", loginId);
+		if(loginId != null) {
+			vatService.modifyVat(vat, loginId);
+		}
 		
 		return "redirect:/admin/purchase_sale/payment_vat_list";
 	}

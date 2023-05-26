@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Funding;
 import ks46team04.admin.dto.FundingCurrentAmount;
@@ -65,8 +65,16 @@ public class FundingController {
 	 * @return
 	 */
 	@PostMapping("/modifyFunding")
-	public String modifyFunding(Funding funding) {
+	public String modifyFunding(Funding funding,
+								@RequestParam(name="userId") String userId,
+								HttpSession session) {
 		log.info("funding: {}", funding);
+		
+		
+		session.setAttribute("SID", userId);
+		String fundingUpdateId = (String) session.getAttribute("SID");
+		funding.setFundingUpdateId(fundingUpdateId);
+		
 		fundingService.modifyFunding(funding);
 		
 		return "redirect:/admin/funding/manage";
@@ -143,9 +151,11 @@ public class FundingController {
 	 * @return
 	 */
 	@PostMapping("/register") 
-	public String registFunding(Funding funding,
-								HttpServletRequest request) { 
+	public String registFunding(Funding funding, HttpSession session) { 
 		log.info("화면에서 전달받은 데이터 : {}", funding);	
+		
+		String fundingRegId = (String) session.getAttribute("SID");
+		funding.setFundingRegId(fundingRegId);
 		
 		fundingService.registFunding(funding);
 		return "redirect:/admin/funding/manage"; 
@@ -182,7 +192,6 @@ public class FundingController {
 		
 		int targetSum = fundingMapper.getTargetSum();
 		int currentSum = fundingMapper.sumOfCurrentAmount();
-		String accomplishmentRate = fundingMapper.accomplishmentRate();
 		int allAccomplishmentRate = fundingMapper.allAccomplishmentRate();
 		
 		model.addAttribute("title", "펀딩 컨텐츠 별 진행현황");
@@ -190,7 +199,6 @@ public class FundingController {
 		model.addAttribute("targetSum", targetSum);
 		model.addAttribute("currentSum", currentSum);
 		model.addAttribute("allAccomplishmentRate", allAccomplishmentRate);
-		model.addAttribute("accomplishmentRate", accomplishmentRate);
 		model.addAttribute("fundingCurrentAmountList", fundingCurrentAmountList);
 	    
 	    return "admin/funding/current_amount";

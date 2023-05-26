@@ -12,7 +12,6 @@
 </head>
 	
 <th:block layout:fragment="customContents">
-	<!-- Begin Page Content -->
 	<div class="container-fluid">		
 		<form id="modifyFundingForm" th:action="@{/admin/funding/modifyFunding}" method="post">
 			<div class="card mb-4">
@@ -29,7 +28,9 @@
 								</li>
 								<li>
 									최종수정일 :
-									<input type="text" id="fundingUpdateDate" th:value="*{fundingUpdateDate}" name="fundingUpdateDate" style="border:none;" disabled="disabled"></input>			
+									<input type="text" id="fundingUpdateDate" th:value="*{fundingUpdateDate}" name="fundingUpdateDate" style="border:none;" disabled="disabled"></input>
+									수정자 아이디 :
+									<input type="text" id="fundingUpdateId" th:value="*{fundingUpdateId}" name="fundingUpdateId" style="border:none;" disabled="disabled"></input>		
 								</li>										
 							</ul>										
 						</div>						
@@ -58,11 +59,22 @@
 								</tr>
 								<tr>
 			                        <th class="bg-gray-100">
+										<label for="fundingSummary">요약 설명</label>
+									</th>
+				                	<td>
+				                        <div class="form-row align-items-center search-schedule" style="width: 500px;">
+				                        	<input type="text" id="fundingSummary" th:value="*{fundingSummary}" name="fundingSummary" class="form-control form-control-user-search search-input"></input>
+				                    	</div>
+				                	</td>
+			            		</tr>				  
+								<tr>
+								<tr>
+			                        <th class="bg-gray-100">
 										<label for="fundingDescription">상세 내용</label>
 									</th>
 				                	<td>
 				                        <div class="fundingDescription form-row align-items-center search-schedule">
-				                        	<textarea class="form-control" id="fundingDescription" th:value="*{fundingDescription}"name="fundingDescription"></textarea>
+				                        	<textarea id="fundingDescription" th:text="*{fundingDescription}" name="fundingDescription"></textarea>
 				                    	</div>
 				                	</td>
 			            		</tr>				  
@@ -153,7 +165,7 @@
 									</th>
 		                        	<td>														
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId" class="form-control form-control-user-search search-input" />					
+											<input type="text" id="fundingRegId" th:value="*{fundingUpdateId}" name="fundingRegId" class="form-control form-control-user-search search-input" readonly="readonly"/>					
 										</div>								
 									</td>
 		                        </tr>								
@@ -175,14 +187,13 @@
 			</div>
 		</form>
 	</div>
-	<!-- /.container-fluid -->
 	
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </th:block>
 
 
-
+<!-- javascript 삽입 시작 -->
 <th:block layout:fragment="customJs">
 	<!-- Page level plugins -->
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
@@ -192,5 +203,6 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/khj.js}"></script>
 </th:block>
+<!-- javascript 삽입 끝 -->
 
 </html>

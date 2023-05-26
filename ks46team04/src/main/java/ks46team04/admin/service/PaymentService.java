@@ -19,7 +19,7 @@ private final PaymentMapper paymentMapper;
 	}
 	
 	/*
-	 * 정기기부 단가 조회
+	 * 결제방식 조회
 	 * */
 	public List<Payment> getPayment(){
 		

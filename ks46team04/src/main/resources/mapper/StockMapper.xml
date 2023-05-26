@@ -41,6 +41,7 @@
 		<association property="OutcomingDetailInfo" javaType="OutcomingDetail">
 			<id		column="outcoming_detail_code"						property="outcomingDetailCode"/>
 			<result column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
+			<result column="outcoming_id"								property="outcomingId"/>
 			<result column="foundation_code"							property="foundationCode"/>
 		</association>
 		<association property="foundationInfo" javaType="Foundation">
@@ -80,9 +81,59 @@
 		</association>
 	</resultMap>	
 	
+	<insert id="addUnusualStock" parameterType="UnusualStock" >
+		/* 비정상 재고 등록 */
+		INSERT INTO unusual_stock_detail
+			(unusual_stock_detail_code, goods_code, goods_stock_code, unusual_stock_quantity, unusual_stock_date,
+			 unusual_stock_reason, unusual_stock_reg_id, unusual_stock_reg_date)
+		VALUES
+			(sf_new_unusual_stock_detail_code(), sf_get_goods_code(#{goodsName}), #{goodsStockCode}, #{unusualStockQuantity}, #{unusualStockDate},
+			 #{unusualStockReason}, #{unusualStockRegId}, NOW());
+	</insert>
 	
-	
-	
+	<select id="getUnusualStockListBySearch" resultMap="unusualStockResultMap" parameterType="map">
+		/* 비정상 재고 검색 결과 조회 */
+		SELECT
+			u.unusual_stock_detail_code
+			, u.goods_code
+			, i.goods_name
+			, u.goods_stock_code
+			, u.unusual_stock_quantity
+			, u.unusual_stock_date
+			, u.unusual_stock_reason
+			, u.unusual_stock_reg_id
+			, u.unusual_stock_reg_date
+			, u.unusual_stock_update_id
+			, u.unusual_stock_update_date
+		FROM
+			unusual_stock_detail AS u
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			u.goods_code = i.goods_code
+		<where>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+			<if test="startDate != null and endDate != null">
+		    	<choose>
+		    		<when test="dateSearchKey == 'unusualStockDate'">
+				        AND u.unusual_stock_date BETWEEN #{startDate} AND #{endDate}
+				    </when>
+				    <otherwise>
+				        AND 
+						(
+							u.unusual_stock_update_date IS NULL 
+							AND  u.unusual_stock_reg_date BETWEEN #{startDate} 
+							AND #{endDate}
+							OR u.unusual_stock_update_date IS NOT NULL 
+							AND u.unusual_stock_update_date BETWEEN #{startDate} AND #{endDate}
+						)
+				    </otherwise>
+		    	</choose>
+			</if>
+		</where>
+	</select>
 	
 	<select id="getUnusualStockList" resultMap="unusualStockResultMap">
 		/* 비정상 재고 조회 */
@@ -104,34 +155,6 @@
 			goods_reg_info AS i
 		ON
 			u.goods_code = i.goods_code;
-	</select>
-	
-	<select id="getOutcomingDetailList" resultMap="outcomingDetailResultMap">
-		/* 상품 출고 상세정보 조회 */
-		SELECT
-			o.outcoming_detail_code
-			, o.incoming_outcoming_history_code
-			, o.outcoming_goods
-			, i.goods_name
-			, o.outcoming_quantity
-			, o.outcoming_date
-			, o.outcoming_id
-			, o.foundation_code
-			, f.foundation_name
-			, o.outcoming_reg_id
-			, o.outcoming_reg_date
-			, o.outcoming_update_id
-			, o.outcoming_update_date
-		FROM 
-			outcoming_detail as o
-		INNER JOIN 
-			goods_reg_info AS i
-		ON
-			o.outcoming_goods = i.goods_code
-		INNER JOIN 
-			foundation_request AS f
-		ON
-			o.foundation_code = f.foundation_code;
 	</select>
 	
 	<delete id="removeInOutcoming" parameterType="String">
@@ -185,6 +208,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
+			, o.outcoming_id
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
@@ -208,17 +232,56 @@
 			h.incoming_outcoming_history_code = #{inOutcomingCode};
 	</select>
 	
+	<insert id="addStock" parameterType="Stock" >
+		/* 상품 재고 등록 */
+		INSERT INTO goods_stock
+			(goods_stock_code, goods_code, goods_lot_number, current_stock_amount, stocktaking_check,
+			 stocktaking_date, goods_expiry_date, final_stock_amount, unusual_stock_amount, unusual_stock_check)
+		VALUES
+			(sf_new_stock_code(), sf_get_goods_code(#{goodsName}), #{goodsLotNumber}, #{currentStockAmount},
+			 #{stocktakingCheck}, #{stocktakingDate}, #{goodsExprityDate}, #{finalStockAmount}, #{unusualStockAmount}, #{unusualStockCheck});
+	</insert>
+	
+	<insert id="addOutcomingDetail" parameterType="map">
+		/* 상품 출고 상세정보 등록 */
+		INSERT INTO outcoming_detail
+			(outcoming_detail_code, incoming_outcoming_history_code, outcoming_goods, outcoming_quantity, outcoming_date, 
+			 outcoming_id, foundation_code, outcoming_reg_id, outcoming_reg_date)
+		VALUES 
+			(sf_new_incoming_outcoming_code(), #{inOutcomingCode}, #{goodsCode}, #{outcomingQuantity}, #{outcomingDate},
+			 #{outcomingId}, sf_get_foundation_code(#{foundationName}), #{outcomingDetailRegId}, NOW());
+	</insert>
+	
+	<select id="getLastInOutcomingInfo" resultMap="inOutcomingResultMap">
+		/* 등록된 입출고 정보 가져오기 */
+		SELECT 
+			incoming_outcoming_history_code
+			, goods_code
+			, goods_lot_number
+			, incoming_outcoming_quantity
+			, incoming_outcoming_type
+			, incoming_outcoming_date
+			, incoming_outcoming_reg_id
+			, incoming_outcoming_reg_date
+		FROM
+			incoming_outcoming_history
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(h.incoming_outcoming_history_code, 'incoming_outcoming_history', -1) AS UNSIGNED) DESC
+		LIMIT 1;
+	</select>
+	
 	<insert id="addInOutcoming" parameterType="InOutcoming" >
 		/* 상품 입출고 등록 */
 		INSERT INTO incoming_outcoming_history
 			(incoming_outcoming_history_code, goods_code, goods_lot_number, incoming_outcoming_quantity,
 			 incoming_outcoming_type, incoming_outcoming_date, incoming_outcoming_reg_id, incoming_outcoming_reg_date)
 		VALUES
-			(sf_new_incoming_outcoming_code(), sf_return_goods_code(#{goodsName}), #{goodsLotNumber}, #{inOutcomingQuantity}, #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW())
+			(sf_new_incoming_outcoming_code(), sf_get_goods_code(#{goodsName}), #{goodsLotNumber}, #{inOutcomingQuantity},
+			 #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW());
 	</insert>
 	
-	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
-		/* 상품 입출고 조회 */
+	<select id="getInOutcomingListBySearch" resultMap="inOutcomingResultMap">
+		/* 상품 입출고 검색 결과 조회 */
 		SELECT 
 			h.incoming_outcoming_history_code
 			, h.goods_code
@@ -228,6 +291,7 @@
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
+			, o.outcoming_id
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
@@ -244,7 +308,64 @@
 		ON 
 			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
 		LEFT JOIN
-			foundation_list AS f
+			foundation_request AS f
+		ON
+			o.foundation_code = f.foundation_code
+		<where>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+		    <if test="startDate != null and endDate != null">
+		    	<choose>
+		    		<when test="dateSearchKey == 'inOutcomingDate'">
+				        AND h.incoming_outcoming_date BETWEEN #{startDate} AND #{endDate}
+				    </when>
+				    <otherwise>
+				        AND 
+						(
+							h.incoming_outcoming_update_date IS NULL 
+							AND  h.incoming_outcoming_reg_date BETWEEN #{startDate} 
+							AND #{endDate}
+							OR h.incoming_outcoming_update_date IS NOT NULL 
+							AND h.incoming_outcoming_update_date BETWEEN #{startDate} AND #{endDate}
+						)
+				    </otherwise>
+		    	</choose>
+			</if>
+		</where>	
+		ORDER BY 
+			CAST(SUBSTRING_INDEX(h.incoming_outcoming_history_code, 'incoming_outcoming_history', -1) AS UNSIGNED) DESC;
+	</select>
+	
+	<select id="getInOutcomingList" resultMap="inOutcomingResultMap">
+		/* 상품 입출고 조회 */
+		SELECT 
+			h.incoming_outcoming_history_code
+			, h.goods_code
+			, i.goods_name
+			, h.goods_lot_number
+			, i.goods_company
+			, h.incoming_outcoming_quantity
+			, h.incoming_outcoming_type
+			, h.incoming_outcoming_date
+			, o.outcoming_id
+			, f.foundation_name
+			, h.incoming_outcoming_reg_id
+			, h.incoming_outcoming_reg_date
+			, h.incoming_outcoming_update_id
+			, h.incoming_outcoming_update_date
+		FROM
+			incoming_outcoming_history as h
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			h.goods_code = i.goods_code
+		LEFT JOIN
+			outcoming_detail AS o
+		ON 
+			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
+		LEFT JOIN
+			foundation_request AS f
 		ON
 			o.foundation_code = f.foundation_code;
 	</select>
@@ -296,6 +417,53 @@
 			s.goods_code = i.goods_code
 		WHERE
 			goods_stock_code = #{goodsStockCode};
+	</select>
+	
+	<select id="removeStockCheck" parameterType="String" resultType="boolean">
+		/* 삭제 상품 재고 유무 확인 - 재고 테이블에 삭제될 상품의 모든 재고량이 0인 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM
+			goods_stock
+		WHERE 
+			goods_code = #{goodsCode} and final_stock_amount != 0;
+	</select>
+	
+	<select id="getStockListBySearch" resultMap="stockResultMap" parameterType="map">
+		/* 상품 재고 검색 결과 조회 */
+		SELECT
+			s.goods_stock_code
+			, s.goods_code
+			, i.goods_name
+			, s.goods_lot_number
+			, i.goods_company
+			, s.goods_expiry_date
+			, s.stocktaking_check
+			, s.stocktaking_date
+			, s.current_stock_amount
+			, s.final_stock_amount
+			, s.unusual_stock_amount
+			, s.unusual_stock_check
+		FROM
+			goods_stock AS s
+		INNER JOIN 
+			goods_reg_info AS i
+		ON
+			s.goods_code = i.goods_code
+		<where>
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
+			</if>
+			<if test="stocktakingKey != null and stocktakingValue != ''">
+				AND ${stocktakingKey} LIKE CONCAT('%', #{stocktakingValue}, '%')
+			</if>
+			<if test="unusualStockKey != null and unusualStockValue != ''">
+				AND ${unusualStockKey} LIKE CONCAT('%', #{unusualStockValue}, '%')
+			</if>
+		    <if test="dateSearchKey != null and dateSearchKey != '' and startDate != null and endDate != null">
+				AND ${dateSearchKey} BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
 	</select>
 	
 	<select id="getStockList" resultMap="stockResultMap">

@@ -3,68 +3,71 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default3}">
 <head>
-	<meta charset="UTF-8">
-	<title th:text="${title}"></title>
-	<!-- Custom styles for this template -->
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	
-	<!-- Custom styles for this page -->
-	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<!-- Custom styles for this template -->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
 </head>
 
 <th:block layout:fragment="customContents">
-	
+
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<!-- Page Heading -->
-		<h1 class="h3 mb-4 text-gray-800">정기후원 구독 내역</h1>
-			<p class="mb-4"> </p>
+
+		<p class="mb-4"></p>
 
 		<!-- DataTales Example -->
-		
+
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">정기후원 구독 내역 조회</h6>
+				<h6 class="m-0 font-weight-bold text-success">정기기부 구독 내역 조회</h6>
 			</div>
 			<div class="card-body overflow-x">
 				<div class="table-responsive">
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
-						<thead class="bg-gray-100" >
-                            <tr>
-                                         
-                                <th>구독코드</th>
-                                <th>가격</th>
-                                <th>구독시작일</th>
-                                <th>구독종료일</th>                                
-                            </tr>
-                        </thead>    
+					<table
+						class="table table-bordered text-center table-layout-auto table-space"
+						id="dataTable" width="100%" cellspacing="0">
+						<thead class="bg-gray-100">
+							<tr>
+
+								<th>구독코드</th>
+								<th>참여금액</th>
+								<th>구독시작일</th>
+								<th>구독종료일</th>
+							</tr>
+						</thead>
 						<tbody>
-							<tr th:unless="${getDonationSub == null}" th:each="l : ${getDonationSub}">
-										
+							<tr th:unless="${getDonationSub == null}"
+								th:each="l : ${getDonationSub}">
+
 								<td th:text="${l.donationSubCode}"></td>
-							
-									<td>
+
+								<td>
 									<div th:if="${l.donationCode == 'regular_donation1'}">3만원</div>
-									<div
-										th:if="${l.donationCode == 'regular_donation2'}">5만원</div>
-									<div
-										th:if="${l.donationCode == 'regular_donation3'}">7만원</div>
+									<div th:if="${l.donationCode == 'regular_donation2'}">5만원</div>
+									<div th:if="${l.donationCode == 'regular_donation3'}">7만원</div>
 								</td>
 								<td th:text="${l.donationSubStartDate}"></td>
 								<td th:text="${l.donationSubEndDate}"></td>
-							
+
 							</tr>
 							<tr th:if="${getDonationSub == null}">
-								<td colspan="4">데이터가 존재하지 않습니다.</td>				
-							</tr>							
+
+							</tr>
 						</tbody>
 					</table>
+					<p th:text="${message}" style="text-align: center;"></p>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-	
+
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
@@ -79,5 +82,20 @@
 
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:inline="javascript">
+		/** 
+		 * dataTable 기능 숨기기
+		 */
+		$("#dataTable").DataTable({
+			// 표시 건수기능 숨기기
+			lengthChange : false,
+			// 정보 표시 숨기기
+			//info: false,
+			// 검색 기능 숨기기
+			searching : false,
+			// 정렬 기능 숨기기
+			ordering : false
+		});
+	</script>
 </th:block>
 </html>
