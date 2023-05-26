@@ -21,123 +21,144 @@
 <th:block layout:fragment="customContents">
 	<div class="container-fluid">
 		<!-- Page Heading -->
-	<div class="card shadow mb-4">
-		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-success">내 정보</h6>
-		</div>
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-success">내 정보</h6>
+			</div>
 
 
 
-		<form id="myInfoForm" th:action="@{/user/myPage_myInfo}" method="get">
-			<div class="card-body">
-				<div class="table-responsive">
-					<table 
-						class="table table-bordered search-table-gr" id="searchTable" th:object="${userInfo}"
-						width="100%" cellspacing="0">
-						<tbody>
-							 <tr>
-								<th class="bg-gray-100"><label for="userId">아이디</label></th>
-								<td><div class="form-control form-control-user-search search-input-gr-two"> <span th:text="${userInfo.userId}"></span></div></td>
-							</tr>
-								
-							
-							<tr>
-								<th class="bg-gray-100"><label for="userName">이름</label></th>
-								<td><div 
-										class="form-control form-control-user-search search-input-gr-two"> <span th:text="${userInfo.userName}"></span></div></td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userBirth">생년월일</label>
-								</th>
-								<td><div 
-										class="form-control form-control-user-search search-input-gr-two"> <span th:text="${userInfo.userBirth}"></span></div></td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userPhone">연락처</label>
-								</th>
-								<td><div 
-										class="form-control form-control-user-search search-input-gr-two"> <span th:text="${userInfo.userPhone}"></span></div></td>
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userEmailAgree">이메일
-										수신여부</label></th>
-								<td><div 
-										class="form-control form-control-user-search search-input-gr-two"> <span th:text="${userInfo.userEmailAgree == 0 ? '수신거부' : '수신동의'}"></span>
-										
-									</div></td>
+			<form id="myInfoForm" th:action="@{/user/myPage_myInfo}" method="get">
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered search-table-gr"
+							id="searchTable" th:object="${userInfo}" width="100%"
+							cellspacing="0">
+							<tbody>
+								<tr>
+									<th class="bg-gray-100"><label for="userId">아이디</label></th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two">
+											<span th:text="${userInfo.userId}"></span>
+										</div></td>
+								</tr>
 
-							</tr>
-							<tr>
-								<th class="bg-gray-100"><label for="userEmail">이메일</label>
-								</th>
-								<td><div
-										class="form-control form-control-user-search search-input-gr-two" style="width: 15rem"> <span th:text="${userInfo.userEmail}"></span> </div></td>
-							</tr>
-							
-							<tr>
-								<th class="bg-gray-100"><label for="userAddr">주소</label></th>
-								<td><div 
-										class="form-control form-control-user-search search-input-gr-two" style="width: 30rem"> <span th:text="${userInfo.userAddr}"></span> </div></td>
-							</tr>
-							
-							<tr>
-								<th class="bg-gray-100"><label for="userJoinDate">가입일</label>
-								</th>
-								<td><div
-										class="form-control form-control-user-search search-input-gr-two" style="width: 15rem"> <span th:text="${userInfo.userJoinDate}"></span> </div></td>
-							</tr>
-					
-						</tbody>
-					</table>
+
+								<tr>
+									<th class="bg-gray-100"><label for="userName">이름</label></th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two">
+											<span th:text="${userInfo.userName}"></span>
+										</div></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100"><label for="userBirth">생년월일</label>
+									</th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two">
+											<span th:text="${userInfo.userBirth}"></span>
+										</div></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100"><label for="userPhone">연락처</label>
+									</th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two">
+											<span th:text="${userInfo.userPhone}"></span>
+										</div></td>
+								</tr>
+								<tr>
+									<th class="bg-gray-100"><label for="userEmailAgree">이메일
+											수신여부</label></th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two">
+											<span
+												th:text="${userInfo.userEmailAgree == 0 ? '수신거부' : '수신동의'}"></span>
+
+										</div></td>
+
+								</tr>
+								<tr>
+									<th class="bg-gray-100"><label for="userEmail">이메일</label>
+									</th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two"
+											style="width: 15rem">
+											<span th:text="${userInfo.userEmail}"></span>
+										</div></td>
+								</tr>
+
+								<tr>
+									<th class="bg-gray-100"><label for="userAddr">주소</label></th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two"
+											style="width: 30rem">
+											<span th:text="${userInfo.userAddr}"></span>
+										</div></td>
+								</tr>
+
+								<tr>
+									<th class="bg-gray-100"><label for="userJoinDate">가입일</label>
+									</th>
+									<td><div
+											class="form-control form-control-user-search search-input-gr-two"
+											style="width: 15rem">
+											<span th:text="${userInfo.userJoinDate}"></span>
+										</div></td>
+								</tr>
+
+							</tbody>
+						</table>
 						<div align="center">
-							<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split" style="background-color: #1cc88a;">
+							<button type="button" id="submitBtn"
+								class="btn btn-primary btn-icon-split"
+								style="background-color: #1cc88a;">
 								<span class="icon text-white-50"><i class="fas fa-check"></i></span>
-								<span class="text" onclick="location.href='http://localhost/user/myPage_myInfoModify' ">정보수정</span>
+								<span class="text"
+									onclick="location.href='http://localhost/user/myPage_myInfoModify' ">정보수정</span>
 							</button>
-							</div>
-		</form>
+						</div>
+			</form>
 </th:block>
 
 <th:block layout:fragment="customJs">
 	<script th:src="@{/js/jquery-3.6.4.js}"></script>
 
 	<script>
-	 
-	/* $(document).ready(function() {  
-		  const userPw = prompt('비밀번호를 입력해주세요:');
-		    if (userPw === null || userPw.trim() === '') {
-		      alert('회원 비밀번호를 입력해주세요');
-		      return;
-		    }
-		    
-		    
-		  $.ajax({
-		    type: 'POST',
-		    url: '/user/userpwCheck',
-		    data: {
-		      userPw: userPw
-		    },
-		    success: function(response) {
-		        if (response) {
-		          // 비밀번호가 일치하면 내 정보 페이지로 이동
-		          window.location.href = '/user/myPage_myInfo';
-		        } else {
-		          alert('비밀번호가 일치하지 않습니다.');
-		        }
-		      },
-		      error: function() {
-		        alert('비밀번호 확인 중에 오류가 발생했습니다.');
-		      }
-		    });
-		  }); */
-					
+		/* $(document).ready(function() {  
+			  const userPw = prompt('비밀번호를 입력해주세요:');
+			    if (userPw === null || userPw.trim() === '') {
+			      alert('회원 비밀번호를 입력해주세요');
+			      return;
+			    }
+			    
+			    
+			  $.ajax({
+			    type: 'POST',
+			    url: '/user/userpwCheck',
+			    data: {
+			      userPw: userPw
+			    },
+			    success: function(response) {
+			        if (response) {
+			          // 비밀번호가 일치하면 내 정보 페이지로 이동
+			          window.location.href = '/user/myPage_myInfo';
+			        } else {
+			          alert('비밀번호가 일치하지 않습니다.');
+			        }
+			      },
+			      error: function() {
+			        alert('비밀번호 확인 중에 오류가 발생했습니다.');
+			      }
+			    });
+			  }); */
 	</script>
 </th:block>
-	<!-- Page level plugins -->
-	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-	<!-- Page level custom scripts -->
-	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+<!-- Page level plugins -->
+<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
 
 </th:block>
 

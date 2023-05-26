@@ -42,7 +42,7 @@ public class UserController {
 	}
 
 	@GetMapping("/userDetailList")
-	public String getUserDetailList(Model model, @RequestParam(name = "userId", required = false) String userId) {
+	public String getUserDetailList(Model model, @RequestParam(name = "userId") String userId) {
 
 		List<User> userDetailList = userService.getUserDetailList(userId);
 
@@ -118,18 +118,22 @@ public class UserController {
 	}
 
 
+	
 	@GetMapping("/loginLog")
-	public String getLoginLogList(Model model, HttpSession session, HttpServletRequest request) {
-		String userId = (String) session.getAttribute("SID");
+	public String getLoginLogList(Model model, HttpSession session, HttpServletRequest request,
+	        @RequestParam(name = "searchKey", required = false) String searchKey,
+	        @RequestParam(name = "searchValue", required = false) String searchValue) {
+	    String userId = (String) session.getAttribute("SID");
 
-		List<LoginLog> loginLogList = userService.getLoginLogList(userId);
-		
-		 
-		model.addAttribute("title", "로그인기록");
-		model.addAttribute("loginLogList", loginLogList);
+	    List<LoginLog> loginLogList = userService.getLoginLogList(searchKey, searchValue, userId);
 
-		return "admin/user/loginLog";
+	    model.addAttribute("title", "로그인기록");
+	    model.addAttribute("loginLogList", loginLogList);
+
+	    return "admin/user/loginLog";
 	}
+	
+
 	
 	@GetMapping("/activityStatus")
 	public String getActivityStatusList(Model model) {
