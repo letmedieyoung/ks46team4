@@ -14,7 +14,7 @@
 			    ELSE
 			      CONCAT(#{tableName},max(cast(SUBSTRING_INDEX(${columnName}, #{tableName}, -1) AS UNSIGNED))+1)
 			  END
-			  ) as newGoodsCode
+			  ) as newPKCode
 		FROM
 			${tableName}; 
 				
@@ -29,7 +29,7 @@
 			    ELSE
 			      CONCAT(#{codeName},max(cast(SUBSTRING_INDEX(${columnName}, #{codeName}, -1) AS UNSIGNED))+1)
 			  END
-			  ) as newGoodsCode
+			  ) as newPKCode
 		FROM
 			${tableName}; 
 				
