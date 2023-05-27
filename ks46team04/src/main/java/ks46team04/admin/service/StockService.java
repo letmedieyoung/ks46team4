@@ -299,6 +299,7 @@ public class StockService {
 		Stock stockInfo = stockMapper.getStockInfoByCode(goodsStockCode);
 		return stockInfo;
 	}
+	
 	/**
 	 * 상품 재고 검색 결과 조회
 	 * @param inputSearchKey

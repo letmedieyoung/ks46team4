@@ -26,17 +26,6 @@
 		<result column="goods_category"				property="goodsCategory"/>
 	</resultMap>
 	
-	
-	
-	<update id="removeGoods" parameterType="Goods">
-		/* 상품 삭제 - 삭제 여부 컬럼 수정, 상품 재고 테이블에 해당 상품의 모든 재고량이 0인 경우에만 삭제 */
-		UPDATE goods_reg_info
-		SET
-			goods_is_delete = '1'
-		WHERE
-			goods_code = #{goodsCode};
-	</update>
-	
 	<update id="modifyGoods" parameterType="Goods">
 		/* 상품 수정 */
 		UPDATE goods_reg_info
@@ -104,6 +93,24 @@
 			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
 	</insert>
 	
+	<select id="getGoodsCategoryList" resultMap="goodsCategoryResultMap">
+		/* 상품 분류 조회 */
+		SELECT 
+			goods_category_code
+			, goods_category
+		FROM
+			goods_category_info;
+	</select>
+	
+	<update id="removeGoods" parameterType="Goods">
+		/* 상품 삭제 - 삭제 여부 컬럼 수정, 상품 재고 테이블에 해당 상품의 모든 재고량이 0인 경우에만 삭제 */
+		UPDATE goods_reg_info
+		SET
+			goods_is_delete = '1'
+		WHERE
+			goods_code = #{goodsCode};
+	</update>
+	
 	<select id="getGoodsListBySearch" resultMap="goodsResultMap" parameterType="map">
 		/* 상품 검색 결과 조회 */
 		SELECT
@@ -120,8 +127,8 @@
 			goods_reg_info
 		WHERE
 			goods_is_delete = '0'
-			<if test="searchKey != null and searchKey != ''">
-				AND ${searchKey} LIKE CONCAT('%', #{searchValue}, '%')
+			<if test="inputSearchKey != null and inputSearchKey != ''">
+				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
 			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
 				AND (
@@ -156,15 +163,6 @@
 			goods_is_delete = '0'
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(goods_code, 'goods', -1) AS UNSIGNED) DESC;
-	</select>
-	
-	<select id="getGoodsCategoryList" resultMap="goodsCategoryResultMap">
-		/* 상품 분류 조회 */
-		SELECT 
-			goods_category_code
-			, goods_category
-		FROM
-			goods_category_info;
 	</select>
 	
 </mapper>

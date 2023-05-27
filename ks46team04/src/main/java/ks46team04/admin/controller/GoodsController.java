@@ -38,40 +38,6 @@ public class GoodsController {
 	}
 	
 	/**
-     * 상품 삭제
-     * @param model
-     * @return
-     */
-    @PostMapping("/remove_goods")
-    @ResponseBody
-    public Map<String, Object> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
-    	
-    	log.info("valueArr: {}", valueArr);
-    	
-    	Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedGoods = new ArrayList<>();
-        List<String> failedGoods = new ArrayList<>();
-
-        for (String goodsCode : valueArr) {
-        	boolean isRemove = goodsService.removeGoods(goodsCode);
-            if (isRemove) {
-                deletedGoods.add(goodsCode);
-            } else {
-                failedGoods.add(goodsCode);
-            }
-        }
-        log.info("deletedGoods: {}", deletedGoods);
-        log.info("failedGoods: {}", failedGoods);
-
-        response.put("deleted", deletedGoods);
-        response.put("failed", failedGoods);
-        log.info("response: {}", response);
-
-        return response;
-    }
-	
-	/**
 	 * 상품 수정 @PostMapping
 	 * @param goods
 	 * @return
@@ -184,6 +150,40 @@ public class GoodsController {
 	}
 	
 	/**
+     * 상품 삭제
+     * @param model
+     * @return
+     */
+    @PostMapping("/remove_goods")
+    @ResponseBody
+    public Map<String, Object> removeGoods(@RequestParam(value="valueArr[]") List<String> valueArr) {
+    	
+    	log.info("valueArr: {}", valueArr);
+    	
+    	Map<String, Object> response = new HashMap<>();
+
+        List<String> deletedGoods = new ArrayList<>();
+        List<String> failedGoods = new ArrayList<>();
+
+        for (String goodsCode : valueArr) {
+        	boolean isRemove = goodsService.removeGoods(goodsCode);
+            if (isRemove) {
+                deletedGoods.add(goodsCode);
+            } else {
+                failedGoods.add(goodsCode);
+            }
+        }
+        log.info("deletedGoods: {}", deletedGoods);
+        log.info("failedGoods: {}", failedGoods);
+
+        response.put("deleted", deletedGoods);
+        response.put("failed", failedGoods);
+        log.info("response: {}", response);
+
+        return response;
+    }
+	
+	/**
 	 * 상품 검색 결과 조회
 	 * @param model
 	 * @param searchKey
@@ -194,21 +194,21 @@ public class GoodsController {
 	 */
 	@GetMapping("/search_goods_list")
 	@ResponseBody
-	public List<Goods> getGoodsListBySearch(@RequestParam(value="searchKey", required = false) String searchKey 
-										, @RequestParam(value="searchValue", required = false) String searchValue
+	public List<Goods> getGoodsListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+										, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
 										, @RequestParam(value="startDate", required = false) String startDate
 										, @RequestParam(value="endDate", required = false) String endDate) {
 		
-		log.info("searchKey: {}, searchValue: {}, startDate: {}, endDate: {}", searchKey, searchValue, startDate, endDate);
+		log.info("inputSearchKey: {}, inputSearchValue: {}, startDate: {}, endDate: {}", inputSearchKey, inputSearchValue, startDate, endDate);
 		
-		List<Goods> goodsList = goodsService.getGoodsListBySearch(searchKey, searchValue, startDate, endDate);
+		List<Goods> goodsList = goodsService.getGoodsListBySearch(inputSearchKey, inputSearchValue, startDate, endDate);
 		log.info("goodsList: {}", goodsList);
 		
 		return goodsList;
 	}
 	  
 	/**
-	 * 상품 목록 조회
+	 * 상품 조회
 	 * @param model
 	 * @return
 	 */

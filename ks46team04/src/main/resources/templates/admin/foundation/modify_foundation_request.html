@@ -30,13 +30,13 @@
 						<form id="modifyFoundationRequestForm" th:action="@{/admin/foundation/modify_foundation_request}" method="post">
 							<table th:object="${foundationRequestInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 								<tbody>
-									<tr class="hidden">
+									<tr>
 										<th class="bg-gray-100">
-											<label for="foundationRequestCode">재단코드</label>
+											<label for="foundationRequestCode">재단 요청사항 코드</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationRequestCode" name="foundationRequestCode" th:value="*{foundationRequestCode}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="foundationRequestCode" name="foundationRequestCode" th:value="*{foundationRequestCode}" readonly/>
 											</div>
 										</td>
 									</tr>
