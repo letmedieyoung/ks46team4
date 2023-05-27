@@ -10,14 +10,6 @@ import ks46team04.admin.dto.FoundationRequest;
 
 @Mapper
 public interface FoundationMapper {
-
-	
-	
-	//재단 요청사항 삭제
-	public int removeFoundationRequest(String foundationRequestCode);
-	
-	//삭제 재단 요청사항 진행 현황 확인
-	public boolean removeFoundationRequestCheck(String foundationRequestCode);
 	
 	//재단 요청사항 수정
 	public int modifyFoundationRequest(FoundationRequest foundationRequest);
@@ -28,17 +20,17 @@ public interface FoundationMapper {
 	//재단 요청사항 등록
 	public int addFoundationRequest(FoundationRequest foundationRequest);
 	
+	//재단 요청사항 삭제
+	public int removeFoundationRequest(String foundationRequestCode);
+	
+	//삭제 재단 요청사항 진행 현황 확인
+	public boolean removeFoundationRequestCheck(String foundationRequestCode);
+	
 	//재단 요청사항 검색 결과 조회
 	public List<FoundationRequest> getFoundationRequestListBySearch(Map<String, Object> searchMap);
 	
 	//재단 요청사항 조회
 	public List<FoundationRequest> getFoundationRequestList();
-	
-	//재단 삭제
-	public int removeFoundation(String foudationCode);
-	
-	//삭제 재단 진행 중 컨텐츠 유무 확인
-	public boolean removeFoundationCheck(String foundationCode);
 	
 	//재단 수정
 	public int modifyFoundation(Foundation foundation);
@@ -51,6 +43,12 @@ public interface FoundationMapper {
 	
 	//재단 등록
 	public int addFoundation(Foundation foundation);
+	
+	//재단 삭제
+	public int removeFoundation(String foudationCode);
+		
+	//삭제 재단 진행 중 컨텐츠 유무 확인
+	public boolean removeFoundationCheck(String foundationCode);
 	
 	//재단 검색 결과 조회
 	public List<Foundation> getFoundationListBySearch(Map<String, Object> searchMap);

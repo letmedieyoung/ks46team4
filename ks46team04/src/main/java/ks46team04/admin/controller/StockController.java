@@ -40,22 +40,6 @@ public class StockController {
 		this.foundationService = foundationService;
 	}
 	
-	
-	/**
-	 * 상품 비정상재고 삭제
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/remove_unusual_stock_detail")
-	@ResponseBody
-	public List<String> removeUnusualStock(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		stockService.removeUnusualStock(valueArr);
-		
-		return valueArr;
-	}
-	
 	/**
 	 * 상품 비정상재고 수정 @PostMapping
 	 * @param unusualStock
@@ -134,6 +118,21 @@ public class StockController {
 	}
 	
 	/**
+	 * 상품 비정상재고 삭제
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/remove_unusual_stock_detail")
+	@ResponseBody
+	public List<String> removeUnusualStock(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		
+		log.info("valueArr: {}", valueArr);
+		stockService.removeUnusualStock(valueArr);
+		
+		return valueArr;
+	}
+	
+	/**
 	 * 상품 비정상재고 검색 결과 조회
 	 * @param inputSearchKey
 	 * @param inputSearchValue
@@ -180,21 +179,6 @@ public class StockController {
 		return "admin/stock/unusual_stock_detail_list";
 	}
 
-	/**
-	 * 상품 입출고 삭제
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/remove_in_outcoming")
-	@ResponseBody
-	public List<String> removeInOutcoming(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		stockService.removeInOutcoming(valueArr);
-		
-		return valueArr;
-	}
-	
 	/**
 	 * 상품 입출고 수정 @PostMapping
 	 * @param inOutcoming
@@ -307,6 +291,21 @@ public class StockController {
 		model.addAttribute("title", "상품 입출고 등록");
 		
 		return "admin/stock/add_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 삭제
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/remove_in_outcoming")
+	@ResponseBody
+	public List<String> removeInOutcoming(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		
+		log.info("valueArr: {}", valueArr);
+		stockService.removeInOutcoming(valueArr);
+		
+		return valueArr;
 	}
 	
 	/**

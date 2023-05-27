@@ -167,14 +167,6 @@
 		</div>
 	</div>
 	<!-- /.container-fluid -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
-	<!-- /.container-fluid -->
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
-	</a>
 </th:block>
 
 <th:block layout:fragment="customJs">
@@ -184,18 +176,15 @@
 	<!-- Page level custom scripts -->
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
-		<script th:inline="javascript">
-		/*
-		* 콘텐츠 분류 select box value 값 -> input value로 넣기
-		*/
+	<script th:inline="javascript">
+		
+		// 콘텐츠 분류 select box value 값 -> input value로 넣기
 		function contentCate(category) {
 			const selectInput = document.querySelector('#contentCategory');
 			selectInput.value = category;
 		};
 		
-		/**
-		 * 진행현황 select box value 값 -> input value로 넣기
-		 */
+		// 진행현황 select box value 값 -> input value로 넣기
 		function requestStatus(category) {
 			const selectInput = document.querySelector('#requestProgressStatus');
 			selectInput.value = category;

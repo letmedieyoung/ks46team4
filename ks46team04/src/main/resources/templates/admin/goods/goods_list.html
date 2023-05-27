@@ -165,73 +165,6 @@
 		
 		$(function(){
 
-			// 체크박스 전체 선택
-			$('#allCheck').click(function(){
-				$('.checks').prop('checked', $(this).prop('checked'));
-			});
-			$('.checks').click(function(){
-				let length = $('.checks').length;
-				let checkedLength = $('.checks:checked').length;
-				if (length == checkedLength) {
-					$('#allCheck').prop('checked', true);
-				} else {
-					$('#allCheck').prop('checked', false);
-				}
-			});
-			
-			// 체크박스 선택 후 deleteBtn 삭제 버튼 클릭
-			$('#delCheckBtn').click(function(){
-				
-				const checkedArr = $('.checks:checked');
-				console.log(checkedArr);
-				
-				let length = checkedArr.length;
-				
-				const valueArr = [];
-				let msg = '삭제하시겠습니까?';
-				
-				if (length == 0) {
-					alert('선택된 항목이 없습니다.');
-				}else{
-					let result = confirm(msg);
-					
-					if(result == true){
-						
-						$(checkedArr).each(function(){
-							valueArr.push($(this).attr('value'));
-				        });
-						console.log(valueArr);
-						
-						let request = $.ajax({
-							url: '/admin/goods/remove_goods',
-							method: 'POST',
-							data: { 'valueArr' : valueArr },
-							dataType: 'json',
-						});
-						
-						request.done(function(response) {
-			                let deleted = response.deleted;
-			                let failed = response.failed;
-			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 상품: ${deleted.join(', ')}\n`;
-			                }
-			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 상품(재고 있음): ${failed.join(', ')}\n`;
-			                }
-			                alert(message);
-			                location.reload();
-			            });
-						
-						request.fail(function(jqXHR, textStatus){
-							alert(`Request failed: ${textStatus}`);
-						});
-					}else{
-						location.reload();
-					}
-				}
-			});
-			
 			// 상품 검색 결과 조회
 			$('#searchBtn').click(function(){
 				
@@ -300,8 +233,74 @@
 					alert(`Request failed: ${textStatus}`);
 				});
 			});
+			
+			// 체크박스 전체 선택
+			$('#allCheck').click(function(){
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function(){
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
+				}
+			});
+			
+			// 체크박스 선택 후 deleteBtn 삭제 버튼 클릭
+			$('#delCheckBtn').click(function(){
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert('선택된 항목이 없습니다.');
+				}else{
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function(){
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/goods/remove_goods',
+							method: 'POST',
+							data: { 'valueArr' : valueArr },
+							dataType: 'json',
+						});
+						
+						request.done(function(response) {
+			                let deleted = response.deleted;
+			                let failed = response.failed;
+			                let message = '';
+			                if (deleted.length > 0) {
+			                    message += `삭제된 상품: ${deleted.join(', ')}\n`;
+			                }
+			                if (failed.length > 0) {
+			                    message += `삭제할 수 없는 상품(재고 있음): ${failed.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
+			});
 		});
-	
 	</script>
 </th:block>
 </html>

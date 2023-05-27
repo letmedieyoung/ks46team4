@@ -26,21 +26,6 @@ public class FoundationService {
 		this.foundationMapper = foundationMapper;
 	}
 	
-	
-	/**
-	 * 재단 요청사항 삭제
-	 * @param foundationRequestCode
-	 * @return
-	 */
-	public boolean removeFoundationRequest(String foundationRequestCode) {
-		boolean isRemove = foundationMapper.removeFoundationRequestCheck(foundationRequestCode);
-		if(isRemove){
-			foundationMapper.removeFoundationRequest(foundationRequestCode);
-			return true;
-		}
-		return false;
-	}
-	
 	/**
 	 * 재단 요청사항 수정
 	 * @param foundationRequest
@@ -67,6 +52,20 @@ public class FoundationService {
 	public int addFoundationRequest(FoundationRequest foundationRequest) {
 		int result = foundationMapper.addFoundationRequest(foundationRequest);
 		return result;
+	}
+	
+	/**
+	 * 재단 요청사항 삭제
+	 * @param foundationRequestCode
+	 * @return
+	 */
+	public boolean removeFoundationRequest(String foundationRequestCode) {
+		boolean isRemove = foundationMapper.removeFoundationRequestCheck(foundationRequestCode);
+		if(isRemove){
+			foundationMapper.removeFoundationRequest(foundationRequestCode);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -138,19 +137,6 @@ public class FoundationService {
 	}
 	
 	/**
-	 * 재단 삭제
-	 * @param foundationCode
-	 */
-	public boolean removeFoundation(String foundationCode) {
-		boolean isRemove = foundationMapper.removeFoundationCheck(foundationCode);
-		if(isRemove) {
-			foundationMapper.removeFoundation(foundationCode);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
 	 * 재단 수정
 	 * @param foundation
 	 */
@@ -178,6 +164,19 @@ public class FoundationService {
 		
 		int result = foundationMapper.addFoundation(foundation);
 		return result;
+	}
+	
+	/**
+	 * 재단 삭제
+	 * @param foundationCode
+	 */
+	public boolean removeFoundation(String foundationCode) {
+		boolean isRemove = foundationMapper.removeFoundationCheck(foundationCode);
+		if(isRemove) {
+			foundationMapper.removeFoundation(foundationCode);
+			return true;
+		}
+		return false;
 	}
 	
 	/**

@@ -248,29 +248,28 @@
 	
 		$(function(){
 			
-			/**
-			* 재단 요청사항 검색 결과 조회
-			*/
+			// 재단 요청사항 검색 결과 조회
 			$('#searchBtn').click(function(){
 				
-				// inputSearch 선택된 값 가져오기
+				// 검색 조건 선택된 값 가져오기
 				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
 				let inputSearchValue = $('#inputSearchValue').val();
 				
-				// contentCategory 선택된 값 가져오기
+				// 콘텐츠 분류 contentCategory 선택된 값 가져오기
 				let contentKey = $('input[name="contentCategory"]:checked').attr('name');
 				let contentValue = $('input[name="contentCategory"]:checked').next('span.text').text();
 				
-				// requestProgressStatus 선택된 값 가져오기
+				// 진행현황 requestProgressStatus 선택된 값 가져오기
 				let progressKey = $('input[name="requestProgressStatus"]:checked').attr('name');
 				let progressValue = $('input[name="requestProgressStatus"]:checked').next('span.text').text();
 			    
-			 	// 선택된 기간 검색의 value값
+			 	// 기간 분류 선택된 값 가져오기
 			    let dateSearchKey = $('#dateSearchKey option:selected').val();
 			    
-			    // Date Range Picker에서 선택된 값을 가져오기
+			    // 기간 검색 Date Range Picker에서 선택된 값 가져오기
 			    let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
+				
 				let url = '/admin/foundation/search_foundation_request_list';
 				
 				let request = $.ajax({
@@ -288,7 +287,6 @@
 					      'startDate': startDate,
 						  'endDate': endDate
 					},
-				    //contentType: 'application/json; charset=UTF-8',
 					success : function(data){
 						//테이블 초기화
 						$('#dataTable > tbody').empty();
@@ -342,10 +340,7 @@
 				});
 			});
 
-			/**
-			* 전체 선택
-			*/
-		
+			// 체크박스 전체 선택
 			$('#allCheck').click(function () {
 				$('.checks').prop('checked', $(this).prop('checked'));
 			});
@@ -358,9 +353,8 @@
 					$('#allCheck').prop('checked', false);
 				}
 			});
-			/**
-			 * 체크박스 선택 후 deleteBtn 버튼
-			 */
+			
+			// 체크박스 선택 후 deleteBtn 버튼
 			$('#delCheckBtn').click(function () {
 				
 				const checkedArr = $('.checks:checked');

@@ -36,28 +36,6 @@
 		<result column="request_progress_status"			property="requestProgressStatus"/>
 	</resultMap>
 	
-	<delete id="removeFoundationRequest" parameterType="String">
-		/* 재단 요청사항 삭제 */
-		DELETE 
-		FROM 
-			foundation_request
-		WHERE 
-			foundation_request_code = #{foundationRequestCode}
-	</delete>
-	
-	<select id="removeFoundationRequestCheck" parameterType="String" resultType="boolean">
-		/* 삭제 재단 요청사항 진행 현황 확인 - 요청사항 진행 현황이 진행중, 완료 아닌 경우에만 삭제 */
-		SELECT
-			IF(COUNT(1)=0, 1, 0)
-		FROM 
-			foundation_request
-		WHERE 
-			foundation_request_code = #{foundationRequestCode}
-			and
-			(request_progress_status = '진행중' OR request_progress_status = '완료');
-	</select>
-	
-	
 	<update id="modifyFoundationRequest" parameterType="FoundationRequest">
 		/* 재단 요청사항 수정 */
 		UPDATE foundation_request
@@ -122,6 +100,27 @@
 			 #{initialGoodsAmount}, #{deliveryRequestDate}, #{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
+	<delete id="removeFoundationRequest" parameterType="String">
+		/* 재단 요청사항 삭제 */
+		DELETE 
+		FROM 
+			foundation_request
+		WHERE 
+			foundation_request_code = #{foundationRequestCode}
+	</delete>
+	
+	<select id="removeFoundationRequestCheck" parameterType="String" resultType="boolean">
+		/* 삭제 재단 요청사항 진행 현황 확인 - 요청사항 진행 현황이 진행중, 완료 아닌 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM 
+			foundation_request
+		WHERE 
+			foundation_request_code = #{foundationRequestCode}
+			and
+			(request_progress_status = '진행중' OR request_progress_status = '완료');
+	</select>
+	
 	<select id="getFoundationRequestListBySearch" resultMap="foundationRequestResultMap" parameterType="map">
 		/* 재단 요청사항 검색 결과 조회 */
 		SELECT 
@@ -150,7 +149,7 @@
 			<if test="progressKey != null and progressValue != ''">
 				AND ${progressKey} LIKE CONCAT('%', #{progressValue}, '%')
 			</if>
-		    <if test="startDate != null and endDate != null">
+		    <if test="dateSearchKey != null and dateSearchKey != '' and startDate != null and endDate != null">
 		    	<choose>
 		    		<when test="dateSearchKey == 'deliveryDate'">
 				        AND delivery_request_date BETWEEN #{startDate} AND #{endDate}
@@ -192,27 +191,6 @@
 			foundation_request
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(foundation_request_code, 'foundation_request', -1) AS UNSIGNED) DESC;
-	</select>
-	
-	<update id="removeFoundation" parameterType="Foundation">
-		/* 재단 삭제 - 삭제 여부 컬럼 수정 */
-		UPDATE foundation_list
-		SET
-			foundation_is_delete = '1'
-		WHERE
-			foundation_code = #{foundationCode};
-	</update>
-	
-	<select id="removeFoundationCheck" parameterType="String" resultType="boolean">
-		/* 삭제 재단 진행 중 컨텐츠 유무 확인 - 재단 요청사항 테이블에 진행 중인 컨텐츠가 없는 경우에만 삭제 */
-		SELECT
-			IF(COUNT(1)=0, 1, 0)
-		FROM
-			foundation_request
-		WHERE 
-			foundation_code = #{foundationCode}
-			and
-			(request_progress_status = '진행중' OR request_progress_status = '대기중');
 	</select>
 	
 	<update id="modifyFoundation" parameterType="Foundation">
@@ -288,6 +266,27 @@
 			#{foundationAddr}, #{foundationExtraAddr}, #{foundationDetailAddr}, #{foundationRegId}, NOW());
 	</insert>
 	
+	<update id="removeFoundation" parameterType="Foundation">
+		/* 재단 삭제 - 삭제 여부 컬럼 수정 */
+		UPDATE foundation_list
+		SET
+			foundation_is_delete = '1'
+		WHERE
+			foundation_code = #{foundationCode};
+	</update>
+	
+	<select id="removeFoundationCheck" parameterType="String" resultType="boolean">
+		/* 삭제 재단 진행 중 컨텐츠 유무 확인 - 재단 요청사항 테이블에 진행 중인 컨텐츠가 없는 경우에만 삭제 */
+		SELECT
+			IF(COUNT(1)=0, 1, 0)
+		FROM
+			foundation_request
+		WHERE 
+			foundation_code = #{foundationCode}
+			and
+			(request_progress_status = '진행중' OR request_progress_status = '대기중');
+	</select>
+	
 	<select id="getFoundationListBySearch" resultMap="foundationResultMap" parameterType="map">
 		/* 재단 검색 결과 조회 */
 		SELECT
@@ -310,7 +309,7 @@
 			<if test="inputSearchKey != null and inputSearchValue != ''">
 				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
-			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			<if test="startDate != '' startDate != null and endDate != null and endDate != ''">
 				AND (
 						(foundation_update_date IS NULL
 						 AND foundation_reg_date BETWEEN #{startDate} 
