@@ -113,8 +113,7 @@
 					<a href="/admin/stock/add_in_outcoming" class="btn btn-secondary btn-icon-split">
 						<span class="text">입/출고등록</span>
 					</a>
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%"
-						cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space tb-sm" id="dataTable">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
@@ -152,7 +151,7 @@
 											<td th:text="${l.inOutcomingQuantity}"></td>
 											<td th:text="${l.inOutcomingDate}"></td>
 											<td th:text="${l.outcomingId == null ? '-' : l.outcomingId}"></td>
-											<td th:text="${l.foundationName == null ? '-' : l.foundationName}"></td>
+											<td th:text="${l.foundationInfo == null ? '-' : l.foundationInfo.foundationName}"></td>
 											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
 											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
 											<td>
@@ -251,10 +250,10 @@
 								}else{
 									html += `	<td>${inOutcomingInfo.outcomingId}</td>`;
 								}
-								if(inOutcomingInfo.foundationName == null){
+								if(inOutcomingInfo.foundationInfo == null){
 									html += `	<td>-</td>`;
 								}else{
-									html += `	<td>${inOutcomingInfo.foundationName}</td>`;
+									html += `	<td>${inOutcomingInfo.foundationInfo.foundationName}</td>`;
 								}
 								if(inOutcomingInfo.inOutcomingUpdDate == null){
 									html += `	<td>${inOutcomingInfo.inOutcomingRegDate}</td>`;

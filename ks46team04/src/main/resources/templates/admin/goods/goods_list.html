@@ -30,13 +30,11 @@
 					<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 						<tbody>
 							<tr>
-								<th class="bg-gray-100">
-									<label for="search">검색 조건</label>
-								</th>
+								<th class="bg-gray-100">검색 조건</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
-										 <select class="dropdown btn btn-primary required-form" id="searchKey">
+										 <select class="dropdown btn btn-primary required-form" id="inputSearchKey">
 											<option value="" selected>:: 검색 조건 ::</option>
 											<option value="goodsName">상품명</option>
 											<option value="goodsCategory">상품분류</option>
@@ -46,7 +44,7 @@
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<input type="text" class="form-control form-control-user-search short-input"
-											id="searchValue" placeholder="검색어를 입력해주세요." />
+											id="inputSearchValue" placeholder="검색어를 입력해주세요." />
 									</div>
 								</td>
 							</tr>
@@ -104,7 +102,7 @@
 					<a href="/admin/goods/add_goods" class="btn btn-secondary btn-icon-split">
 						<span class="text">상품등록</span>
 					</a>
-					<table class="table table-bordered text-center table-layout-auto table-space" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space tb-sm" id="dataTable" width="100%" cellspacing="0">
 						<thead class="bg-gray-100">
 							<tr>
 								<th><input type="checkbox" id="allCheck"></th>
@@ -166,33 +164,97 @@
 	<script th:inline="javascript">
 		
 		$(function(){
+
+			// 체크박스 전체 선택
+			$('#allCheck').click(function(){
+				$('.checks').prop('checked', $(this).prop('checked'));
+			});
+			$('.checks').click(function(){
+				let length = $('.checks').length;
+				let checkedLength = $('.checks:checked').length;
+				if (length == checkedLength) {
+					$('#allCheck').prop('checked', true);
+				} else {
+					$('#allCheck').prop('checked', false);
+				}
+			});
 			
-			/**
-			* 상품 검색 결과 조회
-			*/
+			// 체크박스 선택 후 deleteBtn 삭제 버튼 클릭
+			$('#delCheckBtn').click(function(){
+				
+				const checkedArr = $('.checks:checked');
+				console.log(checkedArr);
+				
+				let length = checkedArr.length;
+				
+				const valueArr = [];
+				let msg = '삭제하시겠습니까?';
+				
+				if (length == 0) {
+					alert('선택된 항목이 없습니다.');
+				}else{
+					let result = confirm(msg);
+					
+					if(result == true){
+						
+						$(checkedArr).each(function(){
+							valueArr.push($(this).attr('value'));
+				        });
+						console.log(valueArr);
+						
+						let request = $.ajax({
+							url: '/admin/goods/remove_goods',
+							method: 'POST',
+							data: { 'valueArr' : valueArr },
+							dataType: 'json',
+						});
+						
+						request.done(function(response) {
+			                let deleted = response.deleted;
+			                let failed = response.failed;
+			                let message = '';
+			                if (deleted.length > 0) {
+			                    message += `삭제된 상품: ${deleted.join(', ')}\n`;
+			                }
+			                if (failed.length > 0) {
+			                    message += `삭제할 수 없는 상품(재고 있음): ${failed.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
+						
+						request.fail(function(jqXHR, textStatus){
+							alert(`Request failed: ${textStatus}`);
+						});
+					}else{
+						location.reload();
+					}
+				}
+			});
+			
+			// 상품 검색 결과 조회
 			$('#searchBtn').click(function(){
 				
-				let searchKey = $('#searchKey option:selected').attr('value');
-				let searchValue = $('#searchValue').val();
+				// 검색 조건 선택된 값 가져오기
+				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
+				let inputSearchValue = $('#inputSearchValue').val();
 				
+				// 기간 검색 Date Range Picker에서 선택된 값 가져오기
 				let startDate = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
 				let endDate = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
-				let data = {
-				    'searchKey': searchKey,
-				    'searchValue': searchValue,
-				    'startDate': startDate,
-				    'endDate': endDate
-				};
-
-				let query = jQuery.param(data);
-				let url = '/admin/goods/search_goods_list?' + query;
+				let url = '/admin/goods/search_goods_list?';
 				
 				let request = $.ajax({
 					type: 'GET',
 				    url: url,
 				    dataType: 'json',
-				    contentType: 'application/json; charset=UTF-8',
+				    data: {
+						    'inputSearchKey': inputSearchKey,
+						    'inputSearchValue': inputSearchValue,
+						    'startDate': startDate,
+						    'endDate': endDate
+					},
 					success : function(data){
 						//테이블 초기화
 						$('#dataTable > tbody').empty();
@@ -233,81 +295,10 @@
 						$('#dataTable > tbody').append(html);
 						$('#dataTable').DataTable();
 					}
-				})
+				});
 				request.fail(function(jqXHR, textStatus){
 					alert(`Request failed: ${textStatus}`);
 				});
-			})
-	
-			/**
-			* 전체 선택
-			*/
-			$('#allCheck').click(function(){
-				$('.checks').prop('checked', $(this).prop('checked'));
-			});
-			$('.checks').click(function(){
-				let length = $('.checks').length;
-				let checkedLength = $('.checks:checked').length;
-				if (length == checkedLength) {
-					$('#allCheck').prop('checked', true);
-				} else {
-					$('#allCheck').prop('checked', false);
-				}
-			});
-			
-			/**
-			 * 체크박스 선택 후 deleteBtn 버튼
-			 */
-			$('#delCheckBtn').click(function(){
-				
-				const checkedArr = $('.checks:checked');
-				console.log(checkedArr);
-				
-				let length = checkedArr.length;
-				
-				const valueArr = [];
-				let msg = '삭제하시겠습니까?';
-				
-				if (length == 0) {
-					alert('선택된 항목이 없습니다.');
-				}else{
-					let result = confirm(msg);
-					
-					if(result == true){
-						
-						$(checkedArr).each(function(){
-							valueArr.push($(this).attr('value'));
-				        });
-						console.log(valueArr);
-						
-						let request = $.ajax({
-							url: '/admin/goods/remove_goods',
-							method: 'POST',
-							data: { 'valueArr' : valueArr },
-							dataType: 'json',
-						});
-						
-						request.done(function(response) {
-			                let deleted = response.deleted;
-			                let failed = response.failed;
-			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 상품: ${deleted.join(', ')}\n`;
-			                }
-			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 상품(재고가 있음): ${failed.join(', ')}\n`;
-			                }
-			                alert(message);
-			                location.reload();
-			            });
-						
-						request.fail(function(jqXHR, textStatus){
-							alert(`Request failed: ${textStatus}`);
-						});
-					}else{
-						location.reload();
-					}
-				}
 			});
 		});
 	

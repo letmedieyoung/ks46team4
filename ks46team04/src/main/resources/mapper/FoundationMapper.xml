@@ -62,8 +62,11 @@
 		/* 재단 요청사항 수정 */
 		UPDATE foundation_request
 		<set>
+			<if test="foundationName != null and foundationName !=''">
+				foundation_name = #{foundationName}
+			</if>
 			<if test="contentCategory != null and contentCategory !=''">
-				content_category = #{contentCategory}
+				, content_category = #{contentCategory}
 			</if>
 			<if test="requestGoodsName != null and requestGoodsName !=''">
 				, request_goods_name = #{requestGoodsName}

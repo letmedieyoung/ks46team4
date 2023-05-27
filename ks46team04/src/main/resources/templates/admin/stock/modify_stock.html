@@ -30,13 +30,13 @@
 						<form id="modifyStockForm" th:action="@{/admin/stock/modify_stock}" method="post">
 							<table th:object="${stockInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
-									<tr class="hidden">
+									<tr>
 										<th class="bg-gray-100">
 											<label for="goodsStockCode">상품재고코드</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsStockCode" name="goodsStockCode" th:value="*{goodsStockCode}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsStockCode" name="goodsStockCode" th:value="*{goodsStockCode}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -210,52 +210,71 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		
-		/*
-		* 재고조사 현황 select box value 값 -> input value로 넣기
-		*/
+		// 재고조사 현황 select box value 값 -> input value로 넣기
 		function stocktaking(category) {
 			const selectInputEle = $('#stocktakingCheck');
 			selectInputEle.val(category);
 		};
 		
+		// 재고조사 현황 select box selected 값 -> input text로 넣기
+		let stocktakingSelectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#stocktakingCheck").val(stocktakingSelectedText); // input 요소에 선택된 text 값을 할당한다.
 		
-		/**
-		 * 재고조사 현황 select box selected 값 -> input text로 넣기
-		 */
-		var selectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#stocktakingCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 		
-		/**
-		 * 비정상재고 select box value 값 -> input value로 넣기
-		 */
+		// 비정상재고 select box value 값 -> input value로 넣기
 		function unusualStock(category) {
 			const selectInputEle = $('#unusualStockCheck');
 			selectInputEle.val(category);
 		};
 		
-		/**
-		 * 비정상재고 select box selected 값 -> input text로 넣기
-		 */
-		var selectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#unusualStockCheck").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
+		// 비정상재고 select box selected 값 -> input text로 넣기
+		let unusualStockSelectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		$("#unusualStockCheck").val(unusualStockSelectedText); // input 요소에 선택된 text 값을 할당한다.
+		
+		$(function() {
+			// 재고조사 현황 체크박스 선택 값에 따라 input 입력 활성화
+			const stocktakingCheckSelect = $('#stocktakingCheckSelect');
+			const stocktakingInputs = $('#stocktakingDate, #currentStockAmount');
 			
-		$(function(){
-			/**
-			* 비정상재고 유 선택 시 비정상재고 상세 input 입력 활성화
-			*/
-			$('#unusualStockCheckSelect').change(function() {
-		        var selectedValue = $(this).val();
-		        if (selectedValue === '유') {
-		            $('#unusualStockAmount').prop('disabled', false);
-		            $('#unusualStockDate').prop('disabled', false);
-		            $('#unusualStockReason').prop('disabled', false);
-		        } else {
-		            $('#unusualStockAmount').prop('disabled', true);
-		            $('#unusualStockDate').prop('disabled', true);
-		            $('#unusualStockReason').prop('disabled', true);
-		        }
-		    });
-	    });
+			function togglestocktakingInputs() {
+				const selectedValue = stocktakingCheckSelect.val();
+				if(selectedValue == '완료'){
+					stocktakingInputs.prop('disabled', false);
+				}else{
+					stocktakingInputs.val('').prop('disabled', true);
+				}
+			}
+			
+			// 페이지 로드 시 초기 설정
+			togglestocktakingInputs();
+			
+			// 재고조사 현황 체크박스 선택 변경 시 이벤트 처리
+			stocktakingCheckSelect.change(function() {
+				togglestocktakingInputs();
+			});
+			
+			// 비정상재고 체크박스 선택 값에 따라 input 입력 활성화
+			const unusualStockCheckSelect = $('#unusualStockCheckSelect');
+			const unusualStockInputs = $('#unusualStockAmount, #unusualStockDate, #unusualStockReason');
+			
+			function toggleUnusualStockInputs() {
+				const selectedValue = unusualStockCheckSelect.val();
+				if(selectedValue == '유'){
+					unusualStockInputs.prop('disabled', false);
+				}else{
+					unusualStockInputs.val('').prop('disabled', true);
+				}
+			}
+			
+			// 페이지 로드 시 초기 설정
+			toggleUnusualStockInputs();
+			
+			// 비정상재고 체크박스 선택 변경 시 이벤트 처리
+			unusualStockCheckSelect.change(function() {
+			  toggleUnusualStockInputs();
+			});
+		});
+		
 	</script>
 </th:block>
 

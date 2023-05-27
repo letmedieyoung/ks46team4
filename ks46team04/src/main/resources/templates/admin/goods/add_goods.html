@@ -116,18 +116,16 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		 * 상품분류 select box value 값 -> input value로 넣기
-		 */
+		
+		// 상품분류 select box value 값 -> input value로 넣기
 		function goodsCate(category) {
 			const selectInputEle = $('#goodsCategory');
 			selectInputEle.val(category);
 		};
 			
 		$(function(){		
-			/**
-			 * checkBtn 상품명 중복확인 버튼
-			 */
+			
+			// checkBtn 상품명 중복확인 버튼
 			$('#goodsName').change(function(){
 				$('#addGoodsForm input').not('#goodsName').prop('disabled', true);
 				$('#addGoodsForm button').not('#checkBtn').prop('disabled', true);
@@ -170,9 +168,7 @@
 				});
 			});
 				
-			/**
-			 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
-			 */
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;

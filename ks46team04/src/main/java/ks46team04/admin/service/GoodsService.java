@@ -30,20 +30,6 @@ public class GoodsService {
 	}
 	
 	/**
-     * 상품 삭제
-     * @param goodsCode
-     */
-    public boolean removeGoods(String goodsCode) {
-    	boolean isRemove = true; 
-    	isRemove = stockMapper.removeStockCheck(goodsCode);
-    	if (isRemove) {
-    		goodsMapper.removeGoods(goodsCode);
-    		return true;
-        }
-        return false;
-    }
-	
-	/**
 	 * 상품 수정
 	 * @param goods
 	 */
@@ -90,31 +76,45 @@ public class GoodsService {
 	}
 	
 	/**
+     * 상품 삭제
+     * @param goodsCode
+     */
+    public boolean removeGoods(String goodsCode) {
+    	boolean isRemove = true; 
+    	isRemove = stockMapper.removeStockCheck(goodsCode);
+    	if (isRemove) {
+    		goodsMapper.removeGoods(goodsCode);
+    		return true;
+        }
+        return false;
+    }
+	
+	/**
 	 * 상품 검색 결과 조회
 	 * @param paramMap
 	 * @return
 	 */
-	public List<Goods> getGoodsListBySearch(String searchKey
-											, String searchValue
+	public List<Goods> getGoodsListBySearch(String inputSearchKey
+											, String inputSearchValue
 											, String startDate
 											, String endDate){
 		Map<String, Object> searchMap = new HashMap<String, Object>();
 		
-		if(searchKey != null && searchValue != null) {
-			switch (searchKey) {
+		if(inputSearchKey != null && inputSearchValue != null) {
+			switch (inputSearchKey) {
 			case "goodsName":
-				searchKey = "goods_name";
+				inputSearchKey = "goods_name";
 				break;
 			case "goodsCategory":
-				searchKey = "goods_category";					
+				inputSearchKey = "goods_category";					
 				break;
 			case "goodsCompany":
-				searchKey = "goods_company";					
+				inputSearchKey = "goods_company";					
 				break;
 			}
 			
-			searchMap.put("searchKey", searchKey);
-			searchMap.put("searchValue", searchValue);
+			searchMap.put("inputSearchKey", inputSearchKey);
+			searchMap.put("inputSearchValue", inputSearchValue);
 		}
 		
 		if(startDate != null && endDate != null) {

@@ -28,6 +28,9 @@
 				<div class="card-body">
 					<div class="table-responsive">
 						<form id="modifyInOutcomingForm" th:action="@{/admin/stock/modify_in_outcoming}" method="post">
+							<div class="tb-title">
+								<h2>입/출고 정보</h2>
+							</div>
 							<table th:object="${inOutcomingInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 								<tbody>
 									<tr class="hidden">
@@ -116,14 +119,127 @@
 											</div>
 										</td>
 									</tr>
+								</tbody>
+							</table>
+									<div class="tb-title">
+								<h2>입고 상세 정보</h2>
+							</div>
+							<table th:object="${inOutcomingInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsExprityDate">상품 유통기한</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="goodsExprityDate" name="goodsExprityDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingCheck">재고조사 진행 현황</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
+												      <span class="text">완료</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
+												      <span class="text">미완료</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingDate">재고조사일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="stocktakingDate" name="stocktakingDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockCheck">비정상 재고 유무</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
+												      <span class="text">유</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
+												      <span class="text">무</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockAmount">비정상 재고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control number-input incoming" 
+													id="unusualStockAmount" name="unusualStockAmount" placeholder="비정상 재고 수량" disabled/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockDate">비정상 재고 발생일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="unusualStockDate" name="unusualStockDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockReason">비정상 재고 사유</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input incoming" 
+													id="unusualStockReason" name="unusualStockReason" placeholder="비정상 재고 사유를 입력해주세요." disabled/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="tb-title">
+								<h2>출고 상세 정보</h2>
+							</div>
+							<table th:object="${inOutcomingInfo}" class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
 									<tr>
 										<th class="bg-gray-100">
 											<label for="outcomingId">출고 담당자</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="outcomingId" name="outcomingId" 
-													th:value="*{outcomingId == null ? '-' : outcomingId}" disabled/>
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" id="outcomingId" name="outcomingId" 
+													th:value="*{outcomingId == null ? '-' : outcomingId}" placeholder="출고 담당자를 입력해주세요." disabled/>
 											</div>
 										</td>
 									</tr>
@@ -133,8 +249,8 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" 
-													th:value="*{foundationName == null ? '-' : foundationName}" disabled/>
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" id="foundationName" name="foundationName" 
+													th:value="*{foundationName == null ? '-' : foundationName}" placeholder="출고 재단명을 입력해주세요." disabled/>
 											</div>
 										</td>
 									</tr>
@@ -179,23 +295,39 @@
 		/**
 		 * 입/출고 분류 select box selected 값 -> input text로 넣기
 		 */
-		var selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
+		let selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
 		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 		
 		$(function(){
 			/**
-			* select box 출고 선택 시 출고 재단명 input 입력 활성화
+			* select box 입고 선택 시 입고 상세정보 테이블 input 입력 활성화
+			* select box 출고 선택 시 출고 상세정보 테이블 input 입력 활성화
 			*/
-			$('#inOutcomingTypeSelect').change(function() {
-		        var selectedValue = $(this).val();
-		        if (selectedValue === '출고') {
-		            $('#foundationName').prop('disabled', false);
-		            $('#outcomingId').prop('disabled', false);
-		        } else {
-		            $('#foundationName').prop('disabled', true);
-		            $('#outcomingId').prop('disabled', true);
-		        }
-		    });
+			const inOutcomingTypeSelect = $('#inOutcomingTypeSelect');
+			const incomingInputs = $('.incoming');
+			const outcomingInputs = $('.outcoming');
+			
+			function toggleIncomingInputs() {
+			  const selectedValue = inOutcomingTypeSelect.val();
+			  
+			  if(selectedValue == '입고'){
+				  const isIncomingTypeSelected = selectedValue;
+				  incomingInputs.prop('disabled', !isIncomingTypeSelected);
+			  }else if(selectedValue == '출고'){
+				  const isOutcomingTypeSelected = selectedValue;
+				  outcomingInputs.prop('disabled', !isOutcomingTypeSelected);
+			  }
+			}
+			
+			// 페이지 로드 시 초기 설정
+			toggleInOutcomingInputs();
+			
+			// 비정상재고 체크 선택 변경 시 이벤트 처리
+			inOutcomingTypeSelect.change(function() {
+				toggleIncomingInputs();
+				toggleOutcomingInputs();
+			});
+			
 		});
 	</script>
 </th:block>

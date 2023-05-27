@@ -28,6 +28,9 @@
 				<div class="card-body">
 					<div class="table-responsive">
 						<form id="addInOutcomingForm" th:action="@{/admin/stock/add_in_outcoming}" method="post">
+							<div class="tb-title">
+								<h2>입/출고 정보</h2>
+							</div>
 							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
 								<tbody>
 									<tr>
@@ -99,17 +102,130 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="date" class="form-control form-control-user-search" 
-													id="inOutcomingDate" name="inOutcomingDate" placeholder="입/출고일을 입력해주세요."/>
+													id="inOutcomingDate" name="inOutcomingDate"/>
 											</div>
 										</td>
 									</tr>
+								</tbody>
+							</table>
+							<div class="tb-title">
+								<h2>입고 상세 정보</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsExprityDate">상품 유통기한</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="goodsExprityDate" name="goodsExprityDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingCheck">재고조사 진행 현황</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
+												      <span class="text">완료</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
+												      <span class="text">미완료</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingDate">재고조사일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="stocktakingDate" name="stocktakingDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockCheck">비정상 재고 유무</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
+												      <span class="text">유</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
+												      <span class="text">무</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockAmount">비정상 재고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control number-input incoming" 
+													id="unusualStockAmount" name="unusualStockAmount" placeholder="비정상 재고 수량" disabled/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockDate">비정상 재고 발생일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="unusualStockDate" name="unusualStockDate" disabled/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockReason">비정상 재고 사유</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input incoming" 
+													id="unusualStockReason" name="unusualStockReason" placeholder="비정상 재고 사유를 입력해주세요." disabled/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="tb-title">
+								<h2>출고 상세 정보</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+								<tbody>
 									<tr>
 										<th class="bg-gray-100">
 											<label for="outcomingId">출고 담당자</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" 
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
 													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요." disabled/>
 											</div>
 										</td>
@@ -120,7 +236,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" 
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
 													id="foundationName" name="foundationName" placeholder="출고 재단명을 입력해주세요." disabled/>
 											</div>
 										</td>
@@ -155,43 +271,58 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/*
-		* 입/출고 분류 select box value 값 -> input value로 넣기
-		*/
+		
+		// 입/출고 분류 select box value 값 -> input value로 넣기
 		function inOutType(category) {
 			const selectInput = document.querySelector('#inOutcomingType');
 			selectInput.value = category;
 		};
 		
 		$(function(){
-			/**
-			* select box 출고 선택 시 출고 재단명 input 입력 활성화
-			*/
-			$('#inOutcomingTypeSelect').change(function() {
-		        var selectedValue = $(this).val();
-		        if (selectedValue === '출고') {
-		            $('#foundationName').prop('disabled', false);
-		            $('#outcomingId').prop('disabled', false);
-		        } else {
-		            $('#foundationName').prop('disabled', true);
-		            $('#outcomingId').prop('disabled', true);
-		        }
-		    });
+			// 입출고분류 체크박스 선택 값에 따라 input 입력 활성화
+			const inOutcomingTypeSelect = $('#inOutcomingTypeSelect');
+			const incomingTypeInputs = $('.incoming');
+			const outcomingTypeInputs = $('.outcoming');
 			
-			/**
-			* form submitBtn 등록하기 버튼 클릭 시 공란 체크
-			*/
+			function toggleInOutcomingTypeInputs() {
+				const selectedValue = inOutcomingTypeSelect.val();
+				if(selectedValue == '입고'){
+					incomingTypeInputs.prop('disabled', false);
+				    outcomingTypeInputs.val('').prop('disabled', true);
+				}else if(selectedValue == '출고'){
+					incomingTypeInputs.val('').prop('disabled', true);
+				    outcomingTypeInputs.prop('disabled', false);
+				}else{
+					incomingTypeInputs.val('').prop('disabled', true);
+				    outcomingTypeInputs.val('').prop('disabled', true);
+				}
+			};
+			
+			// 페이지 로드 시 초기 설정
+			toggleInOutcomingTypeInputs();
+			
+			// 입출고분류 체크박스 선택 변경 시 이벤트 처리
+			inOutcomingTypeSelect.change(function() {
+				toggleInOutcomingTypeInputs();
+			});
+			
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;
-				if (ele.id === 'inOutcomingTypeSelect' && data === '출고') {
-					if(typeof data == 'undefined' || data == null || data == '') {
+				if (ele.id === 'inOutcomingTypeSelect' && data === '입고') {
+					if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('outcoming')) {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+					}
+			    } else if(ele.id === 'inOutcomingTypeSelect' && data === '출고') {
+			    	if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('incoming')) {
 						let msg = $(ele).parents('tr').find('label').text();
 						isValid = false;
 					}
 			    } else {
-			        if (typeof data === 'undefined' || data === null || data === ''
-			        	&& ele.id !== 'foundationName' && ele.id !== 'outcomingId') {
+			        if (typeof data === 'undefined' || data === null || data === '' 
+			        	&& !$(ele).hasClass('incoming') && !$(ele).hasClass('outcoming')) {
 						let msg = $(ele).parents('tr').find('label').text();
 						isValid = false;
 			        }

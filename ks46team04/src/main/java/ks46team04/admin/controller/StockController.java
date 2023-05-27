@@ -153,8 +153,6 @@ public class StockController {
 				+ "unusualStockKey: {},unusualStockValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}", 
 				inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);
 
-		
-		
 		List<UnusualStock> unusualStockList = stockService.getUnusualStockListBySearch(inputSearchKey
 																					, inputSearchValue
 																					, dateSearchKey

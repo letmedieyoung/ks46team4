@@ -30,13 +30,13 @@
 						<form id="modifyGoodsForm" th:action="@{/admin/goods/modify_goods}" method="post">
 							<table th:object="${goodsInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
-									<tr class="hidden">
+									<tr>
 										<th class="bg-gray-100">
 											<label for="goodsCode">상품코드</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCode" name="goodsCode" th:value="*{goodsCode}"/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCode" name="goodsCode" th:value="*{goodsCode}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -46,7 +46,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}" readonly/>
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsName}"/>
 											</div>
 										</td>
 									</tr>
@@ -144,9 +144,8 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/**
-		 * 상품분류 select box value 값 -> input value로 넣기
-		 */
+		
+		// 상품분류 select box value 값 -> input value로 넣기
 		function goodsCate(category) {
 			const selectInputEle = $('#goodsCategory');
 			selectInputEle.val(category);
