@@ -10,28 +10,28 @@
 
 <th:block layout:fragment="customContents2">
 
-	<!-- bradcam_area_start  -->
+	<!-- 메인 카테고리 헤더  -->
     <div class="bradcam_area breadcam_bg overlay d-flex align-items-center justify-content-center">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text text-center">
-                        <h3>Causes</h3>
+                        <h3>펀딩</h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- bradcam_area_end  -->
+    <!-- 메인 카테고리 헤더  -->
 
-    <!-- popular_causes_area_start  -->
+    <!-- 펀딩 진열 -->
     <div class="popular_causes_area pt-120">
         <div class="container">
         	<div class="row justify-content-center">
 				<div class="col-lg-6">
 					<div class="section_title text-center mb-55">
 						<h3>
-							<span>펀딩</span>
+							<span></span>
 						</h3>
 					</div>
 				</div>
@@ -72,7 +72,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<!-- 펀딩 진열 -->	
 </th:block>
 
 <th:block>
@@ -99,9 +99,6 @@
 
     // nice-select의 변경 이벤트를 감지하여 필터링 함수 호출
     document.getElementById("funding_select").addEventListener("change", handleFundingSelect);
-
-
-	
 	</script>
 
 </th:block>
