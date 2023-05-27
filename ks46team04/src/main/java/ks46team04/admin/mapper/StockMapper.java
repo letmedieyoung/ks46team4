@@ -13,10 +13,6 @@ import ks46team04.admin.dto.UnusualStock;
 @Mapper
 public interface StockMapper {
 
-	
-	//상품 비정상재고 삭제
-	public int removeUnusualStock(String unusualStockCode);
-	
 	//상품 비정상재고 수정
 	public int modifyUnusualStock(UnusualStock unusualStock);
 	
@@ -26,14 +22,14 @@ public interface StockMapper {
 	//상품 비정상재고 등록
 	public int addUnusualStock(UnusualStock unusualStock);
 	
+	//상품 비정상재고 삭제
+	public int removeUnusualStock(String unusualStockCode);
+	
 	//상품 비정상재고 검색 결과 조회
 	public List<UnusualStock> getUnusualStockListBySearch(Map<String, Object> searchMap);
 	
 	//상품 비정상재고 조회
 	public List<UnusualStock> getUnusualStockList();
-	
-	//상품 입출고 삭제
-	public int removeInOutcoming(String inOutcomingCode);
 	
 	//상품 입출고 수정
 	public int modifyInOutcoming(InOutcoming inOutcoming);
@@ -55,6 +51,9 @@ public interface StockMapper {
 	
 	//상품 입출고 등록
 	public int addInOutcoming(InOutcoming inOutcoming);
+	
+	//상품 입출고 삭제
+	public int removeInOutcoming(String inOutcomingCode);
 	
 	//상품 입출고 검색 결과 조회
 	public List<InOutcoming> getInOutcomingListBySearch(Map<String, Object> searchMap);

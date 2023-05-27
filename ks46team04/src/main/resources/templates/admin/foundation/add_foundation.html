@@ -119,13 +119,12 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		$(function(){
-			/**
-			 * 카카오 지도 API
-			*/	
-			$("#addrSearchBtn").click(function() { //주소입력칸을 클릭하면
+			
+			// 주소 검색 버튼 클릭 - 카카오 지도 API
+			$("#addrSearchBtn").click(function() {
 		        //카카오 지도 발생
 		        new daum.Postcode({
-		            oncomplete: function(data) { //선택시 입력값 세팅
+		            oncomplete: function(data) { // 주소 선택시 입력값 세팅
 		            	let foundationZipcode = data.zonecode;
 		            	let foundationAddr = data.address;
 		            	let foundationExtraAddr = ''; //건물명
@@ -144,9 +143,7 @@
 		        }).open();
 		    });
 		
-			/**
-			 * checkBtn 재단명 중복확인 버튼
-			 */
+			// checkBtn 재단명 중복확인 버튼 클릭
 			$('#foundationName').change(function(){
 				$('#addFoundationForm input').not('#foundationName').prop('disabled', true);
 				$('#addFoundationForm button').not('#checkBtn').prop('disabled', true);
@@ -189,9 +186,7 @@
 				});
 			});
 			
-			/**
-			 * form submitBtn 등록하기 버튼 클릭 시 공란 체크
-			 */
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;

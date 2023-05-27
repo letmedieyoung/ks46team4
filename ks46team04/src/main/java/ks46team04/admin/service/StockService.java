@@ -29,16 +29,6 @@ public class StockService {
 	}
 	
 	/**
-	 * 상품 비정상재고 삭제
-	 * @param valueArr
-	 */
-	public void removeUnusualStock(List<String> valueArr) {
-		 for (int i = 0; i < valueArr.size(); i++) {
-			 stockMapper.removeUnusualStock(valueArr.get(i));
-		 }
-	}
-	
-	/**
 	 * 상품 비정상재고 수정
 	 * @param unusualStock
 	 */
@@ -64,6 +54,16 @@ public class StockService {
 	public int addUnusualStock(UnusualStock unusualStock) {
 		int result = stockMapper.addUnusualStock(unusualStock);
 		return result;
+	}
+	
+	/**
+	 * 상품 비정상재고 삭제
+	 * @param valueArr
+	 */
+	public void removeUnusualStock(List<String> valueArr) {
+		 for (int i = 0; i < valueArr.size(); i++) {
+			 stockMapper.removeUnusualStock(valueArr.get(i));
+		 }
 	}
 	
 	/**
@@ -115,16 +115,6 @@ public class StockService {
 	public List<UnusualStock> getUnsualStockList(){
 		List<UnusualStock> unusualStockList = stockMapper.getUnusualStockList();
 		return unusualStockList;
-	}
-	
-	/**
-	 * 상품 입출고 삭제
-	 * @param valueArr
-	 */
-	public void removeInOutcoming(List<String> valueArr) {
-		 for (int i = 0; i < valueArr.size(); i++) {
-			 stockMapper.removeInOutcoming(valueArr.get(i));
-		 }
 	}
 	
 	/**
@@ -225,6 +215,16 @@ public class StockService {
 	public int addInOutcoming(InOutcoming inOutcoming) {
 		int result = stockMapper.addInOutcoming(inOutcoming);
 		return result;
+	}
+	
+	/**
+	 * 상품 입출고 삭제
+	 * @param valueArr
+	 */
+	public void removeInOutcoming(List<String> valueArr) {
+		 for (int i = 0; i < valueArr.size(); i++) {
+			 stockMapper.removeInOutcoming(valueArr.get(i));
+		 }
 	}
 	
 	/**

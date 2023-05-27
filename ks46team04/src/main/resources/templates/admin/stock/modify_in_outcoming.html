@@ -284,40 +284,39 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
-		/*
-		* 입/출고 분류 select box value 값 -> input value로 넣기
-		*/
+		
+		// 입/출고 분류 select box value 값 -> input value로 넣기
 		function inOutType(category) {
 			const selectInput = document.querySelector('#inOutcomingType');
 			selectInput.value = category;
 		};
 		
-		/**
-		 * 입/출고 분류 select box selected 값 -> input text로 넣기
-		 */
+		// 입/출고 분류 select box selected 값 -> input text로 넣기
 		let selectedText = $("#inOutcomingTypeSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
 		$("#inOutcomingType").val(selectedText); // input 요소에 선택된 text 값을 할당한다.
 		
 		$(function(){
-			/**
-			* select box 입고 선택 시 입고 상세정보 테이블 input 입력 활성화
-			* select box 출고 선택 시 출고 상세정보 테이블 input 입력 활성화
-			*/
+			
+			// 입출고분류 체크박스 선택 값에 따라 input 입력 활성화
+			// select box 입고 선택 시 입고 상세정보 테이블 input 입력 활성화
+		 	// select box 출고 선택 시 출고 상세정보 테이블 input 입력 활성화
 			const inOutcomingTypeSelect = $('#inOutcomingTypeSelect');
 			const incomingInputs = $('.incoming');
 			const outcomingInputs = $('.outcoming');
 			
-			function toggleIncomingInputs() {
-			  const selectedValue = inOutcomingTypeSelect.val();
-			  
-			  if(selectedValue == '입고'){
-				  const isIncomingTypeSelected = selectedValue;
-				  incomingInputs.prop('disabled', !isIncomingTypeSelected);
-			  }else if(selectedValue == '출고'){
-				  const isOutcomingTypeSelected = selectedValue;
-				  outcomingInputs.prop('disabled', !isOutcomingTypeSelected);
-			  }
-			}
+			function toggleInOutcomingTypeInputs() {
+				const selectedValue = inOutcomingTypeSelect.val();
+				if(selectedValue == '입고'){
+					incomingTypeInputs.prop('disabled', false);
+				    outcomingTypeInputs.val('').prop('disabled', true);
+				}else if(selectedValue == '출고'){
+					incomingTypeInputs.val('').prop('disabled', true);
+				    outcomingTypeInputs.prop('disabled', false);
+				}else{
+					incomingTypeInputs.val('').prop('disabled', true);
+				    outcomingTypeInputs.val('').prop('disabled', true);
+				}
+			};
 			
 			// 페이지 로드 시 초기 설정
 			toggleInOutcomingInputs();

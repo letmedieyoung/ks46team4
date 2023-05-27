@@ -35,41 +35,7 @@ public class FoundationController {
 		this.foundationMapper = foundationMapper;
 		
 	}
-	
 
-	/**
-	 * 재단 요청사항 삭제
-	 * @param valueArr
-	 * @return
-	 */
-	@PostMapping("/remove_foundation_request")
-	@ResponseBody
-	public Map<String, Object> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
-		
-		log.info("valueArr: {}", valueArr);
-		Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedFoundationRequest = new ArrayList<>();
-        List<String> failedFoundationRequest = new ArrayList<>();
-
-        for (String foundationRequestCode : valueArr) {
-            boolean isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
-            if (isRemove) {
-            	deletedFoundationRequest.add(foundationRequestCode);
-            } else {
-            	failedFoundationRequest.add(foundationRequestCode);
-            }
-        }
-        log.info("deletedFoundationRequest: {}", deletedFoundationRequest);
-        log.info("failedFoundationRequest: {}", failedFoundationRequest);
-
-        response.put("deleted", deletedFoundationRequest);
-        response.put("failed", failedFoundationRequest);
-        log.info("response: {}", response);
-
-        return response;
-    }
-	
 	/**
 	 * 재단 요청사항 수정 @PostMapping
 	 * @param foundationRequest
@@ -140,6 +106,39 @@ public class FoundationController {
 	}
 	
 	/**
+	 * 재단 요청사항 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/remove_foundation_request")
+	@ResponseBody
+	public Map<String, Object> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
+		
+		log.info("valueArr: {}", valueArr);
+		Map<String, Object> response = new HashMap<>();
+
+        List<String> deletedFoundationRequest = new ArrayList<>();
+        List<String> failedFoundationRequest = new ArrayList<>();
+
+        for (String foundationRequestCode : valueArr) {
+            boolean isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
+            if (isRemove) {
+            	deletedFoundationRequest.add(foundationRequestCode);
+            } else {
+            	failedFoundationRequest.add(foundationRequestCode);
+            }
+        }
+        log.info("deletedFoundationRequest: {}", deletedFoundationRequest);
+        log.info("failedFoundationRequest: {}", failedFoundationRequest);
+
+        response.put("deleted", deletedFoundationRequest);
+        response.put("failed", failedFoundationRequest);
+        log.info("response: {}", response);
+
+        return response;
+    }
+	
+	/**
 	 * 재단 요청사항 검색 결과 조회
 	 * @param searchKey
 	 * @param searchValue
@@ -193,40 +192,6 @@ public class FoundationController {
 		model.addAttribute("foundationRequestList", foundationRequestList);
 		
 		return "admin/foundation/foundation_request_list";
-	}
-	
-	/**
-	 * 재단 삭제
-	 * @param valueArr
-	 * @return
-	 */
-	@PostMapping("/remove_foundation")
-	@ResponseBody
-	public Map<String, Object> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		
-		Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedFoundation = new ArrayList<>();
-        List<String> failedFoundation = new ArrayList<>();
-
-        for (String foundationCode : valueArr) {
-        	boolean isRemove = foundationService.removeFoundation(foundationCode);
-            if (isRemove) {
-            	deletedFoundation.add(foundationCode);
-            } else {
-            	failedFoundation.add(foundationCode);
-            }
-        }
-        log.info("deletedFoundation: {}", deletedFoundation);
-        log.info("failedFoundation: {}", failedFoundation);
-
-        response.put("deleted", deletedFoundation);
-        response.put("failed", failedFoundation);
-        log.info("response: {}", response);
-
-        return response;
 	}
 	
 	/**
@@ -310,6 +275,40 @@ public class FoundationController {
 		model.addAttribute("title", "재단 등록");
 		
 		return "admin/foundation/add_foundation";
+	}
+	
+	/**
+	 * 재단 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/remove_foundation")
+	@ResponseBody
+	public Map<String, Object> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		
+		log.info("valueArr: {}", valueArr);
+		
+		Map<String, Object> response = new HashMap<>();
+
+        List<String> deletedFoundation = new ArrayList<>();
+        List<String> failedFoundation = new ArrayList<>();
+
+        for (String foundationCode : valueArr) {
+        	boolean isRemove = foundationService.removeFoundation(foundationCode);
+            if (isRemove) {
+            	deletedFoundation.add(foundationCode);
+            } else {
+            	failedFoundation.add(foundationCode);
+            }
+        }
+        log.info("deletedFoundation: {}", deletedFoundation);
+        log.info("failedFoundation: {}", failedFoundation);
+
+        response.put("deleted", deletedFoundation);
+        response.put("failed", failedFoundation);
+        log.info("response: {}", response);
+
+        return response;
 	}
 	
 	/**
