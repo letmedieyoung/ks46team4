@@ -111,6 +111,17 @@ public class UserService {
 
 		return userDropList;
 	}
+	
+	/**
+	 * 탈퇴 회원 목록 삭제
+	 * @param valueArr
+	 */
+	public boolean removeDropList(String userId) {
+	    userMapper.removeDropList(userId);
+	    return true;
+	}
+
+	
 
 	public List<UserSleep> getUserSleepList() {
 

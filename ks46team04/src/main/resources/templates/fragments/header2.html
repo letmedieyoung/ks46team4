@@ -18,7 +18,7 @@
 								<span class="top-sign">로그인</span>
 							</a> <a th:unless="${session.SID == null}"
 								th:href="@{/common/logout}"> <span class="top-sign">로그아웃</span>
-							</a> <a th:unless="${session.SID == null}"
+							</a> <a th:unless="${session.SLEVEL == null or session.SLEVEL != '2'}"
 								th:href="@{/user/mypage_index}"> <span class="top-sign">마이페이지</span>
 							</a> <a
 								th:unless="${session.SLEVEL == null or session.SLEVEL != '1'}"

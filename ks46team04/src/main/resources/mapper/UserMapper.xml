@@ -217,6 +217,15 @@
 		FROM
 		user_drop;
 	</select>
+	
+	<delete id="removeDropList" parameterType="String">
+		/* 탈퇴 회원 목록 삭제 */
+		DELETE 
+		FROM 
+			user_drop
+		WHERE 
+			user_id = #{userId};
+	</delete>
 
 
 	<update id="modifyUser" parameterType="User">

@@ -62,6 +62,32 @@ public class UserController {
 
 		return "admin/user/userDropList";
 	}
+	
+	/**
+	 * 탈퇴 회원 목록 삭제
+	 * @param valueArr
+	 * @return
+	 */
+	@PostMapping("/removeDropList")
+	@ResponseBody
+	public Map<String, Object> removeDropList(@RequestParam(value="valueArr[]") List<String> valueArr) {
+	    log.info("valueArr: {}", valueArr);
+	    Map<String, Object> response = new HashMap<>();
+	    List<String> deletedDropList = new ArrayList<>();
+
+	    for (String userId : valueArr) {
+	        boolean result = userService.removeDropList(userId);
+	        if (result) {
+	            deletedDropList.add(userId);
+	        }
+	    }
+
+	    log.info("deletedDropList: {}", deletedDropList);
+	    response.put("deleted", deletedDropList);
+	    log.info("response: {}", response);
+
+	    return response;
+	}
 
 	@GetMapping("/userSleepList")
 	public String getUserSleepList(Model model) {

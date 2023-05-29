@@ -55,4 +55,6 @@ public interface UserMapper {
 	public List<UserSleep> getUserSleepList();
 	// 탈퇴 회원 목록 조회
 	public List<UserDrop> getUserDropList();
+	// 탈퇴 회원 목록 삭제
+	public int removeDropList(String userId);
 }
