@@ -16,7 +16,6 @@
 <th:block layout:fragment="customContents">
 	<div class="container-fluid">
 	    <form id="registFundingForm" th:action="@{/admin/funding/register}" method="post">
-		    <!-- DataTales Example -->
 	     	<div class="card mb-4">
 	        	<div class="card-header py-3">
 	            	<h5 class="m-0 font-weight-bold text-gray-800">펀딩 등록</h5>
@@ -119,9 +118,7 @@
 									</th>
 									<td>
 										<div class="form-row align-items-center search-schedule">																	
-											
-												<input type="text" th:value="*{goodsCode}"/>													
-											
+											<input type="text" th:value="*{goodsCode}"/>													
 										</div>
 									</td>
 								</tr>		                        
@@ -161,7 +158,7 @@
 									</th>
 		                        	<td>														
 										<div class="form-row align-items-center search-schedule">
-											<input type="text" class="form-control form-control-user-search search-input" id="fundingRegId" th:value="*{fundingRegId}" name="fundingRegId"/>					
+											<input type="text" class="form-control form-control-user-search search-input" id="fundingRegId" th:value="${session.SID}" name="fundingRegId" readonly="readonly"/>					
 										</div>									
 									</td>
 		                        </tr>
