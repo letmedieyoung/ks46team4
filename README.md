@@ -32,4 +32,9 @@
 
 ## 📌 ERD
 
+<p>
+  <img src="https://github.com/fatrugi/ks46team4/assets/123074059/ed10fb23-1b52-4596-a05e-47474b422027">
+</p>
+
+
 ## 💬 참여 소감
