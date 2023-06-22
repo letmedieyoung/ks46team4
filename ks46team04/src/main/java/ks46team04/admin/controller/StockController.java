@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,7 @@ import ks46team04.admin.dto.InOutcoming;
 import ks46team04.admin.dto.OutcomingDetail;
 import ks46team04.admin.dto.Stock;
 import ks46team04.admin.dto.UnusualStock;
+import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.service.FoundationService;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
@@ -33,11 +35,17 @@ public class StockController {
 	private final StockService stockService;
 	private final GoodsService goodsService;
 	private final FoundationService foundationService;
+	private final CommonMapper commonMapper;
 	
-	public StockController(StockService stockService, GoodsService goodsService, FoundationService foundationService) {
+	
+	public StockController(StockService stockService
+						, GoodsService goodsService
+						, FoundationService foundationService
+						, CommonMapper commonMapper) {
 		this.stockService = stockService;
 		this.goodsService = goodsService;
 		this.foundationService = foundationService;
+		this.commonMapper = commonMapper;
 	}
 	
 	/**
@@ -240,40 +248,56 @@ public class StockController {
 	 * @return
 	 */
 	@PostMapping("/add_in_outcoming")
-	public String addInOutcoming(InOutcoming inOutcoming, HttpSession session, Model model) {
+	public String addInOutcoming(Model model
+								, InOutcoming inOutcoming
+								, Stock stock
+								, UnusualStock unusaulStock
+								, OutcomingDetail outcomingDetail
+								, HttpSession session) {
 
-		String inOutcomingRegId = (String) session.getAttribute("SID");
-		log.info("inOutcomingRegId: {}", inOutcomingRegId);
-
-		inOutcoming.setInOutcomingRegId(inOutcomingRegId);
-	    log.info("inOutcoming: {}", inOutcoming);
-	    
+		String regId = (String) session.getAttribute("SID");
+		int inOutcomingQuantity = inOutcoming.getInOutcomingQuantity();
+		boolean isOutcoming = inOutcoming.getInOutcomingType().equals("outcoming");
+		log.info("regId: {}, inOutcomingQuantity: {}, isOutcoming: {}"
+				, regId, inOutcomingQuantity, isOutcoming);
+		
 	    // 상품 입출고 등록
+		inOutcoming.setInOutcomingRegId(regId);
+		log.info("inOutcoming: {}", inOutcoming);
 	    stockService.addInOutcoming(inOutcoming);
 	    
-	    // 등록된 입출고 정보 가져오기
-	    InOutcoming lastInOutcomingInfo = stockService.getLastInOutcomingInfo();
-	    log.info("lastInOutcomingInfo: {}", lastInOutcomingInfo);
+    	// 상품 입출고 등록 시 새로운 재고 정보일 경우 재고 등록, 등록된 재고 정보일 경우 재고 수정
+	    boolean isNewStockInfo = stockService.checkStockInfo(stock);
+	    if(isNewStockInfo) {
+	    	stock.setCurrentStockAmount(inOutcomingQuantity);
+	    	log.info("stock: {}", stock);
+	    	stockService.addStock(stock);
+	    }else {
+	    	if(isOutcoming) {
+	    		stock.removeCurrentStock(inOutcomingQuantity);
+	    	}else {
+	    		stock.addCurrentStock(inOutcomingQuantity);
+	    	}
+	    	log.info("stock: {}", stock);
+	    	stockService.modifyStock(stock);
+    	}
 	    
-	    // 상품 출고가 등록된 경우 - 상품 출고상세 등록
-	    String inOutcomingType = lastInOutcomingInfo.getInOutcomingType();
-	    log.info("inOutcomingType: {}", inOutcomingType);
-	    
-	    boolean isOutcoming = inOutcomingType.equals("outcoming");
-	    if(isOutcoming) {
-	    	String foundationName = (String) model.getAttribute("foundationName");
-	    	log.info("foundationName: {}", foundationName);
-	    	lastInOutcomingInfo.setFoundationName(foundationName);
-	    	
-	    	String outcomingId = (String) model.getAttribute("outcomingId");
-	    	log.info("outcomingId: {}", outcomingId);
-	    	lastInOutcomingInfo.setOutcomingId(outcomingId);
-	    	
-	    	stockService.addOutcomingDetail(lastInOutcomingInfo);
+	    // 상품 비정상재고 'true'(유)인 경우 - 상품 비정상재고 등록
+    	boolean hasUnusualStock = stock.getUnusualStockCheck().equals("true");
+	    if(hasUnusualStock) {
+	    	unusaulStock.setUnusualStockRegId(regId);
+	    	log.info("unusaulStock: {}", unusaulStock);
+	    	stockService.addUnusualStock(unusaulStock);
 	    }
 	    
-	    // 상품 재고 등록
-	    stockService.addStock(lastInOutcomingInfo);
+	    // 상품 입출고 분류 'outcoming'(출고)인 경우 - 상품 출고 상세정보 등록
+	    if(isOutcoming) {
+    		outcomingDetail.setOutcomingDetailRegId(regId);
+    		outcomingDetail.setOutcomingQuantity(inOutcomingQuantity);
+    		outcomingDetail.setOutcomingId(regId);
+    		log.info("outcomingDetail: {}", outcomingDetail);
+    		stockService.addOutcomingDetail(outcomingDetail);
+	    }
 	    
 		return "redirect:/admin/stock/in_outcoming_list";
 	}
@@ -285,11 +309,22 @@ public class StockController {
 	 */
 	@GetMapping("/add_in_outcoming")
 	public String addInOutcoming(Model model) {
-		
-		log.info("model: {}", model);
-		
 		model.addAttribute("title", "상품 입출고 등록");
+
+		// 상품 입출고코드 - 공통 mapper를 사용하여 inOutcomingCode 생성 및 설정
+		String inOutcomingCode = commonMapper.getPrimaryKeyVerTwo("incoming_outcoming_history"
+													    		,"incoming_outcoming_history_code"
+													    		,"incoming_outcoming_history");
+	    log.info("inOutcomingCode: {}", inOutcomingCode);
+		model.addAttribute("inOutcomingCode", inOutcomingCode);
 		
+		// 상품 재고코드 - 공통 mapper를 사용하여 goodsStockCode 생성 및 설정
+    	String goodsStockCode = commonMapper.getPrimaryKeyVerTwo("goods_stock"
+												    			,"goods_stock_code"
+												    			,"goods_stock");
+    	log.info("goodsStockCode: {}", goodsStockCode);
+    	model.addAttribute("goodsStockCode", goodsStockCode);
+    	
 		return "admin/stock/add_in_outcoming";
 	}
 	

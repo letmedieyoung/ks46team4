@@ -188,7 +188,7 @@
 		$(function(){
 			
 			// 상품 입출고 검색 결과 조회
-			$('#searchBtn').click(function(){
+			$(document).on('click', '#searchBtn', function(){
 				
 				// 검색 조건 선택된 값 가져오기
 				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
@@ -281,10 +281,10 @@
 			});
 			
 			// 체크박스 전체 선택
-			$('#allCheck').click(function () {
+			$(document).on('click', '#allCheck', function(){
 				$('.checks').prop('checked', $(this).prop('checked'));
 			});
-			$('.checks').click(function () {
+			$(document).on('click', '.checks', function(){
 				let length = $('.checks').length;
 				let checkedLength = $('.checks:checked').length;
 				if (length == checkedLength) {
@@ -295,7 +295,7 @@
 			});
 			
 			// 체크박스 선택 후 deleteBtn 버튼
-			$('#delCheckBtn').click(function () {
+			$(document).on('click', '#delCheckBtn', function(){
 				
 				const checkedArr = $('.checks:checked');
 				console.log(checkedArr);

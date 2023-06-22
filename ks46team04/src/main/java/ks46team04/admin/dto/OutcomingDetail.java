@@ -4,7 +4,7 @@ public class OutcomingDetail {
 	private String outcomingDetailCode;
 	private String inOutcomingCode;
 	private String outcomingGoods;
-	private String outcomingQuantity;
+	private int outcomingQuantity;
 	private String outcomingDate;
 	private String outcomingId;
 	private String foundationCode;
@@ -13,6 +13,21 @@ public class OutcomingDetail {
 	private String outcomingDetailUpdId;
 	private String outcomingDetailUpdDate;
 	
+	private String goodsName;
+	private String foundationName;
+	
+	public String getFoundationName() {
+		return foundationName;
+	}
+	public void setFoundationName(String foundationName) {
+		this.foundationName = foundationName;
+	}
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 	public String getOutcomingDetailCode() {
 		return outcomingDetailCode;
 	}
@@ -31,10 +46,10 @@ public class OutcomingDetail {
 	public void setOutcomingGoods(String outcomingGoods) {
 		this.outcomingGoods = outcomingGoods;
 	}
-	public String getOutcomingQuantity() {
+	public int getOutcomingQuantity() {
 		return outcomingQuantity;
 	}
-	public void setOutcomingQuantity(String outcomingQuantity) {
+	public void setOutcomingQuantity(int outcomingQuantity) {
 		this.outcomingQuantity = outcomingQuantity;
 	}
 	public String getOutcomingDate() {
@@ -86,7 +101,8 @@ public class OutcomingDetail {
 				+ outcomingDate + ", outcomingId=" + outcomingId + ", foundationCode=" + foundationCode
 				+ ", outcomingDetailRegId=" + outcomingDetailRegId + ", outcomingDetailRegDate="
 				+ outcomingDetailRegDate + ", outcomingDetailUpdId=" + outcomingDetailUpdId
-				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + "]";
+				+ ", outcomingDetailUpdDate=" + outcomingDetailUpdDate + ", goodsName=" + goodsName
+				+ ", foundationName=" + foundationName + "]";
 	}
 	
 }

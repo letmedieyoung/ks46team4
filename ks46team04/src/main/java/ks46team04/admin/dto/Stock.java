@@ -9,24 +9,39 @@ public class Stock {
 	private int currentStockAmount;
 	private String stocktakingCheck;
 	private String stocktakingDate;
-	private String goodsExprityDate;
+	private String goodsExpiryDate;
 	private int finalStockAmount;
 	private int unusualStockAmount;
 	private String unusualStockCheck;
 	
 	private Goods goodsInfo;
 	
+	private String goodsName;
+
+	/**
+	 * 재고조사 후 최종 재고 수량 계산
+	 * @param currentStock
+	 * @param unusualStock
+	 */
+	public void calculFinalStock(int currentStock, int unusualStock) {
+		int finalStockAmount = currentStock - unusualStock;
+		if(finalStockAmount < 0) {
+			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
+		}
+		this.finalStockAmount = finalStockAmount;
+	}
+	
 	/**
 	 * 재고 자동 증가
 	 */
-	public void addStock(int quantity) {
+	public void addCurrentStock(int quantity) {
 		this.currentStockAmount += quantity;
 	}
 	
 	/**
 	 * 재고 자동 감소
 	 */
-	public void removeStock(int quantity) {
+	public void removeCurrentStock(int quantity) {
 		int restStock = this.currentStockAmount - quantity;
 		if(restStock < 0) {
 			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
@@ -34,6 +49,15 @@ public class Stock {
 		this.currentStockAmount = restStock;
 	}
 	
+	
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 	public Goods getGoodsInfo() {
 		return goodsInfo;
 	}
@@ -76,11 +100,11 @@ public class Stock {
 	public void setStocktakingDate(String stocktakingDate) {
 		this.stocktakingDate = stocktakingDate;
 	}
-	public String getGoodsExprityDate() {
-		return goodsExprityDate;
+	public String getGoodsExpiryDate() {
+		return goodsExpiryDate;
 	}
-	public void setGoodsExprityDate(String goodsExprityDate) {
-		this.goodsExprityDate = goodsExprityDate;
+	public void setGoodsExpiryDate(String goodsExpiryDate) {
+		this.goodsExpiryDate = goodsExpiryDate;
 	}
 	public int getFinalStockAmount() {
 		return finalStockAmount;
@@ -97,15 +121,18 @@ public class Stock {
 	public String getUnusualStockCheck() {
 		return unusualStockCheck;
 	}
+
 	public void setUnusualStockCheck(String unusualStockCheck) {
 		this.unusualStockCheck = unusualStockCheck;
 	}
+
 	@Override
 	public String toString() {
 		return "Stock [goodsStockCode=" + goodsStockCode + ", goodsCode=" + goodsCode + ", goodsLotNumber="
 				+ goodsLotNumber + ", currentStockAmount=" + currentStockAmount + ", stocktakingCheck="
-				+ stocktakingCheck + ", stocktakingDate=" + stocktakingDate + ", goodsExprityDate=" + goodsExprityDate
+				+ stocktakingCheck + ", stocktakingDate=" + stocktakingDate + ", goodsExpiryDate=" + goodsExpiryDate
 				+ ", finalStockAmount=" + finalStockAmount + ", unusualStockAmount=" + unusualStockAmount
-				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + "]";
+				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + ", goodsName=" + goodsName
+				+ "]";
 	}
 }

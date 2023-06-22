@@ -309,7 +309,7 @@
 			<if test="inputSearchKey != null and inputSearchValue != ''">
 				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
-			<if test="startDate != '' startDate != null and endDate != null and endDate != ''">
+			<if test="startDate != '' and startDate != null and endDate != null and endDate != ''">
 				AND (
 						(foundation_update_date IS NULL
 						 AND foundation_reg_date BETWEEN #{startDate} 
