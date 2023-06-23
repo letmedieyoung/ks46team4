@@ -16,6 +16,7 @@ public class InOutcoming {
 	private Goods goodsInfo;
 	private Foundation foundationInfo;
 	
+	private String goodsName;
 	private String foundationName;
 	private String outcomingId;
 	
@@ -35,6 +36,14 @@ public class InOutcoming {
 	
 	public Foundation getFoundationInfo() {
 		return foundationInfo;
+	}
+	
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
 	}
 	public void setFoundationInfo(Foundation foundationInfo) {
 		this.foundationInfo = foundationInfo;
@@ -118,7 +127,7 @@ public class InOutcoming {
 				+ inOutcomingType + ", inOutcomingDate=" + inOutcomingDate + ", inOutcomingRegId=" + inOutcomingRegId
 				+ ", inOutcomingRegDate=" + inOutcomingRegDate + ", inOutcomingUpdId=" + inOutcomingUpdId
 				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", OutcomingDetailInfo=" + OutcomingDetailInfo
-				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + ", foundationName="
-				+ foundationName + ", outcomingId=" + outcomingId + "]";
+				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + ", goodsName=" + goodsName
+				+ ", foundationName=" + foundationName + ", outcomingId=" + outcomingId + "]";
 	}
 }

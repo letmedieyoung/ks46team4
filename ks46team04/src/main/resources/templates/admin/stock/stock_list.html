@@ -27,7 +27,7 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+					<table class="table table-bordered search-table-gr" id="searchTable">
 						<tbody>
 							<tr>
 								<th class="bg-gray-100">검색 조건</th>
@@ -50,26 +50,26 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="stocktaking">재고조사 현황</label>
+									<label for="stocktakingCheck">재고조사</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="stocktaking" checked>
+										      <input type="radio" name="stocktakingCheck" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="stocktaking">
+										      <input type="radio" name="stocktakingCheck">
 										      <span class="text">완료</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="stocktaking">
+										      <input type="radio" name="stocktakingCheck">
 										      <span class="text">미완료</span>
 									      </label>
 										</div>
@@ -78,26 +78,26 @@
 							</tr>
 							<tr>
 								<th class="bg-gray-100">
-									<label for="unusualStock">비정상재고</label>
+									<label for="unusualStockCheck">비정상재고</label>
 								</th>
 								<td>
 									<div class="form-row align-items-center search-schedule">
 										&nbsp;
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="unusualStock" checked>
+										      <input type="radio" name="unusualStockCheck" checked>
 										      <span class="text">전체</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="unusualStock">
+										      <input type="radio" name="unusualStockCheck">
 										      <span class="text">유</span>&nbsp;&nbsp;
 									      </label>
 									    </div>
 										<div class="form-row align-items-center search-schedule">
 									      <label>
-										      <input type="radio" name="unusualStock">
+										      <input type="radio" name="unusualStockCheck">
 										      <span class="text">무</span>
 									      </label>
 										</div>
@@ -160,7 +160,7 @@
 		<div class="card shadow mb-4">
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-bordered text-center table-layout-auto table-space tb-sm" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered text-center table-layout-auto table-space tb-sm" id="dataTable">
 						<thead class="bg-gray-100">
 							<tr>
 								<th>No</th>
@@ -190,14 +190,14 @@
 										<td th:text="${gl.goodsName}"></td>
 										<td th:text="${l.goodsLotNumber}"></td>
 										<td th:text="${gl.goodsCompany}"></td>
-										<td th:text="${l.goodsExprityDate}"></td>
-										<td th:if="${l.stocktakingCheck == '1'}">완료</td>
-										<td th:unless="${l.stocktakingCheck == '1'}">미완료</td>
+										<td th:text="${l.goodsExpiryDate}"></td>
+										<td th:if="${l.stocktakingCheck == true}">완료</td>
+										<td th:unless="${l.stocktakingCheck == true}">미완료</td>
 										<td th:text="${l.stocktakingDate}"></td>
 										<td th:text="${l.currentStockAmount}"></td>
-										<td th:if="${l.unusualStockCheck == '1'}">유</td>
-										<td th:if="${l.stocktakingCheck == '0'} and ${l.unusualStockCheck == '0'}">재고조사 미진행</td>
-										<td th:if="${l.stocktakingCheck == '1'} and ${l.unusualStockCheck == '0'}">무</td>
+										<td th:if="${l.unusualStockCheck == true}">유</td>
+										<td th:if="${l.stocktakingCheck == false} and ${l.unusualStockCheck == false}">무</td>
+										<td th:if="${l.stocktakingCheck == true} and ${l.unusualStockCheck == false}">무</td>
 										<td th:text="${l.unusualStockAmount}"></td>
 										<td th:text="${l.finalStockAmount}"></td>
 										<td>
@@ -236,19 +236,19 @@
 		$(function(){
 			
 			// 재고 검색 결과 조회
-			$('#searchBtn').click(function(){
+			$(document).on('click', '#searchBtn', function(){
 				
 				// 검색 조건 선택된 값 가져오기
 			    let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
 			    let inputSearchValue = $('#inputSearchValue').val();
 	
-			 	// 재고조사 현황 stocktaking 선택된 값 가져오기
-				let stocktakingKey = $('input[name="stocktaking"]:checked').attr('name');
-				let stocktakingValue = $('input[name="stocktaking"]:checked').next('span.text').text();
+			 	// 재고조사 stocktakingCheck 선택된 값 가져오기
+				let stocktakingKey = $('input[name="stocktakingCheck"]:checked').attr('name');
+				let stocktakingValue = $('input[name="stocktakingCheck"]:checked').next('span.text').text();
 				
-				// 비정상 재고 unusualStock 선택된 값 가져오기
-				let unusualStockKey = $('input[name="unusualStock"]:checked').attr('name');
-				let unusualStockValue = $('input[name="unusualStock"]:checked').next('span.text').text();
+				// 비정상재고 unusualStockCheck 선택된 값 가져오기
+				let unusualStockKey = $('input[name="unusualStockCheck"]:checked').attr('name');
+				let unusualStockValue = $('input[name="unusualStockCheck"]:checked').next('span.text').text();
 	
 				// 기간 분류 선택된 값 가져오기
 			    let dateSearchKey = $('#dateSearchKey option:selected').val();
@@ -291,7 +291,7 @@
 								html += `	<td>${stockInfo.goodsInfo.goodsName}</td>`;
 								html += `	<td>${stockInfo.goodsLotNumber}</td>`;
 								html += `	<td>${stockInfo.goodsInfo.goodsCompany}</td>`;
-								html += `	<td>${stockInfo.goodsExprityDate}</td>`;
+								html += `	<td>${stockInfo.goodsExpiryDate}</td>`;
 								if(stockInfo.stocktakingCheck == '1'){
 									html += `	<td>완료</td>`;
 								}else{
@@ -302,7 +302,7 @@
 								if(stockInfo.unusualStockCheck == '1'){
 									html += `	<td>유</td>`;
 								}else if(stockInfo.stocktakingCheck == '0' && stockInfo.unusualStockCheck == '0'){
-									html += `	<td>재고조사 미진행</td>`;
+									html += `	<td>무</td>`;
 								}else if(stockInfo.stocktakingCheck == '1' && stockInfo.unusualStockCheck == '0'){
 									html += `	<td>무</td>`;
 								}

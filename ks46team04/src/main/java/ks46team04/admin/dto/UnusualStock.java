@@ -4,7 +4,7 @@ public class UnusualStock {
 	private String unusualStockCode;
 	private String goodsCode;
 	private String goodsStockCode;
-	private String unusualStockQuantity;
+	private int unusualStockQuantity;
 	private String unusualStockDate;
 	private String unusualStockReason;
 	private String unusualStockRegId;
@@ -38,10 +38,10 @@ public class UnusualStock {
 	public void setGoodsStockCode(String goodsStockCode) {
 		this.goodsStockCode = goodsStockCode;
 	}
-	public String getUnusualStockQuantity() {
+	public int getUnusualStockQuantity() {
 		return unusualStockQuantity;
 	}
-	public void setUnusualStockQuantity(String unusualStockQuantity) {
+	public void setUnusualStockQuantity(int unusualStockQuantity) {
 		this.unusualStockQuantity = unusualStockQuantity;
 	}
 	public String getUnusualStockDate() {

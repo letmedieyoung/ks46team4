@@ -72,11 +72,11 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsExprityDate">상품 유통기한</label>
+											<label for="goodsExpiryDate">상품 유통기한</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control number-input" id="goodsExprityDate" name="goodsExprityDate" th:value="*{goodsExprityDate}" readonly/>
+												<input type="text" class="form-control number-input" id="goodsExpiryDate" name="goodsExpiryDate" th:value="*{goodsExpiryDate}" readonly/>
 											</div>
 										</td>
 									</tr>
@@ -87,15 +87,18 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="stocktakingCheckSelect" name="stocktakingCheckSelect" onchange="stocktaking(this.value)">
-													<option value="">:: 재고조사 현황 ::</option>
-													<option th:selected="*{stocktakingCheck} == '1'" >완료</option>
-													<option th:selected="*{stocktakingCheck} == '0'" >미완료</option>
-												</select>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<input type="hidden" class="form-control form-control-user-search short-input"
-													id="stocktakingCheck" name="stocktakingCheck" th:value="*{stocktakingCheck}"/>
+												<div class="form-row align-items-center search-schedule">
+													<label>
+													  <input type="radio" class="incoming" name="stocktakingCheck" th:checked="*{stocktakingCheck} == '1'">
+													  <span class="text">완료</span>&nbsp;&nbsp;
+													</label>
+												</div>
+												<div class="form-row align-items-center search-schedule">
+													<label>
+													  <input type="radio" class="incoming" name="stocktakingCheck" th:checked="*{stocktakingCheck} == '0'">
+													  <span class="text">미완료</span>
+													</label>
+												</div>
 											</div>
 										</td>
 									</tr>
@@ -126,16 +129,19 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="unusualStockCheckSelect" name="unusualStockCheckSelect" onchange="unusualStock(this.value)">
-													<option value="">:: 비정상재고 ::</option>
-													<option th:selected="*{stocktakingCheck} == '1' and *{unusualStockCheck} == '0'" >무</option>
-													<option th:selected="*{unusualStockCheck} == '1'" >유</option>
-													<option th:selected="*{stocktakingCheck} == '0' and *{unusualStockCheck} == '0'">재고조사 미진행</option>
-												</select>
-											</div>
-											<div class="form-row align-items-center search-schedule">
-												<input type="hidden" class="form-control form-control-user-search short-input"
-													id="unusualStockCheck" name="unusualStockCheck" th:value="*{unusualStockCheck}"/>
+												<div class="form-row align-items-center search-schedule">
+													<label>
+														<input type="radio" class="incoming" name="unusualStockCheck" th:checked="*{unusualStockCheck} == '1'">
+														<span class="text">유</span>&nbsp;&nbsp;
+													</label>
+												</div>
+												<div class="form-row align-items-center search-schedule">
+												  	<label>
+														<input type="radio" class="incoming" name="unusualStockCheck"
+																th:checked="(*{stocktakingCheck} == '1' or (*{stocktakingCheck} == '0' and *{unusualStockCheck} == '0'))">
+														<span class="text">무</span>
+													</label>
+												</div>
 											</div>
 										</td>
 									</tr>
@@ -210,30 +216,9 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		
-		// 재고조사 현황 select box value 값 -> input value로 넣기
-		function stocktaking(category) {
-			const selectInputEle = $('#stocktakingCheck');
-			selectInputEle.val(category);
-		};
-		
-		// 재고조사 현황 select box selected 값 -> input text로 넣기
-		let stocktakingSelectedText = $("#stocktakingCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#stocktakingCheck").val(stocktakingSelectedText); // input 요소에 선택된 text 값을 할당한다.
-		
-		
-		// 비정상재고 select box value 값 -> input value로 넣기
-		function unusualStock(category) {
-			const selectInputEle = $('#unusualStockCheck');
-			selectInputEle.val(category);
-		};
-		
-		// 비정상재고 select box selected 값 -> input text로 넣기
-		let unusualStockSelectedText = $("#unusualStockCheckSelect option:selected").text(); // select 요소에서 선택된 option 요소의 text 값을 가져온다.
-		$("#unusualStockCheck").val(unusualStockSelectedText); // input 요소에 선택된 text 값을 할당한다.
-		
 		$(function() {
-			// 재고조사 현황 체크박스 선택 값에 따라 input 입력 활성화
-			const stocktakingCheckSelect = $('#stocktakingCheckSelect');
+			// 재고조사 현황 radio 선택 값에 따라 input 입력 활성화
+			const stocktakingCheck = $('#stocktakingCheck checked');
 			const stocktakingInputs = $('#stocktakingDate, #currentStockAmount');
 			
 			function togglestocktakingInputs() {
