@@ -17,10 +17,14 @@ import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.InOutcoming;
+import ks46team04.admin.dto.InOutcomingForm;
 import ks46team04.admin.dto.OutcomingDetail;
 import ks46team04.admin.dto.Stock;
 import ks46team04.admin.dto.UnusualStock;
 import ks46team04.admin.mapper.CommonMapper;
+import ks46team04.admin.mapper.FoundationMapper;
+import ks46team04.admin.mapper.GoodsMapper;
+import ks46team04.admin.mapper.StockMapper;
 import ks46team04.admin.service.FoundationService;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
@@ -32,20 +36,26 @@ public class StockController {
 	
 	private static final Logger log = LoggerFactory.getLogger(StockController.class);
 
+	private final StockMapper stockMapper;
 	private final StockService stockService;
+	private final GoodsMapper goodsMapper;
 	private final GoodsService goodsService;
+	private final FoundationMapper foundationMapper;
 	private final FoundationService foundationService;
-	private final CommonMapper commonMapper;
 	
 	
-	public StockController(StockService stockService
+	public StockController(StockMapper stockMapper
+						, StockService stockService
+						, GoodsMapper goodsMapper
 						, GoodsService goodsService
-						, FoundationService foundationService
-						, CommonMapper commonMapper) {
+						, FoundationMapper foundationMapper
+						, FoundationService foundationService) {
+		this.stockMapper = stockMapper;
 		this.stockService = stockService;
+		this.goodsMapper = goodsMapper;
 		this.goodsService = goodsService;
+		this.foundationMapper = foundationMapper;
 		this.foundationService = foundationService;
-		this.commonMapper = commonMapper;
 	}
 	
 	/**
@@ -105,7 +115,7 @@ public class StockController {
 	    unusualStock.setUnusualStockRegId(unusualStockRegId);
 		log.info("unusualStock: {}", unusualStock);
 		
-		stockService.addUnusualStock(unusualStock);
+		//stockService.addUnusualStock(unusualStock);
 		
 		return "redirect:/admin/stock/unusual_stock_detail_list";
 	}
@@ -186,209 +196,6 @@ public class StockController {
 		
 		return "admin/stock/unusual_stock_detail_list";
 	}
-
-	/**
-	 * 상품 입출고 수정 @PostMapping
-	 * @param inOutcoming
-	 * @param session
-	 * @return
-	 */
-	@PostMapping("/modify_in_outcoming")
-	public String modifyInOutcoming(InOutcoming inOutcoming, HttpSession session) {
-		
-		String inOutcomingUpdId = (String) session.getAttribute("SID");
-	    log.info("inOutcomingUpdId: {}", inOutcomingUpdId);
-	    
-	    inOutcoming.setInOutcomingUpdId(inOutcomingUpdId);
-	    log.info("inOutcoming: {}", inOutcoming);
-	    
-	    stockService.modifyInOutcoming(inOutcoming);
-	    
-	    return "redirect:/admin/stock/in_outcoming_list";
-	}
-	
-	/**
-	 * 상품 입출고 수정 @GetMapping
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modify_in_outcoming")
-	public String modifyInOutcoming(Model model, @RequestParam(name="inOutcomingCode") String inOutcomingCode) {
-	    
-		
-		log.info("inOutcomingCode: {}", inOutcomingCode);
-		
-		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-		
-		String goodsCode = inOutcomingInfo.getGoodsCode();
-		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
-		log.info("goodsInfo: {}", goodsInfo);
-		inOutcomingInfo.setGoodsInfo(goodsInfo);
-		
-		if(inOutcomingInfo.getInOutcomingType().equals("outcoming")){
-			OutcomingDetail outcomingDetailInfo = stockService.getOutcomingDetailInfoByCode(inOutcomingCode);
-			String foundationCode = outcomingDetailInfo.getFoundationCode();
-			Foundation foundationInfo = foundationService.getFoundationInfoByCode(foundationCode);
-			log.info("foundationInfo: {}", foundationInfo);
-		}
-		
-		log.info("inOutcomingInfo: {}", inOutcomingInfo);
-		
-		model.addAttribute("title", "상품 입출고 수정");
-		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
-	    
-	    return "admin/stock/modify_in_outcoming";
-	}
-	
-	
-	/**
-	 * 상품 입출고 등록 @PostMapping
-	 * @param InOutcoming
-	 * @param session
-	 * @return
-	 */
-	@PostMapping("/add_in_outcoming")
-	public String addInOutcoming(Model model
-								, InOutcoming inOutcoming
-								, Stock stock
-								, UnusualStock unusaulStock
-								, OutcomingDetail outcomingDetail
-								, HttpSession session) {
-
-		String regId = (String) session.getAttribute("SID");
-		int inOutcomingQuantity = inOutcoming.getInOutcomingQuantity();
-		boolean isOutcoming = inOutcoming.getInOutcomingType().equals("outcoming");
-		log.info("regId: {}, inOutcomingQuantity: {}, isOutcoming: {}"
-				, regId, inOutcomingQuantity, isOutcoming);
-		
-	    // 상품 입출고 등록
-		inOutcoming.setInOutcomingRegId(regId);
-		log.info("inOutcoming: {}", inOutcoming);
-	    stockService.addInOutcoming(inOutcoming);
-	    
-    	// 상품 입출고 등록 시 새로운 재고 정보일 경우 재고 등록, 등록된 재고 정보일 경우 재고 수정
-	    boolean isNewStockInfo = stockService.checkStockInfo(stock);
-	    if(isNewStockInfo) {
-	    	stock.setCurrentStockAmount(inOutcomingQuantity);
-	    	log.info("stock: {}", stock);
-	    	stockService.addStock(stock);
-	    }else {
-	    	if(isOutcoming) {
-	    		stock.removeCurrentStock(inOutcomingQuantity);
-	    	}else {
-	    		stock.addCurrentStock(inOutcomingQuantity);
-	    	}
-	    	log.info("stock: {}", stock);
-	    	stockService.modifyStock(stock);
-    	}
-	    
-	    // 상품 비정상재고 'true'(유)인 경우 - 상품 비정상재고 등록
-    	boolean hasUnusualStock = stock.getUnusualStockCheck().equals("true");
-	    if(hasUnusualStock) {
-	    	unusaulStock.setUnusualStockRegId(regId);
-	    	log.info("unusaulStock: {}", unusaulStock);
-	    	stockService.addUnusualStock(unusaulStock);
-	    }
-	    
-	    // 상품 입출고 분류 'outcoming'(출고)인 경우 - 상품 출고 상세정보 등록
-	    if(isOutcoming) {
-    		outcomingDetail.setOutcomingDetailRegId(regId);
-    		outcomingDetail.setOutcomingQuantity(inOutcomingQuantity);
-    		outcomingDetail.setOutcomingId(regId);
-    		log.info("outcomingDetail: {}", outcomingDetail);
-    		stockService.addOutcomingDetail(outcomingDetail);
-	    }
-	    
-		return "redirect:/admin/stock/in_outcoming_list";
-	}
-	
-	/**
-	 * 상품 입출고 등록 @GetMapping
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/add_in_outcoming")
-	public String addInOutcoming(Model model) {
-		model.addAttribute("title", "상품 입출고 등록");
-
-		// 상품 입출고코드 - 공통 mapper를 사용하여 inOutcomingCode 생성 및 설정
-		String inOutcomingCode = commonMapper.getPrimaryKeyVerTwo("incoming_outcoming_history"
-													    		,"incoming_outcoming_history_code"
-													    		,"incoming_outcoming_history");
-	    log.info("inOutcomingCode: {}", inOutcomingCode);
-		model.addAttribute("inOutcomingCode", inOutcomingCode);
-		
-		// 상품 재고코드 - 공통 mapper를 사용하여 goodsStockCode 생성 및 설정
-    	String goodsStockCode = commonMapper.getPrimaryKeyVerTwo("goods_stock"
-												    			,"goods_stock_code"
-												    			,"goods_stock");
-    	log.info("goodsStockCode: {}", goodsStockCode);
-    	model.addAttribute("goodsStockCode", goodsStockCode);
-    	
-		return "admin/stock/add_in_outcoming";
-	}
-	
-	/**
-	 * 상품 입출고 삭제
-	 * @param model
-	 * @return
-	 */
-	@PostMapping("/remove_in_outcoming")
-	@ResponseBody
-	public List<String> removeInOutcoming(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		stockService.removeInOutcoming(valueArr);
-		
-		return valueArr;
-	}
-	
-	/**
-	 * 상품 입출고 검색 결과 조회
-	 * @param searchKey
-	 * @param searchValue
-	 * @param dateSearchKey
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	@GetMapping("/search_in_outcoming_list")
-	@ResponseBody
-	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
-													, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
-													, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
-													, @RequestParam(value="startDate", required = false) String startDate
-													, @RequestParam(value="endDate", required = false) String endDate) {
-		
-		log.info("inputSearchKey: {}, inputSearchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
-				, inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);	
-		
-		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(inputSearchKey
-																				, inputSearchValue
-																				, dateSearchKey
-																				, startDate
-																				, endDate);
-		log.info("inOutcomingList: {}", inOutcomingList);
-
-		return inOutcomingList;
-	}
-	
-	/**
-	 * 상품 입출고 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/in_outcoming_list")
-	public String getInOutcomingList(Model model) {
-		
-		List<InOutcoming> inOutcomingList = stockService.getInOutcomingList();
-		log.info("inOutcomingList: {}", inOutcomingList);
-		
-		model.addAttribute("title", "상품 입출고 조회");
-		model.addAttribute("inOutcomingList", inOutcomingList);
-		
-		return "admin/stock/in_outcoming_list";
-	}
 	
 	/**
 	 * 상품 재고 수정 @PostMapping
@@ -400,7 +207,7 @@ public class StockController {
 		
 		log.info("stock: {}", stock);
 		
-		stockService.modifyStock(stock);
+		//stockService.modifyStock(stock);
 		
 		return "redirect:/admin/stock/stock_list";
 	}
@@ -489,4 +296,178 @@ public class StockController {
 		
 		return "admin/stock/stock_list";
 	}
+
+	/**
+	 * 상품 입출고 수정 @PostMapping
+	 * @param inOutcoming
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/modify_in_outcoming")
+	public String modifyInOutcoming(InOutcoming inOutcoming, HttpSession session) {
+		
+		String inOutcomingUpdId = (String) session.getAttribute("SID");
+	    log.info("inOutcomingUpdId: {}", inOutcomingUpdId);
+	    
+	    inOutcoming.setInOutcomingUpdId(inOutcomingUpdId);
+	    log.info("inOutcoming: {}", inOutcoming);
+	    
+	    stockService.modifyInOutcoming(inOutcoming);
+	    
+	    return "redirect:/admin/stock/in_outcoming_list";
+	}
+	
+	/**
+	 * 상품 입출고 수정 @GetMapping
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/modify_in_outcoming")
+	public String modifyInOutcoming(Model model, @RequestParam(name="inOutcomingCode") String inOutcomingCode) {
+		
+		
+		List<String> goodsNameList = goodsMapper.getGoodsNameList();
+		log.info("goodsNameList: {}", goodsNameList);
+		
+		List<String> foundationNameList = foundationMapper.getFoundationNameList();
+		log.info("foundationNameList: {}", foundationNameList);
+		
+		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
+		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		
+		model.addAttribute("title", "상품 입출고 수정");
+		model.addAttribute("goodsNameList", goodsNameList);
+		model.addAttribute("foundationNameList", foundationNameList);
+		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
+	    
+	    return "admin/stock/modify_in_outcoming";
+	}
+	
+	
+	/**
+	 * 상품 입출고 등록 @PostMapping
+	 * @param InOutcoming
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/add_in_outcoming")
+	public String addInOutcoming(InOutcomingForm inOutcomingForm, HttpSession session) {
+
+		String sessionId = (String) session.getAttribute("SID");
+		log.info("sessionId: {}", sessionId);
+		
+	    // 상품 입출고 수량만큼 재고 수량 업데이트 - 새로운 상품 입고인 경우 재고 등록, 기존 상품 입출고일 경우 재고 수량 증감
+	    boolean isNewStockInfo = stockService.checkStockInfo(inOutcomingForm.getGoodsName()
+	    													,inOutcomingForm.getGoodsLotNumber());
+	    boolean isIncoming = inOutcomingForm.getInOutcomingType().equals("incoming");
+	    boolean isOutcoming = inOutcomingForm.getInOutcomingType().equals("outcoming");
+	    
+	    if (!isIncoming) {
+	        if (isNewStockInfo) {
+	            // 입고 아닌 경우 기존에 등록된 재고 정보가 없으면 오류 처리
+	            throw new RuntimeException("등록된 재고 정보가 없습니다.");
+	        } else {
+	        	stockService.modifyStockInfo(inOutcomingForm);
+	        	// 상품 입출고 이력 등록
+	    		String inOutcomingCode = stockService.addInOutcoming(sessionId, inOutcomingForm);
+	    	    // 상품 출고인 경우 - 상품 출고 상세정보 등록
+	    	    if(isOutcoming) {
+	    	    	stockService.addOutcomingDetail(sessionId, inOutcomingCode, inOutcomingForm);
+	    	    }
+	        }
+	    } else {
+	        if (isNewStockInfo) {
+	            stockService.addStockInfo(inOutcomingForm);
+	        } else {
+	            stockService.modifyStockInfo(inOutcomingForm);
+	        }
+	        stockService.addInOutcoming(sessionId, inOutcomingForm);
+	    }
+	    
+		return "redirect:/admin/stock/in_outcoming_list";
+	}
+	
+	/**
+	 * 상품 입출고 등록 @GetMapping
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/add_in_outcoming")
+	public String addInOutcoming(Model model) {
+		
+		List<String> goodsNameList = goodsMapper.getGoodsNameList();
+		log.info("goodsNameList: {}", goodsNameList);
+		
+		List<String> foundationNameList = foundationMapper.getFoundationNameList();
+		log.info("foundationNameList: {}", foundationNameList);
+		
+		model.addAttribute("title", "상품 입출고 등록");
+		model.addAttribute("goodsNameList", goodsNameList);
+		model.addAttribute("foundationNameList", foundationNameList);
+    	
+		return "admin/stock/add_in_outcoming";
+	}
+	
+	/**
+	 * 상품 입출고 삭제
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/remove_in_outcoming")
+	@ResponseBody
+	public List<String> removeInOutcoming(@RequestParam(value="valueArr[]") List<String> valueArr) {
+		
+		log.info("valueArr: {}", valueArr);
+		stockService.removeInOutcoming(valueArr);
+		
+		return valueArr;
+	}
+	
+	/**
+	 * 상품 입출고 검색 결과 조회
+	 * @param searchKey
+	 * @param searchValue
+	 * @param dateSearchKey
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping("/search_in_outcoming_list")
+	@ResponseBody
+	public List<InOutcoming> getInOutcomingListBySearch(@RequestParam(value="inputSearchKey", required = false) String inputSearchKey 
+													, @RequestParam(value="inputSearchValue", required = false) String inputSearchValue
+													, @RequestParam(value="dateSearchKey", required = false) String dateSearchKey
+													, @RequestParam(value="startDate", required = false) String startDate
+													, @RequestParam(value="endDate", required = false) String endDate) {
+		
+		log.info("inputSearchKey: {}, inputSearchValue: {}, dateSearchKey: {}, startDate: {}, endDate: {}"
+				, inputSearchKey, inputSearchValue, dateSearchKey, startDate, endDate);	
+		
+		List<InOutcoming> inOutcomingList = stockService.getInOutcomingListBySearch(inputSearchKey
+																					, inputSearchValue
+																					, dateSearchKey
+																					, startDate
+																					, endDate);
+		log.info("inOutcomingList: {}", inOutcomingList);
+
+		return inOutcomingList;
+	}
+	
+	/**
+	 * 상품 입출고 조회
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/in_outcoming_list")
+	public String getInOutcomingList(Model model) {
+		
+		List<InOutcoming> inOutcomingList = stockMapper.getInOutcomingList();
+		log.info("inOutcomingList: {}", inOutcomingList);
+		
+		model.addAttribute("title", "상품 입출고 조회");
+		model.addAttribute("inOutcomingList", inOutcomingList);
+		
+		return "admin/stock/in_outcoming_list";
+	}
+	
 }

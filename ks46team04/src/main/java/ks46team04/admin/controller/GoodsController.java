@@ -68,7 +68,7 @@ public class GoodsController {
 		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
 		log.info("goodsInfo: {}", goodsInfo);
 		
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
+		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 수정");
@@ -76,23 +76,6 @@ public class GoodsController {
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
 		
 		return "admin/goods/modify_goods";
-	}
-	
-	/**
-	 * 상품 제조사 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modal_goods_company_search")
-	public String getGoodsCompanyList(Model model) {
-		
-		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
-		log.info("goodsCompanyList: {}", goodsCompanyList);
-		
-		model.addAttribute("title", "상품 제조사 조회");
-		model.addAttribute("goodsCompanyList", goodsCompanyList);
-		
-		return "admin/goods/modal_goods_company_search";
 	}
 	
 	/**
@@ -136,15 +119,11 @@ public class GoodsController {
 	@GetMapping("/add_goods")
 	public String addGoods(Model model) {
 
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
+		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
-		
-		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
-		log.info("goodsCompanyList: {}", goodsCompanyList);
 		
 		model.addAttribute("title", "상품 등록");
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
-		model.addAttribute("goodsCompanyList", goodsCompanyList);
 		
 		return "admin/goods/add_goods";
 	}
@@ -218,7 +197,7 @@ public class GoodsController {
 		List<Goods> goodsList = goodsService.getGoodsList();
 		log.info("goodsList: {}", goodsList);
 		
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
+		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 목록");

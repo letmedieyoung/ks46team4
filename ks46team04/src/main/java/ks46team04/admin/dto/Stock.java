@@ -7,12 +7,12 @@ public class Stock {
 	private String goodsCode;
 	private String goodsLotNumber;
 	private int currentStockAmount;
-	private String stocktakingCheck;
+	private Boolean stocktakingCheck;
 	private String stocktakingDate;
 	private String goodsExpiryDate;
 	private int finalStockAmount;
 	private int unusualStockAmount;
-	private String unusualStockCheck;
+	private Boolean unusualStockCheck;
 	
 	private Goods goodsInfo;
 	
@@ -23,8 +23,8 @@ public class Stock {
 	 * @param currentStock
 	 * @param unusualStock
 	 */
-	public void calculFinalStock(int currentStock, int unusualStock) {
-		int finalStockAmount = currentStock - unusualStock;
+	public void calculFinalStock(int currentStockAmount, int unusualStockAmount) {
+		int finalStockAmount = currentStockAmount - unusualStockAmount;
 		if(finalStockAmount < 0) {
 			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
 		}
@@ -48,82 +48,101 @@ public class Stock {
 		}
 		this.currentStockAmount = restStock;
 	}
-	
-	
-	
+
+	public String getGoodsStockCode() {
+		return goodsStockCode;
+	}
+
+	public void setGoodsStockCode(String goodsStockCode) {
+		this.goodsStockCode = goodsStockCode;
+	}
+
+	public String getGoodsCode() {
+		return goodsCode;
+	}
+
+	public void setGoodsCode(String goodsCode) {
+		this.goodsCode = goodsCode;
+	}
+
+	public String getGoodsLotNumber() {
+		return goodsLotNumber;
+	}
+
+	public void setGoodsLotNumber(String goodsLotNumber) {
+		this.goodsLotNumber = goodsLotNumber;
+	}
+
+	public int getCurrentStockAmount() {
+		return currentStockAmount;
+	}
+
+	public void setCurrentStockAmount(int currentStockAmount) {
+		this.currentStockAmount = currentStockAmount;
+	}
+
+	public Boolean getStocktakingCheck() {
+		return stocktakingCheck;
+	}
+
+	public void setStocktakingCheck(Boolean stocktakingCheck) {
+		this.stocktakingCheck = stocktakingCheck;
+	}
+
+	public String getStocktakingDate() {
+		return stocktakingDate;
+	}
+
+	public void setStocktakingDate(String stocktakingDate) {
+		this.stocktakingDate = stocktakingDate;
+	}
+
+	public String getGoodsExpiryDate() {
+		return goodsExpiryDate;
+	}
+
+	public void setGoodsExpiryDate(String goodsExpiryDate) {
+		this.goodsExpiryDate = goodsExpiryDate;
+	}
+
+	public int getFinalStockAmount() {
+		return finalStockAmount;
+	}
+
+	public void setFinalStockAmount(int finalStockAmount) {
+		this.finalStockAmount = finalStockAmount;
+	}
+
+	public int getUnusualStockAmount() {
+		return unusualStockAmount;
+	}
+
+	public void setUnusualStockAmount(int unusualStockAmount) {
+		this.unusualStockAmount = unusualStockAmount;
+	}
+
+	public Boolean getUnusualStockCheck() {
+		return unusualStockCheck;
+	}
+
+	public void setUnusualStockCheck(Boolean unusualStockCheck) {
+		this.unusualStockCheck = unusualStockCheck;
+	}
+
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
+
 	public String getGoodsName() {
 		return goodsName;
 	}
 
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
-	}
-	public Goods getGoodsInfo() {
-		return goodsInfo;
-	}
-	public void setGoodsInfo(Goods goodsInfo) {
-		this.goodsInfo = goodsInfo;
-	}
-	public String getGoodsStockCode() {
-		return goodsStockCode;
-	}
-	public void setGoodsStockCode(String goodsStockCode) {
-		this.goodsStockCode = goodsStockCode;
-	}
-	public String getGoodsCode() {
-		return goodsCode;
-	}
-	public void setGoodsCode(String goodsCode) {
-		this.goodsCode = goodsCode;
-	}
-	public String getGoodsLotNumber() {
-		return goodsLotNumber;
-	}
-	public void setGoodsLotNumber(String goodsLotNumber) {
-		this.goodsLotNumber = goodsLotNumber;
-	}
-	public int getCurrentStockAmount() {
-		return currentStockAmount;
-	}
-	public void setCurrentStockAmount(int currentStockAmount) {
-		this.currentStockAmount = currentStockAmount;
-	}
-	public String getStocktakingCheck() {
-		return stocktakingCheck;
-	}
-	public void setStocktakingCheck(String stocktakingCheck) {
-		this.stocktakingCheck = stocktakingCheck;
-	}
-	public String getStocktakingDate() {
-		return stocktakingDate;
-	}
-	public void setStocktakingDate(String stocktakingDate) {
-		this.stocktakingDate = stocktakingDate;
-	}
-	public String getGoodsExpiryDate() {
-		return goodsExpiryDate;
-	}
-	public void setGoodsExpiryDate(String goodsExpiryDate) {
-		this.goodsExpiryDate = goodsExpiryDate;
-	}
-	public int getFinalStockAmount() {
-		return finalStockAmount;
-	}
-	public void setFinalStockAmount(int finalStockAmount) {
-		this.finalStockAmount = finalStockAmount;
-	}
-	public int getUnusualStockAmount() {
-		return unusualStockAmount;
-	}
-	public void setUnusualStockAmount(int unusualStockAmount) {
-		this.unusualStockAmount = unusualStockAmount;
-	}
-	public String getUnusualStockCheck() {
-		return unusualStockCheck;
-	}
-
-	public void setUnusualStockCheck(String unusualStockCheck) {
-		this.unusualStockCheck = unusualStockCheck;
 	}
 
 	@Override
@@ -135,4 +154,5 @@ public class Stock {
 				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + ", goodsName=" + goodsName
 				+ "]";
 	}
+	
 }
