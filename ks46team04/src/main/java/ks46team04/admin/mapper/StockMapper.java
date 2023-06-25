@@ -67,11 +67,14 @@ public interface StockMapper {
 	//등록된 재고 정보일 경우 재고 수정, 재고조사 정보 수정
 	public int modifyStock(Stock stock);
 	
+	//등록된 상품 재고 정보 조회
+	public Stock getStockInfo(String goodsCode, String goodsLotNumber);
+	
 	//상품 입출고 등록 시 새로운 재고 정보일 경우 재고 등록
 	public int addStock(Stock stock);
 	
 	//등록된 상품 재고 정보인지 확인
-	public boolean checkStockInfo(String goodsName, String goodsLotNumber);
+	public boolean checkNewStockInfo(String goodsCode, String goodsLotNumber);
 	
 	//상품 입출고 등록
 	public int addInOutcoming(InOutcoming inOutcoming);

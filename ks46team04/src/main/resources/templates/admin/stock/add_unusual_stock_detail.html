@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">상품 입/출고 등록</h6>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="addInOutcomingForm" th:action="@{/admin/stock/add_in_outcoming}" method="post">
+							<div class="tb-title">
+								<h2>입/출고 정보</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody>
+									<tr class="hidden">
+										<th class="bg-gray-100">
+											<label for="inOutcomingCode">상품 입출고 코드</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="inOutcomingCode" name="inOutcomingCode" th:value="${inOutcomingCode}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsLotNumber">제조번호</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsLotNumber" name="goodsLotNumber" placeholder="제조번호를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsCompany">제조사</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingType">입/출고 분류</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutType(this.value)">
+													<option value="">:: 입/출고 분류 ::</option>
+														<option value="incoming">입고</option>
+														<option value="outcoming">출고</option>
+														<option value="exchange">교환</option>
+														<option value="disposal">폐기</option>
+												</select>
+											</div>
+											<div class="form-row align-items-center search-schedule">
+												<input type="hidden" id="inOutcomingType" name="inOutcomingType" placeholder=":: 입/출고 분류 ::" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingQuantity">입/출고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control number-input" 
+													id="inOutcomingQuantity" name="inOutcomingQuantity" placeholder="입/출고 수량"/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="inOutcomingDate">입/출고일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search" 
+													id="inOutcomingDate" name="inOutcomingDate"/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="tb-title">
+								<h2>입고 상세 정보 및 비정상재고 정보</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody id="incomingDetail" >
+									<tr class="hidden">
+										<th class="bg-gray-100">
+											<label for="goodsStockCode">상품 재고 코드</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsStockCode" name="goodsStockCode" th:value="${goodsStockCode}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsExpiryDate">상품 유통기한</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="goodsExpiryDate" name="goodsExpiryDate"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingCheck">재고조사</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" value="true" checked>
+												      <span class="text">완료</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="stocktakingCheck" value="false">
+												      <span class="text">미완료</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingDate">재고조사일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control form-control-user-search incoming" 
+													id="stocktakingDate" name="stocktakingDate"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockCheck">비정상재고 유무</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" value="true" checked>
+												      <span class="text">유</span>&nbsp;&nbsp;
+											      </label>
+											    </div>
+												<div class="form-row align-items-center search-schedule">
+											      <label>
+												      <input type="radio" class="incoming" name="unusualStockCheck" value="false">
+												      <span class="text">무</span>
+											      </label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockInfo">비정상재고 정보</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												비정상재고 수량 :&nbsp;
+												<input type="number" class="form-control number-input incoming" 
+													id="unusualStockAmount" name="unusualStockAmount" placeholder="비정상재고 수량"/>개
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												비정상재고 발생일 :&nbsp;
+												<input type="date" class="form-control number-input incoming" 
+													id="unusualStockDate" name="unusualStockDate"/>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												비정상재고 사유 :&nbsp;
+												<input type="text" class="form-control middle-input incoming" 
+													id="unusualStockReason" name="unusualStockReason" placeholder="비정상재고 사유를 입력해주세요."/>
+											</div>
+											<!-- <div class="form-row align-items-center search-schedule" style="float: right;">
+												<button class="btn btn-secondary btn-icon-split addBtn">
+													<span class="text">추가</span>
+												</button>
+											</div> -->
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="tb-title">
+								<h2>출고 상세 정보</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="outcomingId">출고 담당자</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
+													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="foundationName">출고 재단명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
+													id="foundationName" name="foundationName" placeholder="출고 재단명을 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">등록하기</span>
+								</button>
+								<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">입력취소</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		
+		// 입/출고 분류 select box 선택 value 값 -> input value로 넣기
+		function inOutType(category) {
+			const selectInputEle = document.querySelector('#inOutcomingType');
+			selectInputEle.value = category;
+		};
+		$(function(){
+			
+			/*
+			// 추가 버튼 addBtn 클릭 시 비정상 재고 정보 입력 행 추가
+			$('#addBtn').click(function() {
+				$('#incomingDetail').append(
+					'<tr><td>HELLO world</td><td>' + time + '</td></tr>'
+				);
+			});
+
+			// 삭제 버튼 delBtn 클릭 시 추가된 비정상 재고 정보 입력 행 삭제
+			$('#delBtn').click(function() {
+				if (incomingDetail.rows.length < 8) return;
+				$('#incomingDetail.rows.length-3').remove();
+			});
+			$(document).on('click', '.addBtn', function(){
+				const copyTrEle = $(this).parents('tr').clone(true);
+				copyTrEle.find('input').val('');
+				$('#incomingDetail').find('.addBtn').toggleClass('addBtn').addClass('delBtn').next('span.text').text('삭제');
+				$('#incomingDetail').append(copyTrEle);
+			});
+			*/
+			
+			
+			/** 
+			*	입출고분류 체크박스 선택 값에 따라 input 입력 활성화
+			* 	select box 입고 선택 시 입고 상세정보 테이블 input 활성화
+		 	* 	select box 출고 선택 시 출고 상세정보 테이블 input 활성화
+		 	*/
+			const inOutcomingTypeSelectEle = $('#inOutcomingTypeSelect');
+			const incomingInputsEles = $('.incoming');
+			const outcomingInputsEles = $('.outcoming');
+			
+			function toggleInOutcomingTypeInputs() {
+				const selectedValue = inOutcomingTypeSelectEle.val();
+				if(selectedValue == 'incoming'){
+					incomingInputsEles.prop('disabled', false);
+					outcomingInputsEles.val('').prop('disabled', true);
+				}else if(selectedValue == 'outcoming'){
+					incomingInputsEles.val('').prop('disabled', true);
+					outcomingInputsEles.prop('disabled', false);
+				}else{
+					incomingInputsEles.val('').prop('disabled', true);
+					outcomingInputsEles.val('').prop('disabled', true);
+				}
+			};
+			
+			// 재고조사 radio '미완료' 선택 시 재고조사 및 비정상재고 관련 input 비활성화
+			const stocktakingEles = $('input[name="stocktaking"]')
+			
+			function toggleStocktakingInputs() {
+				let checkedValue = $('input[name="stocktaking"]:checked').next('span.text').text();
+				if(checkedValue == '미완료'){
+					$('#stocktakingDate').val('').prop('disabled', true);
+					$('input[name="unusualStock"]').val('').prop('disabled', true);
+					$('#unusualStockAmount').val('').prop('disabled', true);
+					$('#unusualStockDate').val('').prop('disabled', true);
+					$('#unusualStockReason').val('').prop('disabled', true);
+				}else{
+					$('#stocktakingDate').prop('disabled', false);
+					$('input[name="unusualStock"]').prop('disabled', false);
+					toggleUnusualStockInputs();
+				}
+			};
+			
+			// 비정상재고 radio '무' 선택 시 비정상재고 관련 input 비활성화
+			const unusualStockEles = $('input[name="unusualStock"]');
+			
+			function toggleUnusualStockInputs() {
+				let checkedValue = $('input[name="unusualStock"]:checked').next('span.text').text();
+				if(checkedValue == '무'){
+					$('#unusualStockAmount').val('').prop('disabled', true);
+					$('#unusualStockDate').val('').prop('disabled', true);
+					$('#unusualStockReason').val('').prop('disabled', true);
+				}else{
+					$('#unusualStockAmount').prop('disabled', false);
+					$('#unusualStockDate').prop('disabled', false);
+					$('#unusualStockReason').prop('disabled', false);
+				}
+			};
+			
+			// 초기 로딩 시 selectbox 상태에 따라 입력 필드 활성화/비활성화 설정
+			toggleInOutcomingTypeInputs();
+			
+			// 입출고분류 selectbox 선택 변경 시 이벤트 처리
+			inOutcomingTypeSelectEle.change(function() {
+				toggleInOutcomingTypeInputs();
+			});
+			
+			// 재고조사 radio 선택 변경 시 이벤트 처리
+			stocktakingEles.change(function() {
+				toggleStocktakingInputs();
+			});
+			
+			// 비정상재고 radio 선택 변경 시 이벤트 처리
+			unusualStockEles.change(function() {
+				toggleUnusualStockInputs();
+			});
+			
+			$('input[name="stocktaking"]').change(function() {
+			  let checkedValue = $('input[name="stocktaking"]:checked').attr('value');
+			  $('#stocktakingCheck').val(checkedValue);
+			});
+			
+			$('input[name="unusualStock"]').change(function() {
+			  let checkedValue = $('input[name="unusualStock"]:checked').attr('value');
+			  $('#unusualStockCheck').val(checkedValue);
+			});
+			
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
+			function validationCheck(ele){
+				let data = $(ele).val();
+				let isValid = true;
+				if (ele.id === 'inOutcomingTypeSelect' && data === 'incoming') {
+					if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('outcoming')) {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+					}
+			    } else if(ele.id === 'inOutcomingTypeSelect' && data === 'outcoming') {
+			    	if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('incoming')) {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+					}
+			    } else {
+			        if (typeof data === 'undefined' || data === null || data === '' 
+			        	&& !$(ele).hasClass('incoming') && !$(ele).hasClass('outcoming')) {
+						let msg = $(ele).parents('tr').find('label').text();
+						isValid = false;
+			        }
+			    }
+				return isValid;
+			};
+			
+			$('#submitBtn').click(function(){
+				const addInOutcomingForm = $('#addInOutcomingForm');
+				const inputGroup = $('#addInOutcomingForm input');
+				let isSubmit = true;
+				inputGroup.each(function(idx, item){
+				isSubmit = validationCheck(item);
+					if(!isSubmit) {
+						let msg = $(item).parents('tr').find('label').text();
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
+						$(item).focus();
+						return false;
+					}
+				});
+			if(isSubmit) addInOutcomingForm.submit();
+			});
+		});
+	</script>
+</th:block>
+
+</html>

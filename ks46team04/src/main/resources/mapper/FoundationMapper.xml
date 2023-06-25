@@ -246,6 +246,26 @@
 			foundation_code = #{foundationCode};
 	</select>
 	
+	<select id="getFoundationCodeByName" parameterType="String" resultType="String">
+		/* 재단명으로 재단코드 조회 */
+		SELECT
+			foundation_code AS foundationCode
+		FROM
+			foundation_list
+		WHERE 
+			foundation_name = #{foundationName};
+	</select>
+	
+	<select id="getFoundationNameList" resultType="String">
+		/* 등록된 재단명 조회 */
+		SELECT DISTINCT 
+			foundation_name
+		FROM 
+			foundation_list
+		WHERE
+			foundation_is_delete = '0'
+	</select>
+	
 	<select id="foundationNameCheck" parameterType="String" resultType="boolean">
 		/* 재단명 중복체크 */
 		SELECT

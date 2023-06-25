@@ -193,7 +193,7 @@
 										<td th:text="${l.goodsExpiryDate}"></td>
 										<td th:if="${l.stocktakingCheck == true}">완료</td>
 										<td th:unless="${l.stocktakingCheck == true}">미완료</td>
-										<td th:text="${l.stocktakingDate}"></td>
+										<td th:text="${l.stocktakingDate == null ? '-' : l.stocktakingDate}"></td>
 										<td th:text="${l.currentStockAmount}"></td>
 										<td th:if="${l.unusualStockCheck == true}">유</td>
 										<td th:if="${l.stocktakingCheck == false} and ${l.unusualStockCheck == false}">무</td>
@@ -297,7 +297,11 @@
 								}else{
 									html += `	<td>미완료</td>`;
 								}
-								html += `	<td>${stockInfo.stocktakingDate}</td>`;
+								if(stockInfo.stocktakingDate == null){
+									html += `	<td>-</td>`;
+								}else{
+									html += `	<td>${stockInfo.stocktakingDate}</td>`;
+								}
 								html += `	<td>${stockInfo.currentStockAmount}</td>`;
 								if(stockInfo.unusualStockCheck == '1'){
 									html += `	<td>유</td>`;

@@ -38,6 +38,12 @@ public interface FoundationMapper {
 	//특정 재단 조회
 	public Foundation getFoundationByCode(String foundationCode);
 	
+	//재단명으로 재단코드 조회
+	public String getFoundationCodeByName(String foundationName);
+	
+	//등록된 재단명 조회
+	public List<String> getFoundationNameList();
+	
 	//재단명 중복체크
 	public boolean foundationNameCheck(String foundationCode);
 	

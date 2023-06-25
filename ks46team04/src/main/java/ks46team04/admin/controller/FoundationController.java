@@ -121,7 +121,7 @@ public class FoundationController {
         List<String> failedFoundationRequest = new ArrayList<>();
 
         for (String foundationRequestCode : valueArr) {
-            boolean isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
+        	boolean isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
             if (isRemove) {
             	deletedFoundationRequest.add(foundationRequestCode);
             } else {

@@ -209,10 +209,10 @@
 				${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
 			<if test="stocktakingKey != null and stocktakingValue != ''">
-				AND ${stocktakingKey} LIKE CONCAT('%', #{stocktakingValue}, '%')
+				AND ${stocktakingKey} = #{stocktakingValue}
 			</if>
 			<if test="unusualStockKey != null and unusualStockValue != ''">
-				AND ${unusualStockKey} LIKE CONCAT('%', #{unusualStockValue}, '%')
+				AND ${unusualStockKey} = #{unusualStockValue}
 			</if>
 		    <if test="dateSearchKey != null and dateSearchKey != '' and startDate != null and endDate != null">
 				AND ${dateSearchKey} BETWEEN #{startDate} AND #{endDate}
@@ -221,6 +221,16 @@
 		ORDER BY 
 			CAST(SUBSTRING_INDEX(s.goods_stock_code, 'goods_stock', -1) AS UNSIGNED) DESC;
 	</select>
+	
+	<insert id="addUnusualStock" parameterType="UnusualStock">
+		/* 비정상 재고 등록 */
+		INSERT INTO unusual_stock_detail
+			(unusual_stock_detail_code, goods_code, goods_stock_code, unusual_stock_quantity,
+			 unusual_stock_date, unusual_stock_reason, unusual_stock_reg_id, unusual_stock_reg_date)
+		VALUES
+			(#{unusualStockCode}, #{goodsCode}, #{goodsStockCode}, #{unusualStockQuantity},
+			 #{unusualStockDate}, #{unusualStockReason}, #{unusualStockRegId}, NOW());
+	</insert>
 	
 	<select id="getStockInfoByCode" resultMap="stockResultMap">
 		/* 특정 상품 재고 조회 */
@@ -334,18 +344,8 @@
 			(outcoming_detail_code, incoming_outcoming_history_code, outcoming_goods, outcoming_quantity, outcoming_date, 
 			 outcoming_id, foundation_code, outcoming_reg_id, outcoming_reg_date)
 		VALUES 
-			(#{outcomingDetailCode}, #{inOutcomingCode}, sf_get_goods_code(#{goodsName}), #{outcomingQuantity}, #{outcomingDate},
-			 #{outcomingId}, sf_get_foundation_code(#{foundationName}), #{outcomingDetailRegId}, NOW());
-	</insert>
-	
-	<insert id="addUnusualStock" parameterType="UnusualStock">
-		/* 비정상 재고 등록 */
-		INSERT INTO unusual_stock_detail
-			(unusual_stock_detail_code, goods_code, goods_stock_code, unusual_stock_quantity,
-			 unusual_stock_date, unusual_stock_reason, unusual_stock_reg_id, unusual_stock_reg_date)
-		VALUES
-			(#{unusualStockCode}, sf_get_goods_code(#{goodsName}), #{goodsStockCode}, #{unusualStockQuantity},
-			 #{unusualStockDate}, #{unusualStockReason}, #{unusualStockRegId}, NOW());
+			(#{outcomingDetailCode}, #{inOutcomingCode}, #{outcomingGoods}, #{outcomingQuantity}, #{outcomingDate},
+			 #{outcomingId}, #{foundationCode}, #{outcomingDetailRegId}, NOW());
 	</insert>
 	
 	<update id="modifyStock" parameterType="Stock">
@@ -378,24 +378,43 @@
 			goods_stock_code = #{goodsStockCode};
 	</update>
 	
+	<select id="getStockInfo" resultMap="stockResultMap">
+		/* 등록된 상품 재고 정보 조회 */
+		SELECT
+			goods_stock_code
+			, goods_code
+			, goods_lot_number
+			, current_stock_amount
+			, stocktaking_check
+			, stocktaking_date
+			, goods_expiry_date
+			, final_stock_amount
+			, unusual_stock_amount
+			, unusual_stock_check
+		FROM
+			goods_stock
+		WHERE
+			goods_code = #{goodsCode} and goods_lot_number = #{goodsLotNumber};
+	</select>
+	
 	<insert id="addStock" parameterType="Stock">
 		/* 상품 입출고 등록 시 새로운 재고 정보일 경우 재고 등록 */
 		INSERT INTO goods_stock
-			(goods_stock_code, goods_code, goods_lot_number, current_stock_amount, stocktaking_check,
-			 stocktaking_date, goods_expiry_date, final_stock_amount, unusual_stock_amount, unusual_stock_check)
+			(goods_stock_code, goods_code, goods_lot_number, current_stock_amount, 
+			 goods_expiry_date, final_stock_amount)
 		VALUES
-			(#{goodsStockCode}, sf_get_goods_code(#{goodsName}), #{goodsLotNumber}, #{currentStockAmount}, #{stocktakingCheck}, 
-			 #{stocktakingDate}, #{goodsExpiryDate}, #{finalStockAmount}, #{unusualStockAmount}, #{unusualStockCheck});
+			(#{goodsStockCode}, #{goodsCode}, #{goodsLotNumber}, #{currentStockAmount}, 
+			#{goodsExpiryDate}, #{finalStockAmount});
 	</insert>
 	
-	<select id="checkStockInfo" parameterType="String" resultType="boolean">
+	<select id="checkNewStockInfo" parameterType="String" resultType="boolean">
 		/* 등록된 상품 재고 정보인지 확인 */
 		SELECT
 			IF(COUNT(1)=0, 1, 0)
 		FROM
 			goods_stock
 		WHERE 
-			goods_code = sf_get_goods_code(#{goodsName}) and goods_lot_number = #{goodsLotNumber};
+			goods_code = #{goodsCode} and goods_lot_number = #{goodsLotNumber};
 	</select>
 	
 	<insert id="addInOutcoming" parameterType="InOutcoming">
@@ -404,7 +423,7 @@
 			(incoming_outcoming_history_code, goods_code, goods_lot_number, incoming_outcoming_quantity,
 			 incoming_outcoming_type, incoming_outcoming_date, incoming_outcoming_reg_id, incoming_outcoming_reg_date)
 		VALUES
-			(#{inOutcomingCode}, sf_get_goods_code(#{goodsName}), #{goodsLotNumber}, #{inOutcomingQuantity},
+			(#{inOutcomingCode}, #{goodsCode}, #{goodsLotNumber}, #{inOutcomingQuantity},
 			 #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW());
 	</insert>
 		

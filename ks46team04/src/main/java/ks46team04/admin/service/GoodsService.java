@@ -58,24 +58,6 @@ public class GoodsService {
 	}
 	
 	/**
-	 * 상품 제조사 조회
-	 * @return
-	 */
-	public List<String> getGoodsCompanyList(){
-		List<String> goodsCompanyList = goodsMapper.getGoodsCompanyList();
-		return goodsCompanyList;
-	}
-	
-	/**
-	 * 상품 분류 조회
-	 * @return
-	 */
-	public List<GoodsCategory> getGoodsCategoryList(){
-		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
-		return goodsCategory;
-	}
-	
-	/**
      * 상품 삭제
      * @param goodsCode
      */
