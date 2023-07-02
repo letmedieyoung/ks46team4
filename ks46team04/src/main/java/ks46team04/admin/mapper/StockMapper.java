@@ -42,21 +42,24 @@ public interface StockMapper {
 	//상품 비정상재고 삭제
 	public int removeUnusualStock(String unusualStockCode);
 	
-	// 상품 출고 상세정보 수정
-	
-	//특정 상품 출고 상세정보 조회
-	public OutcomingDetail getOutcomingDetailInfoByCode(String outcomingDetailCode);
-	
-	//상품 입출고 수정
-	public int modifyInOutcoming(InOutcoming inOutcoming);
-
-	//특정 상품 입출고 조회
-	public InOutcoming getInOutcomingInfoByCode(String inOutcomingCode);
-	
 	//상품 입출고 삭제
 	public int removeInOutcoming(String inOutcomingCode);
 	
 	
+	
+	
+	
+	// 상품 출고 상세정보 수정
+	public int modifyOutcomingDetail(OutcomingDetail outcomingDetail);
+	
+	//상품 입출고 수정
+	public int modifyInOutcoming(InOutcoming inOutcoming);
+	
+	//상품 출고 상세정보코드 조회
+	public String getOutcomingDetailCode(String inOutcomingCode);
+	
+	//특정 상품 입출고 조회
+	public InOutcoming getInOutcomingInfoByCode(String inOutcomingCode);
 	
 	//상품 출고인 경우 - 상품 출고 상세정보 등록
 	public int addOutcomingDetail(OutcomingDetail outcomingDetail);

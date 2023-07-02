@@ -38,7 +38,7 @@
 			<result column="goods_name"				property="goodsName"/>
 			<result column="goods_company"			property="goodsCompany"/>
 		</association>
-		<association property="OutcomingDetailInfo" javaType="OutcomingDetail">
+		<association property="outcomingDetailInfo" javaType="OutcomingDetail">
 			<id		column="outcoming_detail_code"						property="outcomingDetailCode"/>
 			<result column="incoming_outcoming_history_code"			property="inOutcomingCode"/>
 			<result column="outcoming_id"								property="outcomingId"/>
@@ -161,18 +161,6 @@
 			incoming_outcoming_history_code = #{inOutcomingCode};
 	</delete>
 	
-	
-	<select id="getOutcomingDetailInfoByCode" resultMap="outcomingDetailResultMap">
-		/* 특정 상품 출고 상세정보 조회 */
-		SELECT
-			outcoming_detail_code
-			, foundation_code
-		FROM 
-			outcoming_detail
-		WHERE
-			incoming_outcoming_history_code = #{inOutcomingCode};
-	</select>
-	
 	<select id="removeStockCheck" parameterType="String" resultType="boolean">
 		/* 삭제 상품 재고 유무 확인 - 재고 테이블에 삭제될 상품의 모든 재고량이 0인 경우에만 삭제 */
 		SELECT
@@ -282,7 +270,36 @@
 			CAST(SUBSTRING_INDEX(s.goods_stock_code, 'goods_stock', -1) AS UNSIGNED) DESC;
 	</select>
 	
-		<update id="modifyInOutcoming" parameterType="InOutcoming">
+	
+	
+	
+	<update id="modifyOutcomingDetail" parameterType="OutcomingDetail">
+		/* 상품 출고 상세정보 수정 */
+		UPDATE outcoming_detail
+		<set>
+			<if test="outcomingGoods != null and outcomingGoods !=''">
+				outcoming_goods = #{outcomingGoods}
+			</if>
+			<if test="outcomingQuantity != null and outcomingQuantity !=''">
+				, outcoming_quantity = #{outcomingQuantity}
+			</if>
+			<if test="outcomingDate != null and outcomingDate !=''">
+				, outcoming_date = #{outcomingDate}
+			</if>
+			<if test="outcomingId != null and outcomingId !=''">
+				, outcoming_id = #{outcomingId}
+			</if>
+			<if test="foundationCode != null and foundationCode !=''">
+				, foundation_code = #{foundationCode}
+			</if>
+			, outcoming_update_id = #{outcomingDetailUpdId}
+			, outcoming_update_date = NOW()
+		</set>
+		WHERE
+			outcoming_detail_code = #{outcomingDetailCode};
+	</update>
+	
+	<update id="modifyInOutcoming" parameterType="InOutcoming">
 		/* 상품 입출고 수정 */
 		UPDATE incoming_outcoming_history
 		<set>
@@ -302,19 +319,31 @@
 			incoming_outcoming_history_code = #{inOutcomingCode};
 	</update>
 	
-		
+	
+	<select id="getOutcomingDetailCode" parameterType="String" resultType="String">
+		/* 상품 출고 상세정보코드 조회 */
+		SELECT
+			outcoming_detail_code AS outcomingDetailCode
+		FROM 
+			outcoming_detail
+		WHERE
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</select>
+	
+	
 	<select id="getInOutcomingInfoByCode" resultMap="inOutcomingResultMap">
 		/* 특정 상품 입출고 조회 */
 		SELECT 
 			h.incoming_outcoming_history_code
 			, h.goods_code
-			, i.goods_name
 			, h.goods_lot_number
+			, i.goods_name
 			, i.goods_company
 			, h.incoming_outcoming_quantity
 			, h.incoming_outcoming_type
 			, h.incoming_outcoming_date
 			, o.outcoming_id
+			, o.foundation_code
 			, f.foundation_name
 			, h.incoming_outcoming_reg_id
 			, h.incoming_outcoming_reg_date
@@ -512,7 +541,7 @@
 		ON 
 			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
 		LEFT JOIN
-			foundation_request AS f
+			foundation_list AS f
 		ON
 			o.foundation_code = f.foundation_code
 		ORDER BY 
