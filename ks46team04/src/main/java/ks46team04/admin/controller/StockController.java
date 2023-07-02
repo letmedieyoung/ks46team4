@@ -41,21 +41,18 @@ public class StockController {
 	private final GoodsMapper goodsMapper;
 	private final GoodsService goodsService;
 	private final FoundationMapper foundationMapper;
-	private final FoundationService foundationService;
 	
 	
 	public StockController(StockMapper stockMapper
 						, StockService stockService
 						, GoodsMapper goodsMapper
 						, GoodsService goodsService
-						, FoundationMapper foundationMapper
-						, FoundationService foundationService) {
+						, FoundationMapper foundationMapper) {
 		this.stockMapper = stockMapper;
 		this.stockService = stockService;
 		this.goodsMapper = goodsMapper;
 		this.goodsService = goodsService;
 		this.foundationMapper = foundationMapper;
-		this.foundationService = foundationService;
 	}
 	
 	/**
@@ -304,15 +301,22 @@ public class StockController {
 	 * @return
 	 */
 	@PostMapping("/modify_in_outcoming")
-	public String modifyInOutcoming(InOutcoming inOutcoming, HttpSession session) {
+	public String modifyInOutcoming(InOutcomingForm inOutcomingForm, HttpSession session) {
 		
-		String inOutcomingUpdId = (String) session.getAttribute("SID");
-	    log.info("inOutcomingUpdId: {}", inOutcomingUpdId);
+		String sessionId = (String) session.getAttribute("SID");
+	    log.info("sessionId: {}", sessionId);
 	    
-	    inOutcoming.setInOutcomingUpdId(inOutcomingUpdId);
-	    log.info("inOutcoming: {}", inOutcoming);
+	    boolean isOutcoming = inOutcomingForm.getInOutcomingType().equals("outcoming");
 	    
-	    stockService.modifyInOutcoming(inOutcoming);
+    	stockService.modifyStockInfo(inOutcomingForm);
+    	
+    	// 상품 입출고 이력 수정
+		String inOutcomingCode = stockService.modifyInOutcoming(sessionId, inOutcomingForm);
+	  
+		// 상품 출고인 경우 - 상품 출고 상세정보 수정
+	    if(isOutcoming) {
+	    	stockService.modifyOutcomingDetail(sessionId, inOutcomingCode, inOutcomingForm);
+	    }
 	    
 	    return "redirect:/admin/stock/in_outcoming_list";
 	}
@@ -332,13 +336,14 @@ public class StockController {
 		List<String> foundationNameList = foundationMapper.getFoundationNameList();
 		log.info("foundationNameList: {}", foundationNameList);
 		
-		InOutcoming inOutcomingInfo = stockService.getInOutcomingInfoByCode(inOutcomingCode);
-		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		InOutcomingForm inOutcomingForm = stockService.getInOutcomingFormByCode(inOutcomingCode);
+		
+		log.info("inOutcomingForm: {}", inOutcomingForm);
 		
 		model.addAttribute("title", "상품 입출고 수정");
 		model.addAttribute("goodsNameList", goodsNameList);
 		model.addAttribute("foundationNameList", foundationNameList);
-		model.addAttribute("inOutcomingInfo", inOutcomingInfo);
+		model.addAttribute("inOutcomingForm", inOutcomingForm);
 	    
 	    return "admin/stock/modify_in_outcoming";
 	}
@@ -364,7 +369,7 @@ public class StockController {
 	    
 	    if (!isIncoming) {
 	        if (isNewStockInfo) {
-	            // 입고 아닌 경우 기존에 등록된 재고 정보가 없으면 오류 처리
+	            // 출고, 폐기,교환인 경우 기존에 등록된 재고 정보가 없으면 오류 처리
 	            throw new RuntimeException("등록된 재고 정보가 없습니다.");
 	        } else {
 	        	stockService.modifyStockInfo(inOutcomingForm);

@@ -271,21 +271,60 @@ public class StockService {
 		 }
 	}
 	
+	
+	
+	/**
+	 * 상품 출고인 경우 - 상품 출고 상세정보 수정
+	 * @param sessionId
+	 * @param inOutcomingCode
+	 * @param inOutcomingForm
+	 * @return
+	 */
+	public void modifyOutcomingDetail(String sessionId, String inOutcomingCode, InOutcomingForm inOutcomingForm) {
+		
+		OutcomingDetail outcomingDetail = new OutcomingDetail();
+		
+		String outcomingDetailCode = stockMapper.getOutcomingDetailCode(inOutcomingCode);
+		String goodsCode = goodsMapper.getGoodsCodeByName(inOutcomingForm.getGoodsName());
+		String foundationCode = foundationMapper.getFoundationCodeByName(inOutcomingForm.getFoundationName());
+		
+		
+		outcomingDetail.setOutcomingDetailCode(outcomingDetailCode);
+		outcomingDetail.setOutcomingGoods(goodsCode);
+		outcomingDetail.setOutcomingQuantity(inOutcomingForm.getInOutcomingQuantity());;
+		outcomingDetail.setOutcomingDate(inOutcomingForm.getInOutcomingDate());
+		outcomingDetail.setOutcomingId(inOutcomingForm.getOutcomingId());;
+		outcomingDetail.setFoundationCode(foundationCode);
+		outcomingDetail.setOutcomingDetailUpdId(sessionId);
+		
+		log.info("outcomingDetail: {}", outcomingDetail);
+		
+		stockMapper.modifyOutcomingDetail(outcomingDetail);
+	}
+	
 	/**
 	 * 상품 입출고 수정
 	 * @param inOutcoming
 	 */
-	public void modifyInOutcoming(InOutcoming inOutcoming) {
+	public String modifyInOutcoming(String sessionId, InOutcomingForm inOutcomingForm) {
+		
+		InOutcoming inOutcoming = new InOutcoming();
+		
+		String goodsCode = goodsMapper.getGoodsCodeByName(inOutcomingForm.getGoodsName());
+		
+		inOutcoming.setInOutcomingCode(inOutcomingForm.getInOutcomingCode());
+		inOutcoming.setGoodsCode(goodsCode);
+		inOutcoming.setGoodsLotNumber(inOutcomingForm.getGoodsLotNumber());
+		inOutcoming.setInOutcomingQuantity(inOutcomingForm.getInOutcomingQuantity());
+		inOutcoming.setInOutcomingType(inOutcomingForm.getInOutcomingType());
+		inOutcoming.setInOutcomingDate(inOutcomingForm.getInOutcomingDate());
+		inOutcoming.setInOutcomingUpdId(sessionId);
+		
+		log.info("inOutcoming: {}", inOutcoming);
+		
 		stockMapper.modifyInOutcoming(inOutcoming);
-	}
-	
-	/**
-	 * 특정 상품 출고 상세정보 조회
-	 * @return
-	 */
-	public OutcomingDetail getOutcomingDetailInfoByCode(String outcomingDetailCode){
-		OutcomingDetail outcomingDetailInfo = stockMapper.getOutcomingDetailInfoByCode(outcomingDetailCode);
-		return outcomingDetailInfo;
+		
+		return inOutcomingForm.getInOutcomingCode();
 	}
 	
 	/**
@@ -293,13 +332,40 @@ public class StockService {
 	 * @param inOutcomingCode
 	 * @return
 	 */
-	public InOutcoming getInOutcomingInfoByCode(String inOutcomingCode) {
+	public InOutcomingForm getInOutcomingFormByCode(String inOutcomingCode) {
+		
 		InOutcoming inOutcomingInfo = stockMapper.getInOutcomingInfoByCode(inOutcomingCode);
-		return inOutcomingInfo;
+		
+		log.info("inOutcomingInfo: {}", inOutcomingInfo);
+		
+		String goodsCode = inOutcomingInfo.getGoodsCode();
+		String goodsLotNumber = inOutcomingInfo.getGoodsLotNumber();
+		
+		String inOutcomingType = inOutcomingInfo.getInOutcomingType();
+		
+		InOutcomingForm inOutcomingForm = new InOutcomingForm();
+		
+		inOutcomingForm.setInOutcomingCode(inOutcomingCode);
+		inOutcomingForm.setGoodsName(inOutcomingInfo.getGoodsInfo().getGoodsName());
+		inOutcomingForm.setGoodsLotNumber(goodsLotNumber);
+		inOutcomingForm.setGoodsCompany(inOutcomingInfo.getGoodsInfo().getGoodsCompany());
+		inOutcomingForm.setInOutcomingType(inOutcomingType);
+		inOutcomingForm.setInOutcomingQuantity(inOutcomingInfo.getInOutcomingQuantity());
+		inOutcomingForm.setInOutcomingDate(inOutcomingInfo.getInOutcomingDate());
+		if(inOutcomingType.equals("incoming")) {
+			Stock stockInfo = stockMapper.getStockInfo(goodsCode, goodsLotNumber);
+			log.info("stockInfo: {}", stockInfo);
+			inOutcomingForm.setGoodsExpiryDate(stockInfo.getGoodsExpiryDate());
+		}else if(inOutcomingType.equals("outcoming")) {
+			inOutcomingForm.setOutcomingId(inOutcomingInfo.getOutcomingDetailInfo().getOutcomingId());
+			inOutcomingForm.setFoundationName(inOutcomingInfo.getFoundationInfo().getFoundationName());
+		}
+		
+		return inOutcomingForm;
 	}
 	
 	/**
-	 * 기존 상품 입출고일 경우 재고 수량 증감
+	 * 기존 상품 입출고일 경우 재고 수량 수정
 	 * @param stock
 	 */
 	public void modifyStockInfo(InOutcomingForm inOutcomingForm) {
@@ -320,7 +386,7 @@ public class StockService {
 		}
 		// 현재 상품 수량에서 비정상재고수량을 뺀 최종 수량 계산
 		int currentStockAmount = stock.getCurrentStockAmount();
-		stock.calculFinalStock(currentStockAmount, inOutcomingForm.getUnusualStockAmount());
+		stock.calculFinalStock(currentStockAmount, stock.getUnusualStockAmount());
 		
 		log.info("stock: {}", stock);
 		
