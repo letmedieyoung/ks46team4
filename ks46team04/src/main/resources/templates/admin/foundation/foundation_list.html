@@ -295,14 +295,14 @@
 						});
 						
 						request.done(function(response) {
-			                let deleted = response.deleted;
-			                let failed = response.failed;
+			                let removed = response.removed;
+			                let notRemoved = response.notRemoved;
 			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 재단: ${deleted.join(', ')}\n`;
+			                if (removed.length > 0) {
+			                    message += `삭제된 재단: ${removed.join(', ')}\n`;
 			                }
-			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 재단(진행중 또는 대기중인 콘텐츠 있음): ${failed.join(', ')}\n`;
+			                if (notRemoved.length > 0) {
+			                    message += `삭제할 수 없는 재단(진행중 또는 대기중인 콘텐츠 있음): ${notRemoved.join(', ')}\n`;
 			                }
 			                alert(message);
 			                location.reload();

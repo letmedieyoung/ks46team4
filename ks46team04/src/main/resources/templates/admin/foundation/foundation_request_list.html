@@ -386,14 +386,14 @@
 						});
 						
 						request.done(function(response) {
-			                let deleted = response.deleted;
-			                let failed = response.failed;
+							let removed = response.removed;
+				            let notRemoved = response.notRemoved;
 			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 요청사항: ${deleted.join(', ')}\n`;
+			                if (removed.length > 0) {
+			                    message += `삭제된 요청사항: ${removed.join(', ')}\n`;
 			                }
-			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 요청사항(진행중 또는 완료된 요청사항): ${failed.join(', ')}\n`;
+			                if (notRemoved.length > 0) {
+			                    message += `삭제할 수 없는 요청사항(진행중 또는 완료된 요청사항): ${notRemoved.join(', ')}\n`;
 			                }
 			                alert(message);
 			                location.reload();

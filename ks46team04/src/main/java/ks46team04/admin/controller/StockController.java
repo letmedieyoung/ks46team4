@@ -431,7 +431,7 @@ public class StockController {
 	    log.info("valueArr: {}", valueArr);
 
 	    // 삭제된 항목을 담을 리스트 초기화
-	    List<String> deletedInOutcoming = new ArrayList<>();
+	    List<String> removedInOutcoming = new ArrayList<>();
 
 	    // 입출고 정보 가져오기
 	    for (String inOutcomingCode : valueArr) {
@@ -452,7 +452,7 @@ public class StockController {
 	            }
 	            
 	            // 삭제된 입출고 정보 리스트에 추가
-	            deletedInOutcoming.add("삭제된 입출고 정보: " + inOutcomingCode);
+	            removedInOutcoming.add(inOutcomingCode);
 	            
 	            //삭제된 입출고의 재고 수량 수정
 	            if (inOutcomingType.equals("incoming") || inOutcomingType.equals("exchange")) {
@@ -465,11 +465,11 @@ public class StockController {
 	        }
 	    }
 
-	    log.info("deletedInOutcoming: {}", deletedInOutcoming);
+	    log.info("removedInOutcoming: {}", removedInOutcoming);
 
 	    // 삭제된 항목을 Map으로 전달
 	    Map<String, Object> response = new HashMap<>();
-	    response.put("deleted", deletedInOutcoming);
+	    response.put("removed", removedInOutcoming);
 	    log.info("response: {}", response);
 
 	    return response;

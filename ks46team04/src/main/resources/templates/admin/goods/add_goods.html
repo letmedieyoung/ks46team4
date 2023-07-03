@@ -50,14 +50,10 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="selectedGoodsCategory(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectGoodsCategory" name="selectGoodsCategory" onchange="selectedGoodsCategory(this.value)">
 													<option value="">:: 상품 분류 선택 ::</option>
-													<th:block th:unless="${goodsCategoryList == null}" th:each="goodsCategory : ${goodsCategoryList}">
-														<option th:value="${goodsCategory}" th:text="${goodsCategory}"></option>
-													</th:block>
-													<th:block th:if="${goodsCategoryList == null}">
-														<option>등록된 상품분류가 없습니다.</option>
-													</th:block>
+													<option th:if="${goodsCategoryList == null}">등록된 상품분류가 없습니다.</option>
+    												<option th:each="goodsCategory : ${goodsCategoryList}" th:value="${goodsCategory}" th:text="${goodsCategory}"></option>
 												</select>
 											</div>
 											<input type="hidden" id="goodsCategory" name="goodsCategory"/>
