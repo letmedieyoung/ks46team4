@@ -253,7 +253,7 @@ public class StockService {
 	}
 
 	/**
-	 * 상품 재고 조회
+	 * 상품 전체 재고 조회
 	 * @return
 	 */
 	public List<Stock> getStockList(){
@@ -261,15 +261,7 @@ public class StockService {
 		return stockList;
 	}
 	
-	/**
-	 * 상품 입출고 삭제
-	 * @param valueArr
-	 */
-	public void removeInOutcoming(List<String> valueArr) {
-		 for (int i = 0; i < valueArr.size(); i++) {
-			 stockMapper.removeInOutcoming(valueArr.get(i));
-		 }
-	}
+	
 	
 	
 	
@@ -365,32 +357,66 @@ public class StockService {
 	}
 	
 	/**
-	 * 기존 상품 입출고일 경우 재고 수량 수정
-	 * @param stock
+	 * 입출고 수량만큼 기존 재고 수량 증가
+	 * @param inOutcomingForm
 	 */
-	public void modifyStockInfo(InOutcomingForm inOutcomingForm) {
+	public void increaseStockQuantity(InOutcomingForm inOutcomingForm) {
+		
+		Stock stock = getStockInfo(inOutcomingForm);
+	    
+		stock.addCurrentStock(inOutcomingForm.getInOutcomingQuantity());
+	    
+	    int currentStockAmount = stock.getCurrentStockAmount();
+	    stock.calculFinalStock(currentStockAmount, stock.getUnusualStockAmount());
+	    
+	    // 증가되는 상품 수량
+	    log.info("increaseStockQuantity: {}", inOutcomingForm.getInOutcomingQuantity());
+	    
+	    // 증가 후 최종 상품 수량
+	    log.info("finalStockAmount: {}", stock.getFinalStockAmount());
+	    
+	    log.info("stock: {}", stock);
+	    
+	    stockMapper.modifyStock(stock);
+	}
+
+	/**
+	 * 입출고 수량만큼 기존 재고 수량 차감
+	 * @param inOutcomingForm
+	 */
+	public void decreaseStockQuantity(InOutcomingForm inOutcomingForm) {
+	    
+	    Stock stock = getStockInfo(inOutcomingForm);
+	    
+	    stock.removeCurrentStock(inOutcomingForm.getInOutcomingQuantity());
+	    
+	    int currentStockAmount = stock.getCurrentStockAmount();
+	    stock.calculFinalStock(currentStockAmount, stock.getUnusualStockAmount());
+	    
+	    // 차감되는 상품 수량
+	    log.info("decreaseStockQuantity: {}", inOutcomingForm.getInOutcomingQuantity());
+	   
+	    // 증가 후 최종 상품 수량
+	    log.info("finalStockAmount: {}", stock.getFinalStockAmount());
+	    
+	    log.info("stock: {}", stock);
+	    
+	    stockMapper.modifyStock(stock);
+	}
+	
+	/**
+	 * 특정 상품 재고 정보 조회
+	 * @param inOutcomingForm
+	 * @return
+	 */
+	public Stock getStockInfo(InOutcomingForm inOutcomingForm) {
 		
 		String goodsCode = goodsMapper.getGoodsCodeByName(inOutcomingForm.getGoodsName());
-		String goodsLotNumber = inOutcomingForm.getGoodsLotNumber();
-		
-		Stock stock = stockMapper.getStockInfo(goodsCode, goodsLotNumber);
-		
-		String inOutcomingType = inOutcomingForm.getInOutcomingType();
-		
-		if(inOutcomingType.equals("incoming") || inOutcomingType.equals("exchange")) {
-			// 상품 입고 또는 교환인 경우, 해당 상품 수량만큼 현재 수량 증가
-			stock.addCurrentStock(inOutcomingForm.getInOutcomingQuantity());
-		}else { 
-			// 상품 출고 또는 폐기인 경우, 해당 상품 수량만큼 현재 수량 차감
-			stock.removeCurrentStock(inOutcomingForm.getInOutcomingQuantity());
-		}
-		// 현재 상품 수량에서 비정상재고수량을 뺀 최종 수량 계산
-		int currentStockAmount = stock.getCurrentStockAmount();
-		stock.calculFinalStock(currentStockAmount, stock.getUnusualStockAmount());
-		
-		log.info("stock: {}", stock);
-		
-		stockMapper.modifyStock(stock);
+	    String goodsLotNumber = inOutcomingForm.getGoodsLotNumber();
+	    
+	    Stock stock = stockMapper.getStockInfo(goodsCode, goodsLotNumber);
+	    
+	    return stock;
 	}
 	
 	/**
@@ -436,7 +462,7 @@ public class StockService {
 	}
 	
 	/**
-	 * 상품 출고인 경우 - 상품 출고 상세정보 등록
+	 * 상품 출고 상세정보 등록
 	 * @param sessionId
 	 * @param inOutcomingCode
 	 * @param inOutcomingForm
@@ -527,6 +553,21 @@ public class StockService {
 				break;
 			case "inOutcomingType":
 				inputSearchKey = "h.incoming_outcoming_type";					
+				break;
+			}
+			
+			switch (inputSearchValue) {
+			case "입고":
+				inputSearchValue = "incoming";
+				break;
+			case "출고":
+				inputSearchValue = "outcoming";					
+				break;
+			case "교환":
+				inputSearchValue = "exchange";					
+				break;
+			case "폐기":
+				inputSearchValue = "disposal";					
 				break;
 			}
 			searchMap.put("inputSearchKey", inputSearchKey);
