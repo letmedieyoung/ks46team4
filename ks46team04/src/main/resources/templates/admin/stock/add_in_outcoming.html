@@ -42,12 +42,8 @@
 												&nbsp;
 												 <select class="dropdown btn btn-primary required-form" id="selectGoodsName" name="selectGoodsName" onchange="selectedGoodsName(this.value)">
 													<option value="">:: 상품명 선택 ::</option>
-													<th:block th:unless="${goodsNameList == null}" th:each="goodsName : ${goodsNameList}">
-														<option th:value="${goodsName}" th:text="${goodsName}"></option>
-													</th:block>
-													<th:block th:if="${goodsNameList == null}">
-														<option>등록된 상품명이 없습니다.</option>
-													</th:block>
+													<option th:if="${goodsNameList == null}">등록된 상품명이 없습니다.</option>
+    												<option th:each="goodsName : ${goodsNameList}" th:value="${goodsName}" th:text="${goodsName}"></option>
 												</select>
 											</div>
 											<input type="hidden" id="goodsName" name="goodsName"/>
@@ -147,12 +143,8 @@
 												&nbsp;
 												 <select class="dropdown btn btn-primary required-form outcoming" id="selectFoundationName" name="selectFoundationName" onchange="selectedFoundationName(this.value)">
 													<option value="">:: 재단명 선택 ::</option>
-													<th:block th:unless="${foundationNameList == null}" th:each="foundationName : ${foundationNameList}">
-														<option th:value="${foundationName}" th:text="${foundationName}"></option>
-													</th:block>
-													<th:block th:if="${foundationNameList == null}">
-														<option>등록된 재단명이 없습니다.</option>
-													</th:block>
+													<option th:if="${foundationNameList == null}">등록된 재단명이 없습니다.</option>
+    												<option th:each="foundationName : ${foundationNameList}" th:value="${foundationName}" th:text="${foundationName}"></option>
 												</select>
 											</div>
 											<input type="hidden" class="outcoming" id="foundationName" name="foundationName"/>

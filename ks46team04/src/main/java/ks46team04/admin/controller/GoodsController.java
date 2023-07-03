@@ -139,24 +139,27 @@ public class GoodsController {
     	
     	log.info("valueArr: {}", valueArr);
     	
-    	Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedGoods = new ArrayList<>();
-        List<String> failedGoods = new ArrayList<>();
+    	// 삭제된 항목을 담을 리스트 초기화
+        List<String> removedGoods = new ArrayList<>();
+        List<String> notRemovedGoods = new ArrayList<>();
 
         for (String goodsCode : valueArr) {
         	boolean isRemove = goodsService.removeGoods(goodsCode);
             if (isRemove) {
-                deletedGoods.add(goodsCode);
+            	// 삭제된 항목 리스트에 추가
+            	removedGoods.add(goodsCode);
             } else {
-                failedGoods.add(goodsCode);
+            	// 삭제되지 않은 항목 리스트에 추가
+            	notRemovedGoods.add(goodsCode);
             }
         }
-        log.info("deletedGoods: {}", deletedGoods);
-        log.info("failedGoods: {}", failedGoods);
+        log.info("removedGoods: {}", removedGoods);
+        log.info("notRemovedGoods: {}", notRemovedGoods);
 
-        response.put("deleted", deletedGoods);
-        response.put("failed", failedGoods);
+        // 삭제된 항목과 삭제되지 않은 항목을 Map으로 전달
+        Map<String, Object> response = new HashMap<>();
+        response.put("removed", removedGoods);
+        response.put("notRemoved", notRemovedGoods);
         log.info("response: {}", response);
 
         return response;
@@ -194,15 +197,11 @@ public class GoodsController {
 	@GetMapping("/goods_list")
 	public String getGoodsList(Model model) {
 		
-		List<Goods> goodsList = goodsService.getGoodsList();
+		List<Goods> goodsList = goodsMapper.getGoodsList();
 		log.info("goodsList: {}", goodsList);
-		
-		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
-		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 목록");
 		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("goodsCategoryList", goodsCategoryList);
 		
 		return "admin/goods/goods_list";
 	}

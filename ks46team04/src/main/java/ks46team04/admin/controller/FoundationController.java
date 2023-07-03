@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.FoundationRequest;
 import ks46team04.admin.mapper.FoundationMapper;
+import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.service.FoundationService;
 
 @Controller
@@ -29,11 +30,14 @@ public class FoundationController {
 
 	private final FoundationService foundationService;
 	private final FoundationMapper foundationMapper;
+	private final GoodsMapper goodsMapper;
 	
-	public FoundationController(FoundationService foundationService, FoundationMapper foundationMapper) {
+	public FoundationController(FoundationService foundationService
+								, FoundationMapper foundationMapper
+								, GoodsMapper goodsMapper) {
 		this.foundationService = foundationService;
 		this.foundationMapper = foundationMapper;
-		
+		this.goodsMapper = goodsMapper;
 	}
 
 	/**
@@ -46,9 +50,7 @@ public class FoundationController {
 		
 		String requestUpdId = (String) session.getAttribute("SID");
 		log.info("requestUpdId: {}", requestUpdId);
-		
 		foundationRequest.setRequestUpdId(requestUpdId);
-		log.info("foundationRequest: {}", foundationRequest);
 		
 		foundationService.modifyFoundationRequest(foundationRequest);
 		
@@ -64,10 +66,18 @@ public class FoundationController {
 	public String modifyFoundationRequest(Model model
 										, @RequestParam(name="foundationRequestCode") String foundationRequestCode){
 
+		List<String> goodsNameList = goodsMapper.getGoodsNameList();
+		log.info("goodsNameList: {}", goodsNameList);
+		
+		List<String> foundationNameList = foundationMapper.getFoundationNameList();
+		log.info("foundationNameList: {}", foundationNameList);
+
 		FoundationRequest foundationRequestInfo = foundationService.getFoundationRequestInfoByCode(foundationRequestCode);
-		log.info("foundationRequestInfo: {}", foundationRequestInfo);
+		log.info("수정 전 foundationRequestInfo: {}", foundationRequestInfo);
 		
 		model.addAttribute("title", "재단 요청사항 수정");
+		model.addAttribute("goodsNameList", goodsNameList);
+		model.addAttribute("foundationNameList", foundationNameList);
 		model.addAttribute("foundationRequestInfo", foundationRequestInfo);
 		
 		return "admin/foundation/modify_foundation_request";
@@ -85,7 +95,6 @@ public class FoundationController {
 	    log.info("requestRegId: {}", requestRegId);
 	    
 	    foundationRequest.setRequestRegId(requestRegId);
-		log.info("foundationRequest: {}", foundationRequest);
 		
 		foundationService.addFoundationRequest(foundationRequest);
 		
@@ -100,7 +109,15 @@ public class FoundationController {
 	@GetMapping("/add_foundation_request")
 	public String addFoundationRequest(Model model) {
 		
+		List<String> goodsNameList = goodsMapper.getGoodsNameList();
+		log.info("goodsNameList: {}", goodsNameList);
+		
+		List<String> foundationNameList = foundationMapper.getFoundationNameList();
+		log.info("foundationNameList: {}", foundationNameList);
+		
 		model.addAttribute("title", "재단 요청사항 등록");
+		model.addAttribute("goodsNameList", goodsNameList);
+		model.addAttribute("foundationNameList", foundationNameList);
 		
 		return "admin/foundation/add_foundation_request";
 	}
@@ -115,24 +132,28 @@ public class FoundationController {
 	public Map<String, Object> removeFoundationRequest(@RequestParam(value="valueArr[]") List<String> valueArr) { 
 		
 		log.info("valueArr: {}", valueArr);
-		Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedFoundationRequest = new ArrayList<>();
-        List<String> failedFoundationRequest = new ArrayList<>();
+		
+		// 삭제된 항목을 담을 리스트 초기화
+        List<String> removedFoundationRequest = new ArrayList<>();
+        List<String> notRemovedFoundationRequest = new ArrayList<>();
 
         for (String foundationRequestCode : valueArr) {
         	boolean isRemove = foundationService.removeFoundationRequest(foundationRequestCode);
             if (isRemove) {
-            	deletedFoundationRequest.add(foundationRequestCode);
+            	// 삭제된 항목 리스트에 추가
+            	removedFoundationRequest.add(foundationRequestCode);
             } else {
-            	failedFoundationRequest.add(foundationRequestCode);
+            	// 삭제되지 않은 항목 리스트에 추가
+            	notRemovedFoundationRequest.add(foundationRequestCode);
             }
         }
-        log.info("deletedFoundationRequest: {}", deletedFoundationRequest);
-        log.info("failedFoundationRequest: {}", failedFoundationRequest);
+        log.info("removedFoundationRequest: {}", removedFoundationRequest);
+        log.info("notRemovedFoundationRequest: {}", notRemovedFoundationRequest);
 
-        response.put("deleted", deletedFoundationRequest);
-        response.put("failed", failedFoundationRequest);
+        // 삭제된 항목과 삭제되지 않은 항목을 Map으로 전달
+        Map<String, Object> response = new HashMap<>();
+        response.put("removed", removedFoundationRequest);
+        response.put("notRemoved", notRemovedFoundationRequest);
         log.info("response: {}", response);
 
         return response;
@@ -287,25 +308,28 @@ public class FoundationController {
 	public Map<String, Object> removeFoundation(@RequestParam(value="valueArr[]") List<String> valueArr) {
 		
 		log.info("valueArr: {}", valueArr);
-		
-		Map<String, Object> response = new HashMap<>();
 
-        List<String> deletedFoundation = new ArrayList<>();
-        List<String> failedFoundation = new ArrayList<>();
+		// 삭제된 항목을 담을 리스트 초기화
+        List<String> removedFoundation = new ArrayList<>();
+        List<String> notRemovedFoundation = new ArrayList<>();
 
         for (String foundationCode : valueArr) {
         	boolean isRemove = foundationService.removeFoundation(foundationCode);
             if (isRemove) {
-            	deletedFoundation.add(foundationCode);
+            	// 삭제된 항목 리스트에 추가
+            	removedFoundation.add(foundationCode);
             } else {
-            	failedFoundation.add(foundationCode);
+            	// 삭제되지 않은 항목 리스트에 추가
+            	notRemovedFoundation.add(foundationCode);
             }
         }
-        log.info("deletedFoundation: {}", deletedFoundation);
-        log.info("failedFoundation: {}", failedFoundation);
+        log.info("removedFoundation: {}", removedFoundation);
+        log.info("notRemovedFoundation: {}", notRemovedFoundation);
 
-        response.put("deleted", deletedFoundation);
-        response.put("failed", failedFoundation);
+        // 삭제된 항목과 삭제되지 않은 항목을 Map으로 전달
+        Map<String, Object> response = new HashMap<>();
+        response.put("removed", removedFoundation);
+        response.put("notRemoved", notRemovedFoundation);
         log.info("response: {}", response);
 
         return response;

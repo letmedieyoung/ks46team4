@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.GoodsCategory;
+import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.mapper.StockMapper;
 
@@ -22,10 +23,14 @@ public class GoodsService {
 	private static final Logger log = LoggerFactory.getLogger(GoodsService.class);
 
 	private final GoodsMapper goodsMapper;
+	private final CommonMapper commonMapper;
 	private final StockMapper stockMapper;
 	
-	public GoodsService(GoodsMapper goodsMapper, StockMapper stockMapper) {
+	public GoodsService(GoodsMapper goodsMapper
+					, CommonMapper commonMapper
+					, StockMapper stockMapper) {
 		this.goodsMapper = goodsMapper;
+		this.commonMapper = commonMapper;
 		this.stockMapper = stockMapper;
 	}
 	
@@ -53,6 +58,13 @@ public class GoodsService {
 	 * @return
 	 */
 	public int addGoods(Goods goods) {
+		// 상품코드 - 공통 mapper를 사용하여 goodsCode 생성 및 설정
+		String goodsCode = commonMapper.getPrimaryKeyVerTwo("goods_reg_info"
+															,"goods_code"
+															,"goods");
+		goods.setGoodsCode(goodsCode);
+		log.info("goods: {}", goods);
+
 		int result = goodsMapper.addGoods(goods);
 		return result;
 	}
@@ -106,15 +118,6 @@ public class GoodsService {
 		
 		log.info("searchMap: {}", searchMap);
 		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(searchMap);
-		return goodsList;
-	}
-	
-	/**
-	 * 상품 조회
-	 * @return List<Goods>
-	 */
-	public List<Goods> getGoodsList(){
-		List<Goods> goodsList = goodsMapper.getGoodsList();
 		return goodsList;
 	}
 }

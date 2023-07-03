@@ -324,10 +324,10 @@
 						});
 						
 						request.done(function(response) {
-			                let deleted = response.deleted;
+			                let deleted = response.removed;
 			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 입출고 정보: ${deleted.join(', ')}\n`;
+			                if (removed.length > 0) {
+			                    message += `삭제된 입출고 정보: ${removed.join(', ')}\n`;
 			                }
 			                alert(message);
 			                location.reload();

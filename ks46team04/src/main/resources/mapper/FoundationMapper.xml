@@ -40,8 +40,11 @@
 		/* 재단 요청사항 수정 */
 		UPDATE foundation_request
 		<set>
+			<if test="foundationCode != null and foundationCode !=''">
+				foundation_code = #{foundationCode}
+			</if>
 			<if test="foundationName != null and foundationName !=''">
-				foundation_name = #{foundationName}
+				, foundation_name = #{foundationName}
 			</if>
 			<if test="contentCategory != null and contentCategory !=''">
 				, content_category = #{contentCategory}
@@ -96,7 +99,7 @@
 			(foundation_request_code, foundation_code, foundation_name, content_category, request_goods_name,
 			 initial_goods_amount, delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
 		VALUES 
-			(sf_new_foundation_request_code(), sf_get_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName},
+			(#{foundationRequestCode}, #{foundationCode}, #{foundationName}, #{contentCategory}, #{requestGoodsName},
 			 #{initialGoodsAmount}, #{deliveryRequestDate}, #{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
@@ -282,7 +285,7 @@
 			(foundation_code, foundation_name, foundation_manager, foundation_phone, foundation_zipcode, 
 			foundation_addr, foundation_extra_addr, foundation_detail_addr, foundation_reg_id, foundation_reg_date)
 		VALUES 
-			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationZipcode}, 
+			(#{foundationCode}, #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationZipcode}, 
 			#{foundationAddr}, #{foundationExtraAddr}, #{foundationDetailAddr}, #{foundationRegId}, NOW());
 	</insert>
 	
