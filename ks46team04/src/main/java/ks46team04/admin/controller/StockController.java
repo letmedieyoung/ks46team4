@@ -1,6 +1,9 @@
 package ks46team04.admin.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,24 +11,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
-import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.Goods;
 import ks46team04.admin.dto.InOutcoming;
 import ks46team04.admin.dto.InOutcomingForm;
-import ks46team04.admin.dto.OutcomingDetail;
 import ks46team04.admin.dto.Stock;
 import ks46team04.admin.dto.UnusualStock;
-import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.mapper.FoundationMapper;
 import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.mapper.StockMapper;
-import ks46team04.admin.service.FoundationService;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
 
@@ -306,15 +304,21 @@ public class StockController {
 		String sessionId = (String) session.getAttribute("SID");
 	    log.info("sessionId: {}", sessionId);
 	    
-	    boolean isOutcoming = inOutcomingForm.getInOutcomingType().equals("outcoming");
+	    String inOutcomingType = inOutcomingForm.getInOutcomingType();
 	    
-    	stockService.modifyStockInfo(inOutcomingForm);
+    	if(inOutcomingType.equals("incoming") || inOutcomingType.equals("exchange")) {
+			// 상품 입고 또는 교환인 경우, 해당 상품 수량만큼 현재 수량 증가
+    		stockService.increaseStockQuantity(inOutcomingForm);
+		}else { 
+			// 상품 출고 또는 폐기인 경우, 해당 상품 수량만큼 현재 수량 차감
+			stockService.decreaseStockQuantity(inOutcomingForm);
+		}
     	
     	// 상품 입출고 이력 수정
 		String inOutcomingCode = stockService.modifyInOutcoming(sessionId, inOutcomingForm);
 	  
 		// 상품 출고인 경우 - 상품 출고 상세정보 수정
-	    if(isOutcoming) {
+	    if(inOutcomingType.equals("outcoming")) {
 	    	stockService.modifyOutcomingDetail(sessionId, inOutcomingCode, inOutcomingForm);
 	    }
 	    
@@ -364,29 +368,31 @@ public class StockController {
 	    // 상품 입출고 수량만큼 재고 수량 업데이트 - 새로운 상품 입고인 경우 재고 등록, 기존 상품 입출고일 경우 재고 수량 증감
 	    boolean isNewStockInfo = stockService.checkStockInfo(inOutcomingForm.getGoodsName()
 	    													,inOutcomingForm.getGoodsLotNumber());
-	    boolean isIncoming = inOutcomingForm.getInOutcomingType().equals("incoming");
-	    boolean isOutcoming = inOutcomingForm.getInOutcomingType().equals("outcoming");
+	    String inOutcomingType = inOutcomingForm.getInOutcomingType();
 	    
-	    if (!isIncoming) {
+	    if(inOutcomingType.equals("incoming") || inOutcomingType.equals("exchange")) {
+	    	 if (isNewStockInfo) {
+	    		 // 새로운 상품 입고인 경우 재고 등록
+		         stockService.addStockInfo(inOutcomingForm);
+		     } 
+	    	// 상품 입고 또는 교환받은 상품인 경우, 해당 상품 수량만큼 현재 수량 증가
+     		stockService.increaseStockQuantity(inOutcomingForm);
+     		// 상품 입출고 이력 등록
+     		stockService.addInOutcoming(sessionId, inOutcomingForm);
+	    }else{
 	        if (isNewStockInfo) {
-	            // 출고, 폐기,교환인 경우 기존에 등록된 재고 정보가 없으면 오류 처리
+	            // 출고,폐기인 경우 기존에 등록된 재고 정보가 없으면 오류 처리
 	            throw new RuntimeException("등록된 재고 정보가 없습니다.");
 	        } else {
-	        	stockService.modifyStockInfo(inOutcomingForm);
+    			// 상품 출고 또는 폐기인 경우, 해당 상품 수량만큼 현재 수량 차감
+    			stockService.decreaseStockQuantity(inOutcomingForm);
 	        	// 상품 입출고 이력 등록
 	    		String inOutcomingCode = stockService.addInOutcoming(sessionId, inOutcomingForm);
 	    	    // 상품 출고인 경우 - 상품 출고 상세정보 등록
-	    	    if(isOutcoming) {
+	    	    if(inOutcomingType.equals("outcoming")) {
 	    	    	stockService.addOutcomingDetail(sessionId, inOutcomingCode, inOutcomingForm);
 	    	    }
 	        }
-	    } else {
-	        if (isNewStockInfo) {
-	            stockService.addStockInfo(inOutcomingForm);
-	        } else {
-	            stockService.modifyStockInfo(inOutcomingForm);
-	        }
-	        stockService.addInOutcoming(sessionId, inOutcomingForm);
 	    }
 	    
 		return "redirect:/admin/stock/in_outcoming_list";
@@ -420,12 +426,53 @@ public class StockController {
 	 */
 	@PostMapping("/remove_in_outcoming")
 	@ResponseBody
-	public List<String> removeInOutcoming(@RequestParam(value="valueArr[]") List<String> valueArr) {
-		
-		log.info("valueArr: {}", valueArr);
-		stockService.removeInOutcoming(valueArr);
-		
-		return valueArr;
+	public Map<String, Object> removeInOutcoming(@RequestParam(value = "valueArr[]") List<String> valueArr) {
+
+	    log.info("valueArr: {}", valueArr);
+
+	    // 삭제된 항목을 담을 리스트 초기화
+	    List<String> deletedInOutcoming = new ArrayList<>();
+
+	    // 입출고 정보 가져오기
+	    for (String inOutcomingCode : valueArr) {
+	        InOutcomingForm inOutcomingFormInfo = stockService.getInOutcomingFormByCode(inOutcomingCode);
+
+	        if (inOutcomingFormInfo != null) {
+	        	String inOutcomingType = inOutcomingFormInfo.getInOutcomingType();
+	           
+	        	// 입출고 정보가 출고인 경우 출고 및 출고 상세 정보 삭제
+	            if (inOutcomingType.equals("outcoming")) {
+	                // 출고 상세 정보 삭제
+	            	stockMapper.removeOutcomingDetail(inOutcomingCode);
+	                // 출고 정보 삭제
+	            	stockMapper.removeInOutcoming(inOutcomingCode);
+	            } else {
+	                // 입출고 정보 삭제
+	            	stockMapper.removeInOutcoming(inOutcomingCode);
+	            }
+	            
+	            // 삭제된 입출고 정보 리스트에 추가
+	            deletedInOutcoming.add("삭제된 입출고 정보: " + inOutcomingCode);
+	            
+	            //삭제된 입출고의 재고 수량 수정
+	            if (inOutcomingType.equals("incoming") || inOutcomingType.equals("exchange")) {
+	                // 삭제된 입출고 정보가 입고 또는 교환인 경우, 삭제한 입출고 수량만큼 현재 수량 차감
+	                stockService.decreaseStockQuantity(inOutcomingFormInfo);
+	            } else { 
+	                // 삭제된 입출고 정보가 출고 또는 폐기인 경우, 삭제한 입출고 수량만큼 현재 수량 증가
+	                stockService.increaseStockQuantity(inOutcomingFormInfo);
+	            }
+	        }
+	    }
+
+	    log.info("deletedInOutcoming: {}", deletedInOutcoming);
+
+	    // 삭제된 항목을 Map으로 전달
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("deleted", deletedInOutcoming);
+	    log.info("response: {}", response);
+
+	    return response;
 	}
 	
 	/**

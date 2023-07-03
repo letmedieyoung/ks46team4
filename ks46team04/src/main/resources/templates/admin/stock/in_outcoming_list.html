@@ -292,7 +292,7 @@
 				}
 			});
 			
-			// 체크박스 선택 후 deleteBtn 버튼
+			// 체크박스 선택 후 deleteBtn 삭제 버튼 클릭
 			$(document).on('click', '#delCheckBtn', function(){
 				
 				const checkedArr = $('.checks:checked');
@@ -317,18 +317,21 @@
 						console.log(valueArr);
 						
 						let request = $.ajax({
-							url: '/admin/goods/remove_goods',
+							url: '/admin/stock/remove_in_outcoming',
 							method: 'POST',
 							data: { valueArr : valueArr },
 							dataType: 'json'
 						});
 						
-						request.done(function(result){
-							if(result){
-								alert('삭제되었습니다.');
-								location.reload();
-							}
-						});
+						request.done(function(response) {
+			                let deleted = response.deleted;
+			                let message = '';
+			                if (deleted.length > 0) {
+			                    message += `삭제된 입출고 정보: ${deleted.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
 						
 						request.fail(function(jqXHR, textStatus){
 							alert(`Request failed: ${textStatus}`);

@@ -243,22 +243,17 @@
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;
-				if (ele.id === 'selectInOutcomingType' && data === 'incoming') {
-					if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('outcoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-					}
-			    } else if(ele.id === 'selectInOutcomingType' && data === 'outcoming') {
-			    	if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('incoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-					}
-			    } else {
-			        if (typeof data === 'undefined' || data === null || data === '' 
-			        	&& !$(ele).hasClass('incoming') && !$(ele).hasClass('outcoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-			        }
+				if (ele.id === 'selectInOutcomingType') {
+				    if (data === 'incoming' && (typeof data === 'undefined' || data === null || data === '') && !$(ele).hasClass('outcoming')) {
+				        let msg = $(ele).parents('tr').find('label').text();
+				        isValid = false;
+				    } else if (data === 'outcoming' && (typeof data === 'undefined' || data === null || data === '') && !$(ele).hasClass('incoming')) {
+				        let msg = $(ele).parents('tr').find('label').text();
+				        isValid = false;
+				    }
+				} else if (typeof data === 'undefined' || data === null || data === '' && !$(ele).hasClass('incoming') && !$(ele).hasClass('outcoming')) {
+			        let msg = $(ele).parents('tr').find('label').text();
+			        isValid = false;
 			    }
 				return isValid;
 			};

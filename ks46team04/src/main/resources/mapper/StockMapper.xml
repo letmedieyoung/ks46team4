@@ -152,15 +152,6 @@
 			CAST(SUBSTRING_INDEX(u.unusual_stock_detail_code, 'discared_stock', -1) AS UNSIGNED) DESC;
 	</select>
 	
-	<delete id="removeInOutcoming" parameterType="String">
-		/* 상품 입출고 삭제 */
-		DELETE 
-		FROM 
-			incoming_outcoming_history
-		WHERE 
-			incoming_outcoming_history_code = #{inOutcomingCode};
-	</delete>
-	
 	<select id="removeStockCheck" parameterType="String" resultType="boolean">
 		/* 삭제 상품 재고 유무 확인 - 재고 테이블에 삭제될 상품의 모든 재고량이 0인 경우에만 삭제 */
 		SELECT
@@ -455,7 +446,25 @@
 			(#{inOutcomingCode}, #{goodsCode}, #{goodsLotNumber}, #{inOutcomingQuantity},
 			 #{inOutcomingType}, #{inOutcomingDate}, #{inOutcomingRegId}, NOW());
 	</insert>
-		
+	
+	<delete id="removeInOutcoming" parameterType="String">
+		/* 상품 입출고 삭제 */
+		DELETE 
+		FROM 
+			incoming_outcoming_history
+		WHERE 
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</delete>
+	
+	<delete id="removeOutcomingDetail" parameterType="String">
+		/* 상품 출고 상세 삭제 */
+		DELETE 
+		FROM 
+			outcoming_detail
+		WHERE 
+			incoming_outcoming_history_code = #{inOutcomingCode};
+	</delete>
+	
 	<select id="getInOutcomingListBySearch" resultMap="inOutcomingResultMap">
 		/* 상품 입출고 검색 결과 조회 */
 		SELECT 
@@ -484,7 +493,7 @@
 		ON 
 			h.incoming_outcoming_history_code = o.incoming_outcoming_history_code
 		LEFT JOIN
-			foundation_request AS f
+			foundation_list AS f
 		ON
 			o.foundation_code = f.foundation_code
 		<where>
