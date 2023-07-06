@@ -33,7 +33,7 @@ public class StockController {
 	private static final Logger log = LoggerFactory.getLogger(StockController.class);
 
 	private final StockMapper stockMapper;
-	private final StockService stockService;
+	private final StockService stockService; 
 	private final GoodsMapper goodsMapper;
 	private final FoundationMapper foundationMapper;
 	
