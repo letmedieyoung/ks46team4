@@ -16,19 +16,35 @@ public class Stock {
 	
 	private Goods goodsInfo;
 	
-	private String goodsName;
-
 	/**
-	 * 재고조사 후 최종 재고 수량 계산
+	 * 최종 재고 수량 계산
 	 * @param currentStock
 	 * @param unusualStock
 	 */
 	public void calculFinalStock(int currentStockAmount, int unusualStockAmount) {
 		int finalStockAmount = currentStockAmount - unusualStockAmount;
 		if(finalStockAmount < 0) {
-			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
+			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다. (현재 최종 재고 수량 : " + this.finalStockAmount + ")");
 		}
 		this.finalStockAmount = finalStockAmount;
+	}
+	
+	/**
+	 * 비정상 재고 자동 증가
+	 */
+	public void addUnusualStock(int quantity) {
+		this.unusualStockAmount += quantity;
+	}
+	
+	/**
+	 * 비정상 재고 자동 감소
+	 */
+	public void removeUnusualStock(int quantity) {
+		int restStock = this.unusualStockAmount - quantity;
+		if(restStock < 0) {
+			throw new NotEnoughStockException("해당 상품의 비정상재고수량이 없습니다.");
+		}
+		this.unusualStockAmount = restStock;
 	}
 	
 	/**
@@ -44,7 +60,7 @@ public class Stock {
 	public void removeCurrentStock(int quantity) {
 		int restStock = this.currentStockAmount - quantity;
 		if(restStock < 0) {
-			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다.");
+			throw new NotEnoughStockException("해당 상품의 재고가 부족합니다. (현재 재고 수량 : " + this.currentStockAmount + ")");
 		}
 		this.currentStockAmount = restStock;
 	}
@@ -137,22 +153,13 @@ public class Stock {
 		this.goodsInfo = goodsInfo;
 	}
 
-	public String getGoodsName() {
-		return goodsName;
-	}
-
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-
 	@Override
 	public String toString() {
 		return "Stock [goodsStockCode=" + goodsStockCode + ", goodsCode=" + goodsCode + ", goodsLotNumber="
 				+ goodsLotNumber + ", currentStockAmount=" + currentStockAmount + ", stocktakingCheck="
 				+ stocktakingCheck + ", stocktakingDate=" + stocktakingDate + ", goodsExpiryDate=" + goodsExpiryDate
 				+ ", finalStockAmount=" + finalStockAmount + ", unusualStockAmount=" + unusualStockAmount
-				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + ", goodsName=" + goodsName
-				+ "]";
+				+ ", unusualStockCheck=" + unusualStockCheck + ", goodsInfo=" + goodsInfo + "]";
 	}
 	
 }

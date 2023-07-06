@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
-import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
@@ -31,10 +30,14 @@ public class GoodsController {
 
 	private final GoodsService goodsService;
 	private final GoodsMapper goodsMapper;
+	private final StockService stockService;
 	
-	public GoodsController(GoodsService goodsService, GoodsMapper goodsMapper, StockService stockService) {
+	public GoodsController(GoodsService goodsService
+						, GoodsMapper goodsMapper
+						, StockService stockService) {
 		this.goodsService = goodsService;
 		this.goodsMapper = goodsMapper;
+		this.stockService = stockService;
 	}
 	
 	/**
@@ -87,6 +90,7 @@ public class GoodsController {
 	@ResponseBody
 	public boolean goodsNameCheck(@RequestParam(name="goodsName") String goodsName) {
 		
+		// 중복된 상품명 확인 - 중복된 상품명이 없을 경우 true 반환
 		boolean isCheck = goodsMapper.goodsNameCheck(goodsName);
 		
 		return isCheck;
@@ -144,8 +148,11 @@ public class GoodsController {
         List<String> notRemovedGoods = new ArrayList<>();
 
         for (String goodsCode : valueArr) {
-        	boolean isRemove = goodsService.removeGoods(goodsCode);
+        	// 재고 테이블에 삭제될 상품코드의 최종재고량이 모두 0으로 삭제 완료한 경우 true, 아니면 false
+        	boolean isRemove = stockService.removeStockByGoods(goodsCode);
             if (isRemove) {
+            	// 상품 정보 삭제
+        		goodsMapper.removeGoods(goodsCode);
             	// 삭제된 항목 리스트에 추가
             	removedGoods.add(goodsCode);
             } else {

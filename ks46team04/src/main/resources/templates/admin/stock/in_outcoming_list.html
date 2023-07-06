@@ -130,38 +130,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							<th:block th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
-								<tr>	
-									<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
-									<th th:text="${lStat.count}"></th>
-									<td>
-										<a th:text="${l.inOutcomingCode}"
-											th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}"></a>
-									</td>
-									<td th:text="${l.goodsInfo.goodsName}"></td>
-									<td th:text="${l.goodsLotNumber}"></td>
-									<td th:text="${l.goodsInfo.goodsCompany}"></td>
-									<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
-									<td th:if="${l.inOutcomingType == 'outcoming'}">출고</td>
-									<td th:if="${l.inOutcomingType == 'exchange'}">교환</td>
-									<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
-									<td th:text="${l.inOutcomingQuantity}"></td>
-									<td th:text="${l.inOutcomingDate}"></td>
-									<td th:text="${l.outcomingDetailInfo.outcomingId == null ? '-' : l.outcomingDetailInfo.outcomingId}"></td>
-									<td th:text="${l.foundationInfo == null ? '-' : l.foundationInfo.foundationName}"></td>
-									<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
-									<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
-									<td>
-										<a class="btn btn-secondary btn-icon-split btn-sm"
-											th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
-											<span class="text">수정</span>
-										</a>
-									</td>
-								</tr>
-								<tr th:if="${inOutcomingList == null}">
-									<td colspan="12">등록된 상품 재고 정보가 없습니다.</td>
-								</tr>
-							</th:block>
+							<tr th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">	
+								<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
+								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.inOutcomingCode}"
+										th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}"></a>
+								</td>
+								<td th:text="${l.goodsInfo.goodsName}"></td>
+								<td th:text="${l.goodsLotNumber}"></td>
+								<td th:text="${l.goodsInfo.goodsCompany}"></td>
+								<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
+								<td th:if="${l.inOutcomingType == 'outcoming'}">출고</td>
+								<td th:if="${l.inOutcomingType == 'exchange'}">교환</td>
+								<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
+								<td th:text="${l.inOutcomingQuantity}"></td>
+								<td th:text="${l.inOutcomingDate}"></td>
+								<td th:text="${l.outcomingDetailInfo.outcomingId == null ? '-' : l.outcomingDetailInfo.outcomingId}"></td>
+								<td th:text="${l.foundationInfo == null ? '-' : l.foundationInfo.foundationName}"></td>
+								<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
+								<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${inOutcomingList == null}">
+								<td colspan="12">등록된 상품 재고 정보가 없습니다.</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -324,7 +322,7 @@
 						});
 						
 						request.done(function(response) {
-			                let deleted = response.removed;
+			                let removed = response.removed;
 			                let message = '';
 			                if (removed.length > 0) {
 			                    message += `삭제된 입출고 정보: ${removed.join(', ')}\n`;
