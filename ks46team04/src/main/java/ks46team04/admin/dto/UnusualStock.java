@@ -13,7 +13,29 @@ public class UnusualStock {
 	private String unusualStockUpdDate;
 	
 	private Goods goodsInfo;
+	private Stock stockInfo;
 	
+	private String goodsName;
+	private String goodsLotNumber;
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+	public String getGoodsLotNumber() {
+		return goodsLotNumber;
+	}
+	public void setGoodsLotNumber(String goodsLotNumber) {
+		this.goodsLotNumber = goodsLotNumber;
+	}
+	public Stock getStockInfo() {
+		return stockInfo;
+	}
+	public void setStockInfo(Stock stockInfo) {
+		this.stockInfo = stockInfo;
+	}
 	public Goods getGoodsInfo() {
 		return goodsInfo;
 	}
@@ -86,7 +108,8 @@ public class UnusualStock {
 				+ goodsStockCode + ", unusualStockQuantity=" + unusualStockQuantity + ", unusualStockDate="
 				+ unusualStockDate + ", unusualStockReason=" + unusualStockReason + ", unusualStockRegId="
 				+ unusualStockRegId + ", unusualStockRegDate=" + unusualStockRegDate + ", unusualStockUpdId="
-				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + ", goodsInfo=" + goodsInfo + "]";
+				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + ", goodsInfo=" + goodsInfo
+				+ ", stockInfo=" + stockInfo + ", goodsName=" + goodsName + ", goodsLotNumber=" + goodsLotNumber + "]";
 	}
 	
 	

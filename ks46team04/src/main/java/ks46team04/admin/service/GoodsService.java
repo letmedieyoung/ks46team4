@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Goods;
-import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.mapper.GoodsMapper;
-import ks46team04.admin.mapper.StockMapper;
 
 @Service
 @Transactional
@@ -24,14 +22,10 @@ public class GoodsService {
 
 	private final GoodsMapper goodsMapper;
 	private final CommonMapper commonMapper;
-	private final StockMapper stockMapper;
 	
-	public GoodsService(GoodsMapper goodsMapper
-					, CommonMapper commonMapper
-					, StockMapper stockMapper) {
+	public GoodsService(GoodsMapper goodsMapper, CommonMapper commonMapper) {
 		this.goodsMapper = goodsMapper;
 		this.commonMapper = commonMapper;
-		this.stockMapper = stockMapper;
 	}
 	
 	/**
@@ -68,20 +62,6 @@ public class GoodsService {
 		int result = goodsMapper.addGoods(goods);
 		return result;
 	}
-	
-	/**
-     * 상품 삭제
-     * @param goodsCode
-     */
-    public boolean removeGoods(String goodsCode) {
-    	boolean isRemove = true; 
-    	isRemove = stockMapper.removeStockCheck(goodsCode);
-    	if (isRemove) {
-    		goodsMapper.removeGoods(goodsCode);
-    		return true;
-        }
-        return false;
-    }
 	
 	/**
 	 * 상품 검색 결과 조회
