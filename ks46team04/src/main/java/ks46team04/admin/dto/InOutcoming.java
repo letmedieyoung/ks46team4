@@ -12,45 +12,9 @@ public class InOutcoming {
 	private String inOutcomingUpdId;
 	private String inOutcomingUpdDate;
 	
-	private OutcomingDetail OutcomingDetailInfo;
+	private OutcomingDetail outcomingDetailInfo;
 	private Goods goodsInfo;
 	private Foundation foundationInfo;
-	
-	private String foundationName;
-	private String outcomingId;
-	
-	
-	public String getOutcomingId() {
-		return outcomingId;
-	}
-	public void setOutcomingId(String outcomingId) {
-		this.outcomingId = outcomingId;
-	}
-	public String getFoundationName() {
-		return foundationName;
-	}
-	public void setFoundationName(String foundationName) {
-		this.foundationName = foundationName;
-	}
-	
-	public Foundation getFoundationInfo() {
-		return foundationInfo;
-	}
-	public void setFoundationInfo(Foundation foundationInfo) {
-		this.foundationInfo = foundationInfo;
-	}
-	public Goods getGoodsInfo() {
-		return goodsInfo;
-	}
-	public void setGoodsInfo(Goods goodsInfo) {
-		this.goodsInfo = goodsInfo;
-	}
-	public OutcomingDetail getOutcomingDetailInfo() {
-		return OutcomingDetailInfo;
-	}
-	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
-		OutcomingDetailInfo = outcomingDetailInfo;
-	}
 	public String getInOutcomingCode() {
 		return inOutcomingCode;
 	}
@@ -111,14 +75,34 @@ public class InOutcoming {
 	public void setInOutcomingUpdDate(String inOutcomingUpdDate) {
 		this.inOutcomingUpdDate = inOutcomingUpdDate;
 	}
+	public OutcomingDetail getOutcomingDetailInfo() {
+		return outcomingDetailInfo;
+	}
+	public void setOutcomingDetailInfo(OutcomingDetail outcomingDetailInfo) {
+		this.outcomingDetailInfo = outcomingDetailInfo;
+	}
+	public Goods getGoodsInfo() {
+		return goodsInfo;
+	}
+	public void setGoodsInfo(Goods goodsInfo) {
+		this.goodsInfo = goodsInfo;
+	}
+	public Foundation getFoundationInfo() {
+		return foundationInfo;
+	}
+	public void setFoundationInfo(Foundation foundationInfo) {
+		this.foundationInfo = foundationInfo;
+	}
 	@Override
 	public String toString() {
 		return "InOutcoming [inOutcomingCode=" + inOutcomingCode + ", goodsCode=" + goodsCode + ", goodsLotNumber="
 				+ goodsLotNumber + ", inOutcomingQuantity=" + inOutcomingQuantity + ", inOutcomingType="
 				+ inOutcomingType + ", inOutcomingDate=" + inOutcomingDate + ", inOutcomingRegId=" + inOutcomingRegId
 				+ ", inOutcomingRegDate=" + inOutcomingRegDate + ", inOutcomingUpdId=" + inOutcomingUpdId
-				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", OutcomingDetailInfo=" + OutcomingDetailInfo
-				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + ", foundationName="
-				+ foundationName + ", outcomingId=" + outcomingId + "]";
+				+ ", inOutcomingUpdDate=" + inOutcomingUpdDate + ", outcomingDetailInfo=" + outcomingDetailInfo
+				+ ", goodsInfo=" + goodsInfo + ", foundationInfo=" + foundationInfo + "]";
 	}
+	
+	
+
 }

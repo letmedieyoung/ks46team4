@@ -46,8 +46,14 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="foundationName" name="foundationName" th:value="*{foundationName}" placeholder="재단명을 입력해주세요."/>
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="selectFoundationName" name="selectFoundationName" onchange="selectedFoundationName(this.value)">
+													<option value="">:: 재단명 선택 ::</option>
+													<option th:if="${foundationNameList == null}">등록된 재단명이 없습니다.</option>
+    												<option th:each="foundationName : ${foundationNameList}" th:value="${foundationName}" th:text="${foundationName}" th:selected="${foundationName} == *{foundationName}"></option>
+												</select>
 											</div>
+											<input type="hidden" id="foundationName" name="foundationName" th:value="*{foundationName}"/>
 										</td>
 									</tr>
 									<tr>
@@ -57,18 +63,14 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="contentCate(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectContentCategory" name="selectContentCategory" onchange="selectedContentCategory(this.value)">
 													<option value="">:: 콘텐츠 분류 ::</option>
 													<option th:selected="*{contentCategory} == '펀딩'" >펀딩</option>
 													<option th:selected="*{contentCategory} == '정기기부'" >정기기부</option>
 													<option th:selected="*{contentCategory} == '미정'" >미정</option>
 												</select>
 											</div>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="hidden" class="form-control form-control-user-search short-input"
-													id="contentCategory" name="contentCategory" th:value="*{contentCategory}"/>
-											</div>
+											<input type="hidden" id="contentCategory" name="contentCategory" th:value="*{contentCategory}"/>
 										</td>
 									</tr>
 									<tr>
@@ -77,10 +79,14 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" 
-													class="form-control form-control-user-search middle-input" 
-													id="requestGoodsName" name="requestGoodsName" th:value="*{requestGoodsName}" placeholder="요청 상품을 입력해주세요."/>
+											&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="selectRequestGoodsName" name="selectRequestGoodsName" onchange="selectedRequestGoodsName(this.value)">
+													<option value="">:: 상품명 선택 ::</option>
+													<option th:if="${goodsNameList == null}">등록된 상품명이 없습니다.</option>
+    												<option th:each="goodsName : ${goodsNameList}" th:value="${goodsName}" th:text="${goodsName}" th:selected="${goodsName} == *{requestGoodsName}"></option>
+												</select>
 											</div>
+											<input type="hidden" id="requestGoodsName" name="requestGoodsName" th:value="*{requestGoodsName}"/>
 										</td>
 									</tr>
 									<tr>
@@ -114,18 +120,14 @@
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="selectCategory" name="selectCategory" onchange="requestStatus(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectRequestProgressStatus" name="selectRequestProgressStatus" onchange="selectedRequestProgressStatus(this.value)">
 													<option value="">:: 진행현황 ::</option>
 														<option th:selected="*{requestProgressStatus} == '대기중'" >대기중</option>
 														<option th:selected="*{requestProgressStatus} == '진행중'" >진행중</option>
 														<option th:selected="*{requestProgressStatus} == '완료'" >완료</option>
 												</select>
 											</div>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="hidden" class="form-control form-control-user-search short-input"
-													id="requestProgressStatus" name="requestProgressStatus" th:value="*{requestProgressStatus}"/>
-											</div>
+											<input type="hidden" id="requestProgressStatus" name="requestProgressStatus" th:value="*{requestProgressStatus}"/>
 										</td>
 									</tr>
 									<tr>
@@ -178,16 +180,28 @@
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
 		
+		// 재단명 select box 선택 value 값 -> input value로 넣기
+		function selectedFoundationName(selectValue) {
+			const selectInputEle = $('#foundationName');
+			selectInputEle.val(selectValue);
+		};
+	
 		// 콘텐츠 분류 select box value 값 -> input value로 넣기
-		function contentCate(category) {
-			const selectInput = document.querySelector('#contentCategory');
-			selectInput.value = category;
+		function selectedContentCategory(selectValue) {
+			const selectInputEle = $('#contentCategory');
+			selectInputEle.val(selectValue);
+		};
+		
+		// 요청상품명 select box value 값 -> input value로 넣기
+		function selectedRequestGoodsName(selectValue) {
+			const selectInputEle = $('#requestGoodsName');
+			selectInputEle.val(selectValue);
 		};
 		
 		// 진행현황 select box value 값 -> input value로 넣기
-		function requestStatus(category) {
-			const selectInput = document.querySelector('#requestProgressStatus');
-			selectInput.value = category;
+		function selectedRequestProgressStatus(selectValue) {
+			const selectInputEle = $('#requestProgressStatus');
+			selectInputEle.val(selectValue);
 		};
 	</script>
 </th:block>

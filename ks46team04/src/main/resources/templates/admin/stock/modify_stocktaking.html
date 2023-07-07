@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">재고 수정</h6>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="modifyStockForm" th:action="@{/admin/stock/modify_stocktaking}" method="post">
+							<table th:object="${stockInfo}" class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsStockCode">상품재고코드</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsStockCode" name="goodsStockCode" th:value="*{goodsStockCode}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" th:value="*{goodsInfo.goodsName}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsLotNumber">제조번호</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="goodsLotNumber" name="goodsLotNumber" th:value="*{goodsLotNumber}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsCompany">제조사</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search short-input" id="goodsCompany" name="goodsCompany" th:value="*{goodsInfo.goodsCompany}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsExpiryDate">상품 유통기한</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control" id="goodsExpiryDate" name="goodsExpiryDate" th:value="*{goodsExpiryDate}"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingCheck">재고조사 현황</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												&nbsp;
+												<div class="form-row align-items-center search-schedule">
+													<label>
+													  <input type="radio" name="stocktakingCheck" th:value="true" th:checked="*{stocktakingCheck == true}">
+													  <span class="text">완료</span>&nbsp;&nbsp;
+													</label>
+												</div>
+												<div class="form-row align-items-center search-schedule">
+													<label>
+													  <input type="radio" name="stocktakingCheck" th:value="false" th:checked="*{stocktakingCheck == false}">
+													  <span class="text">미완료</span>
+													</label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="stocktakingDate">재고조사일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control" id="stocktakingDate" name="stocktakingDate" th:value="*{stocktakingDate}"/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">수정하기</span>
+								</button>
+								<button type="button" id="returnBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">돌아가기</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		
+		$(function() {
+			/** 
+			*	재고조사 현황 radio 선택 값에 따라 input 입력 활성화
+			*	완료 선택 시 재고조사일 input 활성화
+		 	* 	미완료 선택 시 재고조사일 input 비활성화
+		 	*/
+		 	const stocktakingDateEle = $('#stocktakingDate');
+			const stocktakingCheckEles = $('input[name="stocktakingCheck"]');
+		  
+			function toggleStocktakingDate() {
+			    const checkedValue = stocktakingCheckEles.filter(':checked').val();
+			    
+			    if (checkedValue === 'true') {
+					stocktakingDateEle.prop('disabled', false);
+			    } else {
+					stocktakingDateEle.val('').prop('disabled', true);
+			    }
+			}
+		  
+			stocktakingCheckEles.change(function() {
+		    	toggleStocktakingDate();
+			});
+		  
+			toggleStocktakingDate();
+			
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
+			function validationCheck(ele){
+				let data = $(ele).val();
+				let isValid = true;
+				if(typeof data == 'undefined' || data == null || data == ''){
+					isValid = false;
+				}
+				return isValid;
+			};
+				
+			$('#submitBtn').click(function(){
+				const modifyStockForm = $('#modifyStockForm');
+				let inputGroup = []; // 빈 배열로 초기화
+
+				let stocktakingCheckValue = $('input[name="stocktakingCheck"]:checked').val();
+				if (stocktakingCheckValue === 'true') {
+					// stocktakingCheck 값이 'true'인 경우, 모든 input 요소를 inputGroup으로 설정
+				    inputGroup = $('#modifyStockForm input');
+				} else {
+				    // stocktakingCheck 값이 'false'인 경우, id가 'stocktakingDate'인 input 요소를 제외한 나머지 input 요소를 inputGroup으로 설정
+				    inputGroup = $('#modifyStockForm input').not('#stocktakingDate');
+				}
+
+				let isSubmit = true;
+				
+				inputGroup.each(function(idx, item){
+					isSubmit = validationCheck(item);
+					if(!isSubmit) {
+						let msg = $(item).parents('tr').find('label').text();
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
+						$(item).focus();
+						return false;
+					}
+				});
+				if(isSubmit) modifyStockForm.submit();
+			});
+		});
+		
+	</script>
+</th:block>
+
+</html>

@@ -89,12 +89,17 @@ public class FundingController {
 	 */
 	@GetMapping("/modifyFunding")
 	public String modifyFunding(Model model,
+								HttpSession session,
+								Funding funding,
 								@RequestParam(name="fundingCode") String fundingCode) {
 		
 		Funding fundingInfo = fundingService.getFundingInfoByCode(fundingCode);
 		 
 		log.info("fundingModify: {}", fundingInfo);
 
+		String fundingUpdateId = (String) session.getAttribute("SID");
+		funding.setFundingRegId(fundingUpdateId);
+		
 		List<Foundation> foundationNameList = fundingService.getFoundationNameList();
 		List<Goods> goodsNameList = fundingService.getGoodsNameList();
 		List<Goods> goodsCodeList = fundingService.getGoodsCodeList();

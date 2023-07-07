@@ -112,7 +112,9 @@
 								<th><input type="checkbox" id="allCheck"></th>
 								<th>No</th>
 								<th>비정상재고코드</th>
+								<th>재고코드</th>
 								<th>상품명</th>
+								<th>제조번호</th>
 								<th>비정상 재고 수량</th>
 								<th>비정상 재고 발생일</th>
 								<th>비정상 재고 사유</th>
@@ -121,33 +123,31 @@
 							</tr>
 						</thead>
 						<tbody>
-							<th:block th:unless="${unusualStockList == null}" th:each=" l : ${unusualStockList}">
-								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
-									<tr>
-										<td><input class="checks" type="checkbox" th:value="${l.unusualStockCode}"></td>
-										<th th:text="${lStat.count}"></th>
-										<td>
-											<a th:text="${l.unusualStockCode}"
-												th:href="@{modify_stock(goodsStockCode=${l.goodsStockCode}}"></a>
-										</td>	
-										<td th:text="${gl.goodsName}"></td>
-										<td th:text="${l.unusualStockQuantity}"></td>
-										<td th:text="${l.unusualStockDate}"></td>
-										<td th:text="${l.unusualStockReason}"></td>
-										<td th:if="${l.unusualStockUpdDate == null}" th:text="${l.unusualStockRegDate}"></td>
-										<td th:unless="${l.unusualStockUpdDate == null}" th:text="|${l.unusualStockUpdDate}(수정)|"></td>
-										<td>
-											<a class="btn btn-secondary btn-icon-split btn-sm"
-												th:href="@{modify_stock(goodsStockCode=${l.goodsStockCode}}">
-												<span class="text">수정</span>
-											</a>
-										</td>
-									</tr>
-									<tr th:if="${unusualStockList == null}">
-										<td colspan="8">등록된 비정상재고 정보가 없습니다.</td>
-									</tr>
-								</th:block>
-							</th:block>
+							<tr th:unless="${unusualStockList == null}" th:each=" l : ${unusualStockList}">
+								<td><input class="checks" type="checkbox" th:value="${l.unusualStockCode}"></td>
+								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.unusualStockCode}"
+										th:href="@{modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}"></a>
+								</td>	
+								<td th:text="${l.goodsStockCode}"></td>	
+								<td th:text="${l.goodsInfo.goodsName}"></td>
+								<td th:text="${l.stockInfo.goodsLotNumber}"></td>
+								<td th:text="${l.unusualStockQuantity}"></td>
+								<td th:text="${l.unusualStockDate}"></td>
+								<td th:text="${l.unusualStockReason}"></td>
+								<td th:if="${l.unusualStockUpdDate == null}" th:text="${l.unusualStockRegDate}"></td>
+								<td th:unless="${l.unusualStockUpdDate == null}" th:text="|${l.unusualStockUpdDate}(수정)|"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{modify_unusual_stock_detail(unusualStockCode=${l.unusualStockCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${unusualStockList == null}">
+								<td colspan="10">등록된 비정상재고 정보가 없습니다.</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -172,7 +172,7 @@
 		$(function(){
 			
 			// 비정상 재고 검색 결과 조회
-			$('#searchBtn').click(function(){
+			$(document).on('click', '#searchBtn', function(){
 				
 				// 검색 조건 선택된 값 가져오기
 			    let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
@@ -210,10 +210,12 @@
 								html += `	<td><input class="checks" type="checkbox" value="${unusualStockInfo.unusualStockCode}"></td>`;
 								html += `	<th>${count++}</th>`;
 								html += `	<td>
-												<a href="/admin/stock/modify_stock?goodsStockCode=${unusualStockInfo.goodsStockCode}">
+												<a href="/admin/stock/modify_unusual_stock_detail?unusualStockCode=${unusualStockInfo.unusualStockCode}">
 													${unusualStockInfo.unusualStockCode}</a>
 											</td>`;
+								html += `	<td>${unusualStockInfo.goodsStockCode}</td>`;
 								html += `	<td>${unusualStockInfo.goodsInfo.goodsName}</td>`;
+								html += `	<td>${unusualStockInfo.stockInfo.goodsLotNumber}</td>`;
 								html += `	<td>${unusualStockInfo.unusualStockQuantity}</td>`;
 								html += `	<td>${unusualStockInfo.unusualStockDate}</td>`;
 								html += `	<td>${unusualStockInfo.unusualStockReason}</td>`;
@@ -224,7 +226,7 @@
 								}
 								html += `<td>
 											<a class="btn btn-secondary btn-icon-split btn-sm"
-												href="/admin/stock/modify_stock?goodsStockCode=${unusualStockInfo.goodsStockCode}">
+												href="/admin/stock/modify_unusual_stock_detail?unusualStockCode=${unusualStockInfo.unusualStockCode}">
 												<span class="text">수정</span>
 											</a>
 										</td>`;
@@ -232,7 +234,7 @@
 							};
 						}else{
 							html += '<tr>';
-							html += '	<td colspan="8">검색된 비정상 재고 정보가 없습니다.</td>';
+							html += '	<td colspan="10">검색된 비정상 재고 정보가 없습니다.</td>';
 							html += '</tr>';
 						}
 						$('#dataTable > tbody').append(html);
@@ -245,10 +247,10 @@
 			});
 	
 			// 체크박스 전체 선택
-			$('#allCheck').click(function () {
+			$(document).on('click', '#allCheck', function(){
 				$('.checks').prop('checked', $(this).prop('checked'));
 			});
-			$('.checks').click(function () {
+			$(document).on('click', '.checks', function(){
 				let length = $('.checks').length;
 				let checkedLength = $('.checks:checked').length;
 				if (length == checkedLength) {
@@ -259,7 +261,7 @@
 			});
 			
 			// 체크박스 선택 후 deleteBtn 버튼
-			$('#delCheckBtn').click(function () {
+			$(document).on('click', '#delCheckBtn', function(){
 				
 				const checkedArr = $('.checks:checked');
 				console.log(checkedArr);
@@ -290,14 +292,10 @@
 						});
 						
 						request.done(function(response) {
-			                let deleted = response.deleted;
-			                let failed = response.failed;
+							let removed = response.removed;
 			                let message = '';
-			                if (deleted.length > 0) {
-			                    message += `삭제된 비정상재고: ${deleted.join(', ')}\n`;
-			                }
-			                if (failed.length > 0) {
-			                    message += `삭제할 수 없는 비정상재고: ${failed.join(', ')}\n`;
+			                if (removed.length > 0) {
+			                    message += `삭제된 비정상재고: ${removed.join(', ')}\n`;
 			                }
 			                alert(message);
 			                location.reload();

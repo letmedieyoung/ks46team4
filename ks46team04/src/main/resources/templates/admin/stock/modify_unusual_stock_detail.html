@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">상품 비정상재고 수정</h6>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+							<form th:object="${unusualStockInfo}" id="modifyUnusualStockForm" th:action="@{/admin/stock/modify_unusual_stock_detail}" method="post">
+								<div class="tb-title">
+									<h2>비정상 재고 수정</h2>
+								</div>
+								<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+									<tbody>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="unusualStockCode">비정상재고코드</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search number-input" id="unusualStockCode" name="unusualStockCode" th:value="*{unusualStockCode}" readonly/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="goodsStockCode">재고코드</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search number-input" id="goodsStockCode" name="goodsStockCode" th:value="*{goodsStockCode}" readonly/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="goodsName">상품명</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search long-input" id="goodsName" name="goodsName" th:value="*{goodsInfo.goodsName}" readonly/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="goodsLotNumber">제조번호</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search number-input" id="goodsLotNumber" name="goodsLotNumber" th:value="*{stockInfo.goodsLotNumber}" readonly/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="unusualStockQuantity">비정상 재고 수량</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="number" class="form-control number-input" 
+														id="unusualStockQuantity" name="unusualStockQuantity" th:value="*{unusualStockQuantity}" placeholder="비정상 재고 수량"/>개
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="unusualStockDate">비정상 재고 발생일</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="date" class="form-control" id="unusualStockDate" name="unusualStockDate" th:value="*{unusualStockDate}"/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th class="bg-gray-100">
+												<label for="unusualStockReason">비정상 재고 사유</label>
+											</th>
+											<td>
+												<div class="form-row align-items-center search-schedule">
+													<input type="text" class="form-control form-control-user-search long-input" id="unusualStockReason" name="unusualStockReason" th:value="*{unusualStockReason}" placeholder="비정상 재고 사유를 입력해주세요."/>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div align="center">
+									<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+										<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+										<span class="text">수정하기</span>
+									</button>
+									<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+										<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+										<span class="text">입력취소</span>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- /.container-fluid -->
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+</th:block>
+
+</html>

@@ -10,7 +10,7 @@ public class Goods {
 	private String goodsRegDate;
 	private String goodsUpdId;
 	private String goodsUpdDate;
-	private String goodsIsDelete;
+	private Boolean goodsIsDelete;
 	
 	private Stock stockInfo;
 	
@@ -74,11 +74,10 @@ public class Goods {
 	public void setGoodsUpdDate(String goodsUpdDate) {
 		this.goodsUpdDate = goodsUpdDate;
 	}
-	
-	public String getGoodsIsDelete() {
+	public Boolean getGoodsIsDelete() {
 		return goodsIsDelete;
 	}
-	public void setGoodsIsDelete(String goodsIsDelete) {
+	public void setGoodsIsDelete(Boolean goodsIsDelete) {
 		this.goodsIsDelete = goodsIsDelete;
 	}
 	@Override
@@ -88,5 +87,6 @@ public class Goods {
 				+ ", goodsRegDate=" + goodsRegDate + ", goodsUpdId=" + goodsUpdId + ", goodsUpdDate=" + goodsUpdDate
 				+ ", goodsIsDelete=" + goodsIsDelete + ", stockInfo=" + stockInfo + "]";
 	}
+	
 	
 }

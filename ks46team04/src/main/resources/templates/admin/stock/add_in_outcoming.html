@@ -31,7 +31,7 @@
 							<div class="tb-title">
 								<h2>입/출고 정보</h2>
 							</div>
-							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
 									<tr>
 										<th class="bg-gray-100">
@@ -39,8 +39,14 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsName" name="goodsName" placeholder="상품명을 입력해주세요."/>
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form" id="selectGoodsName" name="selectGoodsName" onchange="selectedGoodsName(this.value)">
+													<option value="">:: 상품명 선택 ::</option>
+													<option th:if="${goodsNameList == null}">등록된 상품명이 없습니다.</option>
+    												<option th:each="goodsName : ${goodsNameList}" th:value="${goodsName}" th:text="${goodsName}"></option>
+												</select>
 											</div>
+											<input type="hidden" id="goodsName" name="goodsName"/>
 										</td>
 									</tr>
 									<tr>
@@ -55,33 +61,20 @@
 									</tr>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsCompany">제조사</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input" id="goodsCompany" name="goodsCompany" placeholder="제조사를 입력해주세요."/>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
 											<label for="inOutcomingType">입/출고 분류</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												&nbsp;
-												 <select class="dropdown btn btn-primary required-form" id="inOutcomingTypeSelect" name="inOutcomingTypeSelect" onchange="inOutType(this.value)">
+												 <select class="dropdown btn btn-primary required-form" id="selectInOutcomingType" name="selectInOutcomingType" onchange="selectedInOutcomingType(this.value)">
 													<option value="">:: 입/출고 분류 ::</option>
-														<option>입고</option>
-														<option>출고</option>
-														<option>교환</option>
-														<option>폐기</option>
+														<option value="incoming">입고</option>
+														<option value="outcoming">출고</option>
+														<option value="exchange">교환</option>
+														<option value="disposal">폐기</option>
 												</select>
 											</div>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<input type="hidden" id="inOutcomingType" name="inOutcomingType" placeholder=":: 입/출고 분류 ::" />
-											</div>
+											<input type="hidden" id="inOutcomingType" name="inOutcomingType"/>
 										</td>
 									</tr>
 									<tr>
@@ -90,8 +83,7 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control number-input" 
-													id="inOutcomingQuantity" name="inOutcomingQuantity" placeholder="입/출고 수량"/>개
+												<input type="number" class="form-control number-input" id="inOutcomingQuantity" name="inOutcomingQuantity" placeholder="입/출고 수량"/>개
 											</div>
 										</td>
 									</tr>
@@ -111,122 +103,34 @@
 							<div class="tb-title">
 								<h2>입고 상세 정보</h2>
 							</div>
-							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="goodsExprityDate">상품 유통기한</label>
+											<label for="goodsExpiryDate">상품 유통기한</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="date" class="form-control form-control-user-search incoming" 
-													id="goodsExprityDate" name="goodsExprityDate" disabled/>
+													id="goodsExpiryDate" name="goodsExpiryDate"/>
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="stocktakingCheck">재고조사 진행 현황</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<div class="form-row align-items-center search-schedule">
-											      <label>
-												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
-												      <span class="text">완료</span>&nbsp;&nbsp;
-											      </label>
-											    </div>
-												<div class="form-row align-items-center search-schedule">
-											      <label>
-												      <input type="radio" class="incoming" name="stocktakingCheck" disabled>
-												      <span class="text">미완료</span>
-											      </label>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="stocktakingDate">재고조사일</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="date" class="form-control form-control-user-search incoming" 
-													id="stocktakingDate" name="stocktakingDate" disabled/>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="unusualStockCheck">비정상 재고 유무</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												&nbsp;
-												<div class="form-row align-items-center search-schedule">
-											      <label>
-												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
-												      <span class="text">유</span>&nbsp;&nbsp;
-											      </label>
-											    </div>
-												<div class="form-row align-items-center search-schedule">
-											      <label>
-												      <input type="radio" class="incoming" name="unusualStockCheck" disabled>
-												      <span class="text">무</span>
-											      </label>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="unusualStockAmount">비정상 재고 수량</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="number" class="form-control number-input incoming" 
-													id="unusualStockAmount" name="unusualStockAmount" placeholder="비정상 재고 수량" disabled/>개
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="unusualStockDate">비정상 재고 발생일</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="date" class="form-control form-control-user-search incoming" 
-													id="unusualStockDate" name="unusualStockDate" disabled/>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="bg-gray-100">
-											<label for="unusualStockReason">비정상 재고 사유</label>
-										</th>
-										<td>
-											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input incoming" 
-													id="unusualStockReason" name="unusualStockReason" placeholder="비정상 재고 사유를 입력해주세요." disabled/>
-											</div>
-										</td>
-									</tr>
-								</tbody>
+									</tbody>
 							</table>
 							<div class="tb-title">
 								<h2>출고 상세 정보</h2>
 							</div>
-							<table class="table table-bordered search-table-gr" id="searchTable" width="100%" cellspacing="0">
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
 								<tbody>
 									<tr>
 										<th class="bg-gray-100">
-											<label for="outcomingId">출고 담당자</label>
+											<label for="outcomingId">출고 담당자 아이디</label>
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
 												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
-													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요." disabled/>
+													id="outcomingId" name="outcomingId" placeholder="출고 담당자를 입력해주세요."/>
 											</div>
 										</td>
 									</tr>
@@ -236,15 +140,20 @@
 										</th>
 										<td>
 											<div class="form-row align-items-center search-schedule">
-												<input type="text" class="form-control form-control-user-search middle-input outcoming" 
-													id="foundationName" name="foundationName" placeholder="출고 재단명을 입력해주세요." disabled/>
+												&nbsp;
+												 <select class="dropdown btn btn-primary required-form outcoming" id="selectFoundationName" name="selectFoundationName" onchange="selectedFoundationName(this.value)">
+													<option value="">:: 재단명 선택 ::</option>
+													<option th:if="${foundationNameList == null}">등록된 재단명이 없습니다.</option>
+    												<option th:each="foundationName : ${foundationNameList}" th:value="${foundationName}" th:text="${foundationName}"></option>
+												</select>
 											</div>
+											<input type="hidden" class="outcoming" id="foundationName" name="foundationName"/>
 										</td>
 									</tr>
 								</tbody>
 							</table>
 							<div align="center">
-								<button type="submit" id="submitBtn" class="btn btn-primary btn-icon-split">
+								<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
 									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
 									<span class="text">등록하기</span>
 								</button>
@@ -271,41 +180,54 @@
 	<script th:src="@{/js/demo/datatables-demo.js}"></script>
 	<script th:src="@{/js/custom/kgr9.js}"></script>
 	<script th:inline="javascript">
+	
+		// 상품명 select box value 값 -> input value로 넣기
+		function selectedGoodsName(selectValue) {
+			const selectInputEle = $('#goodsName');
+			selectInputEle.val(selectValue);
+		};
 		
-		// 입/출고 분류 select box value 값 -> input value로 넣기
-		function inOutType(category) {
-			const selectInput = document.querySelector('#inOutcomingType');
-			selectInput.value = category;
+		// 입/출고 분류 select box 선택 value 값 -> input value로 넣기
+		function selectedInOutcomingType(selectValue) {
+			const selectInputEle = $('#inOutcomingType');
+			selectInputEle.val(selectValue);
+		};
+		
+		// 재단명 select box 선택 value 값 -> input value로 넣기
+		function selectedFoundationName(selectValue) {
+			const selectInputEle = $('#foundationName');
+			selectInputEle.val(selectValue);
 		};
 		
 		$(function(){
-			
-			// 입출고분류 체크박스 선택 값에 따라 input 입력 활성화
-			// select box 입고 선택 시 입고 상세정보 테이블 input 입력 활성화
-		 	// select box 출고 선택 시 출고 상세정보 테이블 input 입력 활성화
-			const inOutcomingTypeSelect = $('#inOutcomingTypeSelect');
-			const incomingTypeInputs = $('.incoming');
-			const outcomingTypeInputs = $('.outcoming');
+			/** 
+			*	입출고분류 체크박스 선택 값에 따라 input 입력 활성화
+			*	select box 입고 선택 시 입고 상세정보 테이블 input 활성화
+		 	* 	select box 출고 선택 시 출고 상세정보 테이블 input 활성화
+		 	*/
+			const inOutcomingTypeSelectEle = $('#selectInOutcomingType');
+			const incomingInputsEles = $('.incoming');
+			const outcomingInputsEles = $('.outcoming');
 			
 			function toggleInOutcomingTypeInputs() {
-				const selectedValue = inOutcomingTypeSelect.val();
-				if(selectedValue == '입고'){
-					incomingTypeInputs.prop('disabled', false);
-				    outcomingTypeInputs.val('').prop('disabled', true);
-				}else if(selectedValue == '출고'){
-					incomingTypeInputs.val('').prop('disabled', true);
-				    outcomingTypeInputs.prop('disabled', false);
+				const selectedValue = inOutcomingTypeSelectEle.val();
+				if(selectedValue == 'incoming'){
+					incomingInputsEles.prop('disabled', false);
+					outcomingInputsEles.val('').prop('disabled', true);
+				}else if(selectedValue == 'outcoming'){
+					incomingInputsEles.val('').prop('disabled', true);
+					outcomingInputsEles.prop('disabled', false);
 				}else{
-					incomingTypeInputs.val('').prop('disabled', true);
-				    outcomingTypeInputs.val('').prop('disabled', true);
+					incomingInputsEles.val('').prop('disabled', true);
+					outcomingInputsEles.val('').prop('disabled', true);
 				}
 			};
 			
-			// 페이지 로드 시 초기 설정
+			// 초기 로딩 시 selectbox 상태에 따라 입력 필드 활성화/비활성화 설정
 			toggleInOutcomingTypeInputs();
 			
-			// 입출고분류 체크박스 선택 변경 시 이벤트 처리
-			inOutcomingTypeSelect.change(function() {
+			// 입출고분류 selectbox 선택 변경 시 이벤트 처리
+			inOutcomingTypeSelectEle.change(function() {
 				toggleInOutcomingTypeInputs();
 			});
 			
@@ -313,32 +235,34 @@
 			function validationCheck(ele){
 				let data = $(ele).val();
 				let isValid = true;
-				if (ele.id === 'inOutcomingTypeSelect' && data === '입고') {
-					if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('outcoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-					}
-			    } else if(ele.id === 'inOutcomingTypeSelect' && data === '출고') {
-			    	if(typeof data == 'undefined' || data == null || data == '' && !$(ele).hasClass('incoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-					}
-			    } else {
-			        if (typeof data === 'undefined' || data === null || data === '' 
-			        	&& !$(ele).hasClass('incoming') && !$(ele).hasClass('outcoming')) {
-						let msg = $(ele).parents('tr').find('label').text();
-						isValid = false;
-			        }
-			    }
+				if(typeof data == 'undefined' || data == null || data == ''){
+					isValid = false;
+				}
 				return isValid;
 			};
 			
 			$('#submitBtn').click(function(){
 				const addInOutcomingForm = $('#addInOutcomingForm');
-				const inputGroup = $('#addInOutcomingForm input');
+				const selectBox = $('#selectInOutcomingType');
+				let selectedValue = selectBox.val();
+				let inputGroup = []; // 빈 배열로 초기화
+				
+				// selectInOutcomingType의 select 값에 따라 inputGroup 설정
+				if (selectedValue === 'incoming') { 
+					// selectInOutcomingType의 값이 'incoming'일 경우, 출고상세정보 제외한 나머지 input 요소를 inputGroup으로 설정
+					inputGroup = $('#addInOutcomingForm input').not('.outcoming');
+				} else if (selectedValue === 'outcoming') { 
+					// selectInOutcomingType의 값이 'outcoming'일 경우, 입고상세정보 제외한 나머지 input 요소를 inputGroup으로 설정
+					inputGroup = $('#addInOutcomingForm input').not('.incoming');
+				} else { 
+					// selectInOutcomingType의 값이 'exchange', 'disposal'일 경우 입고&출고상세정보 제외한 나머지 input 요소를 inputGroup으로 설정
+					inputGroup = $('#addInOutcomingForm input').not('.incoming, .outcoming');
+				}
+				
 				let isSubmit = true;
+				
 				inputGroup.each(function(idx, item){
-				isSubmit = validationCheck(item);
+					isSubmit = validationCheck(item);
 					if(!isSubmit) {
 						let msg = $(item).parents('tr').find('label').text();
 						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
@@ -346,7 +270,7 @@
 						return false;
 					}
 				});
-			if(isSubmit) addInOutcomingForm.submit();
+				if(isSubmit) addInOutcomingForm.submit();
 			});
 		});
 	</script>

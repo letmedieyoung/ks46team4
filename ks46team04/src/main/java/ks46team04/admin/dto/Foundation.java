@@ -13,7 +13,7 @@ public class Foundation {
 	private String foundationRegDate;
 	private String foundationUpdId;
 	private String foundationUpdDate;
-	private String foundationIsDelete;
+	private Boolean foundationIsDelete;
 	public String getFoundationCode() {
 		return foundationCode;
 	}
@@ -86,10 +86,10 @@ public class Foundation {
 	public void setFoundationUpdDate(String foundationUpdDate) {
 		this.foundationUpdDate = foundationUpdDate;
 	}
-	public String getFoundationIsDelete() {
+	public Boolean getFoundationIsDelete() {
 		return foundationIsDelete;
 	}
-	public void setFoundationIsDelete(String foundationIsDelete) {
+	public void setFoundationIsDelete(Boolean foundationIsDelete) {
 		this.foundationIsDelete = foundationIsDelete;
 	}
 	@Override
@@ -102,4 +102,6 @@ public class Foundation {
 				+ ", foundationUpdId=" + foundationUpdId + ", foundationUpdDate=" + foundationUpdDate
 				+ ", foundationIsDelete=" + foundationIsDelete + "]";
 	}
+	
+	
 }

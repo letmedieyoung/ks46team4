@@ -130,40 +130,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							<th:block th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">
-								<th:block th:unless="${l.goodsInfo == null}"  th:each="gl : ${l.goodsInfo}">
-										<tr>	
-											<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
-											<th th:text="${lStat.count}"></th>
-											<td>
-												<a th:text="${l.inOutcomingCode}"
-													th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}"></a>
-											</td>
-											<td th:text="${gl.goodsName}"></td>
-											<td th:text="${l.goodsLotNumber}"></td>
-											<td th:text="${gl.goodsCompany}"></td>
-											<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
-											<td th:if="${l.inOutcomingType == 'outcoming'}">출고</td>
-											<td th:if="${l.inOutcomingType == 'exchange'}">교환</td>
-											<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
-											<td th:text="${l.inOutcomingQuantity}"></td>
-											<td th:text="${l.inOutcomingDate}"></td>
-											<td th:text="${l.outcomingId == null ? '-' : l.outcomingId}"></td>
-											<td th:text="${l.foundationInfo == null ? '-' : l.foundationInfo.foundationName}"></td>
-											<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
-											<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
-											<td>
-												<a class="btn btn-secondary btn-icon-split btn-sm"
-													th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
-													<span class="text">수정</span>
-												</a>
-											</td>
-										</tr>
-										<tr th:if="${inOutcomingList == null}">
-											<td colspan="12">등록된 상품 재고 정보가 없습니다.</td>
-										</tr>
-								</th:block>
-							</th:block>
+							<tr th:unless="${inOutcomingList == null}" th:each=" l : ${inOutcomingList}">	
+								<td><input class="checks" type="checkbox" th:value="${l.inOutcomingCode}"></td>
+								<th th:text="${lStat.count}"></th>
+								<td>
+									<a th:text="${l.inOutcomingCode}"
+										th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}"></a>
+								</td>
+								<td th:text="${l.goodsInfo.goodsName}"></td>
+								<td th:text="${l.goodsLotNumber}"></td>
+								<td th:text="${l.goodsInfo.goodsCompany}"></td>
+								<td th:if="${l.inOutcomingType == 'incoming'}">입고</td>
+								<td th:if="${l.inOutcomingType == 'outcoming'}">출고</td>
+								<td th:if="${l.inOutcomingType == 'exchange'}">교환</td>
+								<td th:if="${l.inOutcomingType == 'disposal'}">폐기</td>
+								<td th:text="${l.inOutcomingQuantity}"></td>
+								<td th:text="${l.inOutcomingDate}"></td>
+								<td th:text="${l.outcomingDetailInfo.outcomingId == null ? '-' : l.outcomingDetailInfo.outcomingId}"></td>
+								<td th:text="${l.foundationInfo == null ? '-' : l.foundationInfo.foundationName}"></td>
+								<td th:if="${l.inOutcomingUpdDate == null}" th:text="${l.inOutcomingRegDate}"></td>
+								<td th:unless="${l.inOutcomingUpdDate == null}" th:text="|${l.inOutcomingUpdDate}(수정)|"></td>
+								<td>
+									<a class="btn btn-secondary btn-icon-split btn-sm"
+										th:href="@{modify_in_outcoming(inOutcomingCode=${l.inOutcomingCode})}">
+										<span class="text">수정</span>
+									</a>
+								</td>
+							</tr>
+							<tr th:if="${inOutcomingList == null}">
+								<td colspan="12">등록된 상품 재고 정보가 없습니다.</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -188,7 +184,7 @@
 		$(function(){
 			
 			// 상품 입출고 검색 결과 조회
-			$('#searchBtn').click(function(){
+			$(document).on('click', '#searchBtn', function(){
 				
 				// 검색 조건 선택된 값 가져오기
 				let inputSearchKey = $('#inputSearchKey option:selected').attr('value');
@@ -243,10 +239,10 @@
 								}
 								html += `	<td>${inOutcomingInfo.inOutcomingQuantity}</td>`;
 								html += `	<td>${inOutcomingInfo.inOutcomingDate}</td>`;
-								if(inOutcomingInfo.outcomingId == null){
+								if(inOutcomingInfo.outcomingDetailInfo.outcomingId == null){
 									html += `	<td>-</td>`;
 								}else{
-									html += `	<td>${inOutcomingInfo.outcomingId}</td>`;
+									html += `	<td>${inOutcomingInfo.outcomingDetailInfo.outcomingId}</td>`;
 								}
 								if(inOutcomingInfo.foundationInfo == null){
 									html += `	<td>-</td>`;
@@ -281,10 +277,10 @@
 			});
 			
 			// 체크박스 전체 선택
-			$('#allCheck').click(function () {
+			$(document).on('click', '#allCheck', function(){
 				$('.checks').prop('checked', $(this).prop('checked'));
 			});
-			$('.checks').click(function () {
+			$(document).on('click', '.checks', function(){
 				let length = $('.checks').length;
 				let checkedLength = $('.checks:checked').length;
 				if (length == checkedLength) {
@@ -294,8 +290,8 @@
 				}
 			});
 			
-			// 체크박스 선택 후 deleteBtn 버튼
-			$('#delCheckBtn').click(function () {
+			// 체크박스 선택 후 deleteBtn 삭제 버튼 클릭
+			$(document).on('click', '#delCheckBtn', function(){
 				
 				const checkedArr = $('.checks:checked');
 				console.log(checkedArr);
@@ -319,18 +315,21 @@
 						console.log(valueArr);
 						
 						let request = $.ajax({
-							url: '/admin/goods/remove_goods',
+							url: '/admin/stock/remove_in_outcoming',
 							method: 'POST',
 							data: { valueArr : valueArr },
 							dataType: 'json'
 						});
 						
-						request.done(function(result){
-							if(result){
-								alert('삭제되었습니다.');
-								location.reload();
-							}
-						});
+						request.done(function(response) {
+			                let removed = response.removed;
+			                let message = '';
+			                if (removed.length > 0) {
+			                    message += `삭제된 입출고 정보: ${removed.join(', ')}\n`;
+			                }
+			                alert(message);
+			                location.reload();
+			            });
 						
 						request.fail(function(jqXHR, textStatus){
 							alert(`Request failed: ${textStatus}`);

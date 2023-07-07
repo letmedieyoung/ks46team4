@@ -18,17 +18,20 @@ public interface GoodsMapper {
 	//특정 상품 조회
 	public Goods getGoodsInfoByCode(String goodsCode);
 	
+	//상품명으로 상품코드 조회
+	public String getGoodsCodeByName(String goodsName);
+
+	//등록된 상품명 조회
+	public List<String> getGoodsNameList();
+	
 	//상품명 중복체크
 	public boolean goodsNameCheck(String goodsName);
 	
 	//상품 등록 
 	public int addGoods(Goods goods);
 	
-	//상품 제조사 조회
-	public List<String> getGoodsCompanyList();
-	
 	//상품 분류 조회
-	public List<GoodsCategory> getGoodsCategoryList();
+	public List<String> getGoodsCategoryList();
 	
 	//상품 삭제
 	public int removeGoods(String goodsCode);

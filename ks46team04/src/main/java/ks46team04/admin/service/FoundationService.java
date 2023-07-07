@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Foundation;
 import ks46team04.admin.dto.FoundationRequest;
+import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.mapper.FoundationMapper;
 
 @Service
@@ -21,9 +22,11 @@ public class FoundationService {
 	private static final Logger log = LoggerFactory.getLogger(FoundationService.class);
 
 	private final FoundationMapper foundationMapper;
+	private final CommonMapper commonMapper;
 	
-	public FoundationService(FoundationMapper foundationMapper) {
+	public FoundationService(FoundationMapper foundationMapper, CommonMapper commonMapper) {
 		this.foundationMapper = foundationMapper;
+		this.commonMapper = commonMapper;
 	}
 	
 	/**
@@ -31,6 +34,11 @@ public class FoundationService {
 	 * @param foundationRequest
 	 */
 	public void modifyFoundationRequest(FoundationRequest foundationRequest) {
+		// 재단명으로 재단 코드 조회 및 설정
+		String foundationCode = foundationMapper.getFoundationCodeByName(foundationRequest.getFoundationName());
+		foundationRequest.setFoundationCode(foundationCode);
+		log.info("수정 후 foundationRequest: {}", foundationRequest);
+		
 		foundationMapper.modifyFoundationRequest(foundationRequest);
 	}
 	
@@ -50,6 +58,19 @@ public class FoundationService {
 	 * @return
 	 */
 	public int addFoundationRequest(FoundationRequest foundationRequest) {
+		
+		// 재단요청사항코드 - 공통 mapper를 사용하여 foundationRequestCode 생성 및 설정
+		String foundationRequestCode = commonMapper.getPrimaryKeyVerTwo("foundation_request1"
+																, "foundation_request_code"
+																, "foundation_request");
+		foundationRequest.setFoundationRequestCode(foundationRequestCode);
+		
+		// 재단명으로 재단 코드 조회 및 설정
+		String foundationCode = foundationMapper.getFoundationCodeByName(foundationRequest.getFoundationName());
+		foundationRequest.setFoundationCode(foundationCode);
+		
+		log.info("등록된 foundationRequest: {}", foundationRequest);
+		
 		int result = foundationMapper.addFoundationRequest(foundationRequest);
 		return result;
 	}

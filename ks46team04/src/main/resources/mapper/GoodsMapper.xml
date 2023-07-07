@@ -21,11 +21,6 @@
 		</association>
 	</resultMap>
 	
-	<resultMap type="GoodsCategory" id="goodsCategoryResultMap">
-		<result column="goods_category_code"		property="goodsCategoryCode"/>
-		<result column="goods_category"				property="goodsCategory"/>
-	</resultMap>
-	
 	<update id="modifyGoods" parameterType="Goods">
 		/* 상품 수정 */
 		UPDATE goods_reg_info
@@ -67,12 +62,24 @@
 			goods_code = #{goodsCode};
 	</select>
 	
-	<select id="getGoodsCompanyList" resultType="String">
-		/* 상품 제조사 조회 */
+	<select id="getGoodsCodeByName" parameterType="String" resultType="String">
+		/* 상품명으로 상품코드 조회 */
 		SELECT
-			goods_company AS goodsCompany
+			goods_code AS goodsCode
 		FROM
-			goods_reg_info;
+			goods_reg_info
+		WHERE 
+			goods_name = #{goodsName};
+	</select>
+	
+	<select id="getGoodsNameList" resultType="String">
+		/* 등록된 상품명 조회 */
+		SELECT DISTINCT 
+			goods_name
+		FROM
+			goods_reg_info
+		WHERE
+			goods_is_delete = '0'
 	</select>
 	
 	<select id="goodsNameCheck" parameterType="String" resultType="boolean">
@@ -90,14 +97,13 @@
 		INSERT INTO goods_reg_info
 			(goods_code, goods_name, goods_company, goods_category, goods_price, goods_reg_id, goods_reg_date)
 		VALUES
-			(sf_new_goods_code(), #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
+			(#{goodsCode}, #{goodsName}, #{goodsCompany}, #{goodsCategory}, #{goodsPrice}, #{goodsRegId}, NOW());
 	</insert>
 	
-	<select id="getGoodsCategoryList" resultMap="goodsCategoryResultMap">
+	<select id="getGoodsCategoryList" resultType="String">
 		/* 상품 분류 조회 */
-		SELECT 
-			goods_category_code
-			, goods_category
+		SELECT
+			goods_category
 		FROM
 			goods_category_info;
 	</select>

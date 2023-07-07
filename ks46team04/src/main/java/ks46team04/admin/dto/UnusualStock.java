@@ -4,7 +4,7 @@ public class UnusualStock {
 	private String unusualStockCode;
 	private String goodsCode;
 	private String goodsStockCode;
-	private String unusualStockQuantity;
+	private int unusualStockQuantity;
 	private String unusualStockDate;
 	private String unusualStockReason;
 	private String unusualStockRegId;
@@ -13,7 +13,29 @@ public class UnusualStock {
 	private String unusualStockUpdDate;
 	
 	private Goods goodsInfo;
+	private Stock stockInfo;
 	
+	private String goodsName;
+	private String goodsLotNumber;
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+	public String getGoodsLotNumber() {
+		return goodsLotNumber;
+	}
+	public void setGoodsLotNumber(String goodsLotNumber) {
+		this.goodsLotNumber = goodsLotNumber;
+	}
+	public Stock getStockInfo() {
+		return stockInfo;
+	}
+	public void setStockInfo(Stock stockInfo) {
+		this.stockInfo = stockInfo;
+	}
 	public Goods getGoodsInfo() {
 		return goodsInfo;
 	}
@@ -38,10 +60,10 @@ public class UnusualStock {
 	public void setGoodsStockCode(String goodsStockCode) {
 		this.goodsStockCode = goodsStockCode;
 	}
-	public String getUnusualStockQuantity() {
+	public int getUnusualStockQuantity() {
 		return unusualStockQuantity;
 	}
-	public void setUnusualStockQuantity(String unusualStockQuantity) {
+	public void setUnusualStockQuantity(int unusualStockQuantity) {
 		this.unusualStockQuantity = unusualStockQuantity;
 	}
 	public String getUnusualStockDate() {
@@ -86,7 +108,8 @@ public class UnusualStock {
 				+ goodsStockCode + ", unusualStockQuantity=" + unusualStockQuantity + ", unusualStockDate="
 				+ unusualStockDate + ", unusualStockReason=" + unusualStockReason + ", unusualStockRegId="
 				+ unusualStockRegId + ", unusualStockRegDate=" + unusualStockRegDate + ", unusualStockUpdId="
-				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + ", goodsInfo=" + goodsInfo + "]";
+				+ unusualStockUpdId + ", unusualStockUpdDate=" + unusualStockUpdDate + ", goodsInfo=" + goodsInfo
+				+ ", stockInfo=" + stockInfo + ", goodsName=" + goodsName + ", goodsLotNumber=" + goodsLotNumber + "]";
 	}
 	
 	

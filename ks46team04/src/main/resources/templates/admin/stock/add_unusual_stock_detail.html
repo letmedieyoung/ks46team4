@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+	<!-- Custom styles for this template -->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="/css/admin_kgr9.css" rel="stylesheet">
+</head>
+<th:block layout:fragment="customContents">
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">상품 비정상재고 등록</h6>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<div class="tb-title">
+							<h2>해당 상품 재고의 등록된 비정상 재고 목록</h2>
+						</div>
+						<table class="table table-bordered text-center table-layout-auto table-space tb-sm" id="dataTable" width="100%" cellspacing="0">
+							<thead class="bg-gray-100">
+								<tr>
+									<th>No</th>
+									<th>비정상재고코드</th>
+									<th>재고코드</th>
+									<th>상품명</th>
+									<th>제조번호</th>
+									<th>비정상 재고 수량</th>
+									<th>비정상 재고 발생일</th>
+									<th>비정상 재고 사유</th>
+									<th>등록/수정일</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:unless="${unusualStockListInfo == null}" th:each=" l : ${unusualStockListInfo}">
+									<th th:text="${lStat.count}"></th>
+									<td th:text="${l.unusualStockCode}"></td>	
+									<td th:text="${l.goodsStockCode}"></td>	
+									<td th:text="${l.goodsInfo.goodsName}"></td>
+									<td th:text="${l.stockInfo.goodsLotNumber}"></td>
+									<td th:text="${l.unusualStockQuantity}"></td>
+									<td th:text="${l.unusualStockDate}"></td>
+									<td th:text="${l.unusualStockReason}"></td>
+									<td th:if="${l.unusualStockUpdDate == null}" th:text="${l.unusualStockRegDate}"></td>
+									<td th:unless="${l.unusualStockUpdDate == null}" th:text="|${l.unusualStockUpdDate}(수정)|"></td>
+								</tr>
+								<tr th:if="${unusualStockListInfo == null}">
+									<td colspan="9">등록된 비정상재고 정보가 없습니다.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+						
+				<!-- 비정상 재고 등록폼 시작 -->
+				<div class="card-body">
+					<div class="table-responsive">
+						<form id="addUnusualStockForm" th:action="@{/admin/stock/add_unusual_stock_detail}" method="post">
+							<div class="tb-title">
+								<h2>비정상 재고 등록</h2>
+							</div>
+							<table class="table table-bordered search-table-gr" width="100%" cellspacing="0">
+								<tbody>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsStockCode">재고코드</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search number-input" id="goodsStockCode" name="goodsStockCode" th:value="${goodsStockCode}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsName">상품명</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search long-input" id="goodsName" name="goodsName" th:value="${goodsName}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="goodsLotNumber">제조번호</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search number-input" id="goodsLotNumber" name="goodsLotNumber" th:value="${goodsLotNumber}" readonly/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockQuantity">비정상 재고 수량</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="number" class="form-control number-input" 
+													id="unusualStockQuantity" name="unusualStockQuantity" placeholder="비정상 재고 수량"/>개
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockDate">비정상 재고 발생일</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="date" class="form-control" id="unusualStockDate" name="unusualStockDate"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="bg-gray-100">
+											<label for="unusualStockReason">비정상 재고 사유</label>
+										</th>
+										<td>
+											<div class="form-row align-items-center search-schedule">
+												<input type="text" class="form-control form-control-user-search long-input" id="unusualStockReason" name="unusualStockReason" placeholder="비정상 재고 사유를 입력해주세요."/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div align="center">
+								<button type="button" id="submitBtn" class="btn btn-primary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-check"></i></span>
+									<span class="text">등록하기</span>
+								</button>
+								<button type="reset" id="resetBtn" class="btn btn-secondary btn-icon-split">
+									<span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+									<span class="text">입력취소</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+
+<th:block layout:fragment="customJs">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{/js/demo/datatables-demo.js}"></script>
+	<script th:src="@{/js/custom/kgr9.js}"></script>
+	<script th:inline="javascript">
+		
+		// 상품명 select box value 값 -> input value로 넣기
+		function selectedGoodsName(selectValue) {
+			const selectInputEle = $('#goodsName');
+			selectInputEle.val(selectValue);
+		};
+		
+		$(function(){
+			
+			// form submitBtn 등록하기 버튼 클릭 시 공란 체크
+			function validationCheck(ele){
+				let data = $(ele).val();
+				let isValid = true;
+				if(typeof data == 'undefined' || data == null || data == ''){
+					isValid = false;
+				}
+				return isValid;
+			};
+				
+			$('#submitBtn').click(function(){
+				const addUnusualStockForm = $('#addUnusualStockForm');
+				const inputGroup = $('#addUnusualStockForm input');
+				let isSubmit = true;
+				inputGroup.each(function(idx, item){
+					isSubmit = validationCheck(item);
+					if(!isSubmit) {
+						let msg = $(item).parents('tr').find('label').text();
+						alert(`${msg} 필수 항목입니다. ${msg} 입력해주세요.`);
+						$(item).focus();
+						return false;
+					}
+				});
+				if(isSubmit) addUnusualStockForm.submit();
+			});
+		});
+	</script>
+</th:block>
+
+</html>

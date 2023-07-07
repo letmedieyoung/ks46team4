@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ks46team04.admin.dto.Goods;
-import ks46team04.admin.dto.GoodsCategory;
+import ks46team04.admin.mapper.CommonMapper;
 import ks46team04.admin.mapper.GoodsMapper;
-import ks46team04.admin.mapper.StockMapper;
 
 @Service
 @Transactional
@@ -22,11 +21,11 @@ public class GoodsService {
 	private static final Logger log = LoggerFactory.getLogger(GoodsService.class);
 
 	private final GoodsMapper goodsMapper;
-	private final StockMapper stockMapper;
+	private final CommonMapper commonMapper;
 	
-	public GoodsService(GoodsMapper goodsMapper, StockMapper stockMapper) {
+	public GoodsService(GoodsMapper goodsMapper, CommonMapper commonMapper) {
 		this.goodsMapper = goodsMapper;
-		this.stockMapper = stockMapper;
+		this.commonMapper = commonMapper;
 	}
 	
 	/**
@@ -53,41 +52,16 @@ public class GoodsService {
 	 * @return
 	 */
 	public int addGoods(Goods goods) {
+		// 상품코드 - 공통 mapper를 사용하여 goodsCode 생성 및 설정
+		String goodsCode = commonMapper.getPrimaryKeyVerTwo("goods_reg_info"
+															,"goods_code"
+															,"goods");
+		goods.setGoodsCode(goodsCode);
+		log.info("goods: {}", goods);
+
 		int result = goodsMapper.addGoods(goods);
 		return result;
 	}
-	
-	/**
-	 * 상품 제조사 조회
-	 * @return
-	 */
-	public List<String> getGoodsCompanyList(){
-		List<String> goodsCompanyList = goodsMapper.getGoodsCompanyList();
-		return goodsCompanyList;
-	}
-	
-	/**
-	 * 상품 분류 조회
-	 * @return
-	 */
-	public List<GoodsCategory> getGoodsCategoryList(){
-		List<GoodsCategory> goodsCategory = goodsMapper.getGoodsCategoryList();
-		return goodsCategory;
-	}
-	
-	/**
-     * 상품 삭제
-     * @param goodsCode
-     */
-    public boolean removeGoods(String goodsCode) {
-    	boolean isRemove = true; 
-    	isRemove = stockMapper.removeStockCheck(goodsCode);
-    	if (isRemove) {
-    		goodsMapper.removeGoods(goodsCode);
-    		return true;
-        }
-        return false;
-    }
 	
 	/**
 	 * 상품 검색 결과 조회
@@ -124,15 +98,6 @@ public class GoodsService {
 		
 		log.info("searchMap: {}", searchMap);
 		List<Goods> goodsList = goodsMapper.getGoodsListBySearch(searchMap);
-		return goodsList;
-	}
-	
-	/**
-	 * 상품 조회
-	 * @return List<Goods>
-	 */
-	public List<Goods> getGoodsList(){
-		List<Goods> goodsList = goodsMapper.getGoodsList();
 		return goodsList;
 	}
 }

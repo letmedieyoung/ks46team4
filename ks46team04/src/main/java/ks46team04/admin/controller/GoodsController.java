@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import ks46team04.admin.dto.Goods;
-import ks46team04.admin.dto.GoodsCategory;
 import ks46team04.admin.mapper.GoodsMapper;
 import ks46team04.admin.service.GoodsService;
 import ks46team04.admin.service.StockService;
@@ -31,10 +30,14 @@ public class GoodsController {
 
 	private final GoodsService goodsService;
 	private final GoodsMapper goodsMapper;
+	private final StockService stockService;
 	
-	public GoodsController(GoodsService goodsService, GoodsMapper goodsMapper, StockService stockService) {
+	public GoodsController(GoodsService goodsService
+						, GoodsMapper goodsMapper
+						, StockService stockService) {
 		this.goodsService = goodsService;
 		this.goodsMapper = goodsMapper;
+		this.stockService = stockService;
 	}
 	
 	/**
@@ -68,7 +71,7 @@ public class GoodsController {
 		Goods goodsInfo = goodsService.getGoodsInfoByCode(goodsCode);
 		log.info("goodsInfo: {}", goodsInfo);
 		
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
+		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 수정");
@@ -76,23 +79,6 @@ public class GoodsController {
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
 		
 		return "admin/goods/modify_goods";
-	}
-	
-	/**
-	 * 상품 제조사 조회
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/modal_goods_company_search")
-	public String getGoodsCompanyList(Model model) {
-		
-		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
-		log.info("goodsCompanyList: {}", goodsCompanyList);
-		
-		model.addAttribute("title", "상품 제조사 조회");
-		model.addAttribute("goodsCompanyList", goodsCompanyList);
-		
-		return "admin/goods/modal_goods_company_search";
 	}
 	
 	/**
@@ -104,6 +90,7 @@ public class GoodsController {
 	@ResponseBody
 	public boolean goodsNameCheck(@RequestParam(name="goodsName") String goodsName) {
 		
+		// 중복된 상품명 확인 - 중복된 상품명이 없을 경우 true 반환
 		boolean isCheck = goodsMapper.goodsNameCheck(goodsName);
 		
 		return isCheck;
@@ -136,15 +123,11 @@ public class GoodsController {
 	@GetMapping("/add_goods")
 	public String addGoods(Model model) {
 
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
+		List<String> goodsCategoryList = goodsMapper.getGoodsCategoryList();
 		log.info("goodsCategoryList: {}", goodsCategoryList);
-		
-		List<String> goodsCompanyList = goodsService.getGoodsCompanyList();
-		log.info("goodsCompanyList: {}", goodsCompanyList);
 		
 		model.addAttribute("title", "상품 등록");
 		model.addAttribute("goodsCategoryList", goodsCategoryList);
-		model.addAttribute("goodsCompanyList", goodsCompanyList);
 		
 		return "admin/goods/add_goods";
 	}
@@ -160,24 +143,30 @@ public class GoodsController {
     	
     	log.info("valueArr: {}", valueArr);
     	
-    	Map<String, Object> response = new HashMap<>();
-
-        List<String> deletedGoods = new ArrayList<>();
-        List<String> failedGoods = new ArrayList<>();
+    	// 삭제된 항목을 담을 리스트 초기화
+        List<String> removedGoods = new ArrayList<>();
+        List<String> notRemovedGoods = new ArrayList<>();
 
         for (String goodsCode : valueArr) {
-        	boolean isRemove = goodsService.removeGoods(goodsCode);
+        	// 재고 테이블에 삭제될 상품코드의 최종재고량이 모두 0으로 삭제 완료한 경우 true, 아니면 false
+        	boolean isRemove = stockService.removeStockByGoods(goodsCode);
             if (isRemove) {
-                deletedGoods.add(goodsCode);
+            	// 상품 정보 삭제
+        		goodsMapper.removeGoods(goodsCode);
+            	// 삭제된 항목 리스트에 추가
+            	removedGoods.add(goodsCode);
             } else {
-                failedGoods.add(goodsCode);
+            	// 삭제되지 않은 항목 리스트에 추가
+            	notRemovedGoods.add(goodsCode);
             }
         }
-        log.info("deletedGoods: {}", deletedGoods);
-        log.info("failedGoods: {}", failedGoods);
+        log.info("removedGoods: {}", removedGoods);
+        log.info("notRemovedGoods: {}", notRemovedGoods);
 
-        response.put("deleted", deletedGoods);
-        response.put("failed", failedGoods);
+        // 삭제된 항목과 삭제되지 않은 항목을 Map으로 전달
+        Map<String, Object> response = new HashMap<>();
+        response.put("removed", removedGoods);
+        response.put("notRemoved", notRemovedGoods);
         log.info("response: {}", response);
 
         return response;
@@ -215,15 +204,11 @@ public class GoodsController {
 	@GetMapping("/goods_list")
 	public String getGoodsList(Model model) {
 		
-		List<Goods> goodsList = goodsService.getGoodsList();
+		List<Goods> goodsList = goodsMapper.getGoodsList();
 		log.info("goodsList: {}", goodsList);
-		
-		List<GoodsCategory> goodsCategoryList = goodsService.getGoodsCategoryList();
-		log.info("goodsCategoryList: {}", goodsCategoryList);
 		
 		model.addAttribute("title", "상품 목록");
 		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("goodsCategoryList", goodsCategoryList);
 		
 		return "admin/goods/goods_list";
 	}

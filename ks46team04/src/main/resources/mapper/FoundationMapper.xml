@@ -40,8 +40,11 @@
 		/* 재단 요청사항 수정 */
 		UPDATE foundation_request
 		<set>
+			<if test="foundationCode != null and foundationCode !=''">
+				foundation_code = #{foundationCode}
+			</if>
 			<if test="foundationName != null and foundationName !=''">
-				foundation_name = #{foundationName}
+				, foundation_name = #{foundationName}
 			</if>
 			<if test="contentCategory != null and contentCategory !=''">
 				, content_category = #{contentCategory}
@@ -96,7 +99,7 @@
 			(foundation_request_code, foundation_code, foundation_name, content_category, request_goods_name,
 			 initial_goods_amount, delivery_request_date, request_reg_id, request_reg_date, request_progress_status)
 		VALUES 
-			(sf_new_foundation_request_code(), sf_get_foundation_code(#{foundationName}), #{foundationName}, #{contentCategory}, #{requestGoodsName},
+			(#{foundationRequestCode}, #{foundationCode}, #{foundationName}, #{contentCategory}, #{requestGoodsName},
 			 #{initialGoodsAmount}, #{deliveryRequestDate}, #{requestRegId}, NOW(), #{requestProgressStatus});
 	</insert>
 	
@@ -246,6 +249,26 @@
 			foundation_code = #{foundationCode};
 	</select>
 	
+	<select id="getFoundationCodeByName" parameterType="String" resultType="String">
+		/* 재단명으로 재단코드 조회 */
+		SELECT
+			foundation_code AS foundationCode
+		FROM
+			foundation_list
+		WHERE 
+			foundation_name = #{foundationName};
+	</select>
+	
+	<select id="getFoundationNameList" resultType="String">
+		/* 등록된 재단명 조회 */
+		SELECT DISTINCT 
+			foundation_name
+		FROM 
+			foundation_list
+		WHERE
+			foundation_is_delete = '0'
+	</select>
+	
 	<select id="foundationNameCheck" parameterType="String" resultType="boolean">
 		/* 재단명 중복체크 */
 		SELECT
@@ -262,7 +285,7 @@
 			(foundation_code, foundation_name, foundation_manager, foundation_phone, foundation_zipcode, 
 			foundation_addr, foundation_extra_addr, foundation_detail_addr, foundation_reg_id, foundation_reg_date)
 		VALUES 
-			(sf_new_foundation_code(), #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationZipcode}, 
+			(#{foundationCode}, #{foundationName}, #{foundationManager}, #{foundationPhone}, #{foundationZipcode}, 
 			#{foundationAddr}, #{foundationExtraAddr}, #{foundationDetailAddr}, #{foundationRegId}, NOW());
 	</insert>
 	
@@ -309,7 +332,7 @@
 			<if test="inputSearchKey != null and inputSearchValue != ''">
 				AND ${inputSearchKey} LIKE CONCAT('%', #{inputSearchValue}, '%')
 			</if>
-			<if test="startDate != '' startDate != null and endDate != null and endDate != ''">
+			<if test="startDate != '' and startDate != null and endDate != null and endDate != ''">
 				AND (
 						(foundation_update_date IS NULL
 						 AND foundation_reg_date BETWEEN #{startDate} 
