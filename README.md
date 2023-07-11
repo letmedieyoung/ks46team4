@@ -13,22 +13,31 @@
 - 23.04.17일 ~ 23.05.26
 
 ### 🧑‍🤝‍🧑 팀원 구성
-- 팀장 이바른
+- 팀장 이바른 - 로그인, 재무관리
 - 팀원 고현지 - 관리자페이지 펀딩관리(CRUD), 메인페이지, 펀딩 참여페이지
-- 팀원 김가람
-- 팀원 김귀림
-- 팀원 백지은
+- 팀원 김가람 - 회원관리
+- 팀원 김귀림 - 후원 재단관리, 상품 입출고관리
+- 팀원 백지은 - 정기기부관리
 
 ### ⚙️ 개발 환경
+- 언어 : Java, JavaScript, JQuery, HTML, CSS, Thymeleaf
+- DB : MySQL
+- 서버 : Nginx
+- WAS : Apache-Tomcat
+- 배포 : 오라클 클라우드, Jenkins, Filezilla 
+- 프레임워크 : Eclipse 2023-03 release/STS4, springframework, spring-webmvc, Maven, mybatis, mybatis-spring, bootstrap4
+- API : jackson.core, spring-jdbc, mysql-connector-java, log4j2, thymeleaf
 
 
 ## 📌 주요기능
 
 #### 메인
-
+#### 회원관리
+#### 재단관리
+#### 상품관리
 #### 펀딩 - [상세보기 WIKI 이동](https://github.com/fatrugi/ks46team4/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C(%ED%8E%80%EB%94%A9))
-- 기능1
-- 기능2
+#### 정기기부
+#### 재무
 
 ## 📌 ERD
 
@@ -37,4 +46,4 @@
 </p>
 
 
-## 💬 참여 소감
+
