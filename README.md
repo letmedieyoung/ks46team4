@@ -20,13 +20,8 @@
 - 팀원 백지은 - 정기기부관리
 
 ### ⚙️ 개발 환경
-- 언어 : Java, JavaScript, JQuery, HTML, CSS, Thymeleaf
-- DB : MySQL
-- 서버 : Nginx
-- WAS : Apache-Tomcat
-- 배포 : 오라클 클라우드, Jenkins, Filezilla 
-- 프레임워크 : Eclipse 2023-03 release/STS4, springframework, spring-webmvc, Maven, mybatis, mybatis-spring, bootstrap4
-- API : jackson.core, spring-jdbc, mysql-connector-java, log4j2, thymeleaf
+- 기술스택 : Java, HTML, CSS, JavaScript, JQuery, Thymeleaf, Spring, BootStrap, MyBatis, Apache-Tomcat, Oracle Cloud, MySQL, CentOS8
+- 개발도구 : Nginx, Jenkins, Maven, GitHub, Spring Tool Suite, Eclipse IDE, Visual Studio Code
 
 
 ## 📌 주요기능
