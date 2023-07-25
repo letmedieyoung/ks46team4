@@ -25,7 +25,7 @@
 - 팀원 백지은 - 정기 후원 관리
 
 ### ⚙️ 개발 환경
-- Language : Java17, JavaScript(ES6), JQuery(Ajax), Thymeleaf(3.*), HTML5, CSS3
+- Language : Java17, JavaScript, HTML5, CSS3
 - Server : Nginx, Jenkins, Apache Tomcat(10.1.7), Oracle Cloud
 - Framework : Spring Boot(3.0.5), Maven, MyBatis(3.5.11), Bootstrap4
 - DB : MySQL(8.0.26)
